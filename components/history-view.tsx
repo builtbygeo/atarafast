@@ -140,10 +140,10 @@ export function HistoryView({ history, onHistoryChange }: HistoryViewProps) {
                       <div
                         key={dateKey}
                         className={`h-[10px] w-[10px] rounded-[2px] transition-colors ${isFuture
-                            ? "bg-muted/30"
-                            : fasted
-                              ? "bg-primary"
-                              : "bg-muted"
+                          ? "bg-muted/30"
+                          : fasted
+                            ? "bg-primary"
+                            : "bg-muted"
                           }`}
                         title={`${format(day, "MMM d")}${fasted ? " - Fasted" : ""}`}
                       />
@@ -188,7 +188,7 @@ export function HistoryView({ history, onHistoryChange }: HistoryViewProps) {
                     {preset?.name || record.presetId} &middot; {formatDuration(record.startTime, record.endTime)}
                   </p>
                   <p className="text-xs text-muted-foreground">
-                    {format(new Date(record.startTime), "MMM d, yyyy 'at' h:mm a")}
+                    {format(new Date(record.startTime), "MMM d, yyyy 'at' HH:mm")}
                   </p>
                 </div>
                 <div className="flex items-center gap-1">

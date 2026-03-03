@@ -69,6 +69,10 @@ export const bg = {
   incompleteFast: "Прекъснат",
   noHistory: "Все още няма история",
   startFirstFast: "Започнете вашия първи пост",
+  average: "Средно",
+  goalMet: "Целта е постигната",
+  goalNotMet: "Целта не е постигната",
+  seeMore: "Виж още",
 
   // Stats
   statsTitle: "Статистика",
@@ -243,6 +247,10 @@ export const en: typeof bg = {
   incompleteFast: "Incomplete",
   noHistory: "No history yet",
   startFirstFast: "Start your first fast",
+  average: "Average",
+  goalMet: "Goal met",
+  goalNotMet: "Goal not met",
+  seeMore: "See more",
 
   statsTitle: "Stats",
   totalFasts: "Total Fasts",

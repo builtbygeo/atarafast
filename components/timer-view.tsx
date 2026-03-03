@@ -3,15 +3,13 @@
 import { useState, useEffect, useCallback } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { CircularProgress } from "@/components/circular-progress"
-import { WeekStrip } from "@/components/week-strip"
 import { PresetGrid } from "@/components/preset-grid"
 import { PresetDetail } from "@/components/preset-detail"
+import { RecentFastsChart } from "@/components/recent-fasts-chart"
+import { ManualFastDialog } from "@/components/manual-fast-dialog"
 import {
   Trash2,
   Clock,
-  CheckCircle2,
-  ChevronRight,
-  ChevronDown,
   Timer,
   Settings as SettingsIcon,
 } from "lucide-react"
@@ -21,10 +19,10 @@ import {
   getActiveFast,
   getHistory,
   getSettings,
-  updateActiveFastStartTime,
   updateActiveFast,
   deleteFast,
   getLastFastInfo,
+  addManualFast,
   type FastingRecord,
 } from "@/lib/storage"
 import { getPresetById, type FastingPreset } from "@/lib/presets"
@@ -65,6 +63,7 @@ export function TimerView({ onFastEnd }: TimerViewProps) {
   const [settings, setSettings] = useState<ReturnType<typeof getSettings>>({ timerDirection: "down" })
   const [mounted, setMounted] = useState(false)
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
+  const [showManualFast, setShowManualFast] = useState(false)
 
   const navigateTo = useCallback(
     (newState: ViewState) => {
@@ -93,7 +92,6 @@ export function TimerView({ onFastEnd }: TimerViewProps) {
       const currentNow = new Date()
       setNow(currentNow)
 
-      // Notification logic
       const start = new Date(activeFast.startTime)
       const targetMs = activeFast.targetHours * 3600000
       const elapsedMs = currentNow.getTime() - start.getTime()
@@ -114,18 +112,13 @@ export function TimerView({ onFastEnd }: TimerViewProps) {
 
   const handleStartFast = (hours: number) => {
     if (!selectedPreset) return
+    const record = activeFast
+      ? updateActiveFast(selectedPreset.id, hours)
+      : startFast(selectedPreset.id, hours)
 
-    if (activeFast) {
-      updateActiveFast(selectedPreset.id, hours)
-      const updated = { ...activeFast, presetId: selectedPreset.id, targetHours: hours }
-      setActiveFast(updated)
-      navigateTo("timer")
-    } else {
-      const record = startFast(selectedPreset.id, hours)
-      setActiveFast(record)
-      navigateTo("timer")
-      setNow(new Date())
-    }
+    setActiveFast(record)
+    navigateTo("timer")
+    setNow(new Date())
     haptic([100, 50])
   }
 
@@ -157,6 +150,13 @@ export function TimerView({ onFastEnd }: TimerViewProps) {
     }
   }, [navigateTo])
 
+  const handleAddManualFast = (presetId: string, startTime: Date, endTime: Date, targetHours: number) => {
+    addManualFast(presetId, startTime, endTime, targetHours)
+    setHistory(getHistory())
+    setShowManualFast(false)
+    onFastEnd?.()
+  }
+
   if (!mounted) return null
 
   const renderTimerContent = () => {
@@ -180,97 +180,76 @@ export function TimerView({ onFastEnd }: TimerViewProps) {
     const hoursOverTarget = isComplete ? (elapsedMs - targetMs) / 3600000 : 0
 
     return (
-      <div className="flex flex-col items-center justify-between h-full py-8">
-        <div className="flex flex-col items-center text-center">
-          <motion.div
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            className="relative"
-          >
+      <div className="flex flex-col items-center h-full py-2 overflow-y-auto w-full px-4 no-scrollbar">
+        <RecentFastsChart
+          history={history}
+          activeFast={activeFast}
+          onAddClick={() => setShowManualFast(true)}
+          onSeeMoreClick={() => onFastEnd?.()}
+        />
+
+        <div className="flex flex-col items-center text-center mt-6 mb-8 w-full">
+          <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="relative">
             <CircularProgress
               progress={percentage / 100}
-              size={280}
+              size={260}
               strokeWidth={12}
               color={preset?.color || "oklch(0.6 0.1 260)"}
             >
-              <span className="text-5xl font-black text-foreground font-mono tabular-nums tracking-tight">
+              <span className="text-5xl font-black text-foreground font-mono tabular-nums tracking-tighter">
                 {formatTime(settings.timerDirection === "down" && !isComplete ? remainingMs : elapsedMs)}
               </span>
-              <span className="text-xs font-bold text-muted-foreground mt-2 uppercase tracking-[0.2em] opacity-60">
+              <span className="text-[10px] font-black text-muted-foreground mt-3 uppercase tracking-[0.2em] opacity-60">
                 {isComplete ? t.elapsed : settings.timerDirection === "down" ? t.remaining : t.elapsed} ({percentage}%)
               </span>
             </CircularProgress>
           </motion.div>
 
-          <AnimatePresence mode="popLayout">
-            {isComplete && (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="mt-6 p-4 rounded-2xl bg-primary/5 border border-primary/10 max-w-[240px]"
-              >
-                <p className="text-sm font-bold text-primary">
-                  {hoursOverTarget < 1
-                    ? t.targetReached
-                    : t.overTarget.replace("{{hours}}", hoursOverTarget.toFixed(1))}
-                </p>
-                {hoursOverTarget >= 1 && <p className="text-[10px] text-muted-foreground font-medium uppercase tracking-wider mt-1">{t.keepPushing}</p>}
-              </motion.div>
-            )}
-          </AnimatePresence>
+          {isComplete && (
+            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="mt-8 p-4 rounded-3xl bg-primary/10 border border-primary/20 max-w-[280px]">
+              <p className="text-sm font-black text-primary leading-tight">
+                {hoursOverTarget < 1 ? t.targetReached : t.overTarget.replace("{{hours}}", hoursOverTarget.toFixed(1))}
+              </p>
+            </motion.div>
+          )}
 
-          <h3 className="text-xl font-black text-foreground mt-8 tracking-tight">
-            {preset?.name || activeFast.presetId}
-          </h3>
-          <p className="text-xs font-bold text-muted-foreground uppercase tracking-[0.15em] mt-1 opacity-60">
+          <h3 className="text-2xl font-black text-foreground mt-10 tracking-tight">{preset?.name || activeFast.presetId}</h3>
+          <p className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] mt-2 opacity-50">
             {activeFast.targetHours}{t.hours} {t.fastLabel}
           </p>
         </div>
 
-        <div className="flex flex-col w-full gap-4 max-w-xs px-2">
-          <div className="flex gap-3 mt-8">
-            <button
-              onClick={() => navigateTo("presets")}
-              className="flex-1 flex items-center justify-center gap-2 rounded-2xl bg-secondary text-secondary-foreground px-4 py-4 font-bold text-sm transition-all hover:bg-secondary/80 active:scale-95 shadow-sm"
-            >
-              <SettingsIcon className="h-4 w-4" />
-              {t.changePreset}
+        <div className="flex flex-col w-full gap-4 max-w-xs mt-auto pb-8">
+          <div className="grid grid-cols-[1fr_2fr_auto] gap-3">
+            <button onClick={() => navigateTo("presets")} className="flex h-14 items-center justify-center rounded-2xl bg-secondary/50 text-foreground transition-all hover:bg-secondary active:scale-95 border border-border/50">
+              <SettingsIcon className="h-5 w-5" />
             </button>
             <button
               onClick={handleEndFast}
-              className={`flex-[2] py-4 rounded-2xl font-bold text-sm transition-all shadow-xl active:scale-95 ${isComplete
-                  ? "bg-primary text-primary-foreground shadow-primary/20"
-                  : "bg-secondary text-secondary-foreground"
+              className={`h-14 rounded-2xl font-black text-sm uppercase tracking-widest transition-all shadow-xl active:scale-95 ${isComplete ? "bg-primary text-primary-foreground shadow-primary/30" : "bg-card text-foreground border border-border"
                 }`}
             >
               {t.endFast}
             </button>
-            <button
-              onClick={() => setShowDeleteConfirm(true)}
-              className="h-14 w-14 flex items-center justify-center rounded-2xl bg-secondary/50 text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-all active:scale-90"
-            >
+            <button onClick={() => setShowDeleteConfirm(true)} className="h-14 w-14 flex items-center justify-center rounded-2xl bg-secondary/30 text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-all active:scale-90 border border-border/30">
               <Trash2 className="h-5 w-5" />
             </button>
           </div>
         </div>
 
-        {/* Delete Confirmation */}
         <AlertDialog open={showDeleteConfirm} onOpenChange={setShowDeleteConfirm}>
-          <AlertDialogContent className="max-w-[320px] rounded-3xl">
+          <AlertDialogContent className="max-w-[320px] rounded-[2.5rem] border-border bg-card">
             <AlertDialogHeader>
-              <AlertDialogTitle className="text-center">{t.confirmDeleteTitle}</AlertDialogTitle>
-              <AlertDialogDescription className="text-center mt-2">
+              <AlertDialogTitle className="text-center font-black text-xl">{t.confirmDeleteTitle}</AlertDialogTitle>
+              <AlertDialogDescription className="text-center mt-3 text-sm font-medium leading-relaxed">
                 {t.confirmDeleteText}
               </AlertDialogDescription>
             </AlertDialogHeader>
-            <AlertDialogFooter className="flex-row gap-3 sm:flex-row sm:justify-center mt-4">
-              <AlertDialogAction
-                onClick={handleDiscardFast}
-                className="flex-1 rounded-2xl bg-destructive text-white hover:bg-destructive/90"
-              >
+            <AlertDialogFooter className="flex-row gap-3 mt-8">
+              <AlertDialogAction onClick={handleDiscardFast} className="flex-1 h-12 rounded-2xl bg-destructive text-white font-bold hover:bg-destructive/90 transition-all">
                 {t.delete}
               </AlertDialogAction>
-              <AlertDialogCancel className="flex-1 rounded-2xl bg-secondary border-none m-0">
+              <AlertDialogCancel className="flex-1 h-12 rounded-2xl bg-secondary border-none m-0 font-bold">
                 {t.back}
               </AlertDialogCancel>
             </AlertDialogFooter>
@@ -283,32 +262,37 @@ export function TimerView({ onFastEnd }: TimerViewProps) {
   const renderPresetsContent = () => {
     const lastFastInfo = getLastFastInfo()
     return (
-      <div className="flex flex-col h-full overflow-hidden px-1">
-        <PresetGrid onSelect={handleSelectPreset} />
+      <div className="flex flex-col h-full overflow-y-auto px-4 py-2 no-scrollbar">
+        <RecentFastsChart
+          history={history}
+          activeFast={null}
+          onAddClick={() => setShowManualFast(true)}
+          onSeeMoreClick={() => onFastEnd?.()}
+        />
 
-        <div className="mt-8 flex flex-col gap-4">
+        <div className="mt-4">
+          <PresetGrid onSelect={handleSelectPreset} />
+        </div>
+
+        <div className="mt-8 mb-8">
           {lastFastInfo && !activeFast && (
-            <div className="px-2 pb-6">
-              <button
-                onClick={handleQuickStart}
-                className="w-full flex items-center justify-center gap-3 rounded-2xl bg-primary px-4 py-5 font-black text-primary-foreground shadow-2xl shadow-primary/20 active:scale-95 transition-all text-lg"
-              >
-                <Clock className="h-6 w-6" />
-                {t.quickStart} ({getPresetById(lastFastInfo.presetId)?.name || lastFastInfo.presetId})
-              </button>
-            </div>
+            <button
+              onClick={handleQuickStart}
+              className="w-full flex items-center justify-center gap-4 rounded-[2rem] bg-primary p-6 font-black text-primary-foreground shadow-2xl shadow-primary/40 active:scale-[0.97] transition-all text-xl"
+            >
+              <Clock className="h-7 w-7" />
+              <div className="text-left">
+                <span className="block text-[10px] uppercase tracking-[0.2em] opacity-70 mb-0.5">{t.quickStart}</span>
+                <span className="block font-black">{getPresetById(lastFastInfo.presetId)?.name || lastFastInfo.presetId}</span>
+              </div>
+            </button>
           )}
 
           {activeFast && (
-            <div className="px-2 pb-10">
-              <button
-                onClick={() => navigateTo("timer")}
-                className="w-full flex items-center justify-center gap-3 py-5 rounded-2xl bg-secondary font-bold text-sm text-foreground active:scale-95 transition-all border border-border/50 shadow-lg"
-              >
-                <Timer className="h-5 w-5" />
-                {t.backToTimer}
-              </button>
-            </div>
+            <button onClick={() => navigateTo("timer")} className="w-full flex items-center justify-center gap-3 py-5 rounded-3xl bg-secondary/50 font-black text-sm uppercase tracking-widest text-foreground active:scale-95 transition-all border border-border/50 shadow-lg mt-4">
+              <Timer className="h-5 w-5" />
+              {t.backToTimer}
+            </button>
           )}
         </div>
       </div>
@@ -316,7 +300,7 @@ export function TimerView({ onFastEnd }: TimerViewProps) {
   }
 
   const renderDetailContent = () => (
-    <div className="flex flex-col h-full overflow-hidden px-1">
+    <div className="flex flex-col h-full overflow-y-auto px-4 py-4 no-scrollbar">
       {selectedPreset && (
         <PresetDetail
           preset={selectedPreset}
@@ -340,15 +324,17 @@ export function TimerView({ onFastEnd }: TimerViewProps) {
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: direction > 0 ? -100 : 100 }}
           transition={{ type: "spring", damping: 30, stiffness: 300, mass: 0.8 }}
-          className="absolute inset-0 flex flex-col pt-2"
+          className="absolute inset-0 flex flex-col pt-0"
         >
-          <div className="flex-1 flex flex-col h-full">
-            {viewState === "timer" && renderTimerContent()}
-            {viewState === "presets" && renderPresetsContent()}
-            {viewState === "detail" && renderDetailContent()}
-          </div>
+          {viewState === "timer" && renderTimerContent()}
+          {viewState === "presets" && renderPresetsContent()}
+          {viewState === "detail" && renderDetailContent()}
         </motion.div>
       </AnimatePresence>
+
+      {showManualFast && (
+        <ManualFastDialog onConfirm={handleAddManualFast} onCancel={() => setShowManualFast(false)} />
+      )}
     </div>
   )
 }
