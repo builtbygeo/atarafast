@@ -2,14 +2,18 @@
 
 import { format, startOfWeek, addDays, isSameDay, isToday } from "date-fns"
 import type { FastingRecord } from "@/lib/storage"
+import { useLang } from "@/lib/language-context"
 
 interface WeekStripProps {
   history: FastingRecord[]
 }
 
 export function WeekStrip({ history }: WeekStripProps) {
+  const { t, lang } = useLang()
   const weekStart = startOfWeek(new Date(), { weekStartsOn: 1 })
   const days = Array.from({ length: 7 }, (_, i) => addDays(weekStart, i))
+
+  const dayNames = [t.mon, t.tue, t.wed, t.thu, t.fri, t.sat, t.sun]
 
   function hasFastOnDay(day: Date): boolean {
     return history.some((record) => {
@@ -54,15 +58,15 @@ export function WeekStrip({ history }: WeekStripProps) {
           const today = isToday(day)
           return (
             <div key={day.toISOString()} className="flex flex-col items-center gap-1.5">
-              <span className={`text-xs font-medium uppercase ${today ? "text-foreground" : "text-muted-foreground"}`}>
-                {format(day, "EEE")}
+              <span className={`text-[10px] font-bold uppercase tracking-tighter ${today ? "text-primary" : "text-muted-foreground/60"}`}>
+                {dayNames[days.indexOf(day)]}
               </span>
               <div
                 className={`h-8 w-8 rounded-full border-2 flex items-center justify-center text-xs font-medium transition-colors ${fasted
-                    ? "border-primary bg-primary text-primary-foreground"
-                    : today
-                      ? "border-primary text-foreground"
-                      : "border-muted text-muted-foreground"
+                  ? "border-primary bg-primary text-primary-foreground"
+                  : today
+                    ? "border-primary text-foreground"
+                    : "border-muted text-muted-foreground"
                   }`}
               >
                 {format(day, "d")}

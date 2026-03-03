@@ -457,11 +457,11 @@ export function TimerView({ onFastEnd }: TimerViewProps) {
           <AlertDialogFooter className="flex-row gap-3 sm:flex-row sm:justify-center mt-4">
             <AlertDialogAction
               onClick={handleEndFast}
-              className="flex-1 rounded-xl bg-secondary text-secondary-foreground hover:bg-destructive hover:text-white"
+              className="flex-1 rounded-xl bg-destructive/10 text-destructive hover:bg-destructive hover:text-white border border-destructive/20"
             >
               {t.iCant}
             </AlertDialogAction>
-            <AlertDialogCancel className="flex-1 rounded-xl bg-primary text-primary-foreground border-none hover:bg-primary/90 hover:text-white">
+            <AlertDialogCancel className="flex-1 rounded-xl bg-emerald-600 text-white border-none hover:bg-emerald-700">
               {t.iContinue}
             </AlertDialogCancel>
           </AlertDialogFooter>

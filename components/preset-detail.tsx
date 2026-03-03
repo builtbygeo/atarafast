@@ -17,9 +17,11 @@ interface PresetDetailProps {
 }
 
 export function PresetDetail({ preset, isActive, isCurrentActivePreset, onBack, onStart, onChangePreset, onUpdateFast }: PresetDetailProps) {
+  const { t } = useLang()
   const [customHours, setCustomHours] = useState(16)
   const isCustom = preset.id === "custom"
   const displayHours = isCustom ? customHours : preset.fastHours
+  const content = (t.planContent as any)?.[preset.id]
 
   const tipIcons = [Droplets, Salad, Leaf, Droplets]
 
@@ -33,38 +35,38 @@ export function PresetDetail({ preset, isActive, isCurrentActivePreset, onBack, 
         >
           <ArrowLeft className="h-4 w-4" />
         </button>
-        <h2 className="text-lg font-semibold text-foreground">{preset.name}</h2>
+        <h2 className="text-lg font-bold tracking-tight text-foreground">{content?.name || preset.name}</h2>
       </div>
 
       <div className="flex flex-col items-center gap-6">
         <CircularProgress
-          progress={isCustom ? 0.5 : preset.fastHours / 24}
-          size={140}
-          strokeWidth={8}
+          progress={isCustom ? 0.6 : preset.fastHours / 24}
+          size={160}
+          strokeWidth={10}
           color={preset.color}
         >
-          <span className="text-xl font-bold text-foreground font-mono">
+          <span className="text-2xl font-bold text-foreground font-mono">
             {isCustom ? `${customHours}h` : preset.name}
           </span>
         </CircularProgress>
 
-        <p className="text-sm text-muted-foreground text-center leading-relaxed max-w-sm">
-          {preset.description}
+        <p className="text-sm text-muted-foreground text-center leading-relaxed max-w-sm px-2">
+          {content?.desc}
         </p>
 
         {isCustom && (
           <div className="flex flex-col items-center gap-2 w-full max-w-xs">
             <label htmlFor="custom-hours" className="text-sm font-medium text-foreground">
-              Fasting duration (hours)
+              {t.targetHours}
             </label>
             <input
               id="custom-hours"
               type="number"
-              min={1}
+              min={8}
               max={168}
               value={customHours}
-              onChange={(e) => setCustomHours(Math.min(168, Math.max(1, Number(e.target.value))))}
-              className="w-full rounded-lg border border-input bg-card px-3 py-2 text-center text-lg font-mono text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+              onChange={(e) => setCustomHours(Math.min(168, Math.max(8, Number(e.target.value))))}
+              className="w-full rounded-xl border border-input bg-card px-3 py-2 text-center text-xl font-mono text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20"
             />
           </div>
         )}
@@ -73,45 +75,48 @@ export function PresetDetail({ preset, isActive, isCurrentActivePreset, onBack, 
           isCurrentActivePreset ? (
             <button
               onClick={onChangePreset}
-              className="w-full max-w-xs rounded-xl bg-secondary px-6 py-3 text-sm font-semibold text-secondary-foreground transition-colors hover:bg-secondary/80"
+              className="w-full max-w-xs rounded-xl bg-secondary px-6 py-4 text-sm font-bold text-secondary-foreground transition-all hover:bg-secondary/80 active:scale-95"
             >
-              Change preset
+              {t.changePreset}
             </button>
           ) : (
             <button
               onClick={() => onUpdateFast?.(displayHours)}
-              className="w-full max-w-xs rounded-xl px-6 py-3 text-sm font-semibold transition-all hover:opacity-90 active:scale-[0.98]"
+              className="w-full max-w-xs rounded-xl px-6 py-4 text-sm font-bold transition-all hover:opacity-90 active:scale-[0.98] shadow-lg"
               style={{
                 backgroundColor: preset.color,
                 color: "white",
+                boxShadow: `0 8px 16px -4px ${preset.color}40`
               }}
             >
-              Update to {displayHours}h fast
+              {t.changePreset} ({displayHours}h)
             </button>
           )
         ) : (
           <button
             onClick={() => onStart(displayHours)}
-            className="w-full max-w-xs rounded-xl px-6 py-3 text-sm font-semibold transition-all hover:opacity-90 active:scale-[0.98]"
+            className="w-full max-w-xs rounded-xl px-6 py-4 text-sm font-bold transition-all hover:opacity-90 active:scale-[0.98] shadow-lg"
             style={{
               backgroundColor: preset.color,
               color: "white",
+              boxShadow: `0 10px 20px -5px ${preset.color}50`
             }}
           >
-            Start {displayHours}h fast
+            {t.startFast} ({displayHours}h)
           </button>
         )}
       </div>
 
-      <div className="flex flex-col gap-4 mt-4">
-        {preset.tips.map((tip, i) => {
+      <div className="flex flex-col gap-4 mt-6">
+        <h4 className="text-xs font-bold uppercase tracking-widest text-muted-foreground border-b border-border pb-2">{t.tipsTitle}</h4>
+        {content?.tips.map((tip: string, i: number) => {
           const Icon = tipIcons[i % tipIcons.length]
           return (
-            <div key={i} className="flex items-start gap-3">
-              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-muted">
-                <Icon className="h-4 w-4 text-muted-foreground" />
+            <div key={i} className="flex items-start gap-4 p-3 rounded-2xl bg-secondary/5 border border-transparent hover:border-border transition-colors">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-background border border-border">
+                <Icon className="h-5 w-5 text-primary" />
               </div>
-              <p className="text-sm text-muted-foreground leading-relaxed pt-1">{tip}</p>
+              <p className="text-sm text-foreground/80 leading-snug pt-0.5">{tip}</p>
             </div>
           )
         })}

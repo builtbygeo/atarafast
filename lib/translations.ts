@@ -13,6 +13,11 @@ export const bg = {
   elapsed: "изминало",
   remaining: "остават",
   goal: "цел",
+  fastingPlans: "Планове",
+  plansSubtitle: "Научете за различните протоколи за периодично гладуване.",
+  planNote: "Винаги се консултирайте с медицинско лице преди започване на фастване, особено ако имате заболявания, бременна сте или приемате лекарства.",
+  about: "За плана",
+  tipsTitle: "Съвети",
   endFast: "Край",
   editStartTime: "Редакция начало",
   viewDetails: "Детайли",
@@ -118,6 +123,38 @@ export const bg = {
   fri: "П",
   sat: "С",
   sun: "Н",
+  planContent: {
+    "12:12": {
+      name: "Циркаден",
+      desc: "Най-лесният вход в периодичното гладуване. Просто спрете късното хапване. Помага за регулиране на кръвната захар и съня.",
+      tips: ["Спрете да ядете след вечеря.", "Пийте вода или чай по време на поста.", "Фокусирайте се върху истинска храна."],
+    },
+    "14:10": {
+      name: "Базов",
+      desc: "Перфектен за начинаещи. Подобрява енергията и метаболитната гъвкавост без голям стрес за тялото.",
+      tips: ["Опитайте се да се храните между 9 и 19ч.", "Помага за по-добър сън и настроение.", "Бъдете постоянни."],
+    },
+    "16:8": {
+      name: "Златен стандарт",
+      desc: "Най-популярният метод. Изгаря мазнини, подобрява инсулиновата чувствителност и дава ментален фокус.",
+      tips: ["Пропуснете закуската.", "Първо хранене на обяд.", "Консистенцията е ключът."],
+    },
+    "18:6": {
+      name: "Напреднал",
+      desc: "Ускорява резултатите. По-дълбок процес на автофагия и по-бързо изгаряне на запасите от мазнини.",
+      tips: ["Две стабилни хранения са достатъчни.", "Приоритизирайте протеините.", "Дайте на тялото 1-2 седмици за адаптация."],
+    },
+    "20:4": {
+      name: "Воин",
+      desc: "Едно основно хранене за деня. Максимален ментален фокус и дълбоко клетъчно пречистване.",
+      tips: ["Всяка хапка трябва да е хранителна.", "Това е напреднал метод.", "Слушайте тялото си внимателно."],
+    },
+    custom: {
+      name: "Персонален",
+      desc: "Настройте своя собствена продължителност. Подходящ за опитни фастъри или специфични нужди.",
+      tips: ["За постове над 24ч пийте електролити.", "Започнете храненето леко."],
+    },
+  },
 }
 
 export const en: typeof bg = {
@@ -132,6 +169,11 @@ export const en: typeof bg = {
   elapsed: "elapsed",
   remaining: "remaining",
   goal: "goal",
+  fastingPlans: "Fasting Plans",
+  plansSubtitle: "Learn about different intermittent fasting protocols.",
+  planNote: "Always consult with a healthcare provider before starting any fasting protocol, especially if you have existing health conditions, are pregnant, or take medication.",
+  about: "About",
+  tipsTitle: "Tips",
   endFast: "End Fast",
   editStartTime: "Edit start time",
   viewDetails: "View details",
@@ -227,6 +269,38 @@ export const en: typeof bg = {
   fri: "F",
   sat: "S",
   sun: "S",
+  planContent: {
+    "12:12": {
+      name: "Circadian",
+      desc: "The easiest gateway into fasting. Stop late-night snacking and align with your natural rhythm.",
+      tips: ["Stop eating after dinner.", "Hydrate with water or tea.", "Focus on whole foods during the window."],
+    },
+    "14:10": {
+      name: "Starter",
+      desc: "Perfect for beginners. Improves energy and metabolic flexibility without harsh disruption.",
+      tips: ["Try eating between 9 AM and 7 PM.", "Noticeable mood and sleep wins.", "Easy to stick with long-term."],
+    },
+    "16:8": {
+      name: "Gold Standard",
+      desc: "The most popular method. Burns fat while preserving muscle and improving insulin sensitivity.",
+      tips: ["Skip breakfast.", "Eat first meal at noon.", "Consistency is more important than perfection."],
+    },
+    "18:6": {
+      name: "Advanced",
+      desc: "Faster results and deeper ketosis. Strong reductions in inflammation and waist circumference.",
+      tips: ["Two solid meals work best.", "Prioritize protein and healthy fats.", "Allow time for adaptation."],
+    },
+    "20:4": {
+      name: "Warrior",
+      desc: "One main meal per day. Deeper autophagy and incredible mental clarity once adapted.",
+      tips: ["Make every bite count.", "Build up to this protocol slowly.", "Listen to your body carefully."],
+    },
+    custom: {
+      name: "Custom",
+      desc: "Set your own duration. Perfect for experimented fasters or unique biological needs.",
+      tips: ["Stay well hydrated.", "Consider electrolytes for 24h+ fasts.", "Break long fasts gently."],
+    },
+  },
 }
 
 export type Translation = typeof bg
