@@ -5,8 +5,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { CircularProgress } from "@/components/circular-progress"
 import { PresetGrid } from "@/components/preset-grid"
 import { PresetDetail } from "@/components/preset-detail"
-import { RecentFastsChart } from "@/components/recent-fasts-chart"
-import { ManualFastDialog } from "@/components/manual-fast-dialog"
+import { WeekStatusStrip } from "@/components/week-status-strip"
 import {
   Trash2,
   Clock,
@@ -17,7 +16,6 @@ import {
   startFast,
   endFast,
   getActiveFast,
-  getHistory,
   getSettings,
   updateActiveFast,
   deleteFast,
@@ -38,11 +36,14 @@ import {
 } from "@/components/ui/alert-dialog"
 import { useLang } from "@/lib/language-context"
 import { useNotifications } from "@/hooks/use-notifications"
+import { format, addHours } from "date-fns"
 
 type ViewState = "timer" | "presets" | "detail"
 
 interface TimerViewProps {
+  history: FastingRecord[]
   onFastEnd?: () => void
+  onNavigateToHistory?: () => void
 }
 
 const haptic = (vibration = [50]) => {
@@ -51,11 +52,10 @@ const haptic = (vibration = [50]) => {
   }
 }
 
-export function TimerView({ onFastEnd }: TimerViewProps) {
+export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerViewProps) {
   const { t } = useLang()
   const { sendNotification } = useNotifications()
   const [activeFast, setActiveFast] = useState<FastingRecord | null>(null)
-  const [history, setHistory] = useState<FastingRecord[]>([])
   const [viewState, setViewState] = useState<ViewState>("presets")
   const [direction, setDirection] = useState(0)
   const [selectedPreset, setSelectedPreset] = useState<FastingPreset | null>(null)
@@ -63,7 +63,6 @@ export function TimerView({ onFastEnd }: TimerViewProps) {
   const [settings, setSettings] = useState<ReturnType<typeof getSettings>>({ timerDirection: "down" })
   const [mounted, setMounted] = useState(false)
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
-  const [showManualFast, setShowManualFast] = useState(false)
 
   const navigateTo = useCallback(
     (newState: ViewState) => {
@@ -77,10 +76,8 @@ export function TimerView({ onFastEnd }: TimerViewProps) {
 
   useEffect(() => {
     const fast = getActiveFast()
-    const hist = getHistory()
     const sett = getSettings()
     setActiveFast(fast)
-    setHistory(hist)
     setSettings(sett)
     if (fast) setViewState("timer")
     setMounted(true)
@@ -116,17 +113,18 @@ export function TimerView({ onFastEnd }: TimerViewProps) {
       ? updateActiveFast(selectedPreset.id, hours)
       : startFast(selectedPreset.id, hours)
 
-    setActiveFast(record)
-    navigateTo("timer")
-    setNow(new Date())
-    haptic([100, 50])
+    if (record) {
+      setActiveFast(record)
+      navigateTo("timer")
+      setNow(new Date())
+      haptic([100, 50])
+    }
   }
 
   const handleEndFast = useCallback(() => {
     const record = endFast()
     if (record) {
       setActiveFast(null)
-      setHistory(getHistory())
       navigateTo("presets")
       onFastEnd?.()
     }
@@ -150,13 +148,6 @@ export function TimerView({ onFastEnd }: TimerViewProps) {
     }
   }, [navigateTo])
 
-  const handleAddManualFast = (presetId: string, startTime: Date, endTime: Date, targetHours: number) => {
-    addManualFast(presetId, startTime, endTime, targetHours)
-    setHistory(getHistory())
-    setShowManualFast(false)
-    onFastEnd?.()
-  }
-
   if (!mounted) return null
 
   const renderTimerContent = () => {
@@ -178,15 +169,11 @@ export function TimerView({ onFastEnd }: TimerViewProps) {
     }
 
     const hoursOverTarget = isComplete ? (elapsedMs - targetMs) / 3600000 : 0
+    const goalTime = addHours(startTime, activeFast.targetHours)
 
     return (
       <div className="flex flex-col items-center h-full py-2 overflow-y-auto w-full px-4 no-scrollbar">
-        <RecentFastsChart
-          history={history}
-          activeFast={activeFast}
-          onAddClick={() => setShowManualFast(true)}
-          onSeeMoreClick={() => onFastEnd?.()}
-        />
+        <WeekStatusStrip history={history} activeFast={activeFast} />
 
         <div className="flex flex-col items-center text-center mt-6 mb-8 w-full">
           <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="relative">
@@ -196,14 +183,27 @@ export function TimerView({ onFastEnd }: TimerViewProps) {
               strokeWidth={12}
               color={preset?.color || "oklch(0.6 0.1 260)"}
             >
-              <span className="text-5xl font-black text-foreground font-mono tabular-nums tracking-tighter">
-                {formatTime(settings.timerDirection === "down" && !isComplete ? remainingMs : elapsedMs)}
-              </span>
-              <span className="text-[10px] font-black text-muted-foreground mt-3 uppercase tracking-[0.2em] opacity-60">
-                {isComplete ? t.elapsed : settings.timerDirection === "down" ? t.remaining : t.elapsed} ({percentage}%)
-              </span>
+              <div className="flex flex-col items-center">
+                <span className="text-5xl font-black text-foreground font-mono tabular-nums tracking-tighter">
+                  {formatTime(settings.timerDirection === "down" && !isComplete ? remainingMs : elapsedMs)}
+                </span>
+                <span className="text-[10px] font-black text-muted-foreground mt-3 uppercase tracking-[0.2em] opacity-60">
+                  {isComplete ? t.elapsed : settings.timerDirection === "down" ? t.remaining : t.elapsed} ({percentage}%)
+                </span>
+              </div>
             </CircularProgress>
           </motion.div>
+
+          <div className="flex gap-4 mt-12 w-full max-w-sm px-4">
+            <div className="flex-1 bg-secondary/20 rounded-2xl p-4 border border-border/50">
+              <span className="block text-[8px] font-black uppercase tracking-[0.2em] text-muted-foreground opacity-60 mb-1">{t.startTime.toUpperCase()}</span>
+              <span className="block text-sm font-black text-foreground">{format(startTime, "EEE, HH:mm")}</span>
+            </div>
+            <div className="flex-1 bg-secondary/20 rounded-2xl p-4 border border-border/50">
+              <span className="block text-[8px] font-black uppercase tracking-[0.2em] text-muted-foreground opacity-60 mb-1">{`${activeFast.targetHours}H ${t.goal.toUpperCase()}`}</span>
+              <span className="block text-sm font-black text-foreground">{format(goalTime, "EEE, HH:mm")}</span>
+            </div>
+          </div>
 
           {isComplete && (
             <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="mt-8 p-4 rounded-3xl bg-primary/10 border border-primary/20 max-w-[280px]">
@@ -263,12 +263,7 @@ export function TimerView({ onFastEnd }: TimerViewProps) {
     const lastFastInfo = getLastFastInfo()
     return (
       <div className="flex flex-col h-full overflow-y-auto px-4 py-2 no-scrollbar">
-        <RecentFastsChart
-          history={history}
-          activeFast={null}
-          onAddClick={() => setShowManualFast(true)}
-          onSeeMoreClick={() => onFastEnd?.()}
-        />
+        <WeekStatusStrip history={history} activeFast={null} />
 
         <div className="mt-4">
           <PresetGrid onSelect={handleSelectPreset} />
@@ -294,6 +289,13 @@ export function TimerView({ onFastEnd }: TimerViewProps) {
               {t.backToTimer}
             </button>
           )}
+
+          <button
+            onClick={onNavigateToHistory}
+            className="w-full mt-6 flex items-center justify-center gap-2 py-4 rounded-2xl bg-secondary/10 hover:bg-secondary/20 text-muted-foreground font-bold text-xs transition-all border border-border/20"
+          >
+            {t.seeMore}
+          </button>
         </div>
       </div>
     )
@@ -331,10 +333,6 @@ export function TimerView({ onFastEnd }: TimerViewProps) {
           {viewState === "detail" && renderDetailContent()}
         </motion.div>
       </AnimatePresence>
-
-      {showManualFast && (
-        <ManualFastDialog onConfirm={handleAddManualFast} onCancel={() => setShowManualFast(false)} />
-      )}
     </div>
   )
 }

@@ -67,14 +67,16 @@ export function startFast(presetId: string, targetHours: number): FastingRecord 
   return record
 }
 
-export function updateActiveFast(presetId: string, targetHours: number): void {
+export function updateActiveFast(presetId: string, targetHours: number): FastingRecord | null {
   const data = loadData()
   if (data.activeFast) {
     data.activeFast.presetId = presetId
     data.activeFast.targetHours = targetHours
     data.lastFastInfo = { presetId, targetHours }
     saveData(data)
+    return data.activeFast
   }
+  return null
 }
 
 export function getLastFastInfo(): { presetId: string; targetHours: number } | null {

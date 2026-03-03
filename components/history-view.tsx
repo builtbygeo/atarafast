@@ -17,6 +17,7 @@ import { Trash2, Clock, CheckCircle2, Plus, Edit2 } from "lucide-react"
 import { type FastingRecord, deleteHistoryRecord, addManualFast, updateHistoryRecord } from "@/lib/storage"
 import { getPresetById } from "@/lib/presets"
 import { ManualFastDialog } from "@/components/manual-fast-dialog"
+import { RecentFastsChart } from "@/components/recent-fasts-chart"
 import { useLang } from "@/lib/language-context"
 import {
   AlertDialog,
@@ -154,6 +155,10 @@ export function HistoryView({ history, onHistoryChange }: HistoryViewProps) {
             )
           })}
         </div>
+      </div>
+
+      <div className="mb-8">
+        <RecentFastsChart history={history} onAddClick={() => setShowManualFastDialog(true)} />
       </div>
 
       {/* Recent fasts list */}
