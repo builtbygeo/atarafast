@@ -172,10 +172,10 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
     const goalTime = addHours(startTime, activeFast.targetHours)
 
     return (
-      <div className="flex flex-col items-center h-full py-2 overflow-y-auto w-full px-4 no-scrollbar">
+      <div className="flex flex-col items-center h-full py-4 overflow-y-auto w-full px-4 no-scrollbar">
         <WeekStatusStrip history={history} activeFast={activeFast} />
 
-        <div className="flex flex-col items-center text-center mt-6 mb-8 w-full">
+        <div className="flex flex-col items-center text-center mt-8 mb-12 w-full">
           <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="relative">
             <CircularProgress
               progress={percentage / 100}
@@ -262,14 +262,14 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
   const renderPresetsContent = () => {
     const lastFastInfo = getLastFastInfo()
     return (
-      <div className="flex flex-col h-full overflow-y-auto px-4 py-2 no-scrollbar">
+      <div className="flex flex-col h-full overflow-y-auto px-4 py-4 no-scrollbar">
         <WeekStatusStrip history={history} activeFast={null} />
 
-        <div className="mt-4">
+        <div className="mt-8">
           <PresetGrid onSelect={handleSelectPreset} />
         </div>
 
-        <div className="mt-8 mb-8">
+        <div className="mt-12 mb-12">
           {lastFastInfo && !activeFast && (
             <button
               onClick={handleQuickStart}
@@ -289,13 +289,6 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
               {t.backToTimer}
             </button>
           )}
-
-          <button
-            onClick={onNavigateToHistory}
-            className="w-full mt-6 flex items-center justify-center gap-2 py-4 rounded-2xl bg-secondary/10 hover:bg-secondary/20 text-muted-foreground font-bold text-xs transition-all border border-border/20"
-          >
-            {t.seeMore}
-          </button>
         </div>
       </div>
     )
