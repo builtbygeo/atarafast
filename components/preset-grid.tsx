@@ -9,62 +9,76 @@ interface PresetGridProps {
 }
 
 export function PresetGrid({ onSelect }: PresetGridProps) {
+  const { t } = useLang()
   const allPresets = [...FASTING_PRESETS, CUSTOM_PRESET]
-
 
   const container = {
     hidden: { opacity: 0 },
     show: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1,
+        staggerChildren: 0.08,
       },
     },
   }
 
   const item = {
-    hidden: { opacity: 0, y: 20, filter: "blur(4px)" },
-    show: { opacity: 1, y: 0, filter: "blur(0px)", transition: { type: "spring" as const, stiffness: 300, damping: 24 } },
+    hidden: { opacity: 0, y: 15, filter: "blur(4px)" },
+    show: {
+      opacity: 1,
+      y: 0,
+      filter: "blur(0px)",
+      transition: { type: "spring" as const, stiffness: 260, damping: 22 }
+    },
   }
 
   return (
     <div className="flex flex-col gap-6 w-full">
-      <div>
-        <h2 className="text-lg font-semibold text-foreground">Choose a fast</h2>
-        <p className="text-sm text-muted-foreground mt-1">Select a preset to get started</p>
-      </div>
+      <header>
+        <h2 className="text-xl font-bold tracking-tight text-foreground">{t.selectPreset}</h2>
+        <p className="text-sm text-muted-foreground mt-1">{t.selectSubtitle}</p>
+      </header>
+
       <motion.div
         variants={container}
         initial="hidden"
         animate="show"
-        className="grid grid-cols-2 gap-3"
+        className="grid grid-cols-2 gap-4"
       >
-        {allPresets.map((preset) => (
-          <motion.div key={preset.id} variants={item}>
-            <button
-              onClick={() => onSelect(preset)}
-              className="w-full group relative flex flex-col items-start gap-3 rounded-xl border border-border bg-card p-4 text-left transition-all hover:border-primary/40 hover:shadow-sm active:scale-[0.98]"
-            >
-              <div
-                className="flex h-10 w-10 items-center justify-center rounded-full text-sm font-bold"
+        {allPresets.map((preset) => {
+          const isCustom = preset.id === "custom"
+          return (
+            <motion.div key={preset.id} variants={item}>
+              <button
+                onClick={() => onSelect(preset)}
+                className="w-full relative flex flex-col items-center justify-between min-h-[140px] rounded-3xl p-5 text-center transition-all active:scale-[0.96] shadow-lg group overflow-hidden"
                 style={{
                   backgroundColor: preset.color,
                   color: "white",
+                  boxShadow: `0 10px 20px -5px ${preset.color}40`
                 }}
               >
-                {preset.id === "custom" ? "?" : preset.fastHours}
-              </div>
-              <div>
-                <p className="text-sm font-semibold text-foreground">{preset.name}</p>
-                <p className="text-xs text-muted-foreground mt-0.5">
-                  {preset.id === "custom"
-                    ? "1\u2013168 hours"
-                    : `${preset.fastHours}h fast \u00b7 ${preset.eatHours}h eat`}
-                </p>
-              </div>
-            </button>
-          </motion.div>
-        ))}
+                {/* Subtle glass effect overlay */}
+                <div className="absolute inset-0 bg-white/5 group-hover:bg-white/10 transition-colors" />
+
+                <span className="relative text-5xl font-black opacity-90 tracking-tighter">
+                  {isCustom ? "?" : preset.fastHours}
+                </span>
+
+                <div className="relative mt-2">
+                  <p className="text-sm font-bold tracking-tight">
+                    {isCustom ? t.customFast : preset.name}
+                  </p>
+                  <p className="text-[10px] font-medium opacity-80 uppercase tracking-widest mt-0.5">
+                    {isCustom
+                      ? `8\u2013168 ${t.hoursFull}`
+                      : `${preset.fastHours}${t.hours} ${t.fastLabel} \u00b7 ${preset.eatHours}${t.hours} ${t.eatLabel}`}
+                  </p>
+                </div>
+              </button>
+            </motion.div>
+          )
+        })}
       </motion.div>
     </div>
   )

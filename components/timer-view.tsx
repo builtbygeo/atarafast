@@ -17,6 +17,7 @@ import {
   updateActiveFastStartTime,
   updateActiveFastPreset,
   markApath,
+  getLastFastInfo,
   type FastingRecord,
 } from "@/lib/storage"
 import { getPresetById, type FastingPreset } from "@/lib/presets"
@@ -152,6 +153,17 @@ export function TimerView({ onFastEnd }: TimerViewProps) {
     const updatedFast = getActiveFast()
     setActiveFast(updatedFast)
     haptic([100, 50, 100])
+  }, [])
+
+  const handleQuickStart = useCallback(() => {
+    const lastInfo = getLastFastInfo()
+    if (lastInfo) {
+      const record = startFast(lastInfo.presetId, lastInfo.targetHours)
+      setActiveFast(record)
+      setViewState("timer")
+      setNow(new Date())
+      haptic([50, 50, 50])
+    }
   }, [])
 
   // Swipe logic handlers
@@ -392,14 +404,34 @@ export function TimerView({ onFastEnd }: TimerViewProps) {
     )
   }
 
-  const renderPresetsContent = () => (
-    <div className="flex-1 overflow-y-auto px-5 py-6 w-full h-full">
-      <div className="mb-6">
-        <WeekStrip history={history} />
+  const renderPresetsContent = () => {
+    const lastInfo = getLastFastInfo()
+    return (
+      <div className="flex-1 overflow-y-auto px-5 py-6 w-full h-full flex flex-col">
+        <div className="mb-6">
+          <WeekStrip history={history} />
+        </div>
+        <div className="flex-1">
+          <PresetGrid onSelect={handleSelectPreset} />
+        </div>
+        {lastInfo && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mt-6 border-t border-border pt-6 pb-2"
+          >
+            <button
+              onClick={handleQuickStart}
+              className="w-full flex items-center justify-center gap-2 rounded-2xl bg-primary px-6 py-4 text-sm font-bold text-primary-foreground shadow-lg shadow-primary/20 active:scale-[0.98] transition-all"
+            >
+              <Sparkles className="h-4 w-4" />
+              {t.quickStart} ({lastInfo.targetHours}{t.hours})
+            </button>
+          </motion.div>
+        )}
       </div>
-      <PresetGrid onSelect={handleSelectPreset} />
-    </div>
-  )
+    )
+  }
 
   const renderDetailContent = () => {
     if (!selectedPreset) return null

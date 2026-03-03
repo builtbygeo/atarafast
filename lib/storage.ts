@@ -17,6 +17,7 @@ interface StoredData {
   activeFast: FastingRecord | null
   history: FastingRecord[]
   settings: AppSettings
+  lastFastInfo: { presetId: string; targetHours: number } | null
 }
 
 const STORAGE_KEY = "fasting-tracker-data"
@@ -27,6 +28,7 @@ const DEFAULT_DATA: StoredData = {
   settings: {
     timerDirection: "down",
   },
+  lastFastInfo: null,
 }
 
 function loadData(): StoredData {
@@ -60,8 +62,13 @@ export function startFast(presetId: string, targetHours: number): FastingRecord 
     completed: false,
   }
   data.activeFast = record
+  data.lastFastInfo = { presetId, targetHours }
   saveData(data)
   return record
+}
+
+export function getLastFastInfo(): { presetId: string; targetHours: number } | null {
+  return loadData().lastFastInfo
 }
 
 export function endFast(): FastingRecord | null {

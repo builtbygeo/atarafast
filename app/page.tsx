@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react"
 import { Timer, CalendarDays, BarChart3, Settings, BookOpen } from "lucide-react"
+import { Logo } from "@/components/logo"
 import { TimerView } from "@/components/timer-view"
 import { HistoryView } from "@/components/history-view"
 import { StatsView } from "@/components/stats-view"
@@ -47,9 +48,12 @@ export default function Home() {
     <main className="flex min-h-svh flex-col bg-background mx-auto max-w-md">
       {/* Header */}
       <header className="flex items-center justify-between px-5 pt-4 pb-2 gap-3">
-        <div className="flex flex-col gap-0.5 min-w-0">
-          <h1 className="text-xl font-bold text-foreground tracking-tight">{t.appName}</h1>
-          <p className="text-xs text-muted-foreground italic truncate">{t.tagline}</p>
+        <div className="flex items-center gap-3 min-w-0">
+          <Logo className="h-10 w-10 text-primary shrink-0" />
+          <div className="flex flex-col gap-0.5 min-w-0">
+            <h1 className="text-xl font-bold text-foreground tracking-tight">{t.appName}</h1>
+            <p className="text-[10px] text-muted-foreground font-medium uppercase tracking-wider truncate">{t.tagline}</p>
+          </div>
         </div>
         <div className="flex items-center gap-2 shrink-0">
           {/* Language toggle */}
@@ -57,8 +61,8 @@ export default function Home() {
             <button
               onClick={() => setLang("bg")}
               className={`px-2.5 py-1.5 transition-colors ${lang === "bg"
-                  ? "bg-primary text-primary-foreground"
-                  : "bg-card text-muted-foreground hover:text-foreground"
+                ? "bg-primary text-primary-foreground"
+                : "bg-card text-muted-foreground hover:text-foreground"
                 }`}
               aria-label="Български"
             >
@@ -67,8 +71,8 @@ export default function Home() {
             <button
               onClick={() => setLang("en")}
               className={`px-2.5 py-1.5 transition-colors ${lang === "en"
-                  ? "bg-primary text-primary-foreground"
-                  : "bg-card text-muted-foreground hover:text-foreground"
+                ? "bg-primary text-primary-foreground"
+                : "bg-card text-muted-foreground hover:text-foreground"
                 }`}
               aria-label="English"
             >
@@ -106,8 +110,8 @@ export default function Home() {
               if (id === "history" || id === "stats") refreshHistory()
             }}
             className={`flex flex-col items-center gap-0.5 px-4 py-2 text-xs font-medium transition-colors ${activeTab === id
-                ? "text-primary"
-                : "text-muted-foreground hover:text-foreground"
+              ? "text-primary"
+              : "text-muted-foreground hover:text-foreground"
               }`}
             aria-label={label}
           >

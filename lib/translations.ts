@@ -43,9 +43,14 @@ export const bg = {
   apathInfo: "Моментът, когато гладът не ви притеснява",
 
   // Preset Grid
-  selectPreset: "Изберете тип пост",
-  customFast: "Персонален",
+  selectPreset: "Изберете пост",
+  selectSubtitle: "Изберете план, за да започнете",
+  customFast: "По избор",
   hours: "ч",
+  hoursFull: "часа",
+  fastLabel: "фаст",
+  eatLabel: "хр",
+  quickStart: "Започни фаст",
 
   // Preset Details
   startFast: "Започни",
@@ -197,9 +202,14 @@ export const en: typeof bg = {
   apathReached: "You've reached Apatheia!",
   apathInfo: "The moment hunger no longer disturbs you",
 
-  selectPreset: "Select a fast type",
+  selectPreset: "Choose a fast",
+  selectSubtitle: "Select a preset to get started",
   customFast: "Custom",
   hours: "h",
+  hoursFull: "hours",
+  fastLabel: "fast",
+  eatLabel: "eat",
+  quickStart: "Start Fast",
 
   startFast: "Start Fast",
   back: "Back",

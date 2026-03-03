@@ -46,7 +46,7 @@ export function PresetDetail({ preset, isActive, isCurrentActivePreset, onBack, 
           color={preset.color}
         >
           <span className="text-2xl font-bold text-foreground font-mono">
-            {isCustom ? `${customHours}h` : preset.name}
+            {isCustom ? `${customHours}${t.hours}` : preset.name}
           </span>
         </CircularProgress>
 
@@ -89,7 +89,7 @@ export function PresetDetail({ preset, isActive, isCurrentActivePreset, onBack, 
                 boxShadow: `0 8px 16px -4px ${preset.color}40`
               }}
             >
-              {t.changePreset} ({displayHours}h)
+              {t.changePreset} ({displayHours}{t.hours})
             </button>
           )
         ) : (
@@ -102,7 +102,7 @@ export function PresetDetail({ preset, isActive, isCurrentActivePreset, onBack, 
               boxShadow: `0 10px 20px -5px ${preset.color}50`
             }}
           >
-            {t.startFast} ({displayHours}h)
+            {t.startFast} ({displayHours}{t.hours})
           </button>
         )}
       </div>
