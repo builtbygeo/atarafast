@@ -67,6 +67,16 @@ export function startFast(presetId: string, targetHours: number): FastingRecord 
   return record
 }
 
+export function updateActiveFast(presetId: string, targetHours: number): void {
+  const data = loadData()
+  if (data.activeFast) {
+    data.activeFast.presetId = presetId
+    data.activeFast.targetHours = targetHours
+    data.lastFastInfo = { presetId, targetHours }
+    saveData(data)
+  }
+}
+
 export function getLastFastInfo(): { presetId: string; targetHours: number } | null {
   return loadData().lastFastInfo
 }
@@ -104,6 +114,15 @@ export function deleteHistoryRecord(id: string): void {
   const data = loadData()
   data.history = data.history.filter((r) => r.id !== id)
   saveData(data)
+}
+
+export function updateHistoryRecord(id: string, updates: Partial<FastingRecord>): void {
+  const data = loadData()
+  const index = data.history.findIndex((r) => r.id === id)
+  if (index !== -1) {
+    data.history[index] = { ...data.history[index], ...updates }
+    saveData(data)
+  }
 }
 
 export function getSettings(): AppSettings {

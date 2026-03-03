@@ -38,10 +38,27 @@ export function PresetDetail({ preset, isActive, isCurrentActivePreset, onBack, 
         <h2 className="text-lg font-bold tracking-tight text-foreground">{content?.name || preset.name}</h2>
       </div>
 
-      <div className="flex flex-col items-center gap-6">
+      <div className="flex flex-col gap-4 mt-2">
+        <h4 className="text-xs font-bold uppercase tracking-widest text-muted-foreground border-b border-border pb-2">{t.tipsTitle}</h4>
+        <div className="grid grid-cols-1 gap-3">
+          {content?.tips.slice(0, 2).map((tip: string, i: number) => {
+            const Icon = tipIcons[i % tipIcons.length]
+            return (
+              <div key={i} className="flex items-start gap-4 p-3 rounded-2xl bg-secondary/5 border border-transparent">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-background border border-border">
+                  <Icon className="h-4 w-4 text-primary" />
+                </div>
+                <p className="text-sm text-foreground/80 leading-snug pt-0.5">{tip}</p>
+              </div>
+            )
+          })}
+        </div>
+      </div>
+
+      <div className="flex flex-col items-center gap-6 mt-4">
         <CircularProgress
           progress={isCustom ? 0.6 : preset.fastHours / 24}
-          size={160}
+          size={140}
           strokeWidth={10}
           color={preset.color}
         >
@@ -105,21 +122,6 @@ export function PresetDetail({ preset, isActive, isCurrentActivePreset, onBack, 
             {t.startFast} ({displayHours}{t.hours})
           </button>
         )}
-      </div>
-
-      <div className="flex flex-col gap-4 mt-6">
-        <h4 className="text-xs font-bold uppercase tracking-widest text-muted-foreground border-b border-border pb-2">{t.tipsTitle}</h4>
-        {content?.tips.map((tip: string, i: number) => {
-          const Icon = tipIcons[i % tipIcons.length]
-          return (
-            <div key={i} className="flex items-start gap-4 p-3 rounded-2xl bg-secondary/5 border border-transparent hover:border-border transition-colors">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-background border border-border">
-                <Icon className="h-5 w-5 text-primary" />
-              </div>
-              <p className="text-sm text-foreground/80 leading-snug pt-0.5">{tip}</p>
-            </div>
-          )
-        })}
       </div>
     </div>
   )

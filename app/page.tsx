@@ -23,6 +23,11 @@ export default function Home() {
   useEffect(() => {
     setMounted(true)
     setHistory(getHistory())
+
+    // Register Service Worker for Notifications
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("/sw.js").catch(console.error)
+    }
   }, [])
 
   const refreshHistory = useCallback(() => {
@@ -50,10 +55,7 @@ export default function Home() {
       <header className="flex items-center justify-between px-5 pt-4 pb-2 gap-3">
         <div className="flex items-center gap-3 min-w-0">
           <Logo className="h-10 w-10 text-primary shrink-0" />
-          <div className="flex flex-col gap-0.5 min-w-0">
-            <h1 className="text-xl font-bold text-foreground tracking-tight">{t.appName}</h1>
-            <p className="text-[10px] text-muted-foreground font-medium uppercase tracking-wider truncate">{t.tagline}</p>
-          </div>
+          <h1 className="text-xl font-bold text-foreground tracking-tight">{t.appName}</h1>
         </div>
         <div className="flex items-center gap-2 shrink-0">
           {/* Language toggle */}

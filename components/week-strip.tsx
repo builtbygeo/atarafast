@@ -77,7 +77,7 @@ export function WeekStrip({ history }: WeekStripProps) {
       </div>
       {streak >= 2 && (
         <div className="flex items-center gap-1.5 px-3 py-1 bg-orange-500/10 text-orange-500 rounded-full text-xs font-bold border border-orange-500/20 shadow-sm animate-in fade-in slide-in-from-bottom-2">
-          🔥 {streak}-day streak
+          🔥 {t.streak.replace("{{count}}", streak.toString())}
         </div>
       )}
     </div>

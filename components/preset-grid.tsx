@@ -51,7 +51,7 @@ export function PresetGrid({ onSelect }: PresetGridProps) {
             <motion.div key={preset.id} variants={item}>
               <button
                 onClick={() => onSelect(preset)}
-                className="w-full relative flex flex-col items-center justify-between min-h-[140px] rounded-3xl p-5 text-center transition-all active:scale-[0.96] shadow-lg group overflow-hidden"
+                className="w-full relative flex flex-col items-center justify-center min-h-[120px] rounded-3xl p-5 text-center transition-all active:scale-[0.96] shadow-lg group overflow-hidden"
                 style={{
                   backgroundColor: preset.color,
                   color: "white",
@@ -61,20 +61,17 @@ export function PresetGrid({ onSelect }: PresetGridProps) {
                 {/* Subtle glass effect overlay */}
                 <div className="absolute inset-0 bg-white/5 group-hover:bg-white/10 transition-colors" />
 
-                <span className="relative text-5xl font-black opacity-90 tracking-tighter">
-                  {isCustom ? "?" : preset.fastHours}
+                <span className="relative text-3xl font-black opacity-95 tracking-tighter">
+                  {isCustom ? "?" : preset.name}
                 </span>
 
-                <div className="relative mt-2">
-                  <p className="text-sm font-bold tracking-tight">
-                    {isCustom ? t.customFast : preset.name}
-                  </p>
-                  <p className="text-[10px] font-medium opacity-80 uppercase tracking-widest mt-0.5">
-                    {isCustom
-                      ? `8\u2013168 ${t.hoursFull}`
-                      : `${preset.fastHours}${t.hours} ${t.fastLabel} \u00b7 ${preset.eatHours}${t.hours} ${t.eatLabel}`}
-                  </p>
-                </div>
+                {isCustom && (
+                  <div className="relative mt-1">
+                    <p className="text-[10px] font-bold uppercase tracking-widest opacity-80">
+                      {t.customFast}
+                    </p>
+                  </div>
+                )}
               </button>
             </motion.div>
           )

@@ -5,6 +5,8 @@ import { X, Download, Trash2, Sun, Moon, Monitor, ChevronUp, ChevronDown } from 
 import { useTheme } from "next-themes"
 import { getSettings, updateSettings, exportData, clearAllData, type AppSettings } from "@/lib/storage"
 import { useLang } from "@/lib/language-context"
+import { useNotifications } from "@/hooks/use-notifications"
+import { Bell, BellOff } from "lucide-react"
 
 interface SettingsSheetProps {
   open: boolean
@@ -13,7 +15,9 @@ interface SettingsSheetProps {
 }
 
 export function SettingsSheet({ open, onClose, onDataCleared }: SettingsSheetProps) {
+  const { t } = useLang()
   const { theme, setTheme } = useTheme()
+  const { permission, requestPermission } = useNotifications()
   const [settings, setSettingsState] = useState<AppSettings>(getSettings())
   const [confirmClear, setConfirmClear] = useState(false)
 
@@ -68,6 +72,24 @@ export function SettingsSheet({ open, onClose, onDataCleared }: SettingsSheetPro
         </div>
 
         <div className="flex flex-col gap-5">
+          {/* Account Section (MVP structure) */}
+          <div className="bg-secondary/20 p-4 rounded-2xl border border-border/50">
+            <h3 className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-3">{t.authTitle}</h3>
+            <div className="flex flex-col gap-2">
+              <button
+                className="w-full relative flex items-center justify-center gap-3 rounded-xl bg-primary px-4 py-4 text-sm font-bold text-primary-foreground shadow-lg shadow-primary/10 active:scale-[0.98] transition-all overflow-hidden group"
+              >
+                <div className="absolute inset-0 bg-white/10 group-hover:bg-white/20 transition-colors" />
+                <span className="relative">{t.signIn}</span>
+              </button>
+              <p className="text-[10px] text-muted-foreground text-center mt-1">
+                {t.authDescription} <span className="text-primary/60 font-bold">({t.comingSoon})</span>
+              </p>
+            </div>
+          </div>
+
+          <div className="h-px bg-border" />
+
           {/* Timer Direction */}
           <div className="flex items-center justify-between">
             <div>
@@ -79,22 +101,20 @@ export function SettingsSheet({ open, onClose, onDataCleared }: SettingsSheetPro
             <div className="flex rounded-lg border border-border overflow-hidden">
               <button
                 onClick={() => handleTimerDirection("up")}
-                className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium transition-colors ${
-                  settings.timerDirection === "up"
-                    ? "bg-primary text-primary-foreground"
-                    : "bg-card text-muted-foreground hover:text-foreground"
-                }`}
+                className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium transition-colors ${settings.timerDirection === "up"
+                  ? "bg-primary text-primary-foreground"
+                  : "bg-card text-muted-foreground hover:text-foreground"
+                  }`}
               >
                 <ChevronUp className="h-3 w-3" />
                 Up
               </button>
               <button
                 onClick={() => handleTimerDirection("down")}
-                className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium transition-colors ${
-                  settings.timerDirection === "down"
-                    ? "bg-primary text-primary-foreground"
-                    : "bg-card text-muted-foreground hover:text-foreground"
-                }`}
+                className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium transition-colors ${settings.timerDirection === "down"
+                  ? "bg-primary text-primary-foreground"
+                  : "bg-card text-muted-foreground hover:text-foreground"
+                  }`}
               >
                 <ChevronDown className="h-3 w-3" />
                 Down
@@ -112,17 +132,45 @@ export function SettingsSheet({ open, onClose, onDataCleared }: SettingsSheetPro
                 <button
                   key={value}
                   onClick={() => setTheme(value)}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium transition-colors ${
-                    theme === value
-                      ? "bg-primary text-primary-foreground"
-                      : "bg-card text-muted-foreground hover:text-foreground"
-                  }`}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium transition-colors ${theme === value
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-card text-muted-foreground hover:text-foreground"
+                    }`}
                 >
                   <Icon className="h-3 w-3" />
                   {label}
                 </button>
               ))}
             </div>
+          </div>
+
+          <div className="h-px bg-border" />
+
+          {/* Notifications */}
+          <div className="flex items-center justify-between pb-2">
+            <div>
+              <p className="text-sm font-bold text-foreground">{t.notifications}</p>
+              <p className="text-[10px] text-muted-foreground font-medium uppercase tracking-wider">{t.notificationsDesc}</p>
+            </div>
+            <button
+              onClick={requestPermission}
+              className={`flex items-center gap-2 rounded-xl px-4 py-2 text-xs font-bold transition-all border ${permission === "granted"
+                  ? "bg-primary/10 border-primary/20 text-primary"
+                  : "bg-secondary border-border text-muted-foreground hover:text-foreground active:scale-95"
+                }`}
+            >
+              {permission === "granted" ? (
+                <>
+                  <Bell className="h-3.5 w-3.5" />
+                  {t.confirm}
+                </>
+              ) : (
+                <>
+                  <BellOff className="h-3.5 w-3.5" />
+                  {t.allowNotifications}
+                </>
+              )}
+            </button>
           </div>
 
           <div className="h-px bg-border" />
@@ -139,11 +187,10 @@ export function SettingsSheet({ open, onClose, onDataCleared }: SettingsSheetPro
           {/* Clear */}
           <button
             onClick={handleClear}
-            className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-colors ${
-              confirmClear
-                ? "bg-destructive text-destructive-foreground"
-                : "bg-secondary text-destructive hover:bg-destructive/10"
-            }`}
+            className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-colors ${confirmClear
+              ? "bg-destructive text-destructive-foreground"
+              : "bg-secondary text-destructive hover:bg-destructive/10"
+              }`}
           >
             <Trash2 className="h-4 w-4" />
             {confirmClear ? "Tap again to confirm" : "Clear all data"}

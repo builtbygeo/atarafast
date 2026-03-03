@@ -13,11 +13,21 @@ import {
   isSameDay,
   isAfter,
 } from "date-fns"
-import { Trash2, Clock, CheckCircle2, Plus } from "lucide-react"
-import { type FastingRecord, deleteHistoryRecord, addManualFast } from "@/lib/storage"
+import { Trash2, Clock, CheckCircle2, Plus, Edit2 } from "lucide-react"
+import { type FastingRecord, deleteHistoryRecord, addManualFast, updateHistoryRecord } from "@/lib/storage"
 import { getPresetById } from "@/lib/presets"
 import { ManualFastDialog } from "@/components/manual-fast-dialog"
 import { useLang } from "@/lib/language-context"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
 
 interface HistoryViewProps {
   history: FastingRecord[]
@@ -28,6 +38,8 @@ export function HistoryView({ history, onHistoryChange }: HistoryViewProps) {
   const { t } = useLang()
   const [selectedYear] = useState(new Date().getFullYear())
   const [showManualFastDialog, setShowManualFastDialog] = useState(false)
+  const [recordToDelete, setRecordToDelete] = useState<string | null>(null)
+  const [recordToEdit, setRecordToEdit] = useState<FastingRecord | null>(null)
 
   const fastDays = useMemo(() => {
     const days = new Set<string>()
@@ -52,15 +64,31 @@ export function HistoryView({ history, onHistoryChange }: HistoryViewProps) {
     [history]
   )
 
-  function handleDelete(id: string) {
-    deleteHistoryRecord(id)
-    onHistoryChange()
+  function handleDelete() {
+    if (recordToDelete) {
+      deleteHistoryRecord(recordToDelete)
+      setRecordToDelete(null)
+      onHistoryChange()
+    }
   }
 
   function handleAddManualFast(presetId: string, startTime: Date, endTime: Date, targetHours: number) {
     addManualFast(presetId, startTime, endTime, targetHours)
     setShowManualFastDialog(false)
     onHistoryChange()
+  }
+
+  function handleUpdateFast(presetId: string, startTime: Date, endTime: Date, targetHours: number) {
+    if (recordToEdit) {
+      updateHistoryRecord(recordToEdit.id, {
+        presetId,
+        startTime: startTime.toISOString(),
+        endTime: endTime.toISOString(),
+        targetHours,
+      })
+      setRecordToEdit(null)
+      onHistoryChange()
+    }
   }
 
   function formatDuration(startTime: string, endTime: string | null): string {
@@ -111,13 +139,12 @@ export function HistoryView({ history, onHistoryChange }: HistoryViewProps) {
                     return (
                       <div
                         key={dateKey}
-                        className={`h-[10px] w-[10px] rounded-[2px] transition-colors ${
-                          isFuture
+                        className={`h-[10px] w-[10px] rounded-[2px] transition-colors ${isFuture
                             ? "bg-muted/30"
                             : fasted
                               ? "bg-primary"
                               : "bg-muted"
-                        }`}
+                          }`}
                         title={`${format(day, "MMM d")}${fasted ? " - Fasted" : ""}`}
                       />
                     )
@@ -164,13 +191,22 @@ export function HistoryView({ history, onHistoryChange }: HistoryViewProps) {
                     {format(new Date(record.startTime), "MMM d, yyyy 'at' h:mm a")}
                   </p>
                 </div>
-                <button
-                  onClick={() => handleDelete(record.id)}
-                  className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive"
-                  aria-label="Delete fast record"
-                >
-                  <Trash2 className="h-4 w-4" />
-                </button>
+                <div className="flex items-center gap-1">
+                  <button
+                    onClick={() => setRecordToEdit(record)}
+                    className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+                    aria-label="Edit fast record"
+                  >
+                    <Edit2 className="h-4 w-4" />
+                  </button>
+                  <button
+                    onClick={() => setRecordToDelete(record.id)}
+                    className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive"
+                    aria-label="Delete fast record"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </button>
+                </div>
               </div>
             )
           })}
@@ -183,6 +219,37 @@ export function HistoryView({ history, onHistoryChange }: HistoryViewProps) {
           onCancel={() => setShowManualFastDialog(false)}
         />
       )}
+
+      {recordToEdit && (
+        <ManualFastDialog
+          editingRecord={recordToEdit}
+          onConfirm={handleUpdateFast}
+          onCancel={() => setRecordToEdit(null)}
+        />
+      )}
+
+      {/* Delete Confirmation */}
+      <AlertDialog open={!!recordToDelete} onOpenChange={() => setRecordToDelete(null)}>
+        <AlertDialogContent className="max-w-[320px] rounded-2xl">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-center">{t.confirmDeleteHistory}</AlertDialogTitle>
+            <AlertDialogDescription className="text-center mt-2">
+              {t.deleteHistoryText}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="flex-row gap-3 sm:flex-row sm:justify-center mt-4">
+            <AlertDialogAction
+              onClick={handleDelete}
+              className="flex-1 rounded-xl bg-destructive text-white hover:bg-destructive/90"
+            >
+              {t.delete}
+            </AlertDialogAction>
+            <AlertDialogCancel className="flex-1 rounded-xl bg-secondary text-secondary-foreground border-none m-0">
+              {t.back}
+            </AlertDialogCancel>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   )
 }

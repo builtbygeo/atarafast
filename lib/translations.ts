@@ -57,6 +57,7 @@ export const bg = {
   back: "Назад",
   changePreset: "Смени",
   tips: "Съвети",
+  backToTimer: "Обратно към таймера",
 
   // History
   historyTitle: "История",
@@ -78,6 +79,22 @@ export const bg = {
   weeklyActivity: "Седмична активност",
   days: "дни",
   noStats: "Още няма статистика",
+  streak: "{{count}}-дневен стрийк",
+  editFast: "Редактиране на пост",
+  confirmDeleteHistory: "Изтриване на записа?",
+  deleteHistoryText: "Този запис ще бъде премахнат от историята ви завинаги.",
+  delete: "Изтриване",
+  edit: "Редактиране",
+  save: "Запази",
+  addPastFast: "Добави минал пост",
+  editPastFast: "Редактирай пост",
+  authTitle: "Акаунт",
+  signIn: "Вход / Регистрация",
+  authDescription: "Синхронизирайте вашите данни и отключете премиум функции.",
+  comingSoon: "Очаквайте скоро",
+  notifications: "Известия",
+  notificationsDesc: "Получавайте известия за край на поста",
+  allowNotifications: "Разреши известия",
 
   // Plan View
   planTitle: "План",
@@ -117,8 +134,6 @@ export const bg = {
   editTime: "Редакция време",
   date: "Дата",
   time: "Час",
-  save: "Запази",
-
   // Week Strip
   today: "Днес",
   mon: "П",
@@ -215,6 +230,7 @@ export const en: typeof bg = {
   back: "Back",
   changePreset: "Change",
   tips: "Tips",
+  backToTimer: "Back to Timer",
 
   historyTitle: "History",
   yearCalendar: "{{year}} fasting calendar",
@@ -234,6 +250,22 @@ export const en: typeof bg = {
   weeklyActivity: "Weekly Activity",
   days: "days",
   noStats: "No stats yet",
+  streak: "{{count}}-day streak",
+  editFast: "Edit Fast",
+  confirmDeleteHistory: "Delete record?",
+  deleteHistoryText: "This record will be permanently removed from your history.",
+  delete: "Delete",
+  edit: "Edit",
+  save: "Save",
+  addPastFast: "Add Past Fast",
+  editPastFast: "Edit Fast Record",
+  authTitle: "Account",
+  signIn: "Sign In / Sign Up",
+  authDescription: "Sync your data and unlock premium features.",
+  comingSoon: "Coming Soon",
+  notifications: "Notifications",
+  notificationsDesc: "Get notified when your fast is complete",
+  allowNotifications: "Enable Notifications",
 
   planTitle: "Plan",
   planSubtitle: "Learn about different fasting protocols",
@@ -269,7 +301,6 @@ export const en: typeof bg = {
   editTime: "Edit Time",
   date: "Date",
   time: "Time",
-  save: "Save",
 
   today: "Today",
   mon: "M",

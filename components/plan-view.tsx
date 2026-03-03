@@ -36,6 +36,9 @@ export function PlanView() {
   const renderGrid = () => (
     <div className="flex-1 overflow-y-auto px-5 py-6">
       <div className="mb-8">
+        <p className="text-[10px] text-muted-foreground font-medium uppercase tracking-wider mb-2 leading-tight">
+          {t.tagline}
+        </p>
         <h2 className="text-2xl font-bold text-foreground tracking-tight">{t.fastingPlans}</h2>
         <p className="text-sm text-muted-foreground mt-1.5 leading-relaxed">
           {t.plansSubtitle}

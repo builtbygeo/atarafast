@@ -1,21 +1,30 @@
 "use client"
 
 import { useState, useEffect, useCallback } from "react"
-import { motion, AnimatePresence, PanInfo } from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion"
 import { CircularProgress } from "@/components/circular-progress"
 import { WeekStrip } from "@/components/week-strip"
 import { PresetGrid } from "@/components/preset-grid"
 import { PresetDetail } from "@/components/preset-detail"
-import { EditTimeDialog } from "@/components/edit-time-dialog"
 import {
-  getActiveFast,
+  Trash2,
+  Clock,
+  CheckCircle2,
+  Sparkles,
+  ChevronRight,
+  ChevronDown,
+  Timer,
+  Settings as SettingsIcon,
+} from "lucide-react"
+import {
   startFast,
   endFast,
-  deleteFast,
+  getActiveFast,
   getHistory,
   getSettings,
   updateActiveFastStartTime,
-  updateActiveFastPreset,
+  updateActiveFast,
+  deleteFast,
   markApath,
   getLastFastInfo,
   type FastingRecord,
@@ -31,8 +40,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
-import { Square, Trash2, Clock, Sparkles } from "lucide-react"
 import { useLang } from "@/lib/language-context"
+import { useNotifications } from "@/hooks/use-notifications"
 
 type ViewState = "timer" | "presets" | "detail"
 
@@ -48,10 +57,11 @@ const haptic = (vibration = [50]) => {
 
 export function TimerView({ onFastEnd }: TimerViewProps) {
   const { t } = useLang()
+  const { sendNotification } = useNotifications()
   const [activeFast, setActiveFast] = useState<FastingRecord | null>(null)
   const [history, setHistory] = useState<FastingRecord[]>([])
   const [viewState, setViewState] = useState<ViewState>("presets")
-  const [direction, setDirection] = useState(0) // 1 = slide left, -1 = slide right
+  const [direction, setDirection] = useState(0)
   const [selectedPreset, setSelectedPreset] = useState<FastingPreset | null>(null)
   const [now, setNow] = useState(new Date())
   const [settings, setSettings] = useState<ReturnType<typeof getSettings>>({ timerDirection: "down" })
@@ -60,7 +70,6 @@ export function TimerView({ onFastEnd }: TimerViewProps) {
   const [showQuitConfirm, setShowQuitConfirm] = useState(false)
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
 
-  // Navigate view with animation direction logic
   const navigateTo = useCallback(
     (newState: ViewState) => {
       const order = { timer: 0, presets: 1, detail: 2 }
@@ -84,75 +93,68 @@ export function TimerView({ onFastEnd }: TimerViewProps) {
 
   useEffect(() => {
     if (!activeFast) return
-    const interval = setInterval(() => setNow(new Date()), 1000)
+    const interval = setInterval(() => {
+      const currentNow = new Date()
+      setNow(currentNow)
+
+      // Notification logic
+      const start = new Date(activeFast.startTime)
+      const targetMs = activeFast.targetHours * 3600000
+      const elapsedMs = currentNow.getTime() - start.getTime()
+
+      if (elapsedMs >= targetMs && elapsedMs < targetMs + 2000) {
+        sendNotification(t.targetReached, {
+          body: `${activeFast.presetId} fast complete!`,
+        })
+      }
+    }, 1000)
     return () => clearInterval(interval)
-  }, [activeFast])
+  }, [activeFast, sendNotification, t.targetReached])
 
-  const handleSelectPreset = useCallback(
-    (preset: FastingPreset) => {
-      setSelectedPreset(preset)
-      navigateTo("detail")
-    },
-    [navigateTo]
-  )
+  const handleSelectPreset = useCallback((preset: FastingPreset) => {
+    setSelectedPreset(preset)
+    navigateTo("detail")
+  }, [navigateTo])
 
-  const handleStartFast = useCallback(
-    (hours: number) => {
-      if (!selectedPreset) return
+  const handleStartFast = (hours: number) => {
+    if (!selectedPreset) return
+
+    if (activeFast) {
+      updateActiveFast(selectedPreset.id, hours)
+      const updated = { ...activeFast, presetId: selectedPreset.id, targetHours: hours }
+      setActiveFast(updated)
+      navigateTo("timer")
+    } else {
       const record = startFast(selectedPreset.id, hours)
       setActiveFast(record)
       navigateTo("timer")
       setNow(new Date())
-      haptic([50, 50, 50])
-    },
-    [selectedPreset, navigateTo]
-  )
-
-  const handleUpdateFast = useCallback(
-    (hours: number) => {
-      if (!selectedPreset) return
-      updateActiveFastPreset(selectedPreset.id, hours)
-      const updatedFast = getActiveFast()
-      setActiveFast(updatedFast)
-      navigateTo("timer")
-      setNow(new Date())
-      haptic([50, 50, 50])
-    },
-    [selectedPreset, navigateTo]
-  )
+    }
+    haptic([100, 50])
+  }
 
   const handleEndFast = useCallback(() => {
     const record = endFast()
     if (record) {
-      setHistory((prev) => [...prev, record])
+      setActiveFast(null)
+      setHistory(getHistory())
+      navigateTo("presets")
+      onFastEnd?.()
     }
-    setActiveFast(null)
-    navigateTo("presets")
-    onFastEnd?.()
-    haptic([100])
   }, [onFastEnd, navigateTo])
 
-  const handleDeleteFast = useCallback(() => {
+  const handleDiscardFast = useCallback(() => {
     deleteFast()
     setActiveFast(null)
     navigateTo("presets")
-    haptic([50, 50])
+    setShowDeleteConfirm(false)
   }, [navigateTo])
-
-  const handleEditStartTime = useCallback((newTime: Date) => {
-    updateActiveFastStartTime(newTime)
-    const updatedFast = getActiveFast()
-    setActiveFast(updatedFast)
-    setShowEditStartTime(false)
-    setNow(new Date())
-    haptic([30])
-  }, [])
 
   const handleMarkApath = useCallback(() => {
     markApath()
-    const updatedFast = getActiveFast()
-    setActiveFast(updatedFast)
-    haptic([100, 50, 100])
+    const updated = getActiveFast()
+    setActiveFast(updated)
+    haptic([200, 100, 200])
   }, [])
 
   const handleQuickStart = useCallback(() => {
@@ -160,169 +162,89 @@ export function TimerView({ onFastEnd }: TimerViewProps) {
     if (lastInfo) {
       const record = startFast(lastInfo.presetId, lastInfo.targetHours)
       setActiveFast(record)
-      setViewState("timer")
+      navigateTo("timer")
       setNow(new Date())
-      haptic([50, 50, 50])
+      haptic([100, 50])
     }
-  }, [])
+  }, [navigateTo])
 
-  // Swipe logic handlers
-  const handleDragEnd = (event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
-    const swipeThreshold = 50
-    const { offset, velocity } = info
-    const isHorizontalSwipe = Math.abs(offset.x) > swipeThreshold && Math.abs(velocity.x) > 200
+  if (!mounted) return null
 
-    if (isHorizontalSwipe) {
-      if (offset.x > 0) {
-        // Swipe right -> Go left in hierarchy
-        if (viewState === "detail") navigateTo("presets")
-        else if (viewState === "presets" && activeFast) navigateTo("timer")
-      } else {
-        // Swipe left -> Go right in hierarchy
-        if (viewState === "timer") navigateTo("presets")
-      }
-    }
-  }
-
-  if (!mounted) {
-    return (
-      <div className="flex flex-1 items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-2 border-muted border-t-primary" />
-      </div>
-    )
-  }
-
-  const variants = {
-    enter: (direction: number) => ({
-      x: direction > 0 ? "10%" : "-10%",
-      opacity: 0,
-      filter: "blur(4px)",
-    }),
-    center: {
-      zIndex: 1,
-      x: 0,
-      opacity: 1,
-      filter: "blur(0px)",
-    },
-    exit: (direction: number) => ({
-      zIndex: 0,
-      x: direction < 0 ? "10%" : "-10%",
-      opacity: 0,
-      filter: "blur(4px)",
-    }),
-  }
-
-  // Active timer view calculations
   const renderTimerContent = () => {
     if (!activeFast) return null
-    const start = new Date(activeFast.startTime)
-    const targetMs = activeFast.targetHours * 60 * 60 * 1000
-    const elapsedMs = now.getTime() - start.getTime()
-    const remainingMs = Math.max(0, targetMs - elapsedMs)
-    const progress = Math.max(0, Math.min(elapsedMs / targetMs, 1))
-    const isComplete = elapsedMs >= targetMs
     const preset = getPresetById(activeFast.presetId)
+    const startTime = new Date(activeFast.startTime)
+    const elapsedMs = now.getTime() - startTime.getTime()
+    const targetMs = activeFast.targetHours * 3600000
+    const remainingMs = Math.max(0, targetMs - elapsedMs)
+    const isComplete = elapsedMs >= targetMs
+    const percentage = Math.min(100, Math.floor((elapsedMs / targetMs) * 100))
 
-    const displayMs = settings.timerDirection === "down" && !isComplete ? remainingMs : elapsedMs
-    const totalSeconds = Math.floor(displayMs / 1000)
-    const hours = Math.floor(totalSeconds / 3600)
-    const minutes = Math.floor((totalSeconds % 3600) / 60)
-    const seconds = totalSeconds % 60
+    const formatTime = (ms: number) => {
+      const totalSeconds = Math.floor(ms / 1000)
+      const hours = Math.floor(totalSeconds / 3600)
+      const minutes = Math.floor((totalSeconds % 3600) / 60)
+      const seconds = totalSeconds % 60
+      return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`
+    }
 
-    const pad = (n: number) => n.toString().padStart(2, "0")
-
-    const percentage = Math.round(progress * 100)
-    const hoursElapsed = elapsedMs / (1000 * 60 * 60)
-    const hoursOverTarget = Math.max(0, hoursElapsed - activeFast.targetHours)
-
-    // Body States logic (Ketosis > 12h, Autophagy > 16h)
-    let bodyState = ""
-    if (hoursElapsed >= 16) bodyState = "🔥 Autophagy Phase" // In bulgarian: Автофагия фаза
-    else if (hoursElapsed >= 12) bodyState = "⚡ Ketosis (Fat Burn)" // Кетоза (Изгаряне на мазнини)
-    else if (hoursElapsed >= 8) bodyState = "📉 Lowered Blood Sugar" // Понижена кръвна захар
+    const hoursOverTarget = isComplete ? (elapsedMs - targetMs) / 3600000 : 0
 
     return (
-      <div className="flex-1 flex flex-col items-center px-5 py-6 gap-6 w-full h-full">
-        <WeekStrip history={history} />
-
-        <div className="flex-1 flex flex-col items-center justify-center gap-2">
-          {/* Framer motion wrapper for subtle hover/pulse effects */}
+      <div className="flex flex-col items-center justify-between h-full py-8">
+        <div className="flex flex-col items-center text-center">
           <motion.div
-            initial={{ scale: 0.95, opacity: 0 }}
+            initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            transition={{ type: "spring", stiffness: 200, damping: 20 }}
             className="relative"
           >
-            {/* Subtle glow behind progress circle when active */}
-            {!isComplete && (
-              <motion.div
-                className="absolute inset-0 rounded-full opacity-20"
-                style={{ backgroundColor: preset?.color }}
-                animate={{
-                  scale: [1, 1.05, 1],
-                }}
-                transition={{
-                  duration: 3,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
-              />
-            )}
-
             <CircularProgress
-              progress={progress}
-              size={240}
-              strokeWidth={10}
-              color={isComplete ? "oklch(0.65 0.17 160)" : preset?.color}
+              progress={percentage / 100}
+              size={280}
+              strokeWidth={12}
+              color={preset?.color || "oklch(0.6 0.1 260)"}
             >
-              <span className="text-4xl font-bold font-mono text-foreground tabular-nums tracking-tight">
-                {pad(hours)}:{pad(minutes)}:{pad(seconds)}
+              <span className="text-5xl font-black text-foreground font-mono tabular-nums tracking-tight">
+                {formatTime(settings.timerDirection === "down" && !isComplete ? remainingMs : elapsedMs)}
               </span>
-              <span className="text-xs font-medium text-muted-foreground mt-1 uppercase tracking-wider">
+              <span className="text-xs font-bold text-muted-foreground mt-2 uppercase tracking-[0.2em] opacity-60">
                 {isComplete ? t.elapsed : settings.timerDirection === "down" ? t.remaining : t.elapsed} ({percentage}%)
               </span>
             </CircularProgress>
           </motion.div>
 
           <AnimatePresence mode="popLayout">
-            {bodyState && !isComplete && (
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                className="mt-2 text-sm font-medium text-muted-foreground"
-              >
-                {bodyState}
-              </motion.div>
-            )}
             {isComplete && (
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="text-center mt-2"
+                className="mt-6 p-4 rounded-2xl bg-primary/5 border border-primary/10 max-w-[240px]"
               >
-                <p className="text-sm font-semibold text-primary">
+                <p className="text-sm font-bold text-primary">
                   {hoursOverTarget < 1
                     ? t.targetReached
                     : t.overTarget.replace("{{hours}}", hoursOverTarget.toFixed(1))}
                 </p>
-                {hoursOverTarget >= 1 && <p className="text-xs text-muted-foreground mt-1">{t.keepPushing}</p>}
+                {hoursOverTarget >= 1 && <p className="text-[10px] text-muted-foreground font-medium uppercase tracking-wider mt-1">{t.keepPushing}</p>}
               </motion.div>
             )}
           </AnimatePresence>
 
-          <p className="text-sm font-medium text-muted-foreground mt-2">
-            {preset?.name || "Персонален"} {t.fast}
+          <h3 className="text-xl font-black text-foreground mt-8 tracking-tight">
+            {preset?.name || activeFast.presetId}
+          </h3>
+          <p className="text-xs font-bold text-muted-foreground uppercase tracking-[0.15em] mt-1 opacity-60">
+            {activeFast.targetHours}{t.hours} {t.fastLabel}
           </p>
         </div>
 
-        <div className="flex flex-col w-full gap-3 max-w-xs">
+        <div className="flex flex-col w-full gap-4 max-w-xs">
           {!activeFast.apathTime && elapsedMs > 3600000 && (
             <button
               onClick={handleMarkApath}
-              className="flex items-center justify-center gap-2 rounded-xl bg-card border border-primary/20 px-4 py-2.5 text-sm font-medium text-foreground transition-all hover:border-primary/40 hover:bg-primary/5 active:scale-95"
+              className="flex items-center justify-center gap-3 rounded-2xl bg-primary/5 hover:bg-primary/10 border border-primary/10 px-6 py-4 text-sm font-bold text-primary transition-all active:scale-[0.98]"
             >
-              <Sparkles className="h-4 w-4 text-primary" />
+              <Sparkles className="h-5 w-5" />
               {t.markApath}
             </button>
           )}
@@ -330,195 +252,145 @@ export function TimerView({ onFastEnd }: TimerViewProps) {
           <AnimatePresence>
             {activeFast.apathTime && (
               <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: "auto" }}
-                className="flex items-center justify-center gap-2 rounded-xl bg-primary/10 border border-primary/20 px-4 py-2.5 overflow-hidden"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="flex items-center justify-center gap-3 rounded-2xl bg-green-500/5 border border-green-500/10 px-6 py-4"
               >
-                <Sparkles className="h-4 w-4 text-primary" />
-                <span className="text-sm font-medium text-primary">{t.apathReached}</span>
+                <Sparkles className="h-5 w-5 text-green-500" />
+                <span className="text-sm font-bold text-green-500">{t.apathReached}</span>
               </motion.div>
             )}
           </AnimatePresence>
 
           <div className="flex gap-3">
             <button
+              onClick={() => navigateTo("presets")}
+              className="flex-1 flex items-center justify-center gap-2 rounded-2xl bg-secondary text-secondary-foreground px-4 py-4 font-bold text-sm transition-all hover:bg-secondary/80 active:scale-95 shadow-sm"
+            >
+              <SettingsIcon className="h-4 w-4" />
+              {t.changePreset}
+            </button>
+            <button
+              onClick={handleEndFast}
+              className={`flex-[2] py-4 rounded-2xl font-bold text-sm transition-all shadow-xl active:scale-95 ${isComplete
+                  ? "bg-primary text-primary-foreground shadow-primary/20"
+                  : "bg-secondary text-secondary-foreground"
+                }`}
+            >
+              {t.endFast}
+            </button>
+            <button
               onClick={() => setShowDeleteConfirm(true)}
-              className="flex h-12 w-12 items-center justify-center rounded-xl bg-secondary text-secondary-foreground transition-colors hover:bg-destructive hover:text-destructive-foreground active:scale-90"
-              aria-label="Discard fast"
+              className="h-14 w-14 flex items-center justify-center rounded-2xl bg-secondary/50 text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-all active:scale-90"
             >
               <Trash2 className="h-5 w-5" />
             </button>
-
-            <motion.button
-              whileTap={{ scale: 0.95 }}
-              onClick={() => {
-                if (isComplete) handleEndFast()
-                else setShowQuitConfirm(true)
-              }}
-              className="flex-1 flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:opacity-90"
-            >
-              <Square className="h-4 w-4" />
-              {isComplete ? t.endFast : t.quitFast}
-            </motion.button>
           </div>
         </div>
 
-        <div className="flex flex-col items-center gap-2">
-          {activeFast.apathTime && (
-            <p className="text-xs text-muted-foreground">
-              {t.apathMarked.replace(
-                "{{time}}",
-                new Date(activeFast.apathTime).toLocaleTimeString("bg-BG", { hour: "2-digit", minute: "2-digit" })
-              )}
-            </p>
-          )}
-          <div className="flex gap-3">
-            <button
-              onClick={() => setShowEditStartTime(true)}
-              className="text-sm text-muted-foreground underline underline-offset-4 hover:text-foreground transition-colors flex items-center gap-1 p-2"
-            >
-              <Clock className="h-3 w-3" />
-              {t.editStartTime}
-            </button>
-            <button
-              onClick={() => {
-                setSelectedPreset(preset || null)
-                navigateTo("detail")
-              }}
-              className="text-sm text-muted-foreground underline underline-offset-4 hover:text-foreground transition-colors p-2"
-            >
-              {t.viewDetails}
-            </button>
-          </div>
-        </div>
-
-        {showEditStartTime && activeFast && (
-          <EditTimeDialog
-            currentTime={new Date(activeFast.startTime)}
-            label={t.editStartTime}
-            onConfirm={handleEditStartTime}
-            onCancel={() => setShowEditStartTime(false)}
-          />
-        )}
+        {/* Delete Confirmation */}
+        <AlertDialog open={showDeleteConfirm} onOpenChange={setShowDeleteConfirm}>
+          <AlertDialogContent className="max-w-[320px] rounded-3xl">
+            <AlertDialogHeader>
+              <AlertDialogTitle className="text-center">{t.confirmDeleteTitle}</AlertDialogTitle>
+              <AlertDialogDescription className="text-center mt-2">
+                {t.confirmDeleteText}
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter className="flex-row gap-3 sm:flex-row sm:justify-center mt-4">
+              <AlertDialogAction
+                onClick={handleDiscardFast}
+                className="flex-1 rounded-2xl bg-destructive text-white hover:bg-destructive/90"
+              >
+                {t.delete}
+              </AlertDialogAction>
+              <AlertDialogCancel className="flex-1 rounded-2xl bg-secondary border-none m-0">
+                {t.back}
+              </AlertDialogCancel>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </div>
     )
   }
 
   const renderPresetsContent = () => {
-    const lastInfo = getLastFastInfo()
+    const lastFastInfo = getLastFastInfo()
     return (
-      <div className="flex-1 overflow-y-auto px-5 py-6 w-full h-full flex flex-col">
-        <div className="mb-6">
-          <WeekStrip history={history} />
-        </div>
-        <div className="flex-1">
-          <PresetGrid onSelect={handleSelectPreset} />
-        </div>
-        {lastInfo && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mt-6 border-t border-border pt-6 pb-2"
-          >
+      <div className="flex flex-col h-full overflow-hidden">
+        <PresetGrid onSelect={handleSelectPreset} />
+
+        {lastFastInfo && !activeFast && (
+          <div className="px-5 pb-6">
             <button
               onClick={handleQuickStart}
-              className="w-full flex items-center justify-center gap-2 rounded-2xl bg-primary px-6 py-4 text-sm font-bold text-primary-foreground shadow-lg shadow-primary/20 active:scale-[0.98] transition-all"
+              className="w-full relative flex items-center justify-between rounded-3xl bg-secondary/30 p-5 group overflow-hidden active:scale-[0.98] transition-all bg-gradient-to-br from-card to-secondary/20 border border-border/50"
             >
-              <Sparkles className="h-4 w-4" />
-              {t.quickStart} ({lastInfo.targetHours}{t.hours})
+              <div className="flex gap-4 items-center">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-lg shadow-primary/20 animate-pulse">
+                  <Clock className="h-6 w-6" />
+                </div>
+                <div className="text-left">
+                  <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground opacity-70">{t.quickStart}</p>
+                  <p className="text-lg font-black text-foreground tracking-tight">
+                    {getPresetById(lastFastInfo.presetId)?.name || lastFastInfo.presetId}
+                  </p>
+                </div>
+              </div>
+              <ChevronRight className="h-5 w-5 text-muted-foreground group-hover:translate-x-1 transition-transform" />
             </button>
-          </motion.div>
+          </div>
+        )}
+
+        {activeFast && (
+          <div className="px-5 pb-6">
+            <button
+              onClick={() => navigateTo("timer")}
+              className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl bg-secondary font-bold text-sm text-foreground active:scale-95 transition-all border border-border/50"
+            >
+              <Timer className="h-4 w-4" />
+              {t.backToTimer}
+            </button>
+          </div>
         )}
       </div>
     )
   }
 
-  const renderDetailContent = () => {
-    if (!selectedPreset) return null
-    const isCurrentActivePreset = activeFast?.presetId === selectedPreset.id
-    return (
-      <div className="flex-1 overflow-y-auto px-5 py-6 w-full h-full">
+  const renderDetailContent = () => (
+    <div className="flex flex-col h-full overflow-hidden">
+      {selectedPreset && (
         <PresetDetail
           preset={selectedPreset}
-          isActive={!!activeFast}
-          isCurrentActivePreset={isCurrentActivePreset}
-          onBack={() => navigateTo(activeFast ? "timer" : "presets")}
           onStart={handleStartFast}
-          onChangePreset={() => navigateTo("presets")}
-          onUpdateFast={handleUpdateFast}
+          onBack={() => navigateTo("presets")}
+          onUpdateFast={handleStartFast}
+          isActive={!!activeFast}
+          isCurrentActivePreset={activeFast?.presetId === selectedPreset.id}
         />
-      </div>
-    )
-  }
+      )}
+    </div>
+  )
 
   return (
-    <>
-      <AnimatePresence mode="wait" custom={direction} initial={false}>
+    <div className="relative flex flex-col flex-1 overflow-hidden h-full">
+      <AnimatePresence initial={false} custom={direction} mode="wait">
         <motion.div
           key={viewState}
           custom={direction}
-          variants={variants}
-          initial="enter"
-          animate="center"
-          exit="exit"
-          transition={{
-            x: { type: "spring", stiffness: 300, damping: 30 },
-            opacity: { duration: 0.2 },
-            filter: { duration: 0.2 },
-          }}
-          drag="x"
-          dragConstraints={{ left: 0, right: 0 }}
-          dragElastic={0.2}
-          onDragEnd={handleDragEnd}
-          className="flex-1 w-full h-full relative overflow-hidden flex flex-col"
+          initial={{ opacity: 0, x: direction > 0 ? 100 : -100 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: direction > 0 ? -100 : 100 }}
+          transition={{ type: "spring", damping: 30, stiffness: 300, mass: 0.8 }}
+          className="absolute inset-0 flex flex-col pt-2"
         >
-          {viewState === "timer" && renderTimerContent()}
-          {viewState === "presets" && renderPresetsContent()}
-          {viewState === "detail" && renderDetailContent()}
+          <div className="flex-1 flex flex-col h-full">
+            {viewState === "timer" && renderTimerContent()}
+            {viewState === "presets" && renderPresetsContent()}
+            {viewState === "detail" && renderDetailContent()}
+          </div>
         </motion.div>
       </AnimatePresence>
-
-      <AlertDialog open={showQuitConfirm} onOpenChange={setShowQuitConfirm}>
-        <AlertDialogContent className="max-w-[320px] rounded-2xl">
-          <AlertDialogHeader>
-            <AlertDialogTitle className="text-center">{t.confirmQuitTitle || t.confirmClear}</AlertDialogTitle>
-            <AlertDialogDescription className="text-center italic mt-2">
-              "{t.confirmQuitQuote}"
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter className="flex-row gap-3 sm:flex-row sm:justify-center mt-4">
-            <AlertDialogAction
-              onClick={handleEndFast}
-              className="flex-1 rounded-xl bg-destructive/10 text-destructive hover:bg-destructive hover:text-white border border-destructive/20"
-            >
-              {t.iCant}
-            </AlertDialogAction>
-            <AlertDialogCancel className="flex-1 rounded-xl bg-emerald-600 text-white border-none hover:bg-emerald-700">
-              {t.iContinue}
-            </AlertDialogCancel>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-
-      <AlertDialog open={showDeleteConfirm} onOpenChange={setShowDeleteConfirm}>
-        <AlertDialogContent className="max-w-[320px] rounded-2xl">
-          <AlertDialogHeader>
-            <AlertDialogTitle className="text-center">{t.confirmDeleteTitle}</AlertDialogTitle>
-            <AlertDialogDescription className="text-center">
-              {t.confirmDeleteText}
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter className="flex-row gap-3 sm:flex-row sm:justify-center mt-4">
-            <AlertDialogCancel className="flex-1 rounded-xl">{t.cancel}</AlertDialogCancel>
-            <AlertDialogAction
-              onClick={handleDeleteFast}
-              className="flex-1 rounded-xl bg-destructive text-destructive-foreground hover:bg-destructive/90"
-            >
-              {t.confirm}
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-    </>
+    </div>
   )
 }
