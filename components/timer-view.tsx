@@ -10,7 +10,6 @@ import {
   Trash2,
   Clock,
   CheckCircle2,
-  Sparkles,
   ChevronRight,
   ChevronDown,
   Timer,
@@ -25,7 +24,6 @@ import {
   updateActiveFastStartTime,
   updateActiveFast,
   deleteFast,
-  markApath,
   getLastFastInfo,
   type FastingRecord,
 } from "@/lib/storage"
@@ -66,8 +64,6 @@ export function TimerView({ onFastEnd }: TimerViewProps) {
   const [now, setNow] = useState(new Date())
   const [settings, setSettings] = useState<ReturnType<typeof getSettings>>({ timerDirection: "down" })
   const [mounted, setMounted] = useState(false)
-  const [showEditStartTime, setShowEditStartTime] = useState(false)
-  const [showQuitConfirm, setShowQuitConfirm] = useState(false)
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
 
   const navigateTo = useCallback(
@@ -150,13 +146,6 @@ export function TimerView({ onFastEnd }: TimerViewProps) {
     setShowDeleteConfirm(false)
   }, [navigateTo])
 
-  const handleMarkApath = useCallback(() => {
-    markApath()
-    const updated = getActiveFast()
-    setActiveFast(updated)
-    haptic([200, 100, 200])
-  }, [])
-
   const handleQuickStart = useCallback(() => {
     const lastInfo = getLastFastInfo()
     if (lastInfo) {
@@ -238,31 +227,8 @@ export function TimerView({ onFastEnd }: TimerViewProps) {
           </p>
         </div>
 
-        <div className="flex flex-col w-full gap-4 max-w-xs">
-          {!activeFast.apathTime && elapsedMs > 3600000 && (
-            <button
-              onClick={handleMarkApath}
-              className="flex items-center justify-center gap-3 rounded-2xl bg-primary/5 hover:bg-primary/10 border border-primary/10 px-6 py-4 text-sm font-bold text-primary transition-all active:scale-[0.98]"
-            >
-              <Sparkles className="h-5 w-5" />
-              {t.markApath}
-            </button>
-          )}
-
-          <AnimatePresence>
-            {activeFast.apathTime && (
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="flex items-center justify-center gap-3 rounded-2xl bg-green-500/5 border border-green-500/10 px-6 py-4"
-              >
-                <Sparkles className="h-5 w-5 text-green-500" />
-                <span className="text-sm font-bold text-green-500">{t.apathReached}</span>
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          <div className="flex gap-3">
+        <div className="flex flex-col w-full gap-4 max-w-xs px-2">
+          <div className="flex gap-3 mt-8">
             <button
               onClick={() => navigateTo("presets")}
               className="flex-1 flex items-center justify-center gap-2 rounded-2xl bg-secondary text-secondary-foreground px-4 py-4 font-bold text-sm transition-all hover:bg-secondary/80 active:scale-95 shadow-sm"
@@ -317,48 +283,40 @@ export function TimerView({ onFastEnd }: TimerViewProps) {
   const renderPresetsContent = () => {
     const lastFastInfo = getLastFastInfo()
     return (
-      <div className="flex flex-col h-full overflow-hidden">
+      <div className="flex flex-col h-full overflow-hidden px-1">
         <PresetGrid onSelect={handleSelectPreset} />
 
-        {lastFastInfo && !activeFast && (
-          <div className="px-5 pb-6">
-            <button
-              onClick={handleQuickStart}
-              className="w-full relative flex items-center justify-between rounded-3xl bg-secondary/30 p-5 group overflow-hidden active:scale-[0.98] transition-all bg-gradient-to-br from-card to-secondary/20 border border-border/50"
-            >
-              <div className="flex gap-4 items-center">
-                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-lg shadow-primary/20 animate-pulse">
-                  <Clock className="h-6 w-6" />
-                </div>
-                <div className="text-left">
-                  <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground opacity-70">{t.quickStart}</p>
-                  <p className="text-lg font-black text-foreground tracking-tight">
-                    {getPresetById(lastFastInfo.presetId)?.name || lastFastInfo.presetId}
-                  </p>
-                </div>
-              </div>
-              <ChevronRight className="h-5 w-5 text-muted-foreground group-hover:translate-x-1 transition-transform" />
-            </button>
-          </div>
-        )}
+        <div className="mt-8 flex flex-col gap-4">
+          {lastFastInfo && !activeFast && (
+            <div className="px-2 pb-6">
+              <button
+                onClick={handleQuickStart}
+                className="w-full flex items-center justify-center gap-3 rounded-2xl bg-primary px-4 py-5 font-black text-primary-foreground shadow-2xl shadow-primary/20 active:scale-95 transition-all text-lg"
+              >
+                <Clock className="h-6 w-6" />
+                {t.quickStart} ({getPresetById(lastFastInfo.presetId)?.name || lastFastInfo.presetId})
+              </button>
+            </div>
+          )}
 
-        {activeFast && (
-          <div className="px-5 pb-6">
-            <button
-              onClick={() => navigateTo("timer")}
-              className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl bg-secondary font-bold text-sm text-foreground active:scale-95 transition-all border border-border/50"
-            >
-              <Timer className="h-4 w-4" />
-              {t.backToTimer}
-            </button>
-          </div>
-        )}
+          {activeFast && (
+            <div className="px-2 pb-10">
+              <button
+                onClick={() => navigateTo("timer")}
+                className="w-full flex items-center justify-center gap-3 py-5 rounded-2xl bg-secondary font-bold text-sm text-foreground active:scale-95 transition-all border border-border/50 shadow-lg"
+              >
+                <Timer className="h-5 w-5" />
+                {t.backToTimer}
+              </button>
+            </div>
+          )}
+        </div>
       </div>
     )
   }
 
   const renderDetailContent = () => (
-    <div className="flex flex-col h-full overflow-hidden">
+    <div className="flex flex-col h-full overflow-hidden px-1">
       {selectedPreset && (
         <PresetDetail
           preset={selectedPreset}

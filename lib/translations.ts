@@ -33,7 +33,7 @@ export const bg = {
   confirmDeleteTitle: "Изтриване на поста?",
   confirmDeleteText: "Това ще премахне текущия пост завинаги.",
 
-  // Apath feature
+  /* Apath feature
   apath: "Апат",
   apathTitle: "Апатия",
   apathDescription: "От Апатия — свобода от тревожните страсти (като глада). Маркирайте момента, в който станете неразтревожен от поста.",
@@ -41,6 +41,7 @@ export const bg = {
   apathMarked: "Апатия маркирана в {{time}}",
   apathReached: "Постигнахте Апатия!",
   apathInfo: "Моментът, когато гладът не ви притеснява",
+  */
 
   // Preset Grid
   selectPreset: "Изберете пост",
@@ -209,6 +210,7 @@ export const en: typeof bg = {
   confirmDeleteTitle: "Delete fast?",
   confirmDeleteText: "This will remove the current fast forever.",
 
+  /* Apath feature
   apath: "Apath",
   apathTitle: "Apatheia",
   apathDescription: "From Apatheia — freedom from disturbing passions (like hunger cravings). Tracks the moment you become undisturbed by the fast.",
@@ -216,6 +218,7 @@ export const en: typeof bg = {
   apathMarked: "Apath marked at {{time}}",
   apathReached: "You've reached Apatheia!",
   apathInfo: "The moment hunger no longer disturbs you",
+  */
 
   selectPreset: "Choose a fast",
   selectSubtitle: "Select a preset to get started",

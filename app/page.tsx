@@ -50,7 +50,7 @@ export default function Home() {
   }
 
   return (
-    <main className="flex min-h-svh flex-col bg-background mx-auto max-w-md">
+    <main className="flex min-h-svh flex-col bg-background mx-auto max-w-md px-2">
       {/* Header */}
       <header className="flex items-center justify-between px-5 pt-4 pb-2 gap-3">
         <div className="flex items-center gap-3 min-w-0">
