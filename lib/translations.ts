@@ -20,6 +20,13 @@ export const bg = {
   overTarget: "Невероятно! {{hours}}ч над целта!",
   keepPushing: "Продължавайте или спрете когато сте готови",
   fast: "пост",
+  quitFast: "Отказвам се",
+  iCant: "Не мога",
+  iContinue: "Продължавам!",
+  confirmQuitTitle: "Сигурни ли сте?",
+  confirmQuitQuote: "Дисциплината е мостът между целите и постиженията. Остани силен!",
+  confirmDeleteTitle: "Изтриване на поста?",
+  confirmDeleteText: "Това ще премахне текущия пост завинаги.",
 
   // Apath feature
   apath: "Апат",
@@ -132,6 +139,13 @@ export const en: typeof bg = {
   overTarget: "Amazing! {{hours}}h over your target!",
   keepPushing: "Keep pushing or end when you're ready",
   fast: "fast",
+  quitFast: "I'm quitting",
+  iCant: "I can't",
+  iContinue: "Keep going!",
+  confirmQuitTitle: "Are you sure?",
+  confirmQuitQuote: "Discipline is the bridge between goals and accomplishment. Stay strong!",
+  confirmDeleteTitle: "Delete fast?",
+  confirmDeleteText: "This will remove the current fast forever.",
 
   apath: "Apath",
   apathTitle: "Apatheia",

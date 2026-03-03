@@ -20,6 +20,16 @@ import {
   type FastingRecord,
 } from "@/lib/storage"
 import { getPresetById, type FastingPreset } from "@/lib/presets"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
 import { Square, Trash2, Clock, Sparkles } from "lucide-react"
 import { useLang } from "@/lib/language-context"
 
@@ -46,6 +56,8 @@ export function TimerView({ onFastEnd }: TimerViewProps) {
   const [settings, setSettings] = useState<ReturnType<typeof getSettings>>({ timerDirection: "down" })
   const [mounted, setMounted] = useState(false)
   const [showEditStartTime, setShowEditStartTime] = useState(false)
+  const [showQuitConfirm, setShowQuitConfirm] = useState(false)
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
 
   // Navigate view with animation direction logic
   const navigateTo = useCallback(
@@ -287,9 +299,8 @@ export function TimerView({ onFastEnd }: TimerViewProps) {
             )}
           </AnimatePresence>
 
-          <p className="text-sm text-muted-foreground mt-2">
-            {preset?.name || "Персонален"} {t.fast} &middot; {activeFast.targetHours}
-            {t.hours} {t.goal}
+          <p className="text-sm font-medium text-muted-foreground mt-2">
+            {preset?.name || "Персонален"} {t.fast}
           </p>
         </div>
 
@@ -319,21 +330,23 @@ export function TimerView({ onFastEnd }: TimerViewProps) {
 
           <div className="flex gap-3">
             <button
-              onClick={handleDeleteFast}
+              onClick={() => setShowDeleteConfirm(true)}
               className="flex h-12 w-12 items-center justify-center rounded-xl bg-secondary text-secondary-foreground transition-colors hover:bg-destructive hover:text-destructive-foreground active:scale-90"
               aria-label="Discard fast"
             >
               <Trash2 className="h-5 w-5" />
             </button>
 
-            {/* Long Press behavior conceptually replaced by active:scale which forces intentional press */}
             <motion.button
               whileTap={{ scale: 0.95 }}
-              onClick={handleEndFast}
+              onClick={() => {
+                if (isComplete) handleEndFast()
+                else setShowQuitConfirm(true)
+              }}
               className="flex-1 flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:opacity-90"
             >
               <Square className="h-4 w-4" />
-              {t.endFast}
+              {isComplete ? t.endFast : t.quitFast}
             </motion.button>
           </div>
         </div>
@@ -407,29 +420,73 @@ export function TimerView({ onFastEnd }: TimerViewProps) {
   }
 
   return (
-    <AnimatePresence mode="popLayout" custom={direction} initial={false}>
-      <motion.div
-        key={viewState}
-        custom={direction}
-        variants={variants}
-        initial="enter"
-        animate="center"
-        exit="exit"
-        transition={{
-          x: { type: "spring", stiffness: 300, damping: 30 },
-          opacity: { duration: 0.2 },
-          filter: { duration: 0.2 },
-        }}
-        drag="x"
-        dragConstraints={{ left: 0, right: 0 }}
-        dragElastic={0.2}
-        onDragEnd={handleDragEnd}
-        className="flex-1 w-full h-full absolute inset-0 pt-env-top pb-env-bottom overflow-hidden flex flex-col"
-      >
-        {viewState === "timer" && renderTimerContent()}
-        {viewState === "presets" && renderPresetsContent()}
-        {viewState === "detail" && renderDetailContent()}
-      </motion.div>
-    </AnimatePresence>
+    <>
+      <AnimatePresence mode="wait" custom={direction} initial={false}>
+        <motion.div
+          key={viewState}
+          custom={direction}
+          variants={variants}
+          initial="enter"
+          animate="center"
+          exit="exit"
+          transition={{
+            x: { type: "spring", stiffness: 300, damping: 30 },
+            opacity: { duration: 0.2 },
+            filter: { duration: 0.2 },
+          }}
+          drag="x"
+          dragConstraints={{ left: 0, right: 0 }}
+          dragElastic={0.2}
+          onDragEnd={handleDragEnd}
+          className="flex-1 w-full h-full relative overflow-hidden flex flex-col"
+        >
+          {viewState === "timer" && renderTimerContent()}
+          {viewState === "presets" && renderPresetsContent()}
+          {viewState === "detail" && renderDetailContent()}
+        </motion.div>
+      </AnimatePresence>
+
+      <AlertDialog open={showQuitConfirm} onOpenChange={setShowQuitConfirm}>
+        <AlertDialogContent className="max-w-[320px] rounded-2xl">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-center">{t.confirmQuitTitle || t.confirmClear}</AlertDialogTitle>
+            <AlertDialogDescription className="text-center italic mt-2">
+              "{t.confirmQuitQuote}"
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="flex-row gap-3 sm:flex-row sm:justify-center mt-4">
+            <AlertDialogAction
+              onClick={handleEndFast}
+              className="flex-1 rounded-xl bg-secondary text-secondary-foreground hover:bg-destructive hover:text-white"
+            >
+              {t.iCant}
+            </AlertDialogAction>
+            <AlertDialogCancel className="flex-1 rounded-xl bg-primary text-primary-foreground border-none hover:bg-primary/90 hover:text-white">
+              {t.iContinue}
+            </AlertDialogCancel>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      <AlertDialog open={showDeleteConfirm} onOpenChange={setShowDeleteConfirm}>
+        <AlertDialogContent className="max-w-[320px] rounded-2xl">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-center">{t.confirmDeleteTitle}</AlertDialogTitle>
+            <AlertDialogDescription className="text-center">
+              {t.confirmDeleteText}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="flex-row gap-3 sm:flex-row sm:justify-center mt-4">
+            <AlertDialogCancel className="flex-1 rounded-xl">{t.cancel}</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDeleteFast}
+              className="flex-1 rounded-xl bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              {t.confirm}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
   )
 }

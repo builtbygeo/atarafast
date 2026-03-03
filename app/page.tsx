@@ -56,22 +56,20 @@ export default function Home() {
           <div className="flex rounded-lg border border-border overflow-hidden text-xs font-semibold">
             <button
               onClick={() => setLang("bg")}
-              className={`px-2.5 py-1.5 transition-colors ${
-                lang === "bg"
+              className={`px-2.5 py-1.5 transition-colors ${lang === "bg"
                   ? "bg-primary text-primary-foreground"
                   : "bg-card text-muted-foreground hover:text-foreground"
-              }`}
+                }`}
               aria-label="Български"
             >
               БГ
             </button>
             <button
               onClick={() => setLang("en")}
-              className={`px-2.5 py-1.5 transition-colors ${
-                lang === "en"
+              className={`px-2.5 py-1.5 transition-colors ${lang === "en"
                   ? "bg-primary text-primary-foreground"
                   : "bg-card text-muted-foreground hover:text-foreground"
-              }`}
+                }`}
               aria-label="English"
             >
               EN
@@ -89,7 +87,7 @@ export default function Home() {
       </header>
 
       {/* Content */}
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col relative overflow-hidden">
         {activeTab === "timer" && <TimerView onFastEnd={refreshHistory} />}
         {activeTab === "history" && (
           <HistoryView history={history} onHistoryChange={refreshHistory} />
@@ -107,11 +105,10 @@ export default function Home() {
               setActiveTab(id)
               if (id === "history" || id === "stats") refreshHistory()
             }}
-            className={`flex flex-col items-center gap-0.5 px-4 py-2 text-xs font-medium transition-colors ${
-              activeTab === id
+            className={`flex flex-col items-center gap-0.5 px-4 py-2 text-xs font-medium transition-colors ${activeTab === id
                 ? "text-primary"
                 : "text-muted-foreground hover:text-foreground"
-            }`}
+              }`}
             aria-label={label}
           >
             <Icon className="h-5 w-5" />
