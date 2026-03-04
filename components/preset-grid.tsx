@@ -60,18 +60,18 @@ export function PresetGrid({ onSelect }: PresetGridProps) {
                 <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent pointer-events-none" />
                 <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity" />
 
-                <div className="relative flex flex-col items-center justify-center gap-2">
-                  <span className="text-4xl font-black tracking-tighter drop-shadow-sm">
-                    {isCustom ? "?" : preset.name.split(":")[0]}
+                <div className="relative flex flex-col items-center justify-center gap-1.5 w-full">
+                  <span className="text-4xl sm:text-5xl font-black tracking-tighter drop-shadow-sm whitespace-nowrap tabular-nums leading-none">
+                    {isCustom ? "?" : preset.name.replace(":", " : ")}
                   </span>
 
                   {isCustom ? (
-                    <p className="text-[10px] font-black uppercase tracking-widest opacity-80 mt-1">
+                    <p className="text-[10px] sm:text-xs font-black uppercase tracking-widest opacity-80 mt-1">
                       {t.customFast}
                     </p>
                   ) : (
-                    <p className="text-[10px] font-black uppercase tracking-[0.2em] opacity-80">
-                      {preset.name.split(":")[1] || t.fastLabel}
+                    <p className="text-[10px] sm:text-xs font-black uppercase tracking-[0.2em] opacity-80 mt-1">
+                      {t.fastLabel}
                     </p>
                   )}
                 </div>

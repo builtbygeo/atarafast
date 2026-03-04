@@ -200,21 +200,22 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
           <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="relative">
             {settings.timerStyle === "triangle" ? (
               <TriangularProgress
-                progress={percentage / 100}
-                size={280}
-                strokeWidth={12}
+                elapsedHours={elapsedMs / 3600000}
+                targetHours={activeFast.targetHours}
+                size={340}
+                strokeWidth={14}
                 color={isComplete ? (preset?.color || "var(--primary)") : "oklch(0.7 0.18 55)"}
               >
-                <div className="flex flex-col items-center">
-                  <span className="text-4xl font-black text-foreground font-mono tabular-nums tracking-tighter leading-none">
+                <div className="flex flex-col items-center mt-2">
+                  <span className="text-5xl font-black text-foreground font-mono tabular-nums tracking-tighter leading-none">
                     {formatTime(settings.timerDirection === "down" && !isComplete ? remainingMs : elapsedMs)}
                   </span>
-                  <span className="text-[9px] font-black text-muted-foreground mt-2.5 uppercase tracking-widest opacity-60">
+                  <span className="text-[10px] font-black text-muted-foreground mt-3 uppercase tracking-[0.2em] opacity-80">
                     {isComplete ? t.elapsed : settings.timerDirection === "down" ? t.remaining : t.elapsed} ({percentage}%)
                   </span>
-                  <div className="mt-4 flex flex-col items-center">
-                    <span className="text-sm font-black text-foreground tracking-tight">{preset?.name || activeFast.presetId}</span>
-                    <span className="text-[8px] font-black text-muted-foreground uppercase tracking-widest opacity-40">
+                  <div className="mt-5 flex flex-col items-center">
+                    <span className="text-lg font-black text-foreground tracking-tight">{preset?.name || activeFast.presetId}</span>
+                    <span className="text-[9px] font-black text-muted-foreground uppercase tracking-widest opacity-50 mt-1">
                       {activeFast.targetHours}{t.hours} {t.fastLabel}
                     </span>
                   </div>
@@ -223,20 +224,20 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
             ) : (
               <CircularProgress
                 progress={percentage / 100}
-                size={260}
-                strokeWidth={12}
+                size={280}
+                strokeWidth={14}
                 color={isComplete ? (preset?.color || "oklch(var(--primary))") : "oklch(0.7 0.18 55)"}
               >
                 <div className="flex flex-col items-center">
-                  <span className="text-4xl font-black text-foreground font-mono tabular-nums tracking-tighter leading-none">
+                  <span className="text-5xl font-black text-foreground font-mono tabular-nums tracking-tighter leading-none">
                     {formatTime(settings.timerDirection === "down" && !isComplete ? remainingMs : elapsedMs)}
                   </span>
-                  <span className="text-[9px] font-black text-muted-foreground mt-2.5 uppercase tracking-widest opacity-60">
+                  <span className="text-[10px] font-black text-muted-foreground mt-3 uppercase tracking-[0.2em] opacity-80">
                     {isComplete ? t.elapsed : settings.timerDirection === "down" ? t.remaining : t.elapsed} ({percentage}%)
                   </span>
-                  <div className="mt-4 flex flex-col items-center">
-                    <span className="text-sm font-black text-foreground tracking-tight">{preset?.name || activeFast.presetId}</span>
-                    <span className="text-[8px] font-black text-muted-foreground uppercase tracking-widest opacity-40">
+                  <div className="mt-5 flex flex-col items-center">
+                    <span className="text-lg font-black text-foreground tracking-tight">{preset?.name || activeFast.presetId}</span>
+                    <span className="text-[9px] font-black text-muted-foreground uppercase tracking-widest opacity-50 mt-1">
                       {activeFast.targetHours}{t.hours} {t.fastLabel}
                     </span>
                   </div>
