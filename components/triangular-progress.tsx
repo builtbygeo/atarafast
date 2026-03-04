@@ -60,88 +60,87 @@ export function TriangularProgress({
     const continuousPath = `M ${top.x} ${top.y} L ${right.x} ${right.y} L ${left.x} ${left.y} Z`
 
     return (
-        <div className="relative flex items-center justify-center" style={{ width: size, height: size }}>
-            <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="absolute inset-0">
-                {/* Glow filters */}
-                <defs>
-                    <filter id="tri-glow-orange" x="-20%" y="-20%" width="140%" height="140%">
-                        <feGaussianBlur stdDeviation="3" result="blur" />
-                        <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
-                    </filter>
-                    <filter id="tri-glow-amber" x="-20%" y="-20%" width="140%" height="140%">
-                        <feGaussianBlur stdDeviation="3" result="blur" />
-                        <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
-                    </filter>
-                    <filter id="tri-glow-green" x="-20%" y="-20%" width="140%" height="140%">
-                        <feGaussianBlur stdDeviation="3" result="blur" />
-                        <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
-                    </filter>
-                    <filter id="tri-glow-white" x="-20%" y="-20%" width="140%" height="140%">
-                        <feGaussianBlur stdDeviation="2" result="blur" />
-                        <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
-                    </filter>
-                </defs>
+        <div className="flex flex-col items-center">
+            {/* SVG Canvas */}
+            <div className="relative" style={{ width: size, height: size }}>
+                <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="absolute inset-0">
+                    {/* Glow filters */}
+                    <defs>
+                        <filter id="tri-glow-orange" x="-20%" y="-20%" width="140%" height="140%">
+                            <feGaussianBlur stdDeviation="3" result="blur" />
+                            <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+                        </filter>
+                        <filter id="tri-glow-amber" x="-20%" y="-20%" width="140%" height="140%">
+                            <feGaussianBlur stdDeviation="3" result="blur" />
+                            <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+                        </filter>
+                        <filter id="tri-glow-green" x="-20%" y="-20%" width="140%" height="140%">
+                            <feGaussianBlur stdDeviation="3" result="blur" />
+                            <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+                        </filter>
+                        <filter id="tri-glow-white" x="-20%" y="-20%" width="140%" height="140%">
+                            <feGaussianBlur stdDeviation="2" result="blur" />
+                            <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+                        </filter>
+                    </defs>
 
-                {/* 1. Sugar Phase (Right Side) */}
-                <path
-                    d={`M ${top.x} ${top.y} L ${right.x} ${right.y}`}
-                    fill="none"
-                    stroke="#f59e0b"
-                    strokeWidth={strokeWidth}
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    filter="url(#tri-glow-orange)"
-                />
+                    {/* Side 1 — Sugar (Right side: Top → Right) — Always drawn */}
+                    <path
+                        d={`M ${top.x} ${top.y} L ${right.x} ${right.y}`}
+                        fill="none"
+                        stroke="#f59e0b"
+                        strokeWidth={strokeWidth}
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        filter="url(#tri-glow-orange)"
+                    />
 
-                {/* 2. Transition Phase (Bottom Side) */}
-                {data.transitionHours > 0 && (
+                    {/* Side 2 — Transition/Faint base (Bottom: Right → Left) — Always drawn */}
                     <path
                         d={`M ${right.x} ${right.y} L ${left.x} ${left.y}`}
                         fill="none"
-                        stroke="#fbbf24"
+                        stroke={data.transitionHours > 0 ? "#fbbf24" : "rgba(255,255,255,0.1)"}
                         strokeWidth={strokeWidth}
                         strokeLinecap="round"
                         strokeLinejoin="round"
-                        filter="url(#tri-glow-amber)"
+                        filter={data.transitionHours > 0 ? "url(#tri-glow-amber)" : undefined}
                     />
-                )}
 
-                {/* 3. Ketosis Phase (Left Side) */}
-                {data.ketosisHours > 0 && (
+                    {/* Side 3 — Ketosis (Left side: Left → Top) — Always drawn */}
                     <path
                         d={`M ${left.x} ${left.y} L ${top.x} ${top.y}`}
                         fill="none"
-                        stroke="#22c55e"
+                        stroke={data.ketosisHours > 0 ? "#22c55e" : "rgba(255,255,255,0.1)"}
                         strokeWidth={strokeWidth}
                         strokeLinecap="round"
                         strokeLinejoin="round"
-                        filter="url(#tri-glow-green)"
+                        filter={data.ketosisHours > 0 ? "url(#tri-glow-green)" : undefined}
                     />
-                )}
 
-                {/* Progress Overlay (Thin WHITE Line) */}
-                <motion.path
-                    d={continuousPath}
-                    fill="none"
-                    stroke="rgba(255,255,255,0.9)"
-                    strokeWidth={strokeWidth / 5}
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeDasharray={totalLength}
-                    initial={{ strokeDashoffset: totalLength }}
-                    animate={{ strokeDashoffset: totalLength * (1 - visualProgress) }}
-                    transition={{ duration: 1, ease: "easeOut" }}
-                    filter="url(#tri-glow-white)"
-                />
-            </svg>
+                    {/* Progress Overlay (Thin WHITE Line) */}
+                    <motion.path
+                        d={continuousPath}
+                        fill="none"
+                        stroke="rgba(255,255,255,0.9)"
+                        strokeWidth={strokeWidth / 5}
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeDasharray={totalLength}
+                        initial={{ strokeDashoffset: totalLength }}
+                        animate={{ strokeDashoffset: totalLength * (1 - visualProgress) }}
+                        transition={{ duration: 1, ease: "easeOut" }}
+                        filter="url(#tri-glow-white)"
+                    />
+                </svg>
 
-            {/* Children centered in safe zone */}
-            <div className="absolute inset-0 flex flex-col items-center justify-center pt-[15%] z-10">
-                {children}
+                {/* Timer content — sits in the lower-center safe zone of the triangle */}
+                <div className="absolute inset-0 flex flex-col items-center justify-end pb-[18%] z-10">
+                    {children}
+                </div>
             </div>
 
-            {/* Phase Labels Below Triangle (same style as circle) */}
-            <div className="flex flex-row items-start justify-center gap-4 mt-1 w-full">
+            {/* Phase Legend — outside SVG, stacks below */}
+            <div className="flex flex-row items-start justify-center gap-4 mt-3 w-full">
                 <div className="flex flex-col items-center gap-0.5">
                     <span className="w-3 h-1 rounded-full bg-orange-500 block" />
                     <span className="text-[9px] sm:text-[10px] font-bold text-orange-500 uppercase tracking-wider">{t?.phase1 || "ЗАХАР"}</span>
@@ -165,3 +164,4 @@ export function TriangularProgress({
         </div>
     )
 }
+
