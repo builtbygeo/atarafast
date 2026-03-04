@@ -4,6 +4,8 @@ import { motion } from "framer-motion"
 import { useMemo } from "react"
 import { useLang } from "@/lib/language-context"
 
+import { getPhaseData } from "@/lib/fasting-phases"
+
 interface TriangularProgressProps {
     elapsedHours: number
     targetHours: number
@@ -17,7 +19,7 @@ export function TriangularProgress({
     elapsedHours,
     targetHours,
     size = 280,
-    strokeWidth = 12,
+    strokeWidth = 36,
     color = "oklch(var(--primary))",
     children,
 }: TriangularProgressProps) {
@@ -36,7 +38,7 @@ export function TriangularProgress({
     const side3 = Math.sqrt(Math.pow(top.x - left.x, 2) + Math.pow(top.y - left.y, 2))
     const totalLength = side1 + side2 + side3
 
-    // Math for Visual Progress mapping to medical phases
+    // Math for Visual Progress mapping to medical phases structurally
     // Side 1 (Right): 0 - 8 hours
     // Side 2 (Bottom): 8 - 12 hours
     // Side 3 (Left): 12+ hours
@@ -54,42 +56,52 @@ export function TriangularProgress({
         visualProgress = hoursInPhase3 > 0 ? (2 / 3) + (elapsedInPhase3 / hoursInPhase3) * (1 / 3) : (2 / 3)
     }
 
-    // Math for percentages
-    // Phase 1 (0-8h)
-    const p1Hours = Math.min(8, targetHours)
-    const p1Pct = Math.round((p1Hours / targetHours) * 100)
-
-    // Phase 2 (8-12h)
-    const p2Hours = Math.max(0, Math.min(12, targetHours) - p1Hours)
-    const p2Pct = Math.round((p2Hours / targetHours) * 100)
-
-    // Phase 3 (12h+)
-    const p3Hours = Math.max(0, targetHours - (p1Hours + p2Hours))
-    const p3Pct = Math.round((p3Hours / targetHours) * 100)
-
-    // Path string
-    const path = `M ${top.x} ${top.y} L ${right.x} ${right.y} L ${left.x} ${left.y} Z`
+    const data = getPhaseData(targetHours, elapsedHours)
+    const continuousPath = `M ${top.x} ${top.y} L ${right.x} ${right.y} L ${left.x} ${left.y} Z`
 
     return (
         <div className="relative flex items-center justify-center pt-4" style={{ width: size, height: size }}>
             <svg width={size} height={size} className="transform -rotate-0 absolute -top-4">
-                {/* Background Triangle */}
+                {/* 1. Sugar Phase (Right Side) */}
                 <path
-                    id="triangle-bg"
-                    d={path}
+                    d={`M ${top.x} ${top.y} L ${right.x} ${right.y}`}
                     fill="none"
-                    stroke="currentColor"
+                    stroke="var(--color-orange-500, #f59e0b)"
                     strokeWidth={strokeWidth}
-                    className="text-muted/10 opacity-50"
+                    strokeLinecap="round"
                     strokeLinejoin="round"
                 />
 
-                {/* Progress Triangle */}
+                {/* 2. Transition Phase (Bottom Side) */}
+                {data.transitionHours > 0 && (
+                    <path
+                        d={`M ${right.x} ${right.y} L ${left.x} ${left.y}`}
+                        fill="none"
+                        stroke="var(--color-amber-400, #fbbf24)"
+                        strokeWidth={strokeWidth}
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                    />
+                )}
+
+                {/* 3. Ketosis Phase (Left Side) - Only draw if Ketosis exists */}
+                {data.ketosisHours > 0 && (
+                    <path
+                        d={`M ${left.x} ${left.y} L ${top.x} ${top.y}`}
+                        fill="none"
+                        stroke="var(--color-green-500, #22c55e)"
+                        strokeWidth={strokeWidth}
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                    />
+                )}
+
+                {/* Progress Overlay (Thin Bright Line) */}
                 <motion.path
-                    d={path}
+                    d={continuousPath}
                     fill="none"
                     stroke={color}
-                    strokeWidth={strokeWidth}
+                    strokeWidth={strokeWidth / 4} // thin line
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     strokeDasharray={totalLength}
@@ -97,14 +109,9 @@ export function TriangularProgress({
                     animate={{ strokeDashoffset: totalLength * (1 - visualProgress) }}
                     transition={{ duration: 1, ease: "easeOut" }}
                     style={{
-                        filter: "drop-shadow(0 0 8px var(--color-primary-rgb))",
+                        filter: "drop-shadow(0 0 10px var(--color-primary-rgb))",
                     }}
                 />
-
-                {/* Vertex Dots */}
-                <circle cx={top.x} cy={top.y} r={strokeWidth / 1.5} fill={visualProgress > 0 ? color : "currentColor"} className={visualProgress === 0 ? "text-muted/20" : ""} />
-                <circle cx={right.x} cy={right.y} r={strokeWidth / 1.5} fill={visualProgress >= 0.33 ? color : "currentColor"} className={visualProgress < 0.33 ? "text-muted/20" : ""} />
-                <circle cx={left.x} cy={left.y} r={strokeWidth / 1.5} fill={visualProgress >= 0.66 ? color : "currentColor"} className={visualProgress < 0.66 ? "text-muted/20" : ""} />
 
                 {/* 
                   Text Paths (drawn left-to-right or top-to-bottom so text isn't upside down) 
@@ -118,27 +125,27 @@ export function TriangularProgress({
                     <path id="path-left" d={`M ${left.x} ${left.y} L ${top.x} ${top.y}`} />
                 </defs>
 
-                {/* Phase 1 Label */}
-                <text fill="currentColor" className="text-[10px] sm:text-[11px] font-black uppercase tracking-widest text-muted-foreground/60" dy="-14">
+                {/* Phase 1 Label - Text ON the right stroke */}
+                <text fill="white" className="text-[10px] sm:text-[11px] font-black tracking-widest" dy="4">
                     <textPath href="#path-right" startOffset="50%" textAnchor="middle">
-                        {t?.phase1 || "ЗАХАР"} ({p1Pct}%)
+                        {t?.phase1 || "ЗАХАР"} ({data.sugarPct}%)
                     </textPath>
                 </text>
 
-                {/* Phase 2 Label */}
-                {p2Hours > 0 && (
-                    <text fill="currentColor" className="text-[10px] sm:text-[11px] font-black uppercase tracking-widest text-muted-foreground/60" dy="24">
+                {/* Phase 2 Label - Text ON the bottom stroke */}
+                {data.transitionHours > 0 && (
+                    <text fill="white" className="text-[10px] sm:text-[11px] font-black tracking-widest" dy="4">
                         <textPath href="#path-bottom" startOffset="50%" textAnchor="middle">
-                            {t?.phase2 || "ПРЕХОД"} ({p2Pct}%)
+                            {t?.phase2 || "ПРЕХОД"} ({data.transitionPct}%)
                         </textPath>
                     </text>
                 )}
 
-                {/* Phase 3 Label */}
-                {p3Hours > 0 && (
-                    <text fill="currentColor" className="text-[10px] sm:text-[11px] font-black uppercase tracking-widest text-muted-foreground/60" dy="-14">
+                {/* Phase 3 Label - Text ON the left stroke */}
+                {data.ketosisHours > 0 && (
+                    <text fill="white" className="text-[10px] sm:text-[11px] font-black tracking-widest" dy="4">
                         <textPath href="#path-left" startOffset="50%" textAnchor="middle">
-                            {t?.phase3 || "КЕТОЗА И АВТОФАГИЯ"} ({p3Pct}%)
+                            {t?.phase3 || "КЕТОЗА И АВТОФАГИЯ"} ({data.ketosisPct}%)
                         </textPath>
                     </text>
                 )}

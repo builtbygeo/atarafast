@@ -224,8 +224,10 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
             ) : (
               <CircularProgress
                 progress={percentage / 100}
+                elapsedHours={elapsedMs / 3600000}
+                targetHours={activeFast.targetHours}
                 size={280}
-                strokeWidth={14}
+                strokeWidth={28}
                 color={isComplete ? (preset?.color || "oklch(var(--primary))") : "oklch(0.7 0.18 55)"}
               >
                 <div className="flex flex-col items-center justify-center h-full">
