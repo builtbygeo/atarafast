@@ -58,6 +58,7 @@ function StatCard({
 }
 
 export function StatsView({ history }: StatsViewProps) {
+  const { t } = useLang()
   const stats = useMemo(() => {
     if (history.length === 0) {
       return {
@@ -171,24 +172,24 @@ export function StatsView({ history }: StatsViewProps) {
 
   return (
     <div className="flex-1 overflow-y-auto px-5 py-6">
-      <h2 className="text-lg font-semibold text-foreground mb-1">Stats</h2>
-      <p className="text-sm text-muted-foreground mb-6">Your fasting overview</p>
+      <h2 className="text-lg font-semibold text-foreground mb-1">{t.statsTitle}</h2>
+      <p className="text-sm text-muted-foreground mb-6">{t.statsSubtitle}</p>
 
       <div className="grid grid-cols-2 gap-3 mb-8">
-        <StatCard icon={Target} label="Total fasts" value={stats.totalFasts} />
-        <StatCard icon={Clock} label="Total hours" value={stats.totalHours} sub="hours fasted" />
-        <StatCard icon={Flame} label="Current streak" value={stats.currentStreak} sub="days" />
-        <StatCard icon={TrendingUp} label="Longest streak" value={stats.longestStreak} sub="days" />
+        <StatCard icon={Target} label={t.totalFasts} value={stats.totalFasts} />
+        <StatCard icon={Clock} label={t.totalHours} value={stats.totalHours} sub={t.hoursFastedLabel} />
+        <StatCard icon={Flame} label={t.currentStreak} value={stats.currentStreak} sub={t.days} />
+        <StatCard icon={TrendingUp} label={t.longestStreak} value={stats.longestStreak} sub={t.days} />
       </div>
 
       <div className="grid grid-cols-2 gap-3 mb-8">
-        <StatCard icon={Clock} label="Avg. duration" value={`${stats.avgDuration}h`} />
-        <StatCard icon={Target} label="Completion" value={`${stats.completionRate}%`} sub="hit target" />
+        <StatCard icon={Clock} label={t.avgDuration} value={`${stats.avgDuration}h`} />
+        <StatCard icon={Target} label={t.completionRate} value={`${stats.completionRate}%`} sub={t.hitTarget} />
       </div>
 
       {/* Weekly chart */}
       <div className="rounded-xl border border-border bg-card p-4">
-        <h3 className="text-sm font-semibold text-foreground mb-4">Weekly fasting hours</h3>
+        <h3 className="text-sm font-semibold text-foreground mb-4">{t.weeklyFastingHours}</h3>
         {history.length === 0 ? (
           <div className="flex items-center justify-center py-8">
             <p className="text-sm text-muted-foreground">Complete your first fast to see trends</p>

@@ -195,7 +195,7 @@ function StatsShareCard({ history }: Omit<StatsShareCardProps, "type">) {
                     {totalFasts} фаста
                 </h1>
                 <p style={{ color: "#22c55e", fontSize: 15, fontWeight: 700, marginTop: 10 }}>
-                    {formatHms(totalMs)} суммарно
+                    {formatHms(totalMs)} общо
                 </p>
             </div>
 
@@ -249,7 +249,10 @@ export function ShareDialog(props: ShareDialogProps) {
                 const res = await fetch(dataUrl)
                 const blob = await res.blob()
                 const file = new File([blob], "atara-fast.png", { type: "image/png" })
-                await navigator.share({ files: [file], title: "Atara — My Fasting Journey" })
+
+                // Some apps like Telegram handle image + text poorly. 
+                // Sharing just the file list often prioritizes the image correctly.
+                await navigator.share({ files: [file] })
                 setShared(true)
             }
         } catch (e) {
