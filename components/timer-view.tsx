@@ -201,7 +201,7 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
               progress={percentage / 100}
               size={260}
               strokeWidth={12}
-              color={preset?.color || "oklch(0.6 0.1 260)"}
+              color={isComplete ? (preset?.color || "oklch(var(--primary))") : "oklch(0.7 0.18 55)"}
             >
               <div className="flex flex-col items-center">
                 <span className="text-4xl font-black text-foreground font-mono tabular-nums tracking-tighter leading-none">
