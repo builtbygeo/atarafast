@@ -23,7 +23,7 @@ export const bg = {
   tapToConfirm: "Натисни пак за край",
   editStartTime: "Редакция начало",
   viewDetails: "Детайли",
-  targetReached: "Целта е постигната! Може да продължите или да спрете.",
+  targetReached: "Успешно завършен фаст!",
   overTarget: "Невероятно! {{hours}}ч над целта!",
   keepPushing: "Продължавайте или спрете когато сте готови",
   fast: "пост",
