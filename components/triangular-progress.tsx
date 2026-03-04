@@ -60,16 +60,40 @@ export function TriangularProgress({
     const continuousPath = `M ${top.x} ${top.y} L ${right.x} ${right.y} L ${left.x} ${left.y} Z`
 
     return (
-        <div className="relative flex items-center justify-center pt-4" style={{ width: size, height: size }}>
-            <svg width={size} height={size} className="transform -rotate-0 absolute -top-4">
+        <div className="relative flex items-center justify-center" style={{ width: size, height: size }}>
+            <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="absolute inset-0">
+                {/* Glow filters */}
+                <defs>
+                    <filter id="tri-glow-orange" x="-20%" y="-20%" width="140%" height="140%">
+                        <feGaussianBlur stdDeviation="3" result="blur" />
+                        <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+                    </filter>
+                    <filter id="tri-glow-amber" x="-20%" y="-20%" width="140%" height="140%">
+                        <feGaussianBlur stdDeviation="3" result="blur" />
+                        <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+                    </filter>
+                    <filter id="tri-glow-green" x="-20%" y="-20%" width="140%" height="140%">
+                        <feGaussianBlur stdDeviation="3" result="blur" />
+                        <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+                    </filter>
+                    <filter id="tri-glow-white" x="-20%" y="-20%" width="140%" height="140%">
+                        <feGaussianBlur stdDeviation="4" result="blur" />
+                        <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+                    </filter>
+                    <path id="path-right" d={`M ${top.x} ${top.y} L ${right.x} ${right.y}`} />
+                    <path id="path-bottom" d={`M ${left.x} ${left.y} L ${right.x} ${right.y}`} />
+                    <path id="path-left" d={`M ${left.x} ${left.y} L ${top.x} ${top.y}`} />
+                </defs>
+
                 {/* 1. Sugar Phase (Right Side) */}
                 <path
                     d={`M ${top.x} ${top.y} L ${right.x} ${right.y}`}
                     fill="none"
-                    stroke="var(--color-orange-500, #f59e0b)"
+                    stroke="#f59e0b"
                     strokeWidth={strokeWidth}
                     strokeLinecap="round"
                     strokeLinejoin="round"
+                    filter="url(#tri-glow-orange)"
                 />
 
                 {/* 2. Transition Phase (Bottom Side) */}
@@ -77,56 +101,44 @@ export function TriangularProgress({
                     <path
                         d={`M ${right.x} ${right.y} L ${left.x} ${left.y}`}
                         fill="none"
-                        stroke="var(--color-amber-400, #fbbf24)"
+                        stroke="#fbbf24"
                         strokeWidth={strokeWidth}
                         strokeLinecap="round"
                         strokeLinejoin="round"
+                        filter="url(#tri-glow-amber)"
                     />
                 )}
 
-                {/* 3. Ketosis Phase (Left Side) - Only draw if Ketosis exists */}
+                {/* 3. Ketosis Phase (Left Side) */}
                 {data.ketosisHours > 0 && (
                     <path
                         d={`M ${left.x} ${left.y} L ${top.x} ${top.y}`}
                         fill="none"
-                        stroke="var(--color-green-500, #22c55e)"
+                        stroke="#22c55e"
                         strokeWidth={strokeWidth}
                         strokeLinecap="round"
                         strokeLinejoin="round"
+                        filter="url(#tri-glow-green)"
                     />
                 )}
 
-                {/* Progress Overlay (Thin Bright Line) */}
+                {/* Progress Overlay (Thin WHITE Line) */}
                 <motion.path
                     d={continuousPath}
                     fill="none"
-                    stroke={color}
-                    strokeWidth={strokeWidth / 4} // thin line
+                    stroke="rgba(255,255,255,0.9)"
+                    strokeWidth={strokeWidth / 5}
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     strokeDasharray={totalLength}
                     initial={{ strokeDashoffset: totalLength }}
                     animate={{ strokeDashoffset: totalLength * (1 - visualProgress) }}
                     transition={{ duration: 1, ease: "easeOut" }}
-                    style={{
-                        filter: "drop-shadow(0 0 10px var(--color-primary-rgb))",
-                    }}
+                    filter="url(#tri-glow-white)"
                 />
 
-                {/* 
-                  Text Paths (drawn left-to-right or top-to-bottom so text isn't upside down) 
-                  Side 1: Top to Right
-                  Side 2: Left to Right (flipped so reading is left->right instead of right->left)
-                  Side 3: Left to Top (flipped)
-                */}
-                <defs>
-                    <path id="path-right" d={`M ${top.x} ${top.y} L ${right.x} ${right.y}`} />
-                    <path id="path-bottom" d={`M ${left.x} ${left.y} L ${right.x} ${right.y}`} />
-                    <path id="path-left" d={`M ${left.x} ${left.y} L ${top.x} ${top.y}`} />
-                </defs>
-
                 {/* Phase 1 Label - Text ON the right stroke */}
-                <text fill="white" className="text-[10px] sm:text-[11px] font-black tracking-widest" dy="4">
+                <text fill="white" className="text-[9px] sm:text-[10px] font-black tracking-widest" dy="4">
                     <textPath href="#path-right" startOffset="50%" textAnchor="middle">
                         {t?.phase1 || "ЗАХАР"} ({data.sugarPct}%)
                     </textPath>
@@ -134,7 +146,7 @@ export function TriangularProgress({
 
                 {/* Phase 2 Label - Text ON the bottom stroke */}
                 {data.transitionHours > 0 && (
-                    <text fill="white" className="text-[10px] sm:text-[11px] font-black tracking-widest" dy="4">
+                    <text fill="white" className="text-[9px] sm:text-[10px] font-black tracking-widest" dy="4">
                         <textPath href="#path-bottom" startOffset="50%" textAnchor="middle">
                             {t?.phase2 || "ПРЕХОД"} ({data.transitionPct}%)
                         </textPath>
@@ -143,15 +155,16 @@ export function TriangularProgress({
 
                 {/* Phase 3 Label - Text ON the left stroke */}
                 {data.ketosisHours > 0 && (
-                    <text fill="white" className="text-[10px] sm:text-[11px] font-black tracking-widest" dy="4">
+                    <text fill="white" className="text-[9px] sm:text-[10px] font-black tracking-widest" dy="4">
                         <textPath href="#path-left" startOffset="50%" textAnchor="middle">
-                            {t?.phase3 || "КЕТОЗА И АВТОФАГИЯ"} ({data.ketosisPct}%)
+                            {t?.phase3 || "КЕТОЗА"} ({data.ketosisPct}%)
                         </textPath>
                     </text>
                 )}
             </svg>
 
-            <div className="absolute inset-0 flex flex-col items-center justify-center mt-2 z-10">
+            {/* Children centered in safe zone (lower 60% of triangle) */}
+            <div className="absolute inset-0 flex flex-col items-center justify-end pb-[22%] z-10">
                 {children}
             </div>
         </div>

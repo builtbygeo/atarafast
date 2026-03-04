@@ -49,8 +49,28 @@ export function CircularProgress({
   const offsetKeto = circumference * (1 - ketoFrac)
 
   return (
-    <div className="relative inline-flex items-center justify-center pt-2" style={{ width: size, height: size }}>
+    <div className="relative inline-flex flex-col items-center justify-center" style={{ width: size }}>
       <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
+        {/* Glow filters */}
+        <defs>
+          <filter id="glow-orange" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="3" result="blur" />
+            <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+          </filter>
+          <filter id="glow-amber" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="3" result="blur" />
+            <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+          </filter>
+          <filter id="glow-green" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="3" result="blur" />
+            <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+          </filter>
+          <filter id="glow-white" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="4" result="blur" />
+            <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+          </filter>
+        </defs>
+
         {/* Background Track Circle (Empty Space) */}
         <circle
           cx={center}
@@ -69,12 +89,13 @@ export function CircularProgress({
             cy={center}
             r={radius}
             fill="none"
-            stroke="var(--color-orange-500, #f59e0b)"
+            stroke="#f59e0b"
             strokeWidth={strokeWidth}
             strokeDasharray={circumference}
             strokeDashoffset={offsetSugar}
             transform={`rotate(${angleSugar} ${center} ${center})`}
             className="transition-all duration-1000 ease-out"
+            filter="url(#glow-orange)"
           />
         )}
 
@@ -85,12 +106,13 @@ export function CircularProgress({
             cy={center}
             r={radius}
             fill="none"
-            stroke="var(--color-amber-400, #fbbf24)"
+            stroke="#fbbf24"
             strokeWidth={strokeWidth}
             strokeDasharray={circumference}
             strokeDashoffset={offsetTrans}
             transform={`rotate(${angleTrans} ${center} ${center})`}
             className="transition-all duration-1000 ease-out"
+            filter="url(#glow-amber)"
           />
         )}
 
@@ -101,42 +123,59 @@ export function CircularProgress({
             cy={center}
             r={radius}
             fill="none"
-            stroke="var(--color-green-500, #22c55e)"
+            stroke="#22c55e"
             strokeWidth={strokeWidth}
             strokeDasharray={circumference}
             strokeDashoffset={offsetKeto}
             transform={`rotate(${angleKeto} ${center} ${center})`}
             className="transition-all duration-1000 ease-out"
+            filter="url(#glow-green)"
           />
         )}
 
-        {/* Progress Arc (Thin Bright Line Overlay) */}
+        {/* Progress Arc (Thin WHITE Line Overlay) */}
         <circle
           cx={center}
           cy={center}
           r={radius}
           fill="none"
-          stroke={color}
-          strokeWidth={strokeWidth / 4} // thin line
+          stroke="rgba(255,255,255,0.9)"
+          strokeWidth={strokeWidth / 5}
           strokeLinecap="round"
           strokeDasharray={circumference}
           strokeDashoffset={progressOffset}
           transform={`rotate(-90 ${center} ${center})`}
           className="transition-all duration-1000 ease-out"
-          style={{
-            filter: "drop-shadow(0 0 10px var(--color-primary-rgb))",
-          }}
+          filter="url(#glow-white)"
         />
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
         {children}
       </div>
 
-      {/* Outside Labels */}
-      <div className="flex flex-row justify-between w-[120%] absolute -bottom-8 px-4">
-        {sugarFrac > 0 && <span className="text-[10px] sm:text-xs font-black text-orange-500 uppercase tracking-wider">{t?.phase1 || "ЗАХАР"} ({data.sugarPct}%)</span>}
-        {transFrac > 0 && <span className="text-[10px] sm:text-xs font-black text-amber-400 uppercase tracking-wider">{t?.phase2 || "ПРЕХОД"} ({data.transitionPct}%)</span>}
-        {ketoFrac > 0 && <span className="text-[10px] sm:text-xs font-black text-green-500 uppercase tracking-wider">{t?.phase3 || "КЕТОЗА И АВТОФАГИЯ"} ({data.ketosisPct}%)</span>}
+      {/* Phase Labels Below Circle */}
+      <div className="flex flex-row items-start justify-center gap-4 mt-4 w-full">
+        {sugarFrac > 0 && (
+          <div className="flex flex-col items-center gap-0.5">
+            <span className="w-3 h-1 rounded-full bg-orange-500 block" />
+            <span className="text-[9px] sm:text-[10px] font-bold text-orange-500 uppercase tracking-wider">{t?.phase1 || "ЗАХАР"}</span>
+            <span className="text-[9px] text-muted-foreground font-mono">{data.sugarPct}%</span>
+          </div>
+        )}
+        {transFrac > 0 && (
+          <div className="flex flex-col items-center gap-0.5">
+            <span className="w-3 h-1 rounded-full bg-amber-400 block" />
+            <span className="text-[9px] sm:text-[10px] font-bold text-amber-400 uppercase tracking-wider">{t?.phase2 || "ПРЕХОД"}</span>
+            <span className="text-[9px] text-muted-foreground font-mono">{data.transitionPct}%</span>
+          </div>
+        )}
+        {ketoFrac > 0 && (
+          <div className="flex flex-col items-center gap-0.5">
+            <span className="w-3 h-1 rounded-full bg-green-500 block" />
+            <span className="text-[9px] sm:text-[10px] font-bold text-green-500 uppercase tracking-wider">{t?.phase3 || "КЕТОЗА"}</span>
+            <span className="text-[9px] text-muted-foreground font-mono">{data.ketosisPct}%</span>
+          </div>
+        )}
       </div>
     </div>
   )
