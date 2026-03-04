@@ -11,6 +11,7 @@ export interface FastingRecord {
 
 export interface AppSettings {
   timerDirection: "up" | "down"
+  timerStyle: "circle" | "triangle"
 }
 
 interface StoredData {
@@ -27,6 +28,7 @@ const DEFAULT_DATA: StoredData = {
   history: [],
   settings: {
     timerDirection: "down",
+    timerStyle: "circle",
   },
   lastFastInfo: null,
 }

@@ -63,7 +63,7 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
   const [direction, setDirection] = useState(0)
   const [selectedPreset, setSelectedPreset] = useState<FastingPreset | null>(null)
   const [now, setNow] = useState(new Date())
-  const [settings, setSettings] = useState<ReturnType<typeof getSettings>>({ timerDirection: "down" })
+  const [settings, setSettings] = useState<ReturnType<typeof getSettings>>({ timerDirection: "down", timerStyle: "circle" })
   const [mounted, setMounted] = useState(false)
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
   const [showEditStartTime, setShowEditStartTime] = useState(false)
@@ -197,27 +197,51 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
 
         <div className="flex flex-col items-center text-center mt-4 mb-6 w-full">
           <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="relative">
-            <CircularProgress
-              progress={percentage / 100}
-              size={260}
-              strokeWidth={12}
-              color={isComplete ? (preset?.color || "oklch(var(--primary))") : "oklch(0.7 0.18 55)"}
-            >
-              <div className="flex flex-col items-center">
-                <span className="text-4xl font-black text-foreground font-mono tabular-nums tracking-tighter leading-none">
-                  {formatTime(settings.timerDirection === "down" && !isComplete ? remainingMs : elapsedMs)}
-                </span>
-                <span className="text-[9px] font-black text-muted-foreground mt-2.5 uppercase tracking-widest opacity-60">
-                  {isComplete ? t.elapsed : settings.timerDirection === "down" ? t.remaining : t.elapsed} ({percentage}%)
-                </span>
-                <div className="mt-4 flex flex-col items-center">
-                  <span className="text-sm font-black text-foreground tracking-tight">{preset?.name || activeFast.presetId}</span>
-                  <span className="text-[8px] font-black text-muted-foreground uppercase tracking-widest opacity-40">
-                    {activeFast.targetHours}{t.hours} {t.fastLabel}
+            {settings.timerStyle === "triangle" ? (
+              <TriangularProgress
+                progress={percentage / 100}
+                size={280}
+                strokeWidth={12}
+                color={isComplete ? (preset?.color || "var(--primary)") : "oklch(0.7 0.18 55)"}
+              >
+                <div className="flex flex-col items-center">
+                  <span className="text-4xl font-black text-foreground font-mono tabular-nums tracking-tighter leading-none">
+                    {formatTime(settings.timerDirection === "down" && !isComplete ? remainingMs : elapsedMs)}
                   </span>
+                  <span className="text-[9px] font-black text-muted-foreground mt-2.5 uppercase tracking-widest opacity-60">
+                    {isComplete ? t.elapsed : settings.timerDirection === "down" ? t.remaining : t.elapsed} ({percentage}%)
+                  </span>
+                  <div className="mt-4 flex flex-col items-center">
+                    <span className="text-sm font-black text-foreground tracking-tight">{preset?.name || activeFast.presetId}</span>
+                    <span className="text-[8px] font-black text-muted-foreground uppercase tracking-widest opacity-40">
+                      {activeFast.targetHours}{t.hours} {t.fastLabel}
+                    </span>
+                  </div>
                 </div>
-              </div>
-            </CircularProgress>
+              </TriangularProgress>
+            ) : (
+              <CircularProgress
+                progress={percentage / 100}
+                size={260}
+                strokeWidth={12}
+                color={isComplete ? (preset?.color || "oklch(var(--primary))") : "oklch(0.7 0.18 55)"}
+              >
+                <div className="flex flex-col items-center">
+                  <span className="text-4xl font-black text-foreground font-mono tabular-nums tracking-tighter leading-none">
+                    {formatTime(settings.timerDirection === "down" && !isComplete ? remainingMs : elapsedMs)}
+                  </span>
+                  <span className="text-[9px] font-black text-muted-foreground mt-2.5 uppercase tracking-widest opacity-60">
+                    {isComplete ? t.elapsed : settings.timerDirection === "down" ? t.remaining : t.elapsed} ({percentage}%)
+                  </span>
+                  <div className="mt-4 flex flex-col items-center">
+                    <span className="text-sm font-black text-foreground tracking-tight">{preset?.name || activeFast.presetId}</span>
+                    <span className="text-[8px] font-black text-muted-foreground uppercase tracking-widest opacity-40">
+                      {activeFast.targetHours}{t.hours} {t.fastLabel}
+                    </span>
+                  </div>
+                </div>
+              </CircularProgress>
+            )}
           </motion.div>
 
           <div className="flex gap-3 mt-8 w-full max-w-sm px-4">

@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { X, Download, Upload, Trash2, Sun, Moon, Monitor, ChevronUp, ChevronDown } from "lucide-react"
+import { X, Download, Upload, Trash2, Sun, Moon, Monitor, ChevronUp, ChevronDown, Circle, Triangle } from "lucide-react"
 import { useTheme } from "next-themes"
 import { getSettings, updateSettings, exportData, importData, clearAllData, type AppSettings } from "@/lib/storage"
 import { useLang } from "@/lib/language-context"
@@ -26,6 +26,11 @@ export function SettingsSheet({ open, onClose, onDataCleared }: SettingsSheetPro
   function handleTimerDirection(dir: "up" | "down") {
     updateSettings({ timerDirection: dir })
     setSettingsState((prev) => ({ ...prev, timerDirection: dir }))
+  }
+
+  function handleTimerStyle(style: "circle" | "triangle") {
+    updateSettings({ timerStyle: style })
+    setSettingsState((prev) => ({ ...prev, timerStyle: style }))
   }
 
   function handleImport() {
@@ -108,6 +113,40 @@ export function SettingsSheet({ open, onClose, onDataCleared }: SettingsSheetPro
               <p className="text-[10px] text-muted-foreground text-center mt-1">
                 {t.authDescription} <span className="text-primary/60 font-bold">({t.comingSoon})</span>
               </p>
+            </div>
+          </div>
+
+          <div className="h-px bg-border" />
+
+          {/* Timer Style */}
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-foreground">Visual Style</p>
+              <p className="text-xs text-muted-foreground uppercase tracking-tight opacity-60">
+                {settings.timerStyle === "circle" ? "Classic Circle" : "New Triangle"}
+              </p>
+            </div>
+            <div className="flex rounded-lg border border-border overflow-hidden">
+              <button
+                onClick={() => handleTimerStyle("circle")}
+                className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium transition-colors ${settings.timerStyle === "circle"
+                  ? "bg-primary text-primary-foreground"
+                  : "bg-card text-muted-foreground hover:text-foreground"
+                  }`}
+              >
+                <Circle className="h-3 w-3" />
+                Circle
+              </button>
+              <button
+                onClick={() => handleTimerStyle("triangle")}
+                className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium transition-colors ${settings.timerStyle === "triangle"
+                  ? "bg-primary text-primary-foreground"
+                  : "bg-card text-muted-foreground hover:text-foreground"
+                  }`}
+              >
+                <Triangle className="h-3 w-3" />
+                Triangle
+              </button>
             </div>
           </div>
 
