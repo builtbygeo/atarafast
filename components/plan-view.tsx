@@ -12,35 +12,34 @@ export function PlanView() {
 
   const allPresets = [...FASTING_PRESETS, CUSTOM_PRESET]
 
-  // Container variants for staggering the grid items
+  // Simplify animation to load all at once
   const container = {
     hidden: { opacity: 0 },
     show: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.08,
+        duration: 0.3,
       },
     },
   }
 
   const item = {
-    hidden: { opacity: 0, y: 15, scale: 0.95 },
+    hidden: { opacity: 0, scale: 0.95 },
     show: {
       opacity: 1,
-      y: 0,
       scale: 1,
-      transition: { type: "spring" as const, stiffness: 260, damping: 20 }
+      transition: { type: "spring" as const, stiffness: 300, damping: 25 }
     },
   }
 
   const renderGrid = () => (
-    <div className="flex-1 overflow-y-auto px-5 py-6">
-      <div className="mb-8">
-        <p className="text-[10px] text-muted-foreground font-medium uppercase tracking-wider mb-2 leading-tight">
-          {t.tagline}
+    <div className="flex-1 overflow-y-auto px-5 py-6 no-scrollbar">
+      <div className="mb-8 px-1">
+        <p className="text-[10px] text-muted-foreground font-black uppercase tracking-[0.2em] mb-3 leading-tight opacity-60">
+          {t.appName} &middot; {t.planTitle}
         </p>
-        <h2 className="text-2xl font-bold text-foreground tracking-tight">{t.fastingPlans}</h2>
-        <p className="text-sm text-muted-foreground mt-1.5 leading-relaxed">
+        <h2 className="text-3xl font-black text-foreground tracking-tighter">{t.fastingPlans}</h2>
+        <p className="text-sm font-medium text-muted-foreground mt-2 leading-relaxed opacity-70">
           {t.plansSubtitle}
         </p>
       </div>
@@ -59,22 +58,25 @@ export function PlanView() {
               variants={item}
               whileTap={{ scale: 0.96 }}
               onClick={() => setSelectedPlan(preset)}
-              className="flex flex-col items-start gap-4 rounded-3xl border border-border bg-card p-5 text-left transition-all hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5 active:bg-secondary/20"
+              className="group relative flex flex-col items-center justify-center gap-4 rounded-[2.5rem] border border-border/50 bg-card p-6 text-center transition-all hover:border-primary/30 shadow-lg active:bg-secondary/20 overflow-hidden"
             >
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+
               <div
-                className="flex h-12 w-12 items-center justify-center rounded-2xl text-lg font-bold shadow-lg"
+                className="flex h-14 w-14 items-center justify-center rounded-2xl text-xl font-black shadow-xl relative z-10"
                 style={{
                   backgroundColor: preset.color,
                   color: "white",
-                  boxShadow: `0 8px 16px -4px ${preset.color}40`
+                  boxShadow: `0 8px 16px -4px ${preset.color}60`
                 }}
               >
                 {preset.fastHours > 0 ? preset.fastHours : "?"}
               </div>
-              <div>
-                <p className="text-sm font-bold text-foreground leading-tight italic">{content.name}</p>
-                <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-widest mt-1 opacity-70">
-                  {preset.fastHours > 0 ? `${preset.fastHours}:${preset.eatHours}` : "Custom"}
+
+              <div className="relative z-10">
+                <p className="text-sm font-black text-foreground leading-tight tracking-tight">{content.name}</p>
+                <p className="text-[9px] font-black text-muted-foreground uppercase tracking-[0.2em] mt-1.5 opacity-50">
+                  {preset.fastHours > 0 ? `${preset.fastHours}:${preset.eatHours}` : t.customFast}
                 </p>
               </div>
             </motion.button>

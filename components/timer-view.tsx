@@ -11,6 +11,7 @@ import {
   Clock,
   Timer,
   Settings as SettingsIcon,
+  Edit2,
 } from "lucide-react"
 import {
   startFast,
@@ -21,9 +22,11 @@ import {
   deleteFast,
   getLastFastInfo,
   addManualFast,
+  updateActiveFastStartTime,
   type FastingRecord,
 } from "@/lib/storage"
 import { getPresetById, type FastingPreset } from "@/lib/presets"
+import { EditTimeDialog } from "@/components/edit-time-dialog"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -63,6 +66,7 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
   const [settings, setSettings] = useState<ReturnType<typeof getSettings>>({ timerDirection: "down" })
   const [mounted, setMounted] = useState(false)
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
+  const [showEditStartTime, setShowEditStartTime] = useState(false)
 
   const navigateTo = useCallback(
     (newState: ViewState) => {
@@ -148,6 +152,12 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
     }
   }, [navigateTo])
 
+  const handleUpdateStartTime = (newStartTime: Date) => {
+    updateActiveFastStartTime(newStartTime)
+    setActiveFast(getActiveFast())
+    setShowEditStartTime(false)
+  }
+
   if (!mounted) return null
 
   const renderTimerContent = () => {
@@ -195,9 +205,17 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
           </motion.div>
 
           <div className="flex gap-4 mt-12 w-full max-w-sm px-4">
-            <div className="flex-1 bg-secondary/20 rounded-2xl p-4 border border-border/50">
+            <div className="flex-1 bg-secondary/20 rounded-2xl p-4 border border-border/50 relative group">
               <span className="block text-[8px] font-black uppercase tracking-[0.2em] text-muted-foreground opacity-60 mb-1">{t.startTime.toUpperCase()}</span>
-              <span className="block text-sm font-black text-foreground">{format(startTime, "EEE, HH:mm")}</span>
+              <div className="flex items-center justify-between">
+                <span className="block text-sm font-black text-foreground">{format(startTime, "EEE, HH:mm")}</span>
+                <button
+                  onClick={() => setShowEditStartTime(true)}
+                  className="p-1.5 rounded-lg bg-secondary/40 text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  <Edit2 className="h-3 w-3" />
+                </button>
+              </div>
             </div>
             <div className="flex-1 bg-secondary/20 rounded-2xl p-4 border border-border/50">
               <span className="block text-[8px] font-black uppercase tracking-[0.2em] text-muted-foreground opacity-60 mb-1">{`${activeFast.targetHours}H ${t.goal.toUpperCase()}`}</span>
@@ -255,6 +273,16 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
+
+        {/* Edit Start Time Dialog */}
+        {showEditStartTime && (
+          <EditTimeDialog
+            currentTime={startTime}
+            label={t.startTime}
+            onConfirm={handleUpdateStartTime}
+            onCancel={() => setShowEditStartTime(false)}
+          />
+        )}
       </div>
     )
   }

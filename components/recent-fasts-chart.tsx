@@ -66,6 +66,13 @@ export function RecentFastsChart({ history, activeFast, onAddClick, onSeeMoreCli
         return totalMs / completedFasts.length / (1000 * 60 * 60)
     }, [history])
 
+    const last7Fasts = useMemo(() => {
+        return [...history]
+            .filter(h => h.endTime)
+            .sort((a, b) => new Date(b.startTime).getTime() - new Date(a.startTime).getTime())
+            .slice(0, 7)
+    }, [history])
+
     const formatDurationRaw = (hours: number) => {
         const h = Math.floor(hours)
         const m = Math.round((hours - h) * 60)
@@ -79,20 +86,35 @@ export function RecentFastsChart({ history, activeFast, onAddClick, onSeeMoreCli
 
     return (
         <div className="w-full bg-secondary/10 border border-border/50 rounded-3xl p-5 shadow-sm backdrop-blur-sm">
-            <div className="flex items-end justify-between mb-8">
-                <div>
-                    <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground opacity-60 mb-1">{t.average}</p>
-                    <div className="flex items-baseline gap-1">
-                        <span className="text-3xl font-black text-foreground tracking-tighter">{avg.h}h</span>
-                        <span className="text-xl font-bold text-foreground/70 tracking-tight">{avg.m}m</span>
+            <div className="flex flex-col gap-6 mb-8">
+                <div className="flex items-end justify-between">
+                    <div>
+                        <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground opacity-60 mb-1">{t.average}</p>
+                        <div className="flex items-baseline gap-1">
+                            <span className="text-3xl font-black text-foreground tracking-tighter">{avg.h}h</span>
+                            <span className="text-xl font-bold text-foreground/70 tracking-tight">{avg.m}m</span>
+                        </div>
                     </div>
+                    <p className="text-[8px] font-bold text-muted-foreground uppercase tracking-widest mb-1 opacity-70">
+                        {dateRange}
+                    </p>
                 </div>
-                <p className="text-[8px] font-bold text-muted-foreground uppercase tracking-widest mb-1 opacity-70">
-                    {dateRange}
-                </p>
+
+                {/* List of last 7 fasts - Zero style detail */}
+                <div className="grid grid-cols-7 gap-1.5 px-1">
+                    {last7Fasts.slice().reverse().map((fast, idx) => {
+                        const duration = (new Date(fast.endTime!).getTime() - new Date(fast.startTime).getTime()) / (1000 * 3600)
+                        return (
+                            <div key={fast.id} className="flex flex-col items-center gap-1.5">
+                                <div className={`h-1.5 w-full rounded-full ${fast.completed ? "bg-primary shadow-[0_0_8px_rgba(var(--primary-rgb),0.5)]" : "bg-orange-500/80"}`} />
+                                <span className="text-[7px] font-black text-muted-foreground/60">{Math.round(duration)}h</span>
+                            </div>
+                        )
+                    })}
+                </div>
             </div>
 
-            <div className="h-36 flex items-end justify-between gap-1 relative mb-8">
+            <div className="h-32 flex items-end justify-between gap-1 relative mb-10">
                 {[0, 0.25, 0.5, 0.75, 1].map((p, i) => (
                     <div
                         key={i}
@@ -114,7 +136,7 @@ export function RecentFastsChart({ history, activeFast, onAddClick, onSeeMoreCli
                         <div key={i} className="flex-1 flex flex-col items-center gap-3 group relative z-10">
                             <div className="relative w-full flex flex-col items-center justify-end h-full">
                                 {day.hours > 0 && (
-                                    <span className="absolute -top-6 text-[9px] font-black text-foreground/60 transition-opacity opacity-0 group-hover:opacity-100 bg-background/80 px-1 rounded">
+                                    <span className="absolute -top-6 text-[9px] font-black text-foreground/60 transition-opacity opacity-0 group-hover:opacity-100 bg-background/80 px-1 rounded whitespace-nowrap z-50">
                                         {day.hours.toFixed(1)}h
                                     </span>
                                 )}

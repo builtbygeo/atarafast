@@ -17,26 +17,25 @@ export function PresetGrid({ onSelect }: PresetGridProps) {
     show: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.08,
+        duration: 0.3,
       },
     },
   }
 
   const item = {
-    hidden: { opacity: 0, y: 15, filter: "blur(4px)" },
+    hidden: { opacity: 0, scale: 0.95 },
     show: {
       opacity: 1,
-      y: 0,
-      filter: "blur(0px)",
-      transition: { type: "spring" as const, stiffness: 260, damping: 22 }
+      scale: 1,
+      transition: { type: "spring" as const, stiffness: 300, damping: 25 }
     },
   }
 
   return (
-    <div className="flex flex-col gap-6 w-full">
-      <header>
-        <h2 className="text-xl font-bold tracking-tight text-foreground">{t.selectPreset}</h2>
-        <p className="text-sm text-muted-foreground mt-1">{t.selectSubtitle}</p>
+    <div className="flex flex-col gap-8 w-full">
+      <header className="px-1">
+        <h2 className="text-2xl font-black tracking-tight text-foreground">{t.selectPreset}</h2>
+        <p className="text-sm font-medium text-muted-foreground mt-1.5 opacity-70">{t.selectSubtitle}</p>
       </header>
 
       <motion.div
@@ -51,27 +50,31 @@ export function PresetGrid({ onSelect }: PresetGridProps) {
             <motion.div key={preset.id} variants={item}>
               <button
                 onClick={() => onSelect(preset)}
-                className="w-full relative flex flex-col items-center justify-center min-h-[120px] rounded-3xl p-5 text-center transition-all active:scale-[0.96] shadow-lg group overflow-hidden"
+                className="w-full relative flex flex-col items-center justify-center min-h-[140px] rounded-[2.5rem] p-6 text-center transition-all active:scale-[0.95] shadow-xl group overflow-hidden border border-white/10"
                 style={{
                   backgroundColor: preset.color,
                   color: "white",
-                  boxShadow: `0 10px 20px -5px ${preset.color}40`
+                  boxShadow: `0 12px 24px -8px ${preset.color}60`
                 }}
               >
-                {/* Subtle glass effect overlay */}
-                <div className="absolute inset-0 bg-white/5 group-hover:bg-white/10 transition-colors" />
+                <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent pointer-events-none" />
+                <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity" />
 
-                <span className="relative text-3xl font-black opacity-95 tracking-tighter">
-                  {isCustom ? "?" : preset.name}
-                </span>
+                <div className="relative flex flex-col items-center justify-center gap-2">
+                  <span className="text-4xl font-black tracking-tighter drop-shadow-sm">
+                    {isCustom ? "?" : preset.name.split(":")[0]}
+                  </span>
 
-                {isCustom && (
-                  <div className="relative mt-1">
-                    <p className="text-[10px] font-bold uppercase tracking-widest opacity-80">
+                  {isCustom ? (
+                    <p className="text-[10px] font-black uppercase tracking-widest opacity-80 mt-1">
                       {t.customFast}
                     </p>
-                  </div>
-                )}
+                  ) : (
+                    <p className="text-[10px] font-black uppercase tracking-[0.2em] opacity-80">
+                      {preset.name.split(":")[1] || t.fastLabel}
+                    </p>
+                  )}
+                </div>
               </button>
             </motion.div>
           )
