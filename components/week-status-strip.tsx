@@ -20,13 +20,31 @@ export function WeekStatusStrip({ history, activeFast }: WeekStatusStripProps) {
             const dayFasts = history.filter(f => isSameDay(new Date(f.startTime), date))
 
             const isToday = i === 0
-            const hasCompleted = dayFasts.some(f => f.completed)
             const isActive = activeFast && isSameDay(new Date(activeFast.startTime), date)
+
+            let totalHours = 0
+            let targetHours = 0
+
+            dayFasts.forEach(f => {
+                if (f.endTime) {
+                    totalHours += (new Date(f.endTime).getTime() - new Date(f.startTime).getTime()) / (1000 * 3600)
+                    targetHours = Math.max(targetHours, f.targetHours)
+                }
+            })
+
+            if (isActive) {
+                totalHours += (now.getTime() - new Date(activeFast.startTime).getTime()) / (1000 * 3600)
+                targetHours = Math.max(targetHours, activeFast.targetHours)
+            }
+
+            const goalMet = totalHours >= (targetHours || 16) && totalHours > 0
 
             days.push({
                 date,
                 label: format(date, "EEE").toUpperCase(),
-                status: hasCompleted ? "completed" : isActive ? "active" : "none",
+                hours: totalHours,
+                goalMet,
+                isActive,
                 isToday
             })
         }
@@ -36,27 +54,24 @@ export function WeekStatusStrip({ history, activeFast }: WeekStatusStripProps) {
     return (
         <div className="flex items-center justify-between w-full px-2 py-4 mb-2">
             {weekData.map((day, i) => (
-                <div key={i} className="flex flex-col items-center gap-2">
+                <div key={i} className="flex flex-col items-center gap-2.5">
                     <span className={`text-[8px] font-black uppercase tracking-widest ${day.isToday ? "text-primary" : "text-muted-foreground/60"}`}>
                         {day.label}
                     </span>
                     <div className="relative">
-                        <div className={`h-7 w-7 rounded-full border-2 flex items-center justify-center transition-all ${day.status === "completed"
-                                ? "border-primary bg-primary/10"
-                                : day.status === "active"
-                                    ? "border-primary/40 border-dashed animate-[spin_10s_linear_infinite]"
-                                    : "border-border/40"
-                            }`} />
-                        {day.status === "completed" && (
-                            <div className="absolute inset-0 flex items-center justify-center">
-                                <div className="h-2 w-2 rounded-full bg-primary" />
-                            </div>
-                        )}
-                        {day.isToday && day.status === "none" && (
-                            <div className="absolute inset-0 flex items-center justify-center">
+                        <div className={`h-8 w-8 rounded-full border-2 flex items-center justify-center transition-all ${day.hours > 0
+                                ? (day.goalMet ? "border-primary bg-primary/10 shadow-[0_0_10px_rgba(var(--primary-rgb),0.2)]" : "border-orange-500/50 bg-orange-500/5")
+                                : (day.isActive ? "border-primary/40 border-dashed animate-[spin_10s_linear_infinite]" : "border-border/40")
+                            }`}>
+                            {day.hours > 0 && (
+                                <span className={`text-[9px] font-black tabular-nums transition-colors ${day.goalMet ? "text-primary" : "text-orange-500"}`}>
+                                    {Math.round(day.hours)}
+                                </span>
+                            )}
+                            {!day.hours && day.isToday && !day.isActive && (
                                 <div className="h-1.5 w-1.5 rounded-full bg-muted-foreground/30" />
-                            </div>
-                        )}
+                            )}
+                        </div>
                     </div>
                 </div>
             ))}

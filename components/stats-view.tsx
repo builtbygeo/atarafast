@@ -189,19 +189,25 @@ export function StatsView({ history }: StatsViewProps) {
                 className="fill-muted-foreground"
               />
               <Tooltip
-                contentStyle={{
-                  backgroundColor: "var(--color-card)",
-                  border: "1px solid var(--color-border)",
-                  borderRadius: "8px",
-                  fontSize: "12px",
-                  color: "var(--color-foreground)",
+                cursor={{ fill: 'transparent' }}
+                content={({ active, payload, label }) => {
+                  if (active && payload && payload.length) {
+                    return (
+                      <div className="bg-card/95 backdrop-blur-md border border-border/50 p-3 rounded-2xl shadow-2xl">
+                        <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-1">{label}</p>
+                        <p className="text-sm font-black text-foreground">{payload[0].value} <span className="text-[10px] text-muted-foreground">{t.hours}</span></p>
+                      </div>
+                    )
+                  }
+                  return null
                 }}
-                labelStyle={{ color: "var(--color-foreground)" }}
               />
               <Bar
                 dataKey="hours"
-                fill="var(--color-primary)"
-                radius={[4, 4, 0, 0]}
+                fill="oklch(var(--primary))"
+                radius={[6, 6, 6, 6]}
+                barSize={32}
+                className="transition-all hover:opacity-80"
               />
             </BarChart>
           </ResponsiveContainer>

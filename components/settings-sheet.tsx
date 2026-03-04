@@ -1,9 +1,9 @@
 "use client"
 
 import { useState } from "react"
-import { X, Download, Trash2, Sun, Moon, Monitor, ChevronUp, ChevronDown } from "lucide-react"
+import { X, Download, Upload, Trash2, Sun, Moon, Monitor, ChevronUp, ChevronDown } from "lucide-react"
 import { useTheme } from "next-themes"
-import { getSettings, updateSettings, exportData, clearAllData, type AppSettings } from "@/lib/storage"
+import { getSettings, updateSettings, exportData, importData, clearAllData, type AppSettings } from "@/lib/storage"
 import { useLang } from "@/lib/language-context"
 import { useNotifications } from "@/hooks/use-notifications"
 import { Bell, BellOff } from "lucide-react"
@@ -26,6 +26,29 @@ export function SettingsSheet({ open, onClose, onDataCleared }: SettingsSheetPro
   function handleTimerDirection(dir: "up" | "down") {
     updateSettings({ timerDirection: dir })
     setSettingsState((prev) => ({ ...prev, timerDirection: dir }))
+  }
+
+  function handleImport() {
+    const input = document.createElement("input")
+    input.type = "file"
+    input.accept = ".json"
+    input.onchange = (e) => {
+      const file = (e.target as HTMLInputElement).files?.[0]
+      if (!file) return
+      const reader = new FileReader()
+      reader.onload = (re) => {
+        const content = re.target?.result as string
+        if (importData(content)) {
+          alert(t.importSuccess)
+          onDataCleared() // Refresh UI
+          onClose()
+        } else {
+          alert(t.importError)
+        }
+      }
+      reader.readAsText(file)
+    }
+    input.click()
   }
 
   function handleExport() {
@@ -155,8 +178,8 @@ export function SettingsSheet({ open, onClose, onDataCleared }: SettingsSheetPro
             <button
               onClick={requestPermission}
               className={`flex items-center gap-2 rounded-xl px-4 py-2 text-xs font-bold transition-all border ${permission === "granted"
-                  ? "bg-primary/10 border-primary/20 text-primary"
-                  : "bg-secondary border-border text-muted-foreground hover:text-foreground active:scale-95"
+                ? "bg-primary/10 border-primary/20 text-primary"
+                : "bg-secondary border-border text-muted-foreground hover:text-foreground active:scale-95"
                 }`}
             >
               {permission === "granted" ? (
@@ -175,14 +198,26 @@ export function SettingsSheet({ open, onClose, onDataCleared }: SettingsSheetPro
 
           <div className="h-px bg-border" />
 
-          {/* Export */}
-          <button
-            onClick={handleExport}
-            className="flex items-center gap-3 rounded-xl bg-secondary px-4 py-3 text-sm font-medium text-secondary-foreground transition-colors hover:bg-secondary/80"
-          >
-            <Download className="h-4 w-4" />
-            Export data as JSON
-          </button>
+          {/* Data Section */}
+          <div className="flex flex-col gap-3">
+            <h3 className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-1 ml-1">{t.data}</h3>
+            <div className="grid grid-cols-2 gap-3">
+              <button
+                onClick={handleExport}
+                className="flex flex-col items-center justify-center gap-2 rounded-2xl bg-secondary/50 p-4 transition-all hover:bg-secondary active:scale-95 border border-border/50"
+              >
+                <Download className="h-5 w-5 text-primary" />
+                <span className="text-[10px] font-black uppercase tracking-widest">{t.exportData}</span>
+              </button>
+              <button
+                onClick={handleImport}
+                className="flex flex-col items-center justify-center gap-2 rounded-2xl bg-secondary/50 p-4 transition-all hover:bg-secondary active:scale-95 border border-border/50"
+              >
+                <Upload className="h-5 w-5 text-primary" />
+                <span className="text-[10px] font-black uppercase tracking-widest">{t.importData}</span>
+              </button>
+            </div>
+          </div>
 
           {/* Clear */}
           <button

@@ -173,24 +173,26 @@ export function PlanView() {
 
   return (
     <div className="flex-1 relative flex flex-col h-full overflow-hidden">
-      <AnimatePresence mode="wait">
+      <AnimatePresence initial={false} mode="popLayout">
         {!selectedPlan ? (
           <motion.div
             key="grid"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0, x: -20 }}
-            className="flex flex-col h-full"
+            initial={{ opacity: 0, x: -10 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -10 }}
+            transition={{ type: "spring", damping: 30, stiffness: 300 }}
+            className="flex flex-col h-full w-full"
           >
             {renderGrid()}
           </motion.div>
         ) : (
           <motion.div
             key="detail"
-            initial={{ opacity: 0, x: 20 }}
+            initial={{ opacity: 0, x: 10 }}
             animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: 20 }}
-            className="flex flex-col h-full absolute inset-0 z-20"
+            exit={{ opacity: 0, x: 10 }}
+            transition={{ type: "spring", damping: 30, stiffness: 300 }}
+            className="flex flex-col h-full w-full bg-background"
           >
             {renderDetail(selectedPlan)}
           </motion.div>

@@ -101,13 +101,13 @@ export function RecentFastsChart({ history, activeFast, onAddClick, onSeeMoreCli
                 </div>
 
                 {/* List of last 7 fasts - Zero style detail */}
-                <div className="grid grid-cols-7 gap-1.5 px-1">
+                <div className="grid grid-cols-7 gap-3 px-2">
                     {last7Fasts.slice().reverse().map((fast, idx) => {
                         const duration = (new Date(fast.endTime!).getTime() - new Date(fast.startTime).getTime()) / (1000 * 3600)
                         return (
-                            <div key={fast.id} className="flex flex-col items-center gap-1.5">
-                                <div className={`h-1.5 w-full rounded-full ${fast.completed ? "bg-primary shadow-[0_0_8px_rgba(var(--primary-rgb),0.5)]" : "bg-orange-500/80"}`} />
-                                <span className="text-[7px] font-black text-muted-foreground/60">{Math.round(duration)}h</span>
+                            <div key={fast.id} className="flex flex-col items-center gap-1.5 flex-1">
+                                <div className={`h-1 w-full rounded-full ${fast.completed ? "bg-primary shadow-[0_0_8px_rgba(var(--primary-rgb),0.5)]" : "bg-orange-500/80"}`} />
+                                <span className="text-[7px] font-black text-muted-foreground/60 tracking-tighter whitespace-nowrap">{Math.round(duration)}h</span>
                             </div>
                         )
                     })}

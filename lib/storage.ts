@@ -141,6 +141,20 @@ export function exportData(): string {
   return JSON.stringify(loadData(), null, 2)
 }
 
+export function importData(jsonString: string): boolean {
+  try {
+    const data = JSON.parse(jsonString) as StoredData
+    // Basic validation
+    if (typeof data !== "object" || data === null) return false
+    if (!Array.isArray(data.history)) return false
+
+    saveData(data)
+    return true
+  } catch {
+    return false
+  }
+}
+
 export function clearAllData(): void {
   if (typeof window === "undefined") return
   localStorage.removeItem(STORAGE_KEY)

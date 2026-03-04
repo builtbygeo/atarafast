@@ -67,6 +67,7 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
   const [mounted, setMounted] = useState(false)
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
   const [showEditStartTime, setShowEditStartTime] = useState(false)
+  const [confirmEnd, setConfirmEnd] = useState(false)
 
   const navigateTo = useCallback(
     (newState: ViewState) => {
@@ -126,13 +127,22 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
   }
 
   const handleEndFast = useCallback(() => {
+    if (!confirmEnd) {
+      setConfirmEnd(true)
+      haptic([30])
+      // Reset after 3 seconds if not confirmed
+      setTimeout(() => setConfirmEnd(false), 3000)
+      return
+    }
+
     const record = endFast()
     if (record) {
       setActiveFast(null)
+      setConfirmEnd(false)
       navigateTo("presets")
       onFastEnd?.()
     }
-  }, [onFastEnd, navigateTo])
+  }, [onFastEnd, navigateTo, confirmEnd])
 
   const handleDiscardFast = useCallback(() => {
     deleteFast()
@@ -244,10 +254,13 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
             </button>
             <button
               onClick={handleEndFast}
-              className={`h-14 rounded-2xl font-black text-sm uppercase tracking-widest transition-all shadow-xl active:scale-95 ${isComplete ? "bg-primary text-primary-foreground shadow-primary/30" : "bg-card text-foreground border border-border"
+              className={`h-14 rounded-2xl font-black text-sm uppercase tracking-widest transition-all shadow-xl active:scale-95 px-4 ${confirmEnd
+                  ? "bg-destructive text-white shadow-destructive/30"
+                  : (isComplete ? "bg-primary text-primary-foreground shadow-primary/30" : "bg-card text-foreground border border-border")
                 }`}
             >
-              {t.endFast}
+              {confirmEnd ? t.confirmEndFast : t.endFast}
+              {confirmEnd && <span className="block text-[8px] mt-1 opacity-70 normal-case tracking-normal font-medium">{t.tapToConfirm}</span>}
             </button>
             <button onClick={() => setShowDeleteConfirm(true)} className="h-14 w-14 flex items-center justify-center rounded-2xl bg-secondary/30 text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-all active:scale-90 border border-border/30">
               <Trash2 className="h-5 w-5" />
