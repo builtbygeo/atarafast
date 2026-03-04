@@ -55,10 +55,10 @@ export function HistoryView({ history, onHistoryChange }: HistoryViewProps) {
     return days
   }, [history])
 
-  const yearStart = startOfYear(new Date(selectedYear, 0, 1))
-  const yearEnd = endOfYear(yearStart)
-  const months = eachMonthOfInterval({ start: yearStart, end: yearEnd })
   const today = new Date()
+  const yearStart = startOfYear(new Date(selectedYear, 0, 1))
+  const intervalEnd = selectedYear === today.getFullYear() ? today : endOfYear(yearStart)
+  const months = eachMonthOfInterval({ start: yearStart, end: intervalEnd })
 
   const sortedHistory = useMemo(
     () => [...history].sort((a, b) => new Date(b.startTime).getTime() - new Date(a.startTime).getTime()),
@@ -121,12 +121,13 @@ export function HistoryView({ history, onHistoryChange }: HistoryViewProps) {
           {months.map((month) => {
             const monthStart = startOfMonth(month)
             const monthEnd = endOfMonth(month)
-            const days = eachDayOfInterval({ start: monthStart, end: monthEnd })
+            const displayEnd = monthEnd > today ? today : monthEnd
+            const days = eachDayOfInterval({ start: monthStart, end: displayEnd })
             const firstDayOffset = (getDay(monthStart) + 6) % 7
 
             return (
               <div key={month.toISOString()} className="flex items-center gap-2">
-                <span className="text-[10px] font-medium text-muted-foreground w-7 shrink-0">
+                <span className="text-[10px] font-medium text-muted-foreground w-7 shrink-0 text-left">
                   {format(month, "MMM")}
                 </span>
                 <div className="flex gap-[3px] flex-wrap">
@@ -136,16 +137,10 @@ export function HistoryView({ history, onHistoryChange }: HistoryViewProps) {
                   {days.map((day) => {
                     const dateKey = format(day, "yyyy-MM-dd")
                     const fasted = fastDays.has(dateKey)
-                    const isFuture = isAfter(day, today)
                     return (
                       <div
                         key={dateKey}
-                        className={`h-[10px] w-[10px] rounded-[2px] transition-colors ${isFuture
-                          ? "bg-muted/30"
-                          : fasted
-                            ? "bg-primary"
-                            : "bg-muted"
-                          }`}
+                        className={`h-[10px] w-[10px] rounded-[2px] transition-colors ${fasted ? "bg-primary shadow-[0_0_8px_rgba(var(--primary-rgb),0.4)]" : "bg-muted hover:bg-muted/80"}`}
                         title={`${format(day, "MMM d")}${fasted ? " - Fasted" : ""}`}
                       />
                     )
