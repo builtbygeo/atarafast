@@ -103,98 +103,85 @@ export function RecentFastsChart({ history, activeFast, onAddClick, onSeeMoreCli
                     </p>
                 </div>
 
-                {/* List of last 7 fasts - Zero style detail */}
-                <div className="grid grid-cols-7 gap-3 px-2">
-                    {last7Fasts.slice().reverse().map((fast, idx) => {
+                {/* Main Last 7 Fasts Chart */}
+                <div className="h-44 flex items-end justify-between gap-2 relative px-1">
+                    {/* Horizontal Guide Lines */}
+                    {[0, 0.25, 0.5, 0.75, 1].map((p, i) => (
+                        <div
+                            key={i}
+                            className="absolute left-0 right-0 border-t border-border/10 pointer-events-none"
+                            style={{ bottom: `${p * 100}%` }}
+                        />
+                    ))}
+
+                    {last7Fasts.slice().reverse().map((fast, i) => {
                         const duration = (new Date(fast.endTime!).getTime() - new Date(fast.startTime).getTime()) / (1000 * 3600)
+                        const height = Math.min(100, (duration / 24) * 100)
+                        const date = new Date(fast.startTime)
+                        const label = isSameDay(date, new Date()) ? "TODAY" : format(date, "M/d")
+
                         return (
-                            <div key={fast.id} className="flex flex-col items-center gap-1.5 flex-1">
-                                <div className={`h-1 w-full rounded-full ${fast.completed ? "bg-primary shadow-[0_0_8px_rgba(var(--primary-rgb),0.5)]" : "bg-orange-500/80"}`} />
-                                <span className="text-[7px] font-black text-muted-foreground/60 tracking-tighter whitespace-nowrap">{Math.round(duration)}h</span>
+                            <div key={fast.id} className="flex-1 flex flex-col items-center gap-2 group relative z-10 h-full justify-end">
+                                <div className="relative w-full flex flex-col items-center justify-end h-full">
+                                    <span className={`absolute -top-6 text-[9px] font-black transition-opacity opacity-0 group-hover:opacity-100 bg-background/80 px-1 rounded whitespace-nowrap z-50 ${fast.completed ? "text-primary" : "text-orange-500"}`}>
+                                        {Math.round(duration)}h
+                                    </span>
+                                    <div className="text-[7.5px] font-black text-muted-foreground/40 mb-1 opacity-100 group-hover:opacity-0 transition-opacity tabular-nums">
+                                        {Math.round(duration)}h
+                                    </div>
+                                    <motion.div
+                                        initial={{ height: 0 }}
+                                        animate={{ height: `${Math.max(6, height)}%` }}
+                                        className={`w-full rounded-t-full transition-all group-hover:shadow-[0_0_20px_-3px_var(--chart-color)] ${fast.completed ? "bg-primary shadow-[0_0_10px_rgba(var(--primary-rgb),0.2)]" : "bg-orange-500/70"
+                                            }`}
+                                        style={{
+                                            "--chart-color": fast.completed ? "oklch(var(--primary))" : "oklch(0.6 0.15 35)"
+                                        } as any}
+                                    />
+                                </div>
+                                <span className={`text-[8px] font-black uppercase tracking-tighter ${label === "TODAY" ? "text-primary" : "text-muted-foreground/50"}`}>
+                                    {label}
+                                </span>
                             </div>
                         )
                     })}
                 </div>
+
+                <div className="flex items-center justify-center gap-6 mb-4 text-[8px] font-black uppercase tracking-widest opacity-60">
+                    <div className="flex items-center gap-2">
+                        <div className="w-1.5 h-1.5 rounded-full bg-primary" />
+                        <span>{t.goalMet}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                        <div className="w-1.5 h-1.5 rounded-full bg-orange-500/80" />
+                        <span>{t.goalNotMet}</span>
+                    </div>
+                </div>
+
+                {(onAddClick || onSeeMoreClick) && (
+                    <div className="flex flex-col gap-3 mt-6">
+                        {onAddClick && (
+                            <button
+                                onClick={onAddClick}
+                                className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl bg-primary/10 hover:bg-primary/20 text-primary font-black text-[10px] uppercase tracking-[0.2em] transition-all border border-primary/10"
+                            >
+                                <Plus className="h-4 w-4" />
+                                {t.addFast}
+                            </button>
+                        )}
+
+                        {onSeeMoreClick && (
+                            <button
+                                onClick={onSeeMoreClick}
+                                className="w-full flex items-center justify-between px-4 py-3 rounded-2xl bg-secondary/30 hover:bg-secondary/50 text-foreground/80 font-bold text-xs transition-all border border-border/30"
+                            >
+                                <span>{t.seeMore}</span>
+                                <ChevronRight className="h-4 w-4 opacity-50" />
+                            </button>
+                        )}
+                    </div>
+                )}
             </div>
-
-            <div className="h-32 flex items-end justify-between gap-1 relative mb-10">
-                {[0, 0.25, 0.5, 0.75, 1].map((p, i) => (
-                    <div
-                        key={i}
-                        className="absolute left-0 right-[-24px] border-t border-border/10 pointer-events-none"
-                        style={{ bottom: `${p * 100}%` }}
-                    />
-                ))}
-                <div className="absolute right-[-24px] top-0 bottom-0 flex flex-col justify-between py-1 text-[8px] font-black text-muted-foreground/30 pointer-events-none">
-                    <span>{Math.round(maxHours)}</span>
-                    <span>{Math.round(maxHours * 0.75)}</span>
-                    <span>{Math.round(maxHours * 0.5)}</span>
-                    <span>{Math.round(maxHours * 0.25)}</span>
-                    <span>0</span>
-                </div>
-
-                {last7DaysData.map((day, i) => {
-                    const height = Math.min(100, (day.hours / maxHours) * 100)
-                    return (
-                        <div key={i} className="flex-1 flex flex-col items-center gap-3 group relative z-10">
-                            <div className="relative w-full flex flex-col items-center justify-end h-full">
-                                {day.hours > 0 && (
-                                    <span className="absolute -top-6 text-[9px] font-black text-foreground/60 transition-opacity opacity-0 group-hover:opacity-100 bg-background/80 px-1 rounded whitespace-nowrap z-50">
-                                        {day.hours.toFixed(1)}h
-                                    </span>
-                                )}
-                                <motion.div
-                                    initial={{ height: 0 }}
-                                    animate={{ height: `${Math.max(2, height)}%` }}
-                                    className={`w-3.5 rounded-full transition-all group-hover:shadow-[0_0_15px_-3px_var(--chart-color)] ${day.hours === 0 ? "bg-muted/10" : day.goalMet ? "bg-primary" : "bg-orange-500/80"
-                                        }`}
-                                    style={{
-                                        "--chart-color": day.goalMet ? "oklch(var(--primary))" : "oklch(0.6 0.15 35)"
-                                    } as any}
-                                />
-                            </div>
-                            <span className={`text-[8px] font-black uppercase tracking-tight ${i === 6 ? "text-primary" : "text-muted-foreground/50"}`}>
-                                {day.label}
-                            </span>
-                        </div>
-                    )
-                })}
-            </div>
-
-            <div className="flex items-center justify-center gap-6 mb-4 text-[8px] font-black uppercase tracking-widest opacity-60">
-                <div className="flex items-center gap-2">
-                    <div className="w-1.5 h-1.5 rounded-full bg-primary" />
-                    <span>{t.goalMet}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                    <div className="w-1.5 h-1.5 rounded-full bg-orange-500/80" />
-                    <span>{t.goalNotMet}</span>
-                </div>
-            </div>
-
-            {(onAddClick || onSeeMoreClick) && (
-                <div className="flex flex-col gap-3 mt-6">
-                    {onAddClick && (
-                        <button
-                            onClick={onAddClick}
-                            className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl bg-primary/10 hover:bg-primary/20 text-primary font-black text-[10px] uppercase tracking-[0.2em] transition-all border border-primary/10"
-                        >
-                            <Plus className="h-4 w-4" />
-                            {t.addFast}
-                        </button>
-                    )}
-
-                    {onSeeMoreClick && (
-                        <button
-                            onClick={onSeeMoreClick}
-                            className="w-full flex items-center justify-between px-4 py-3 rounded-2xl bg-secondary/30 hover:bg-secondary/50 text-foreground/80 font-bold text-xs transition-all border border-border/30"
-                        >
-                            <span>{t.seeMore}</span>
-                            <ChevronRight className="h-4 w-4 opacity-50" />
-                        </button>
-                    )}
-                </div>
-            )}
         </div>
     )
 }

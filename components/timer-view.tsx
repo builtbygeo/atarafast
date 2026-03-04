@@ -192,10 +192,10 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
     const goalTime = addHours(startTime, activeFast.targetHours)
 
     return (
-      <div className="flex flex-col items-center h-full py-4 overflow-y-auto w-full px-4 no-scrollbar">
+      <div className="flex flex-col items-center h-full pt-2 pb-6 overflow-y-auto w-full px-4 no-scrollbar">
         <WeekStatusStrip history={history} activeFast={activeFast} />
 
-        <div className="flex flex-col items-center text-center mt-8 mb-12 w-full">
+        <div className="flex flex-col items-center text-center mt-4 mb-6 w-full">
           <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="relative">
             <CircularProgress
               progress={percentage / 100}
@@ -204,17 +204,23 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
               color={preset?.color || "oklch(0.6 0.1 260)"}
             >
               <div className="flex flex-col items-center">
-                <span className="text-5xl font-black text-foreground font-mono tabular-nums tracking-tighter">
+                <span className="text-4xl font-black text-foreground font-mono tabular-nums tracking-tighter leading-none">
                   {formatTime(settings.timerDirection === "down" && !isComplete ? remainingMs : elapsedMs)}
                 </span>
-                <span className="text-[10px] font-black text-muted-foreground mt-3 uppercase tracking-[0.2em] opacity-60">
+                <span className="text-[9px] font-black text-muted-foreground mt-2.5 uppercase tracking-widest opacity-60">
                   {isComplete ? t.elapsed : settings.timerDirection === "down" ? t.remaining : t.elapsed} ({percentage}%)
                 </span>
+                <div className="mt-4 flex flex-col items-center">
+                  <span className="text-sm font-black text-foreground tracking-tight">{preset?.name || activeFast.presetId}</span>
+                  <span className="text-[8px] font-black text-muted-foreground uppercase tracking-widest opacity-40">
+                    {activeFast.targetHours}{t.hours} {t.fastLabel}
+                  </span>
+                </div>
               </div>
             </CircularProgress>
           </motion.div>
 
-          <div className="flex gap-4 mt-12 w-full max-w-sm px-4">
+          <div className="flex gap-3 mt-8 w-full max-w-sm px-4">
             <div className="flex-1 bg-secondary/20 rounded-2xl p-4 border border-border/50 relative group">
               <span className="block text-[8px] font-black uppercase tracking-[0.2em] text-muted-foreground opacity-60 mb-1">{t.startTime.toUpperCase()}</span>
               <div className="flex items-center justify-between">
@@ -234,17 +240,14 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
           </div>
 
           {isComplete && (
-            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="mt-8 p-4 rounded-3xl bg-primary/10 border border-primary/20 max-w-[280px]">
-              <p className="text-sm font-black text-primary leading-tight">
+            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="mt-6 px-4 py-2.5 rounded-2xl bg-primary/10 border border-primary/20 backdrop-blur-sm">
+              <p className="text-[11px] font-black text-primary uppercase tracking-tight">
                 {hoursOverTarget < 1 ? t.targetReached : t.overTarget.replace("{{hours}}", hoursOverTarget.toFixed(1))}
               </p>
             </motion.div>
           )}
 
-          <h3 className="text-2xl font-black text-foreground mt-10 tracking-tight">{preset?.name || activeFast.presetId}</h3>
-          <p className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] mt-2 opacity-50">
-            {activeFast.targetHours}{t.hours} {t.fastLabel}
-          </p>
+
         </div>
 
         <div className="flex flex-col w-full gap-4 max-w-xs mt-auto pb-8">
@@ -255,8 +258,8 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
             <button
               onClick={handleEndFast}
               className={`h-14 rounded-2xl font-black text-sm uppercase tracking-widest transition-all shadow-xl active:scale-95 px-4 ${confirmEnd
-                  ? "bg-destructive text-white shadow-destructive/30"
-                  : (isComplete ? "bg-primary text-primary-foreground shadow-primary/30" : "bg-card text-foreground border border-border")
+                ? "bg-destructive text-white shadow-destructive/30"
+                : (isComplete ? "bg-primary text-primary-foreground shadow-primary/30" : "bg-card text-foreground border border-border")
                 }`}
             >
               {confirmEnd ? t.confirmEndFast : t.endFast}

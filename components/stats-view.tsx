@@ -152,9 +152,18 @@ export function StatsView({ history }: StatsViewProps) {
         }
       })
 
+      const hours = Math.round(weekHours * 10) / 10
+
+      let color = "oklch(var(--primary))"
+      if (hours < 56) color = "oklch(0.6 0.15 35)"
+      else if (hours < 84) color = "oklch(0.7 0.15 60)"
+      else if (hours < 112) color = "oklch(var(--primary))"
+      else color = "oklch(0.85 0.18 85)" // Bright Gold/Yellow
+
       weeks.push({
         label: format(weekStartDate, "MMM d"),
-        hours: Math.round(weekHours * 10) / 10,
+        hours,
+        color
       })
     }
     return weeks
@@ -207,12 +216,15 @@ export function StatsView({ history }: StatsViewProps) {
               />
               <Bar
                 dataKey="hours"
-                fill="oklch(var(--primary))"
                 radius={[6, 6, 6, 6]}
                 barSize={32}
-                activeBar={<Rectangle stroke="oklch(var(--primary))" strokeWidth={1} fill="oklch(var(--primary)/0.9)" />}
+                activeBar={<Rectangle strokeWidth={1} fillOpacity={0.8} />}
                 className="transition-all"
-              />
+              >
+                {weeklyData.map((entry, index) => (
+                  <Rectangle key={`cell-${index}`} fill={entry.color} />
+                ))}
+              </Bar>
             </BarChart>
           </ResponsiveContainer>
         )}
