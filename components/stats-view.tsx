@@ -10,13 +10,28 @@ import {
   subWeeks,
   differenceInDays,
 } from "date-fns"
-import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip } from "recharts"
+import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip, Rectangle } from "recharts"
 import { Flame, Target, Clock, TrendingUp } from "lucide-react"
 import type { FastingRecord } from "@/lib/storage"
 import { useLang } from "@/lib/language-context"
 
 interface StatsViewProps {
   history: FastingRecord[]
+}
+
+const ChartTooltip = ({ active, payload, label }: any) => {
+  const { t } = useLang()
+  if (active && payload && payload.length) {
+    return (
+      <div className="bg-card/95 backdrop-blur-md border border-border/50 p-3 rounded-2xl shadow-2xl">
+        <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-1">{label}</p>
+        <p className="text-sm font-black text-foreground">
+          {payload[0].value} <span className="text-[10px] text-muted-foreground">{t.hours}</span>
+        </p>
+      </div>
+    )
+  }
+  return null
 }
 
 function StatCard({
@@ -122,21 +137,19 @@ export function StatsView({ history }: StatsViewProps) {
   // Weekly chart data (last 8 weeks)
   const weeklyData = useMemo(() => {
     const weeks = []
+    const now = new Date()
     for (let i = 7; i >= 0; i--) {
-      const weekEnd = endOfWeek(subWeeks(new Date(), i), { weekStartsOn: 1 })
-      const weekStartDate = startOfWeek(subWeeks(new Date(), i), { weekStartsOn: 1 })
-      const days = eachDayOfInterval({ start: weekStartDate, end: weekEnd })
+      const weekStartDate = startOfWeek(subWeeks(now, i), { weekStartsOn: 1 })
+      const weekEndDate = endOfWeek(weekStartDate, { weekStartsOn: 1 })
+      const days = eachDayOfInterval({ start: weekStartDate, end: weekEndDate })
 
       let weekHours = 0
       history.forEach((r) => {
         if (!r.endTime) return
         const rStart = new Date(r.startTime)
-        const rEnd = new Date(r.endTime)
-        days.forEach((day) => {
-          if (isSameDay(rStart, day) || isSameDay(rEnd, day)) {
-            weekHours += (rEnd.getTime() - rStart.getTime()) / (1000 * 60 * 60)
-          }
-        })
+        if (days.some(day => isSameDay(rStart, day))) {
+          weekHours += (new Date(r.endTime).getTime() - rStart.getTime()) / (1000 * 60 * 60)
+        }
       })
 
       weeks.push({
@@ -190,24 +203,15 @@ export function StatsView({ history }: StatsViewProps) {
               />
               <Tooltip
                 cursor={{ fill: 'transparent' }}
-                content={({ active, payload, label }) => {
-                  if (active && payload && payload.length) {
-                    return (
-                      <div className="bg-card/95 backdrop-blur-md border border-border/50 p-3 rounded-2xl shadow-2xl">
-                        <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-1">{label}</p>
-                        <p className="text-sm font-black text-foreground">{payload[0].value} <span className="text-[10px] text-muted-foreground">{t.hours}</span></p>
-                      </div>
-                    )
-                  }
-                  return null
-                }}
+                content={<ChartTooltip />}
               />
               <Bar
                 dataKey="hours"
                 fill="oklch(var(--primary))"
                 radius={[6, 6, 6, 6]}
                 barSize={32}
-                className="transition-all hover:opacity-80"
+                activeBar={<Rectangle stroke="oklch(var(--primary))" strokeWidth={1} fill="oklch(var(--primary)/0.9)" />}
+                className="transition-all"
               />
             </BarChart>
           </ResponsiveContainer>

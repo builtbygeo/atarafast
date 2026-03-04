@@ -23,21 +23,22 @@ export function WeekStatusStrip({ history, activeFast }: WeekStatusStripProps) {
             const isActive = activeFast && isSameDay(new Date(activeFast.startTime), date)
 
             let totalHours = 0
-            let targetHours = 0
+            let hasCompleted = false
 
             dayFasts.forEach(f => {
                 if (f.endTime) {
                     totalHours += (new Date(f.endTime).getTime() - new Date(f.startTime).getTime()) / (1000 * 3600)
-                    targetHours = Math.max(targetHours, f.targetHours)
+                    if (f.completed) hasCompleted = true
                 }
             })
 
             if (isActive) {
-                totalHours += (now.getTime() - new Date(activeFast.startTime).getTime()) / (1000 * 3600)
-                targetHours = Math.max(targetHours, activeFast.targetHours)
+                const currentHours = (now.getTime() - new Date(activeFast.startTime).getTime()) / (1000 * 3600)
+                totalHours += currentHours
+                if (currentHours >= activeFast.targetHours) hasCompleted = true
             }
 
-            const goalMet = totalHours >= (targetHours || 16) && totalHours > 0
+            const goalMet = hasCompleted && totalHours > 0
 
             days.push({
                 date,
@@ -60,8 +61,8 @@ export function WeekStatusStrip({ history, activeFast }: WeekStatusStripProps) {
                     </span>
                     <div className="relative">
                         <div className={`h-8 w-8 rounded-full border-2 flex items-center justify-center transition-all ${day.hours > 0
-                                ? (day.goalMet ? "border-primary bg-primary/10 shadow-[0_0_10px_rgba(var(--primary-rgb),0.2)]" : "border-orange-500/50 bg-orange-500/5")
-                                : (day.isActive ? "border-primary/40 border-dashed animate-[spin_10s_linear_infinite]" : "border-border/40")
+                            ? (day.goalMet ? "border-primary bg-primary/10 shadow-[0_0_10px_rgba(var(--primary-rgb),0.2)]" : "border-orange-500/50 bg-orange-500/5")
+                            : (day.isActive ? "border-primary/40 border-dashed animate-[spin_10s_linear_infinite]" : "border-border/40")
                             }`}>
                             {day.hours > 0 && (
                                 <span className={`text-[9px] font-black tabular-nums transition-colors ${day.goalMet ? "text-primary" : "text-orange-500"}`}>

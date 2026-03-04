@@ -58,7 +58,10 @@ export function RecentFastsChart({ history, activeFast, onAddClick, onSeeMoreCli
     }, [history, activeFast])
 
     const averageHours = useMemo(() => {
-        const completedFasts = history.filter(h => h.endTime).slice(0, 7)
+        const completedFasts = [...history]
+            .filter(h => h.endTime)
+            .sort((a, b) => new Date(b.startTime).getTime() - new Date(a.startTime).getTime())
+            .slice(0, 7)
         if (completedFasts.length === 0) return 0
         const totalMs = completedFasts.reduce((acc, f) => {
             return acc + (new Date(f.endTime!).getTime() - new Date(f.startTime).getTime())
