@@ -108,17 +108,17 @@ export function TriangularProgress({
 
             {/* Percentage Indicators based on segments */}
             <div className="absolute inset-0 pointer-events-none -top-4">
-                <div className="absolute top-[20%] right-[10%] text-[10px] sm:text-[11px] font-black text-muted-foreground/60 uppercase tracking-widest rotate-[30deg]">
-                    {t?.phase1 || "PHASE 1"} ({p1Pct}%)
+                <div className="absolute top-[8%] right-[0%] text-[10px] sm:text-[11px] font-black text-muted-foreground/60 uppercase tracking-widest rotate-[60deg] origin-bottom-left whitespace-nowrap">
+                    {t?.phase1 || "ЗАХАР"} ({p1Pct}%)
                 </div>
                 {p2Hours > 0 && (
-                    <div className="absolute bottom-[6%] left-1/2 -translate-x-1/2 text-[10px] sm:text-[11px] font-black text-muted-foreground/60 uppercase tracking-widest">
-                        {t?.phase2 || "PHASE 2"} ({p2Pct}%)
+                    <div className="absolute -bottom-[2%] left-1/2 -translate-x-1/2 text-[10px] sm:text-[11px] font-black text-muted-foreground/60 uppercase tracking-widest whitespace-nowrap">
+                        {t?.phase2 || "ПРЕХОД"} ({p2Pct}%)
                     </div>
                 )}
                 {p3Hours > 0 && (
-                    <div className="absolute top-[20%] left-[10%] text-[10px] sm:text-[11px] font-black text-muted-foreground/60 uppercase tracking-widest -rotate-[30deg]">
-                        {t?.phase3 || "PHASE 3"} ({p3Pct}%)
+                    <div className="absolute top-[8%] left-[0%] text-[10px] sm:text-[11px] font-black text-muted-foreground/60 uppercase tracking-widest -rotate-[60deg] origin-bottom-right whitespace-nowrap">
+                        {t?.phase3 || "КЕТОЗА И АВТОФАГИЯ"} ({p3Pct}%)
                     </div>
                 )}
             </div>

@@ -206,8 +206,8 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
                 strokeWidth={14}
                 color={isComplete ? (preset?.color || "var(--primary)") : "oklch(0.7 0.18 55)"}
               >
-                <div className="flex flex-col items-center mt-2">
-                  <span className="text-5xl font-black text-foreground font-mono tabular-nums tracking-tighter leading-none">
+                <div className="flex flex-col items-center justify-center h-full pt-10">
+                  <span className="text-4xl font-black text-foreground font-mono tabular-nums tracking-tighter leading-none">
                     {formatTime(settings.timerDirection === "down" && !isComplete ? remainingMs : elapsedMs)}
                   </span>
                   <span className="text-[10px] font-black text-muted-foreground mt-3 uppercase tracking-[0.2em] opacity-80">
