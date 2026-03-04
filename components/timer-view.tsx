@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { CircularProgress } from "@/components/circular-progress"
+import { TriangularProgress } from "@/components/triangular-progress"
 import { PresetGrid } from "@/components/preset-grid"
 import { PresetDetail } from "@/components/preset-detail"
 import { WeekStatusStrip } from "@/components/week-status-strip"
