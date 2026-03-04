@@ -1,0 +1,22 @@
+{
+    "name": "Atara Fasting",
+    "short_name": "Atara",
+    "description": "Fasting timer based on Ataraxia principles.",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#1a1a1a",
+    "theme_color": "#12c484",
+    "icons": [
+        {
+            "src": "/apple-icon.png",
+            "sizes": "180x180",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "/icon.svg",
+            "sizes": "any",
+            "type": "image/svg+xml"
+        }
+    ]
+}

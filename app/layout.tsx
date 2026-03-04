@@ -9,8 +9,14 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
 const jetbrainsMono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-jetbrains" })
 
 export const metadata: Metadata = {
-  title: 'Atara \u2014 Фастинг Таймер',
+  title: 'Atara — Фастинг Таймер',
   description: 'От Атараксия — стоичното състояние на неразклатимо вътрешно спокойствие. Проследявайте постите си с яснота и спокойствие.',
+  manifest: '/manifest.json',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'Atara',
+  },
   icons: {
     icon: [
       {

@@ -24,9 +24,30 @@ export default function Home() {
     setMounted(true)
     setHistory(getHistory())
 
-    // Register Service Worker for Notifications
+    // Register Service Worker for Notifications and handle updates
     if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("/sw.js").catch(console.error)
+      navigator.serviceWorker.register("/sw.js").then((registration) => {
+        registration.addEventListener("updatefound", () => {
+          const newWorker = registration.installing;
+          if (newWorker) {
+            newWorker.addEventListener("statechange", () => {
+              if (newWorker.state === "installed" && navigator.serviceWorker.controller) {
+                // New service worker version found and installed
+                // Reload in 2 seconds or show a message
+                window.location.reload();
+              }
+            });
+          }
+        });
+      }).catch(console.error)
+
+      // Listen for controller changes (when new sw takes over)
+      let refreshing = false;
+      navigator.serviceWorker.addEventListener('controllerchange', () => {
+        if (refreshing) return;
+        refreshing = true;
+        window.location.reload();
+      });
     }
   }, [])
 
