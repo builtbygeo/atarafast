@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useCallback } from "react"
+import { useState, useEffect, useCallback, useMemo } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { CircularProgress } from "@/components/circular-progress"
 import { TriangularProgress } from "@/components/triangular-progress"
@@ -16,7 +16,9 @@ import {
   Settings as SettingsIcon,
   BookOpen,
   Flame,
+  Share2,
 } from "lucide-react"
+import { ShareDialog } from "@/components/share-dialog"
 import {
   startFast,
   endFast,
@@ -72,6 +74,7 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
   const [showEditStartTime, setShowEditStartTime] = useState(false)
   const [confirmEnd, setConfirmEnd] = useState(false)
+  const [showShare, setShowShare] = useState(false)
 
   const navigateTo = useCallback(
     (newState: ViewState) => {
@@ -192,7 +195,7 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
       return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`
     }
 
-    const hoursOverTarget = isComplete ? (elapsedMs - targetMs) / 3600000 : 0
+    const hoursOverTarget = isComplete ? Math.round(((elapsedMs - targetMs) / 3600000) * 2) / 2 : 0
     const goalTime = addHours(startTime, activeFast.targetHours)
 
     return (
@@ -259,7 +262,7 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
           {isComplete && (
             <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="mt-6 px-4 py-2.5 rounded-2xl bg-primary/10 border border-primary/20 backdrop-blur-sm">
               <p className="text-[11px] font-black text-primary uppercase tracking-tight">
-                {hoursOverTarget < 1 ? t.targetReached : t.overTarget.replace("{{hours}}", hoursOverTarget.toFixed(1))}
+                {hoursOverTarget < 1 ? t.targetReached : t.overTarget.replace("{{hours}}", hoursOverTarget.toString())}
               </p>
             </motion.div>
           )}
@@ -268,10 +271,12 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
         </div>
 
         <div className="flex flex-col w-full gap-4 max-w-xs mt-auto pb-8">
-          <div className="grid grid-cols-[1fr_2fr_auto] gap-3">
-            <button onClick={() => navigateTo("presets")} className="flex h-14 items-center justify-center gap-2 px-4 rounded-2xl bg-secondary/50 text-foreground transition-all hover:bg-secondary active:scale-95 border border-border/50">
+          <div className="grid grid-cols-[auto_auto_1fr] gap-3">
+            <button onClick={() => setShowDeleteConfirm(true)} className="h-14 w-14 flex items-center justify-center rounded-2xl bg-secondary/30 text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-all active:scale-90 border border-border/30">
+              <Trash2 className="h-5 w-5" />
+            </button>
+            <button onClick={() => navigateTo("presets")} className="h-14 w-14 flex items-center justify-center rounded-2xl bg-secondary/50 text-foreground transition-all hover:bg-secondary active:scale-95 border border-border/50">
               <Repeat className="h-4 w-4" />
-              <span className="text-xs font-black uppercase tracking-wide opacity-80">{t.changePlan || "Смени"}</span>
             </button>
             <button
               onClick={handleEndFast}
@@ -283,11 +288,27 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
               {confirmEnd ? t.confirmEndFast : t.endFast}
               {confirmEnd && <span className="block text-[8px] mt-1 opacity-70 normal-case tracking-normal font-medium">{t.tapToConfirm}</span>}
             </button>
-            <button onClick={() => setShowDeleteConfirm(true)} className="h-14 w-14 flex items-center justify-center rounded-2xl bg-secondary/30 text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-all active:scale-90 border border-border/30">
-              <Trash2 className="h-5 w-5" />
-            </button>
           </div>
+          {/* Share */}
+          <button
+            onClick={() => setShowShare(true)}
+            className="flex items-center justify-center gap-2 py-2 text-[11px] font-black text-muted-foreground/60 uppercase tracking-widest hover:text-primary/60 transition-colors active:scale-95"
+          >
+            <Share2 className="h-3.5 w-3.5" />
+            Сподели в Stories
+          </button>
         </div>
+
+        {showShare && (
+          <ShareDialog
+            type="active"
+            elapsedMs={elapsedMs}
+            targetHours={activeFast.targetHours}
+            presetId={activeFast.presetId}
+            percentage={percentage}
+            onClose={() => setShowShare(false)}
+          />
+        )}
 
         <AlertDialog open={showDeleteConfirm} onOpenChange={setShowDeleteConfirm}>
           <AlertDialogContent className="max-w-[320px] rounded-[2.5rem] border-border bg-card">

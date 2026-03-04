@@ -164,35 +164,79 @@ export const bg = {
   planContent: {
     "12:12": {
       name: "Циркаден",
-      desc: "Най-лесният вход в периодичното гладуване. Просто спрете късното хапване. Помага за регулиране на кръвната захар и съня.",
-      tips: ["Спрете да ядете след вечеря.", "Пийте вода или чай по време на поста.", "Фокусирайте се върху истинска храна."],
+      desc: "Най-лесният вход в периодичното гладуване, съобразен с естествените ритми на тялото. Просто спрете късното хапване и дайте на червата си поне 12 часа почивка. Този метод помага за регулиране на кръвната захар, подобрява качеството на съня и намалява възпаленията в тялото.",
+      tips: ["Спрете да ядете поне 2-3 часа преди сън.", "Пийте само вода, чай или черно кафе по време на поста.", "Фокусирайте се върху истинска, непроизведена храна в прозореца за ядене."],
     },
     "14:10": {
       name: "Базов",
-      desc: "Перфектен за начинаещи. Подобрява енергията и метаболитната гъвкавост без голям стрес за тялото.",
-      tips: ["Опитайте се да се храните между 9 и 19ч.", "Помага за по-добър сън и настроение.", "Бъдете постоянни."],
+      desc: "Перфектен баланс за начинаещи и хора с активен начин на живот. Този протокол подобрява нивата на енергия и метаболитната гъвкавост, без да подлага тялото на твърде голям стрес. Позволява на тялото да започне процеса на изчистване, като същевременно е лесен за поддържане всеки ден.",
+      tips: ["Опитайте се да се храните между 9:00 и 19:00 часа за най-добър резултат.", "Помага за по-добър фокус през втората половина на сутринта.", "Бъдете постоянни – това е пътят към трайна промяна."],
     },
     "16:8": {
       name: "Златен стандарт",
-      desc: "Най-популярният метод. Изгаря мазнини, подобрява инсулиновата чувствителност и дава ментален фокус.",
-      tips: ["Пропуснете закуската.", "Първо хранене на обяд.", "Консистенцията е ключът."],
+      desc: "Това е най-популярният и проучен метод за периодично гладуване. Ефективно превключва тялото от изгаряне на глюкоза към изгаряне на мазнини. Подобрява драстично инсулиновата чувствителност, помага за контролиране на теглото и дава изключителен ментален фокус и яснота през целия ден.",
+      tips: ["Пропуснете традиционната закуска – тялото ви има достатъчно енергия.", "Първото хранене на обяд трябва да бъде богато на протеини.", "Хидратацията е ключът към преодоляване на сутрешния глад."],
     },
     "18:6": {
       name: "Напреднал",
-      desc: "Ускорява резултатите. По-дълбок процес на автофагия и по-бързо изгаряне на запасите от мазнини.",
-      tips: ["Две стабилни хранения са достатъчни.", "Приоритизирайте протеините.", "Дайте на тялото 1-2 седмици за адаптация."],
+      desc: "За тези, които искат да ускорят резултатите си. По-дългият прозорец на гладуване задейства по-дълбок процес на автофагия и води до по-бързо изчерпване на гликогеновите запаси. Идеален за хора, които вече са адаптирани към 16:8 и искат да преминат на следващото ниво на здраве и дълголетие.",
+      tips: ["Две стабилни и нутритивно плътни хранения са напълно достатъчни.", "Приоритизирайте здравословните мазнини, за да останете сити.", "Дайте на тялото си поне 1 седмица за адаптация към този режим."],
     },
     "20:4": {
       name: "Воин",
-      desc: "Едно основно хранене за деня. Максимален ментален фокус и дълбоко клетъчно пречистване.",
-      tips: ["Всяка хапка трябва да е хранителна.", "Това е напреднал метод.", "Слушайте тялото си внимателно."],
+      desc: "Екстремен протокол с едно основно хранене за деня. Осигурява максимален ментален фокус и задейства дълбоко клетъчно пречистване и регенерация. Този метод имитира начина на хранене на нашите предци и е мощен за оптимизация на хормоните и изчистване на упорити мазнини.",
+      tips: ["Всяка хапка в 4-часовия прозорец трябва да бъде заредена с хранителни вещества.", "Това е напреднал метод – използвайте го стратегически.", "Слушайте тялото си и не пренебрегвайте нуждите от електролити."],
     },
     custom: {
       name: "Персонален",
-      desc: "Настройте своя собствена продължителност. Подходящ за опитни фастъри или специфични нужди.",
-      tips: ["За постове над 24ч пийте електролити.", "Започнете храненето леко."],
+      desc: "Настройте своя собствена продължителност според вашия индивидуален график. Подходящ за опитни фастъри, хора с променливо ежедневие или специфични биохимични цели. Гъвкавостта тук ви позволява да адаптирате гладуването към вашия живот, а не обратното.",
+      tips: ["За постове над 24 часа задължително приемайте електролити.", "Започнете храненето след дълъг пост с нещо леко и лесносмилаемо."],
     },
   },
+  educationalCards: [
+    {
+      id: 1,
+      title: "Захранване след пост",
+      short: "Как да завършиш поста си без проблеми с храносмилането или скокове в кръвната захар.",
+      full: "След пост храносмилателната ти система е чувствителна. Започни внимателно:\n\n• Първите 30–60 мин: костен бульон, разреден ябълков сок или малък смути\n• Следващо хранене: чист протеин + здравословни мазнини (яйца, авокадо, гръцко кисело мляко)\n• Избягвай: пържени храни, големи количества захар или фибри\n\nТова предотвратява подуване, гадене и скокове в инсулина. Слушай тялото си и яж бавно."
+    },
+    {
+      id: 2,
+      title: "Кетоза – какво е и кога настъпва",
+      short: "Когато тялото ти превключва от изгаряне на захар към изгаряне на мазнини.",
+      full: "Кетозата започва след 12–16 часа пост (или по-рано при нисковъглехидратна диета). Черният дроб произвежда кетони от мазнините за енергия. Ползи: стабилна енергия, ясна мисъл, загуба на мазнини. Признаци: плодов дъх, намален глад. Не е нужно да си в дълбока кетоза за повечето ползи от интермитентното гладуване – дори леката кетоза помага."
+    },
+    {
+      id: 3,
+      title: "Автофагия – клетъчното пречистване",
+      short: "Естественият процес на рециклиране, който поправя и подмладява клетките ти.",
+      full: "Автофагията (самопочистване) започва около 14–18 часа пост. Клетките премахват повредени части и ги рециклират. Ползи: анти-ейджинг, по-силен имунитет, по-малко възпаления. Пикът е на 24–48 часа. Дори 16:8 дава лек тласък на този процес всеки ден."
+    },
+    {
+      id: 4,
+      title: "Хидратация по време на пост",
+      short: "Защо водата е твоят №1 приятел и колко всъщност ти трябва.",
+      full: "По време на пост тялото изхвърля повече течности. Цел: 3–4 литра на ден. Добави щипка висококачествена сол или електролитен прах към водата си. Дехидратацията е основната причина за главоболие и умора. Съвет: изпий голяма чаша вода веднага след събуждане."
+    },
+    {
+      id: 5,
+      title: "Електролити и минерали",
+      short: "Истинската причина за главоболие или крампи – и как да ги предотвратиш.",
+      full: "Когато нивата на инсулин паднат, бъбреците започват да отделят натрий, калий и магнезий по-бързо. Препоръчително: 3–5 г натрий, 1 г калий и 300–400 мг магнезий дневно. Най-добри източници: морска сол, магнезиев цитрат или домашен костен бульон. Това предотвратява 90% от честите странични ефекти на гладуването."
+    },
+    {
+      id: 6,
+      title: "Какво може да пиеш",
+      short: "Напитки с нула калории, които няма да прекъснат режима ти.",
+      full: "✅ Позволено (0 калории):\n• Вода (обикновена или газирана)\n• Черно кафе и чист чай (без добавки)\n• Билкови чайове (лайка, мента, джинджифил)\n• Ябълков оцет (1 с.л. в чаша вода)\n• Вода с електролити (без захар и подсладители)\n\n❌ Прекъсва поста: мляко, сметана, сок, газирани напитки със захар или калорични подсладители."
+    },
+    {
+      id: 7,
+      title: "Странични ефекти и съвети",
+      short: "Главоболие, глад, умора – ето точно какво да направиш веднага.",
+      full: "• Глад: изпий чаша вода или кафе и изчакай 20 минути; вълната ще премине.\n• Главоболие: често е знак за липса на електролити и дехидратация.\n• Умора: осигурете си повече сън и намалете интензивността на тренировките в началото.\n• Раздразнителност: приемайте магнезий и имайте търпение – адаптацията обикновено отнема от 3 до 7 дни.\n\nАко симптомите са постоянни и силни, скъсете прозореца на гладуване и се консултирайте с медицинско лице."
+    }
+  ],
 }
 
 export const en: typeof bg = {
@@ -351,35 +395,79 @@ export const en: typeof bg = {
   planContent: {
     "12:12": {
       name: "Circadian",
-      desc: "The easiest gateway into fasting. Stop late-night snacking and align with your natural rhythm.",
-      tips: ["Stop eating after dinner.", "Hydrate with water or tea.", "Focus on whole foods during the window."],
+      desc: "The easiest gateway into intermittent fasting, aligned with your body's natural circadian rhythms. Simply stop late-night snacking and give your gut at least 12 hours of rest. This method helps regulate blood sugar, significantly improves sleep quality, and reduces systemic inflammation.",
+      tips: ["Try to finish your last meal 2-3 hours before bedtime.", "Drink only water, plain tea, or black coffee during the fast.", "Prioritize whole, unprocessed foods in your eating window."],
     },
     "14:10": {
       name: "Starter",
-      desc: "Perfect for beginners. Improves energy and metabolic flexibility without harsh disruption.",
-      tips: ["Try eating between 9 AM and 7 PM.", "Noticeable mood and sleep wins.", "Easy to stick with long-term."],
+      desc: "A perfect balance for beginners and those with an active lifestyle. This protocol gently improves energy levels and metabolic flexibility without putting excessive stress on the body. It allows the body to begin its natural cleanup processes while remaining easy to maintain every single day.",
+      tips: ["Aim for an eating window between 9:00 AM and 7:00 PM for optimal results.", "Notice the improved focus during the late morning hours.", "Be consistent – small daily wins lead to massive long-term changes."],
     },
     "16:8": {
       name: "Gold Standard",
-      desc: "The most popular method. Burns fat while preserving muscle and improving insulin sensitivity.",
-      tips: ["Skip breakfast.", "Eat first meal at noon.", "Consistency is more important than perfection."],
+      desc: "The most popular and widely studied intermittent fasting method. It effectively switches your body from burning glucose to burning stored fat. This protocol drastically improves insulin sensitivity, supports sustainable weight management, and provides exceptional mental clarity and sharp focus throughout the day.",
+      tips: ["Skip the traditional morning meal – your body has plenty of stored energy.", "Make your first meal at noon high in quality protein.", "Hydration is the ultimate key to overcoming any morning hunger waves."],
     },
     "18:6": {
       name: "Advanced",
-      desc: "Faster results and deeper ketosis. Strong reductions in inflammation and waist circumference.",
-      tips: ["Two solid meals work best.", "Prioritize protein and healthy fats.", "Allow time for adaptation."],
+      desc: "For those looking to accelerate their health results. The longer fasting window triggers deeper autophagy (cellular repair) and leads to faster depletion of glycogen stores. Ideal for people already adapted to 16:8 who want to reach the next level of metabolic health, longevity, and fat loss.",
+      tips: ["Two nutrient-dense, satisfying meals are usually perfect.", "Focus on healthy fats to keep you satiated for longer.", "Give your body about a week to fully adapt to this slightly more intense rhythm."],
     },
     "20:4": {
       name: "Warrior",
-      desc: "One main meal per day. Deeper autophagy and incredible mental clarity once adapted.",
-      tips: ["Make every bite count.", "Build up to this protocol slowly.", "Listen to your body carefully."],
+      desc: "An intense protocol featuring one main meal per day. Provides maximum mental focus and triggers deep cellular repair and regeneration. This method mimics the eating patterns of our hunter-gatherer ancestors and is a powerful tool for hormone optimization and burning stubborn body fat.",
+      tips: ["Ensure every bite in your 4-hour window is packed with essential nutrients.", "This is an advanced technique – use it strategically based on your activity level.", "Listen to your body closely and stay on top of your electrolyte needs."],
     },
     custom: {
       name: "Custom",
-      desc: "Set your own duration. Perfect for experimented fasters or unique biological needs.",
-      tips: ["Stay well hydrated.", "Consider electrolytes for 24h+ fasts.", "Break long fasts gently."],
+      desc: "Customize your own fasting duration to fit your unique schedule and lifestyle. Perfect for experienced fasters, people with variable daily routines, or those with specific bio-optimization goals. This flexibility ensures fasting works for your life, not the other other way around.",
+      tips: ["For fasts exceeding 24 hours, taking electrolytes is absolutely mandatory.", "Always break a longer fast with something light and very easy to digest."],
     },
   },
+  educationalCards: [
+    {
+      id: 1,
+      title: "Breaking the Fast Safely",
+      short: "How to end your fast without digestive problems or blood sugar spikes.",
+      full: "After fasting, your digestive system is in a rested, sensitive state. Start gently:\n\n• First 30–60 min: Bone broth, diluted ACV, or a small green smoothie.\n• Next meal: Focus on lean protein + healthy fats (eggs, avocado, or Greek yogurt).\n• Avoid: Heavy fried foods, large amounts of processed sugar, or excessive fiber initially.\n\nFollowing this prevents bloating, nausea, and massive insulin spikes. Listen to your body and eat slowly."
+    },
+    {
+      id: 2,
+      title: "Understanding Ketosis",
+      short: "When your body switches from burning sugar to burning stored fat for fuel.",
+      full: "Ketosis typically begins after 12–16 hours of fasting (or sooner on low-carb). Your liver starts producing ketones from fat to provide energy for your brain and body. Benefits include steady energy, mental clarity, and efficient fat loss. Signs: Reduced hunger and metallic breath. You don’t need 'deep' ketosis for most IF benefits."
+    },
+    {
+      id: 3,
+      title: "Autophagy: Your Body’s Cleanup",
+      short: "The natural recycling process that repairs and rejuvenates your cells.",
+      full: "Autophagy (self-eating) starts around 14–18 hours of fasting. Your cells internalize and remove damaged parts, recycling them for new materials. Benefits: Anti-aging, improved immune function, and reduced chronic inflammation. It typically peaks between 24–48 hours of fasting. Even 16:8 gives it a daily boost."
+    },
+    {
+      id: 4,
+      title: "Hydration During Fasting",
+      short: "Why water is your #1 friend and how much you really need to thrive.",
+      full: "Fasting naturally increases water loss as insulin drops. Aim for 3–4 liters daily. Adding a pinch of high-quality mineral salt or electrolyte powder to your water is crucial. Dehydration is the leading cause of headaches and fatigue during a fast. Tip: Drink a big glass of water immediately upon waking up."
+    },
+    {
+      id: 5,
+      title: "Electrolytes & Minerals",
+      short: "The real reason you might get headaches or cramps – and how to fix it.",
+      full: "When insulin drops, your kidneys flush sodium, potassium, and magnesium faster. Supplementation is key: Aim for 3–5g sodium, 1g potassium, and 400mg magnesium daily. Best sources: Sea salt, mineral water, or a clean electrolyte supplement. This simple step prevents 90% of common fasting side effects."
+    },
+    {
+      id: 6,
+      title: "What You Can Drink",
+      short: "Zero-calorie drinks that keep you in a healthy, fasted state.",
+      full: "✅ Allowed (0 calories):\n• Water (still or sparkling)\n• Black coffee & plain tea (no milk/sugar)\n• Herbal teas (chamomile, peppermint, ginger)\n• Apple cider vinegar (1 tbsp in water)\n• Electrolyte water (no sugar or sweeteners)\n\n❌ Breaks the fast: Milk, cream, juice, soda, or any sweeteners with calories."
+    },
+    {
+      id: 7,
+      title: "Common Side Effects & Tips",
+      short: "Headaches, hunger, or fatigue – here’s exactly what you should do.",
+      full: "• Hunger: Drink water or coffee and wait 20 minutes; the hunger wave will pass.\n• Headache: Usually a sign of low electrolytes or mild dehydration.\n• Fatigue: Ensure enough sleep and lighten your exercise intensity initially.\n• Irritability: Take magnesium and be patient – metabolic adaptation takes 3–7 days.\n\nIf side effects are persistent, shorten your fast window and consult with a medical professional."
+    }
+  ],
 }
 
 export type Translation = typeof bg

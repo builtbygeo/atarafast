@@ -13,12 +13,13 @@ import {
   isSameDay,
   isAfter,
 } from "date-fns"
-import { Trash2, Clock, CheckCircle2, Plus, Edit2 } from "lucide-react"
+import { Trash2, Clock, CheckCircle2, Plus, Edit2, Share2 } from "lucide-react"
 import { type FastingRecord, deleteHistoryRecord, addManualFast, updateHistoryRecord } from "@/lib/storage"
 import { getPresetById } from "@/lib/presets"
 import { ManualFastDialog } from "@/components/manual-fast-dialog"
 import { RecentFastsChart } from "@/components/recent-fasts-chart"
 import { useLang } from "@/lib/language-context"
+import { ShareDialog } from "@/components/share-dialog"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -41,6 +42,7 @@ export function HistoryView({ history, onHistoryChange }: HistoryViewProps) {
   const [showManualFastDialog, setShowManualFastDialog] = useState(false)
   const [recordToDelete, setRecordToDelete] = useState<string | null>(null)
   const [recordToEdit, setRecordToEdit] = useState<FastingRecord | null>(null)
+  const [showShare, setShowShare] = useState(false)
 
   const fastDays = useMemo(() => {
     const days = new Set<string>()
@@ -105,13 +107,22 @@ export function HistoryView({ history, onHistoryChange }: HistoryViewProps) {
     <div className="flex-1 overflow-y-auto px-5 py-6">
       <div className="flex items-center justify-between mb-1">
         <h2 className="text-lg font-semibold text-foreground">{t.historyTitle}</h2>
-        <button
-          onClick={() => setShowManualFastDialog(true)}
-          className="flex items-center gap-1.5 rounded-lg bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground transition-colors hover:opacity-90"
-        >
-          <Plus className="h-3.5 w-3.5" />
-          {t.addFast}
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => setShowShare(true)}
+            className="flex items-center gap-1.5 rounded-lg bg-secondary/50 border border-border/50 px-3 py-1.5 text-xs font-black text-muted-foreground transition-colors hover:text-foreground active:scale-95"
+          >
+            <Share2 className="h-3.5 w-3.5" />
+            Share
+          </button>
+          <button
+            onClick={() => setShowManualFastDialog(true)}
+            className="flex items-center gap-1.5 rounded-lg bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground transition-colors hover:opacity-90"
+          >
+            <Plus className="h-3.5 w-3.5" />
+            {t.addFast}
+          </button>
+        </div>
       </div>
       <p className="text-sm text-muted-foreground mb-6">{t.yearCalendar.replace("{{year}}", String(selectedYear))}</p>
 
@@ -250,6 +261,13 @@ export function HistoryView({ history, onHistoryChange }: HistoryViewProps) {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+      {showShare && (
+        <ShareDialog
+          type="stats"
+          history={history}
+          onClose={() => setShowShare(false)}
+        />
+      )}
     </div>
   )
 }

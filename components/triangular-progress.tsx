@@ -66,33 +66,43 @@ export function TriangularProgress({
                 <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="absolute inset-0" overflow="visible">
                     {/* Glow filters */}
                     <defs>
-                        <filter id="tri-glow-orange" x="-20%" y="-20%" width="140%" height="140%">
+                        <filter id="tri-glow-orange" x="-20%" y="-20%" width="140%" height="140%" filterUnits="userSpaceOnUse">
                             <feGaussianBlur stdDeviation="3" result="blur" />
                             <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
                         </filter>
-                        <filter id="tri-glow-amber" x="-20%" y="-20%" width="140%" height="140%">
+                        <filter id="tri-glow-amber" x="-20%" y="-20%" width="140%" height="140%" filterUnits="userSpaceOnUse">
                             <feGaussianBlur stdDeviation="3" result="blur" />
                             <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
                         </filter>
-                        <filter id="tri-glow-green" x="-20%" y="-20%" width="140%" height="140%">
+                        <filter id="tri-glow-green" x="-20%" y="-20%" width="140%" height="140%" filterUnits="userSpaceOnUse">
                             <feGaussianBlur stdDeviation="3" result="blur" />
                             <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
                         </filter>
-                        <filter id="tri-glow-white" x="-20%" y="-20%" width="140%" height="140%">
+                        <filter id="tri-glow-white" x="-20%" y="-20%" width="140%" height="140%" filterUnits="userSpaceOnUse">
                             <feGaussianBlur stdDeviation="2" result="blur" />
                             <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
                         </filter>
                     </defs>
 
-                    {/* Side 3 — Ketosis (Left side: Left → Top) — drawn first so bottom caps go on top */}
+                    {/* Background Triangle Track (Faint) */}
                     <path
-                        d={`M ${left.x} ${left.y} L ${top.x} ${top.y}`}
+                        d={continuousPath}
                         fill="none"
-                        stroke={data.ketosisHours > 0 ? "#22c55e" : "rgba(255,255,255,0.1)"}
+                        stroke="rgba(255,255,255,0.05)"
                         strokeWidth={strokeWidth}
                         strokeLinecap="round"
                         strokeLinejoin="round"
-                        filter={data.ketosisHours > 0 ? "url(#tri-glow-green)" : undefined}
+                    />
+
+                    {/* Side 2 — Transition base (Bottom: Right → Left) — drawn first */}
+                    <path
+                        d={`M ${right.x} ${right.y} L ${left.x} ${left.y}`}
+                        fill="none"
+                        stroke={data.transitionHours > 0 ? "#fbbf24" : "rgba(255,255,255,0.02)"}
+                        strokeWidth={strokeWidth}
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        filter={data.transitionHours > 0 ? "url(#tri-glow-amber)" : undefined}
                     />
 
                     {/* Side 1 — Sugar (Right side: Top → Right) — drawn second */}
@@ -106,15 +116,15 @@ export function TriangularProgress({
                         filter="url(#tri-glow-orange)"
                     />
 
-                    {/* Side 2 — Transition base (Bottom: Right → Left) — drawn LAST so its ends are on top */}
+                    {/* Side 3 — Ketosis (Left side: Left → Top) — drawn LAST so it appears on top */}
                     <path
-                        d={`M ${right.x} ${right.y} L ${left.x} ${left.y}`}
+                        d={`M ${left.x} ${left.y} L ${top.x} ${top.y}`}
                         fill="none"
-                        stroke={data.transitionHours > 0 ? "#fbbf24" : "rgba(255,255,255,0.15)"}
+                        stroke={data.ketosisHours > 0 ? "#22c55e" : "rgba(255,255,255,0.1)"}
                         strokeWidth={strokeWidth}
                         strokeLinecap="round"
                         strokeLinejoin="round"
-                        filter={data.transitionHours > 0 ? "url(#tri-glow-amber)" : undefined}
+                        filter={data.ketosisHours > 0 ? "url(#tri-glow-green)" : undefined}
                     />
 
                     {/* Progress Overlay (Thin WHITE Line) */}
