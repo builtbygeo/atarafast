@@ -77,12 +77,9 @@ export function TriangularProgress({
                         <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
                     </filter>
                     <filter id="tri-glow-white" x="-20%" y="-20%" width="140%" height="140%">
-                        <feGaussianBlur stdDeviation="4" result="blur" />
+                        <feGaussianBlur stdDeviation="2" result="blur" />
                         <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
                     </filter>
-                    <path id="path-right" d={`M ${top.x} ${top.y} L ${right.x} ${right.y}`} />
-                    <path id="path-bottom" d={`M ${left.x} ${left.y} L ${right.x} ${right.y}`} />
-                    <path id="path-left" d={`M ${left.x} ${left.y} L ${top.x} ${top.y}`} />
                 </defs>
 
                 {/* 1. Sugar Phase (Right Side) */}
@@ -136,36 +133,34 @@ export function TriangularProgress({
                     transition={{ duration: 1, ease: "easeOut" }}
                     filter="url(#tri-glow-white)"
                 />
-
-                {/* Phase 1 Label - Text ON the right stroke */}
-                <text fill="white" className="text-[9px] sm:text-[10px] font-black tracking-widest" dy="4">
-                    <textPath href="#path-right" startOffset="50%" textAnchor="middle">
-                        {t?.phase1 || "ЗАХАР"} ({data.sugarPct}%)
-                    </textPath>
-                </text>
-
-                {/* Phase 2 Label - Text ON the bottom stroke */}
-                {data.transitionHours > 0 && (
-                    <text fill="white" className="text-[9px] sm:text-[10px] font-black tracking-widest" dy="4">
-                        <textPath href="#path-bottom" startOffset="50%" textAnchor="middle">
-                            {t?.phase2 || "ПРЕХОД"} ({data.transitionPct}%)
-                        </textPath>
-                    </text>
-                )}
-
-                {/* Phase 3 Label - Text ON the left stroke */}
-                {data.ketosisHours > 0 && (
-                    <text fill="white" className="text-[9px] sm:text-[10px] font-black tracking-widest" dy="4">
-                        <textPath href="#path-left" startOffset="50%" textAnchor="middle">
-                            {t?.phase3 || "КЕТОЗА"} ({data.ketosisPct}%)
-                        </textPath>
-                    </text>
-                )}
             </svg>
 
-            {/* Children centered in safe zone (lower 60% of triangle) */}
-            <div className="absolute inset-0 flex flex-col items-center justify-end pb-[22%] z-10">
+            {/* Children centered in safe zone */}
+            <div className="absolute inset-0 flex flex-col items-center justify-center pt-[15%] z-10">
                 {children}
+            </div>
+
+            {/* Phase Labels Below Triangle (same style as circle) */}
+            <div className="flex flex-row items-start justify-center gap-4 mt-1 w-full">
+                <div className="flex flex-col items-center gap-0.5">
+                    <span className="w-3 h-1 rounded-full bg-orange-500 block" />
+                    <span className="text-[9px] sm:text-[10px] font-bold text-orange-500 uppercase tracking-wider">{t?.phase1 || "ЗАХАР"}</span>
+                    <span className="text-[9px] text-muted-foreground font-mono">{data.sugarPct}%</span>
+                </div>
+                {data.transitionHours > 0 && (
+                    <div className="flex flex-col items-center gap-0.5">
+                        <span className="w-3 h-1 rounded-full bg-amber-400 block" />
+                        <span className="text-[9px] sm:text-[10px] font-bold text-amber-400 uppercase tracking-wider">{t?.phase2 || "ПРЕХОД"}</span>
+                        <span className="text-[9px] text-muted-foreground font-mono">{data.transitionPct}%</span>
+                    </div>
+                )}
+                {data.ketosisHours > 0 && (
+                    <div className="flex flex-col items-center gap-0.5">
+                        <span className="w-3 h-1 rounded-full bg-green-500 block" />
+                        <span className="text-[9px] sm:text-[10px] font-bold text-green-500 uppercase tracking-wider">{t?.phase3 || "КЕТОЗА"}</span>
+                        <span className="text-[9px] text-muted-foreground font-mono">{data.ketosisPct}%</span>
+                    </div>
+                )}
             </div>
         </div>
     )

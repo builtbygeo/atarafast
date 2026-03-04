@@ -234,11 +234,11 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
             )}
           </motion.div>
 
-          <div className="flex gap-3 mt-8 w-full max-w-sm px-4">
-            <div className="flex-1 bg-secondary/20 rounded-2xl p-4 border border-border/50 relative group">
-              <span className="block text-[8px] font-black uppercase tracking-[0.2em] text-muted-foreground opacity-60 mb-1">{t.startTime.toUpperCase()}</span>
+          <div className="flex gap-3 mt-6 w-full max-w-sm px-4">
+            <div className="flex-1 bg-gradient-to-br from-secondary/40 to-secondary/10 rounded-2xl p-4 border border-border/60 relative group backdrop-blur-sm shadow-lg shadow-black/5">
+              <span className="block text-[9px] font-black uppercase tracking-[0.2em] text-muted-foreground opacity-70 mb-1.5">{t.startTime.toUpperCase()}</span>
               <div className="flex items-center justify-between">
-                <span className="block text-sm font-black text-foreground">{format(startTime, "EEE, HH:mm")}</span>
+                <span className="block text-base font-black text-foreground">{format(startTime, "EEE, HH:mm")}</span>
                 <button
                   onClick={() => setShowEditStartTime(true)}
                   className="p-1.5 rounded-lg bg-secondary/40 text-muted-foreground hover:text-foreground transition-colors"
@@ -247,9 +247,9 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
                 </button>
               </div>
             </div>
-            <div className="flex-1 bg-secondary/20 rounded-2xl p-4 border border-border/50">
-              <span className="block text-[8px] font-black uppercase tracking-[0.2em] text-muted-foreground opacity-60 mb-1">{`${activeFast.targetHours}H ${t.goal.toUpperCase()}`}</span>
-              <span className="block text-sm font-black text-foreground">{format(goalTime, "EEE, HH:mm")}</span>
+            <div className="flex-1 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-2xl p-4 border border-primary/20 backdrop-blur-sm shadow-lg shadow-black/5">
+              <span className="block text-[9px] font-black uppercase tracking-[0.2em] text-primary/70 mb-1.5">{`${activeFast.targetHours}${t.hours} ${t.goal.toUpperCase()}`}</span>
+              <span className="block text-base font-black text-foreground">{format(goalTime, "EEE, HH:mm")}</span>
             </div>
           </div>
 
