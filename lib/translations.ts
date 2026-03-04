@@ -119,6 +119,9 @@ export const bg = {
   dark: "Тъмна",
   system: "Системна",
   data: "Данни",
+  phase1: "ЗАХАР",
+  phase2: "ПРЕХОД",
+  phase3: "КЕТОЗА И АВТОФАГИЯ",
   exportData: "Експорт",
   importData: "Импорт",
   importSuccess: "Успешен импорт!",
@@ -308,6 +311,10 @@ export const en: typeof bg = {
   cancel: "Cancel",
   confirm: "Confirm",
   language: "Language",
+
+  phase1: "SUGAR",
+  phase2: "TRANSITION",
+  phase3: "KETOSIS & AUTOPHAGY",
 
   addManualFast: "Add Past Fast",
   preset: "Preset",

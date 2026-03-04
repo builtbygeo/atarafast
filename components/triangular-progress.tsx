@@ -75,6 +75,7 @@ export function TriangularProgress({
             <svg width={size} height={size} className="transform -rotate-0 absolute -top-4">
                 {/* Background Triangle */}
                 <path
+                    id="triangle-bg"
                     d={path}
                     fill="none"
                     stroke="currentColor"
@@ -104,24 +105,44 @@ export function TriangularProgress({
                 <circle cx={top.x} cy={top.y} r={strokeWidth / 1.5} fill={visualProgress > 0 ? color : "currentColor"} className={visualProgress === 0 ? "text-muted/20" : ""} />
                 <circle cx={right.x} cy={right.y} r={strokeWidth / 1.5} fill={visualProgress >= 0.33 ? color : "currentColor"} className={visualProgress < 0.33 ? "text-muted/20" : ""} />
                 <circle cx={left.x} cy={left.y} r={strokeWidth / 1.5} fill={visualProgress >= 0.66 ? color : "currentColor"} className={visualProgress < 0.66 ? "text-muted/20" : ""} />
-            </svg>
 
-            {/* Percentage Indicators based on segments */}
-            <div className="absolute inset-0 pointer-events-none -top-4">
-                <div className="absolute top-[8%] right-[0%] text-[10px] sm:text-[11px] font-black text-muted-foreground/60 uppercase tracking-widest rotate-[60deg] origin-bottom-left whitespace-nowrap">
-                    {t?.phase1 || "ЗАХАР"} ({p1Pct}%)
-                </div>
+                {/* 
+                  Text Paths (drawn left-to-right or top-to-bottom so text isn't upside down) 
+                  Side 1: Top to Right
+                  Side 2: Left to Right (flipped so reading is left->right instead of right->left)
+                  Side 3: Left to Top (flipped)
+                */}
+                <defs>
+                    <path id="path-right" d={`M ${top.x} ${top.y} L ${right.x} ${right.y}`} />
+                    <path id="path-bottom" d={`M ${left.x} ${left.y} L ${right.x} ${right.y}`} />
+                    <path id="path-left" d={`M ${left.x} ${left.y} L ${top.x} ${top.y}`} />
+                </defs>
+
+                {/* Phase 1 Label */}
+                <text fill="currentColor" className="text-[10px] sm:text-[11px] font-black uppercase tracking-widest text-muted-foreground/60" dy="-14">
+                    <textPath href="#path-right" startOffset="50%" textAnchor="middle">
+                        {t?.phase1 || "ЗАХАР"} ({p1Pct}%)
+                    </textPath>
+                </text>
+
+                {/* Phase 2 Label */}
                 {p2Hours > 0 && (
-                    <div className="absolute -bottom-[2%] left-1/2 -translate-x-1/2 text-[10px] sm:text-[11px] font-black text-muted-foreground/60 uppercase tracking-widest whitespace-nowrap">
-                        {t?.phase2 || "ПРЕХОД"} ({p2Pct}%)
-                    </div>
+                    <text fill="currentColor" className="text-[10px] sm:text-[11px] font-black uppercase tracking-widest text-muted-foreground/60" dy="24">
+                        <textPath href="#path-bottom" startOffset="50%" textAnchor="middle">
+                            {t?.phase2 || "ПРЕХОД"} ({p2Pct}%)
+                        </textPath>
+                    </text>
                 )}
+
+                {/* Phase 3 Label */}
                 {p3Hours > 0 && (
-                    <div className="absolute top-[8%] left-[0%] text-[10px] sm:text-[11px] font-black text-muted-foreground/60 uppercase tracking-widest -rotate-[60deg] origin-bottom-right whitespace-nowrap">
-                        {t?.phase3 || "КЕТОЗА И АВТОФАГИЯ"} ({p3Pct}%)
-                    </div>
+                    <text fill="currentColor" className="text-[10px] sm:text-[11px] font-black uppercase tracking-widest text-muted-foreground/60" dy="-14">
+                        <textPath href="#path-left" startOffset="50%" textAnchor="middle">
+                            {t?.phase3 || "КЕТОЗА И АВТОФАГИЯ"} ({p3Pct}%)
+                        </textPath>
+                    </text>
                 )}
-            </div>
+            </svg>
 
             <div className="absolute inset-0 flex flex-col items-center justify-center mt-2 z-10">
                 {children}
