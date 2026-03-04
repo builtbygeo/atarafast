@@ -70,8 +70,8 @@ export function PresetGrid({ onSelect }: PresetGridProps) {
                       {t.customFast}
                     </p>
                   ) : (
-                    <p className="text-[10px] sm:text-xs font-black uppercase tracking-[0.2em] opacity-80 mt-1">
-                      {t.fastLabel}
+                    <p className="text-[10px] sm:text-xs font-black uppercase tracking-[0.15em] opacity-90 mt-1">
+                      {(t.planContent as any)?.[preset.id]?.name || preset.name}
                     </p>
                   )}
                 </div>

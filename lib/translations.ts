@@ -19,7 +19,7 @@ export const bg = {
   about: "За плана",
   tipsTitle: "Съвети",
   endFast: "Край",
-  confirmEndFast: "Потвърди край",
+  confirmEndFast: "Потвърди",
   tapToConfirm: "Натисни пак за край",
   editStartTime: "Редакция начало",
   viewDetails: "Детайли",
@@ -102,6 +102,11 @@ export const bg = {
   notifications: "Известия",
   notificationsDesc: "Получавайте известия за край на поста",
   allowNotifications: "Разреши известия",
+  changePlan: "Смени",
+  welcomeTitle: "Добре дошли в Atara!",
+  welcomeHint: "Изберете план по-долу и прочетете за различните протоколи за гладуване в таб \"План\".",
+  lastFast: "ПОСЛЕДЕН ФАСТ",
+  duration: "ПРОДЪЛЖИТЕЛНОСТ",
 
   // Plan View
   planTitle: "План",
@@ -287,6 +292,11 @@ export const en: typeof bg = {
   notifications: "Notifications",
   notificationsDesc: "Get notified when your fast is complete",
   allowNotifications: "Enable Notifications",
+  changePlan: "Change",
+  welcomeTitle: "Welcome to Atara!",
+  welcomeHint: "Choose a plan below and explore the different fasting protocols in the Plan tab.",
+  lastFast: "LAST FAST",
+  duration: "DURATION",
 
   planTitle: "Plan",
   planSubtitle: "Learn about different fasting protocols",

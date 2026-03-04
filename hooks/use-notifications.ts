@@ -18,17 +18,26 @@ export function useNotifications() {
         return result
     }, [])
 
-    const sendNotification = useCallback((title: string, options?: NotificationOptions) => {
+    const sendNotification = useCallback(async (title: string, options?: NotificationOptions) => {
         if (typeof window === "undefined" || !("Notification" in window) || Notification.permission !== "granted") return
 
-        // Check for Service Worker registration
+        // Prefer SW postMessage — works reliably on iOS PWA
         if ("serviceWorker" in navigator) {
-            navigator.serviceWorker.ready.then((registration) => {
-                registration.showNotification(title, options)
-            })
-        } else {
-            new Notification(title, options)
+            try {
+                const reg = await navigator.serviceWorker.ready
+                reg.active?.postMessage({
+                    type: "SHOW_NOTIFICATION",
+                    title,
+                    body: (options as any)?.body ?? "",
+                })
+                return
+            } catch {
+                // fall through to direct Notification
+            }
         }
+
+        // Fallback for non-SW environments
+        new Notification(title, options)
     }, [])
 
     return { permission, requestPermission, sendNotification }

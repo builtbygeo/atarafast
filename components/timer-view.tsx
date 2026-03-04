@@ -11,8 +11,11 @@ import {
   Trash2,
   Clock,
   Timer,
-  Settings as SettingsIcon,
+  Repeat,
   Edit2,
+  Settings as SettingsIcon,
+  BookOpen,
+  Flame,
 } from "lucide-react"
 import {
   startFast,
@@ -266,8 +269,9 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
 
         <div className="flex flex-col w-full gap-4 max-w-xs mt-auto pb-8">
           <div className="grid grid-cols-[1fr_2fr_auto] gap-3">
-            <button onClick={() => navigateTo("presets")} className="flex h-14 items-center justify-center rounded-2xl bg-secondary/50 text-foreground transition-all hover:bg-secondary active:scale-95 border border-border/50">
-              <SettingsIcon className="h-5 w-5" />
+            <button onClick={() => navigateTo("presets")} className="flex h-14 items-center justify-center gap-2 px-4 rounded-2xl bg-secondary/50 text-foreground transition-all hover:bg-secondary active:scale-95 border border-border/50">
+              <Repeat className="h-4 w-4" />
+              <span className="text-xs font-black uppercase tracking-wide opacity-80">{t.changePlan || "Смени"}</span>
             </button>
             <button
               onClick={handleEndFast}
@@ -319,15 +323,56 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
 
   const renderPresetsContent = () => {
     const lastFastInfo = getLastFastInfo()
+    const lastCompleted = history.filter(h => h.completed).sort((a, b) => new Date(b.endTime!).getTime() - new Date(a.endTime!).getTime())[0]
+    const isNewUser = history.length === 0
+
     return (
       <div className="flex flex-col h-full overflow-y-auto px-4 py-4 no-scrollbar">
         <WeekStatusStrip history={history} activeFast={null} />
 
-        <div className="mt-8">
+        {/* New user onboarding nudge */}
+        {isNewUser && (
+          <div className="mt-4 mb-2 bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20 rounded-2xl p-4 flex items-start gap-3">
+            <Flame className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+            <div>
+              <p className="text-sm font-black text-foreground">{t.welcomeTitle || "Добре дошли!"}</p>
+              <p className="text-xs text-muted-foreground font-medium mt-0.5 leading-relaxed">
+                {t.welcomeHint || "Изберете план по-долу и прочетете за различните протоколи за гладуване."}
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* Last fast summary card (only if has history and no active fast) */}
+        {lastCompleted && !activeFast && !isNewUser && (
+          <div className="mt-4 mb-2 bg-secondary/20 border border-border/40 rounded-2xl p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-[9px] font-black uppercase tracking-[0.2em] text-muted-foreground opacity-60">{t.lastFast || "ПОСЛЕДЕН ФАСТ"}</p>
+                <p className="text-sm font-black text-foreground mt-0.5">
+                  {getPresetById(lastCompleted.presetId)?.name || lastCompleted.presetId}
+                </p>
+              </div>
+              <div className="text-right">
+                <p className="text-[9px] font-black uppercase tracking-[0.2em] text-muted-foreground opacity-60">{t.duration || "ПРОДЪЛЖИТЕЛНОСТ"}</p>
+                <p className="text-sm font-black text-foreground mt-0.5 font-mono">
+                  {(() => {
+                    const ms = new Date(lastCompleted.endTime!).getTime() - new Date(lastCompleted.startTime).getTime()
+                    const h = Math.floor(ms / 3600000)
+                    const m = Math.floor((ms % 3600000) / 60000)
+                    return `${h}ч ${m}м`
+                  })()}
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        <div className="mt-6">
           <PresetGrid onSelect={handleSelectPreset} />
         </div>
 
-        <div className="mt-12 mb-12">
+        <div className="mt-10 mb-12">
           {lastFastInfo && !activeFast && (
             <button
               onClick={handleQuickStart}

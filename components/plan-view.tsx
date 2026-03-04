@@ -39,7 +39,10 @@ export function PlanView() {
           {t.appName} &middot; {t.planTitle}
         </p>
         <h2 className="text-3xl font-black text-foreground tracking-tighter">{t.fastingPlans}</h2>
-        <p className="text-sm font-medium text-muted-foreground mt-2 leading-relaxed opacity-70">
+        <p className="text-xs font-medium text-primary/80 mt-2 leading-relaxed italic opacity-90 border-l-2 border-primary/40 pl-3">
+          {t.tagline}
+        </p>
+        <p className="text-sm font-medium text-muted-foreground mt-3 leading-relaxed opacity-70">
           {t.plansSubtitle}
         </p>
       </div>
