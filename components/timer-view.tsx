@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useCallback, useMemo } from "react"
+import { useState, useEffect, useCallback, useMemo, useRef } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { CircularProgress } from "@/components/circular-progress"
 import { TriangularProgress } from "@/components/triangular-progress"
@@ -19,6 +19,7 @@ import {
   Share2,
 } from "lucide-react"
 import { ShareDialog } from "@/components/share-dialog"
+import { CompletionAnimation } from "@/components/completion-animation"
 import {
   startFast,
   endFast,
@@ -75,6 +76,8 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
   const [showEditStartTime, setShowEditStartTime] = useState(false)
   const [confirmEnd, setConfirmEnd] = useState(false)
   const [showShare, setShowShare] = useState(false)
+  const [justCompleted, setJustCompleted] = useState(false)
+  const hasCelebratedRef = useRef(false)
 
   const navigateTo = useCallback(
     (newState: ViewState) => {
@@ -91,7 +94,17 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
     const sett = getSettings()
     setActiveFast(fast)
     setSettings(sett)
-    if (fast) setViewState("timer")
+    if (fast) {
+      setViewState("timer")
+      const start = new Date(fast.startTime)
+      const targetMs = fast.targetHours * 3600000
+      const elapsedMs = new Date().getTime() - start.getTime()
+      if (elapsedMs >= targetMs) {
+        hasCelebratedRef.current = true
+      } else {
+        hasCelebratedRef.current = false
+      }
+    }
     setMounted(true)
   }, [])
 
@@ -105,7 +118,8 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
       const targetMs = activeFast.targetHours * 3600000
       const elapsedMs = currentNow.getTime() - start.getTime()
 
-      if (elapsedMs >= targetMs && elapsedMs < targetMs + 2000) {
+      if (elapsedMs >= targetMs && !hasCelebratedRef.current) {
+        hasCelebratedRef.current = true
         sendNotification(t.targetReached, {
           body: `${activeFast.presetId} fast complete!`,
         })
@@ -134,6 +148,8 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
   }
 
   const handleEndFast = useCallback(() => {
+    if (!activeFast) return
+
     if (!confirmEnd) {
       setConfirmEnd(true)
       haptic([30])
@@ -142,14 +158,34 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
       return
     }
 
-    const record = endFast()
-    if (record) {
-      setActiveFast(null)
-      setConfirmEnd(false)
-      navigateTo("presets")
-      onFastEnd?.()
+    const start = new Date(activeFast.startTime)
+    const targetMs = activeFast.targetHours * 3600000
+    const elapsedMs = new Date().getTime() - start.getTime()
+    const isSuccess = elapsedMs >= targetMs
+
+    if (isSuccess) {
+      setJustCompleted(true)
+      haptic([50, 50, 100])
+      setTimeout(() => {
+        setJustCompleted(false)
+        const record = endFast()
+        if (record) {
+          setActiveFast(null)
+          setConfirmEnd(false)
+          navigateTo("presets")
+          onFastEnd?.()
+        }
+      }, 3500) // 3.5s celebration delay
+    } else {
+      const record = endFast()
+      if (record) {
+        setActiveFast(null)
+        setConfirmEnd(false)
+        navigateTo("presets")
+        onFastEnd?.()
+      }
     }
-  }, [onFastEnd, navigateTo, confirmEnd])
+  }, [onFastEnd, navigateTo, confirmEnd, activeFast])
 
   const handleDiscardFast = useCallback(() => {
     deleteFast()
@@ -202,8 +238,9 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
       <div className="flex flex-col items-center h-full pt-2 pb-6 overflow-y-auto w-full px-4 no-scrollbar">
         <WeekStatusStrip history={history} activeFast={activeFast} />
 
-        <div className="flex flex-col items-center text-center mt-4 mb-6 w-full">
-          <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="relative">
+        <div className="flex flex-col items-center text-center mt-4 mb-6 w-full relative">
+          {justCompleted && <CompletionAnimation />}
+          <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="relative z-10">
             {settings.timerStyle === "triangle" ? (
               <TriangularProgress
                 elapsedHours={elapsedMs / 3600000}

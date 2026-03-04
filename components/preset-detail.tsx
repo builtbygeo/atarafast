@@ -58,6 +58,7 @@ export function PresetDetail({ preset, isActive, isCurrentActivePreset, onBack, 
       <div className="flex flex-col items-center gap-6 mt-4">
         <CircularProgress
           progress={isCustom ? 0.6 : preset.fastHours / 24}
+          targetHours={displayHours}
           size={140}
           strokeWidth={10}
           color={preset.color}
