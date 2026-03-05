@@ -259,3 +259,34 @@ export function incrementAiUsage(): void {
   data.aiUsage.lastUsedDate = new Date().toISOString()
   saveData(data)
 }
+
+export function checkAiQuota(isPremium: boolean): { canUse: boolean; reason?: string; remaining?: number } {
+  const usage = getAiUsage()
+  const now = new Date()
+
+  if (!isPremium) {
+    if (usage.monthlyCount >= 1) {
+      return { canUse: false, reason: "Monthly limit reached (1/mo for Free plan)", remaining: 0 }
+    }
+    return { canUse: true, remaining: 1 - usage.monthlyCount }
+  } else {
+    // Premium: 1 per day, max 5 per week
+    if (usage.lastUsedDate) {
+      const last = new Date(usage.lastUsedDate)
+      const isToday =
+        last.getDate() === now.getDate() &&
+        last.getMonth() === now.getMonth() &&
+        last.getFullYear() === now.getFullYear()
+
+      if (isToday) {
+        return { canUse: false, reason: "Limit reached (1 per day for Atara+)", remaining: 0 }
+      }
+    }
+
+    if (usage.weeklyCount >= 5) {
+      return { canUse: false, reason: "Weekly limit reached (5 per week for Atara+)", remaining: 0 }
+    }
+
+    return { canUse: true, remaining: 5 - usage.weeklyCount }
+  }
+}

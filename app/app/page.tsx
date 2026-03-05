@@ -9,6 +9,7 @@ import { StatsView } from "@/components/stats-view"
 import { PlanView } from "@/components/plan-view"
 import { PremiumGate } from "@/components/premium-gate"
 import { SettingsSheet } from "@/components/settings-sheet"
+import { UpgradeDialog } from "@/components/upgrade-dialog"
 import { getHistory, type FastingRecord } from "@/lib/storage"
 import { useLang } from "@/lib/language-context"
 
@@ -18,6 +19,7 @@ export default function Home() {
   const { t, lang, setLang } = useLang()
   const [activeTab, setActiveTab] = useState<Tab>("timer")
   const [settingsOpen, setSettingsOpen] = useState(false)
+  const [upgradeOpen, setUpgradeOpen] = useState(false)
   const [history, setHistory] = useState<FastingRecord[]>([])
   const [mounted, setMounted] = useState(false)
 
@@ -70,7 +72,11 @@ export default function Home() {
         )}
         {activeTab === "stats" && (
           <PremiumGate featureName="Statistics" blur>
-            <StatsView history={history} onOpenSettings={() => setSettingsOpen(true)} />
+            <StatsView
+              history={history}
+              onOpenSettings={() => setSettingsOpen(true)}
+              onOpenUpgrade={() => setUpgradeOpen(true)}
+            />
           </PremiumGate>
         )}
         {activeTab === "plan" && <PlanView />}
@@ -101,10 +107,17 @@ export default function Home() {
       <SettingsSheet
         open={settingsOpen}
         onClose={() => setSettingsOpen(false)}
+        onOpenUpgrade={() => setUpgradeOpen(true)}
         onDataCleared={() => {
           setHistory([])
           setActiveTab("timer")
         }}
+      />
+
+      {/* Upgrade Dialog */}
+      <UpgradeDialog
+        open={upgradeOpen}
+        onClose={() => setUpgradeOpen(false)}
       />
     </main>
   )

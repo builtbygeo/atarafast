@@ -27,13 +27,17 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ url: portalSession.url })
     }
 
+    const isLifetime = requestedPriceId === process.env.NEXT_PUBLIC_STRIPE_LIFETIME_PRICE_ID
+
     const session = await stripe.checkout.sessions.create({
-        mode: 'subscription',
+        mode: isLifetime ? 'payment' : 'subscription',
         payment_method_types: ['card'],
         line_items: [{ price: requestedPriceId, quantity: 1 }],
-        subscription_data: {
-            metadata: { clerkUserId: userId },
-        },
+        ...(isLifetime ? {} : {
+            subscription_data: {
+                metadata: { clerkUserId: userId },
+            }
+        }),
         metadata: { clerkUserId: userId },
         success_url: `${process.env.NEXT_PUBLIC_APP_URL}/app?payment=success`,
         cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/app?payment=cancelled`,

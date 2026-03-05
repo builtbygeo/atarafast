@@ -59,6 +59,7 @@ const premiumFeatures = [
   'All 6+ fasting plans',
   'Custom duration planner',
   'Full statistics & analytics',
+  'AI Metabolic Coach (20 sessions/mo)',
   'Social share cards',
   'Cloud sync across devices (coming soon)',
   'Smart phase notifications (coming soon)',
@@ -217,8 +218,8 @@ export default function LandingPage() {
             </div>
             <h3 className="font-black text-xl mb-1 text-white">Yearly</h3>
             <p className="text-sm mb-4" style={{ color: 'rgba(255,255,255,0.45)' }}>Long-term transformation</p>
-            <div className="text-4xl font-black text-white mb-2">€12<span className="text-base font-normal" style={{ color: 'rgba(255,255,255,0.35)' }}>/year</span></div>
-            <p className="text-xs font-semibold mb-6" style={{ color: '#22c55e' }}>Save ~73% over monthly</p>
+            <div className="text-4xl font-black text-white mb-2">€33.69<span className="text-base font-normal" style={{ color: 'rgba(255,255,255,0.35)' }}>/year</span></div>
+            <p className="text-xs font-semibold mb-6" style={{ color: '#22c55e' }}>Save ~25% over monthly</p>
             <div className="h-px mb-6" style={{ backgroundColor: 'rgba(255,255,255,0.08)' }} />
             <ul className="space-y-3 mb-8 flex-grow">
               {premiumFeatures.map((f) => (

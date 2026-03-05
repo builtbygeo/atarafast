@@ -14,9 +14,10 @@ interface SettingsSheetProps {
   open: boolean
   onClose: () => void
   onDataCleared: () => void
+  onOpenUpgrade?: () => void
 }
 
-export function SettingsSheet({ open, onClose, onDataCleared }: SettingsSheetProps) {
+export function SettingsSheet({ open, onClose, onDataCleared, onOpenUpgrade }: SettingsSheetProps) {
   const { t } = useLang()
   const { theme, setTheme } = useTheme()
   const { permission, requestPermission } = useNotifications()
@@ -161,7 +162,7 @@ export function SettingsSheet({ open, onClose, onDataCleared }: SettingsSheetPro
                   )}
 
                   <button
-                    onClick={() => startCheckout()}
+                    onClick={isPremium && !isTrialing ? () => startCheckout() : onOpenUpgrade}
                     className="w-full mt-1 flex items-center justify-center gap-2 rounded-lg bg-primary/10 border border-primary/20 px-4 py-2 text-xs font-bold text-primary hover:bg-primary/20 transition-all"
                   >
                     <Sparkles className="w-3.5 h-3.5" />

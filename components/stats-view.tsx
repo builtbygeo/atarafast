@@ -15,10 +15,12 @@ import { Flame, Target, Clock, TrendingUp, Lock, Sparkles, Settings } from "luci
 import type { FastingRecord } from "@/lib/storage"
 import { useLang } from "@/lib/language-context"
 import { useSubscription, startCheckout } from "@/lib/subscription"
+import { getAiUsage, checkAiQuota, incrementAiUsage } from "@/lib/storage"
 
 interface StatsViewProps {
   history: FastingRecord[]
   onOpenSettings?: () => void
+  onOpenUpgrade?: () => void
 }
 
 const ChartTooltip = ({ active, payload, label }: any) => {
@@ -59,13 +61,17 @@ function StatCard({
   )
 }
 
-export function StatsView({ history, onOpenSettings }: StatsViewProps) {
+export function StatsView({ history, onOpenSettings, onOpenUpgrade }: StatsViewProps) {
   const { t, lang, setLang } = useLang()
   const { isPremium } = useSubscription()
   const [aiAnalysis, setAiAnalysis] = useState<string | null>(null)
   const [isAnalyzing, setIsAnalyzing] = useState(false)
 
+  const quota = checkAiQuota(isPremium)
+
   const handleAnalyze = async () => {
+    if (!quota.canUse) return
+
     setIsAnalyzing(true)
     try {
       const res = await fetch("/api/ai/analyze", {
@@ -74,7 +80,10 @@ export function StatsView({ history, onOpenSettings }: StatsViewProps) {
         body: JSON.stringify({ history, stats })
       })
       const data = await res.json()
-      if (data.analysis) setAiAnalysis(data.analysis)
+      if (data.analysis) {
+        setAiAnalysis(data.analysis)
+        incrementAiUsage()
+      }
     } finally {
       setIsAnalyzing(false)
     }
@@ -237,7 +246,7 @@ export function StatsView({ history, onOpenSettings }: StatsViewProps) {
                 Get full access to your metabolic trends, streaks, and completion rates with Atara+.
               </p>
               <button
-                onClick={() => startCheckout()}
+                onClick={onOpenUpgrade}
                 className="w-full relative flex items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 text-sm font-bold text-primary-foreground shadow-lg shadow-primary/20 active:scale-[0.98] transition-all"
               >
                 <Sparkles className="w-4 h-4" />
@@ -275,13 +284,38 @@ export function StatsView({ history, onOpenSettings }: StatsViewProps) {
                 {aiAnalysis}
               </div>
             ) : (
-              <button
-                onClick={handleAnalyze}
-                disabled={isAnalyzing || history.length === 0}
-                className="w-full flex items-center justify-center gap-2 rounded-2xl bg-primary px-4 py-3.5 text-sm font-bold text-primary-foreground shadow-lg shadow-primary/20 active:scale-[0.98] transition-all disabled:opacity-50 relative z-10 uppercase tracking-widest mt-2"
-              >
-                {isAnalyzing ? "Analyzing metabolism..." : "Generate AI Insights"}
-              </button>
+              <div className="flex flex-col gap-3">
+                <button
+                  onClick={handleAnalyze}
+                  disabled={isAnalyzing || history.length === 0 || !quota.canUse}
+                  className="w-full flex items-center justify-center gap-2 rounded-2xl bg-primary px-4 py-3.5 text-sm font-bold text-primary-foreground shadow-lg shadow-primary/20 active:scale-[0.98] transition-all disabled:opacity-50 relative z-10 uppercase tracking-widest mt-2"
+                >
+                  {isAnalyzing ? "Analyzing metabolism..." : "Generate AI Insights"}
+                </button>
+
+                {!quota.canUse && history.length > 0 && (
+                  <div className="bg-destructive/10 border border-destructive/20 p-3 rounded-xl flex items-start gap-2 relative z-10">
+                    <Lock className="h-4 w-4 text-destructive shrink-0 mt-0.5" />
+                    <div>
+                      <p className="text-[11px] font-bold text-destructive leading-tight mb-1">{quota.reason}</p>
+                      <button
+                        onClick={onOpenUpgrade}
+                        className="text-[10px] font-black uppercase text-primary hover:underline"
+                      >
+                        Upgrade for more access →
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {quota.canUse && (
+                  <p className="text-[10px] text-muted-foreground text-center font-bold tracking-widest opacity-60 uppercase">
+                    {isPremium
+                      ? `${quota.remaining} Weekly Credits Left`
+                      : "1 Monthly Credit Remaining"}
+                  </p>
+                )}
+              </div>
             )}
             {history.length === 0 && !aiAnalysis && (
               <p className="text-[10px] text-muted-foreground uppercase tracking-widest mt-3 text-center opacity-70">Complete your first fast to use AI</p>
