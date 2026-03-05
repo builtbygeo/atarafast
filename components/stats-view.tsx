@@ -1,6 +1,7 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import { useMemo, useState, useEffect } from "react"
+import { useUser } from "@clerk/nextjs"
 import {
   format,
   startOfWeek,
@@ -67,6 +68,15 @@ export function StatsView({ history, onOpenSettings, onOpenUpgrade }: StatsViewP
   const [aiAnalysis, setAiAnalysis] = useState<string | null>(null)
   const [isAnalyzing, setIsAnalyzing] = useState(false)
 
+  const { user, isLoaded: isUserLoaded } = useUser()
+
+  // Load last report from metadata
+  useEffect(() => {
+    if (isUserLoaded && user?.publicMetadata?.lastAiReport) {
+      setAiAnalysis(user.publicMetadata.lastAiReport as string)
+    }
+  }, [isUserLoaded, user])
+
   const quota = checkAiQuota(isPremium)
 
   // Simple markdown-style formatter
@@ -99,6 +109,13 @@ export function StatsView({ history, onOpenSettings, onOpenUpgrade }: StatsViewP
       if (data.analysis) {
         setAiAnalysis(data.analysis)
         incrementAiUsage()
+
+        // Persist to clerk metadata
+        fetch("/api/ai/save-report", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ report: data.analysis })
+        }).catch(err => console.error("Failed to persist AI report:", err))
       }
     } finally {
       setIsAnalyzing(false)
@@ -309,21 +326,35 @@ export function StatsView({ history, onOpenSettings, onOpenUpgrade }: StatsViewP
                   {isAnalyzing ? "Analyzing metabolism..." : "Generate AI Insights"}
                 </button>
 
-                {!quota.canUse && history.length > 0 && (
-                  <div className="bg-destructive/10 border border-destructive/20 p-3 rounded-xl flex items-start gap-2 relative z-10">
-                    <Lock className="h-4 w-4 text-destructive shrink-0 mt-0.5" />
-                    <div>
-                      <p className="text-[11px] font-bold text-destructive leading-tight mb-1">{quota.reason}</p>
+                {!quota.canUse && (
+                  <div className="rounded-2xl border border-destructive/20 bg-destructive/5 p-5 text-center relative overflow-hidden group">
+                    <div className="flex items-center justify-center gap-2 text-destructive font-black uppercase tracking-widest text-[10px] mb-3">
+                      <Lock className="h-3 w-3" />
+                      {lang === 'bg' ? 'Лимитът е достигнат' : 'Limit reached'}
+                    </div>
+
+                    <p className="text-xs font-medium text-muted-foreground/80 leading-relaxed mb-4">
+                      {isPremium
+                        ? (lang === 'bg'
+                          ? 'Atara+ включва 1 анализ на ден (5 на седмица). Вашата квота е изчерпана за днес.'
+                          : 'Atara+ includes 1 analysis per day (5 per week). Your quota is exhausted for today.')
+                        : (lang === 'bg'
+                          ? 'Безплатният план включва 1 анализ на месец. Atara+ предлага ежедневен коучинг.'
+                          : 'Free plan includes 1 analysis per month. Atara+ offers daily coaching.')
+                      }
+                    </p>
+
+                    {!isPremium && (
                       <button
                         onClick={onOpenUpgrade}
-                        className="text-[10px] font-black uppercase text-primary hover:underline"
+                        className="text-[10px] font-black text-primary uppercase tracking-[0.2em] hover:opacity-80 transition-opacity flex items-center gap-2 mx-auto"
                       >
-                        Upgrade for more access →
+                        {lang === 'bg' ? 'Ъпгрейд за повече достъп' : 'Upgrade for more access'}
+                        <span className="text-sm">→</span>
                       </button>
-                    </div>
+                    )}
                   </div>
                 )}
-
                 {quota.canUse && (
                   <p className="text-[10px] text-muted-foreground text-center font-bold tracking-widest opacity-60 uppercase">
                     {isPremium

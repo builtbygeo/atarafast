@@ -167,6 +167,71 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* Plans Mockup Section */}
+      <section className="py-24 px-6 bg-[#0f0f0f]">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <div className="order-2 lg:order-1">
+            <div className="relative inline-block">
+              <div className="absolute -inset-4 bg-[#22c55e]/10 blur-3xl rounded-full" />
+              <Image
+                src="/atara_plans_mockup_1772736306139.png"
+                alt="Atara Plans Interface"
+                width={500}
+                height={500}
+                className="relative z-10 rounded-[2.5rem] shadow-2xl border border-white/5"
+              />
+            </div>
+          </div>
+          <div className="order-1 lg:order-2">
+            <h2 className="text-4xl sm:text-5xl font-black tracking-tighter mb-6">Choose Your <span className="text-primary">Protocol</span></h2>
+            <p className="text-lg text-white/50 leading-relaxed mb-8">
+              Whether you are a beginner starting with Circadian rhythms or an expert following the Warrior protocol, Atara provides the perfect structure for your goals.
+            </p>
+            <ul className="space-y-4">
+              {['Circadian 12:12', 'Gold Standard 16:8', 'Advanced 18:6', 'The Warrior 20:4'].map(p => (
+                <li key={p} className="flex items-center gap-3 font-bold text-white/80">
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary" /> {p}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      {/* Stats Mockup Section */}
+      <section className="py-24 px-6 bg-white/[0.01]">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <div>
+            <h2 className="text-4xl sm:text-5xl font-black tracking-tighter mb-6">Insights Powered by <span className="text-primary">AI</span></h2>
+            <p className="text-lg text-white/50 leading-relaxed mb-8">
+              Atara doesn&apos;t just track time. It analyzes your habits. Our AI Coach provides personalized metabolic insights based on your unique fasting history.
+            </p>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="p-4 rounded-2xl bg-white/5 border border-white/5">
+                <p className="text-primary font-black text-2xl mb-1">78</p>
+                <p className="text-[10px] uppercase tracking-widest text-white/40 font-bold">Day Streak</p>
+              </div>
+              <div className="p-4 rounded-2xl bg-white/5 border border-white/5">
+                <p className="text-primary font-black text-2xl mb-1">91%</p>
+                <p className="text-[10px] uppercase tracking-widest text-white/40 font-bold">Goal Success</p>
+              </div>
+            </div>
+          </div>
+          <div className="flex justify-center">
+            <div className="relative inline-block">
+              <div className="absolute -inset-4 bg-[#22c55e]/10 blur-3xl rounded-full" />
+              <Image
+                src="/atara_stats_mockup_1772736320650.png"
+                alt="Atara Analytics Interface"
+                width={500}
+                height={500}
+                className="relative z-10 rounded-[2.5rem] shadow-2xl border border-white/5"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Features */}
       <section id="features" className="py-24 px-6 max-w-5xl mx-auto">
         <div className="text-center mb-16">
