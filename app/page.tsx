@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import Image from 'next/image'
 
 export const metadata: Metadata = {
   title: 'Atara — Master Your Metabolism',
@@ -124,31 +125,18 @@ export default function LandingPage() {
           </a>
         </div>
 
-        {/* App visual mockup placeholder */}
-        <div className="relative w-full max-w-[320px] mx-auto aspect-[9/19] rounded-[3rem] flex flex-col items-center justify-center gap-4 p-8" style={{ backgroundColor: '#1a1a1a', border: '1px solid rgba(255,255,255,0.08)', boxShadow: '0 40px 80px rgba(0,0,0,0.6)' }}>
-          {/* Circular progress mock */}
-          <div className="relative w-40 h-40">
-            <svg width="160" height="160" viewBox="0 0 160 160">
-              <circle cx="80" cy="80" r="60" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="20" />
-              <circle cx="80" cy="80" r="60" fill="none" stroke="#f59e0b" strokeWidth="20" strokeDasharray="188 377" strokeDashoffset="-94" transform="rotate(-90 80 80)" />
-              <circle cx="80" cy="80" r="60" fill="none" stroke="#fbbf24" strokeWidth="20" strokeDasharray="94 377" strokeDashoffset="-282" transform="rotate(-90 80 80)" />
-              <circle cx="80" cy="80" r="60" fill="none" stroke="#22c55e" strokeWidth="20" strokeDasharray="94 377" strokeDashoffset="-376" transform="rotate(-90 80 80)" />
-              <circle cx="80" cy="80" r="60" fill="none" stroke="rgba(255,255,255,0.7)" strokeWidth="4" strokeLinecap="round" strokeDasharray="282 377" strokeDashoffset="0" transform="rotate(-90 80 80)" />
-            </svg>
-            <div className="absolute inset-0 flex flex-col items-center justify-center">
-              <span className="text-2xl font-black font-mono text-white">14:22</span>
-              <span className="text-[9px] font-bold uppercase tracking-widest" style={{ color: 'rgba(255,255,255,0.4)' }}>elapsed</span>
-            </div>
-          </div>
-          <div className="flex gap-2 w-full">
-            {['ЗАХАР', 'ПРЕХОД', 'КЕТОЗА'].map((label, i) => (
-              <div key={label} className="flex-1 rounded-xl p-2 text-center" style={{ backgroundColor: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                <div className="w-2 h-0.5 rounded-full mx-auto mb-1" style={{ backgroundColor: ['#f59e0b', '#fbbf24', '#22c55e'][i] }} />
-                <span className="text-[8px] font-bold block" style={{ color: ['#f59e0b', '#fbbf24', '#22c55e'][i] }}>{label}</span>
-              </div>
-            ))}
-          </div>
-          <div className="text-center" style={{ color: 'rgba(255,255,255,0.3)', fontSize: '10px' }}>16:8 Intermittent Fast</div>
+        {/* Hero image — real mockup */}
+        <div className="relative w-full max-w-sm mx-auto">
+          <div className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none z-10" style={{ background: 'linear-gradient(to top, #0f0f0f, transparent)' }} />
+          <Image
+            src="/hero-mockup.png"
+            alt="Atara app showing active fast with metabolic phase ring"
+            width={480}
+            height={600}
+            className="w-full rounded-3xl"
+            style={{ boxShadow: '0 40px 80px rgba(34,197,94,0.15), 0 20px 40px rgba(0,0,0,0.8)' }}
+            priority
+          />
         </div>
       </section>
 
@@ -207,8 +195,17 @@ export default function LandingPage() {
             </div>
             <h3 className="font-black text-xl mb-1 text-white">Atara+</h3>
             <p className="text-sm mb-4" style={{ color: 'rgba(255,255,255,0.45)' }}>Full metabolic mastery</p>
-            <div className="text-4xl font-black text-white mb-1">$4.99<span className="text-base font-normal" style={{ color: 'rgba(255,255,255,0.35)' }}>/month</span></div>
-            <p className="text-xs font-semibold mb-6" style={{ color: '#22c55e' }}>✓ 14 days free — cancel anytime</p>
+            {/* Pricing toggle — monthly highlighted */}
+            <div className="flex gap-3 mb-2">
+              <div>
+                <div className="text-4xl font-black text-white">€3.69<span className="text-base font-normal" style={{ color: 'rgba(255,255,255,0.35)' }}>/mo</span></div>
+                <p className="text-xs font-semibold mt-0.5" style={{ color: '#22c55e' }}>✓ 14-day free trial</p>
+              </div>
+              <div className="ml-auto text-right">
+                <div className="text-xl font-black" style={{ color: 'rgba(255,255,255,0.5)' }}>€12<span className="text-sm font-normal">/yr</span></div>
+                <p className="text-xs" style={{ color: 'rgba(34,197,94,0.7)' }}>Save ~73%</p>
+              </div>
+            </div>
             <div className="h-px mb-6" style={{ backgroundColor: 'rgba(255,255,255,0.08)' }} />
             <ul className="space-y-3 mb-8">
               {premiumFeatures.map((f) => (
@@ -218,9 +215,14 @@ export default function LandingPage() {
                 </li>
               ))}
             </ul>
-            <Link href="/app" className="block w-full text-center rounded-xl font-bold py-3.5 transition-colors" style={{ backgroundColor: '#22c55e', color: '#0f0f0f', boxShadow: '0 8px 24px rgba(34,197,94,0.3)' }}>
-              Start Free Trial
-            </Link>
+            <div className="flex gap-2">
+              <Link href="/app" className="flex-1 text-center rounded-xl font-bold py-3 text-sm transition-colors" style={{ backgroundColor: '#22c55e', color: '#0f0f0f', boxShadow: '0 8px 24px rgba(34,197,94,0.3)' }}>
+                Monthly
+              </Link>
+              <Link href="/app" className="flex-1 text-center rounded-xl font-bold py-3 text-sm transition-colors" style={{ border: '1px solid rgba(34,197,94,0.5)', color: '#22c55e' }}>
+                Yearly
+              </Link>
+            </div>
           </div>
         </div>
       </section>

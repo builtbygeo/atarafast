@@ -105,26 +105,26 @@ export function TriangularProgress({
                         filter={data.transitionHours > 0 ? "url(#tri-glow-amber)" : undefined}
                     />
 
-                    {/* Side 1 — Sugar (Right side: Top → Right) — drawn second */}
+                    {/* Side 1 — Ketosis (Right side: Top → Right) */}
                     <path
                         d={`M ${top.x} ${top.y} L ${right.x} ${right.y}`}
-                        fill="none"
-                        stroke="#f59e0b"
-                        strokeWidth={strokeWidth}
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        filter="url(#tri-glow-orange)"
-                    />
-
-                    {/* Side 3 — Ketosis (Left side: Left → Top) — drawn LAST so it appears on top */}
-                    <path
-                        d={`M ${left.x} ${left.y} L ${top.x} ${top.y}`}
                         fill="none"
                         stroke={data.ketosisHours > 0 ? "#22c55e" : "rgba(255,255,255,0.1)"}
                         strokeWidth={strokeWidth}
                         strokeLinecap="round"
                         strokeLinejoin="round"
                         filter={data.ketosisHours > 0 ? "url(#tri-glow-green)" : undefined}
+                    />
+
+                    {/* Side 3 — Sugar (Left side: Left → Top) — drawn LAST so it appears on top */}
+                    <path
+                        d={`M ${left.x} ${left.y} L ${top.x} ${top.y}`}
+                        fill="none"
+                        stroke="#f59e0b"
+                        strokeWidth={strokeWidth}
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        filter="url(#tri-glow-orange)"
                     />
 
                     {/* Progress Overlay (Thin WHITE Line) */}

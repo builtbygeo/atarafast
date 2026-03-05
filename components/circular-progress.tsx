@@ -83,7 +83,7 @@ export function CircularProgress({
             className="text-muted/10"
           />
 
-          {/* 1. Sugar (Orange) */}
+          {/* 1. Sugar (Orange) — left side, counterclockwise */}
           {sugarFrac > 0 && (
             <circle
               cx={center}
@@ -94,13 +94,13 @@ export function CircularProgress({
               strokeWidth={strokeWidth}
               strokeDasharray={circumference}
               strokeDashoffset={offsetSugar}
-              transform={`rotate(${angleSugar} ${center} ${center})`}
+              transform={`rotate(${angleSugar} ${center} ${center}) scale(-1 1) translate(${-size} 0)`}
               className="transition-all duration-1000 ease-out"
               filter="url(#glow-orange)"
             />
           )}
 
-          {/* 2. Transition (Amber/Lighter) */}
+          {/* 2. Transition (Amber) */}
           {transFrac > 0 && (
             <circle
               cx={center}
@@ -111,13 +111,13 @@ export function CircularProgress({
               strokeWidth={strokeWidth}
               strokeDasharray={circumference}
               strokeDashoffset={offsetTrans}
-              transform={`rotate(${angleTrans} ${center} ${center})`}
+              transform={`rotate(${-90 - (sugarFrac * 360)} ${center} ${center}) scale(-1 1) translate(${-size} 0)`}
               className="transition-all duration-1000 ease-out"
               filter="url(#glow-amber)"
             />
           )}
 
-          {/* 3. Ketosis (Green) */}
+          {/* 3. Ketosis (Green) — right side */}
           {ketoFrac > 0 && (
             <circle
               cx={center}
@@ -128,7 +128,7 @@ export function CircularProgress({
               strokeWidth={strokeWidth}
               strokeDasharray={circumference}
               strokeDashoffset={offsetKeto}
-              transform={`rotate(${angleKeto} ${center} ${center})`}
+              transform={`rotate(${-90 - (sugarFrac + transFrac) * 360} ${center} ${center}) scale(-1 1) translate(${-size} 0)`}
               className="transition-all duration-1000 ease-out"
               filter="url(#glow-green)"
             />
