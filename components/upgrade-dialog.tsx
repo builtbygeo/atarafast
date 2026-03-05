@@ -92,7 +92,7 @@ export function UpgradeDialog({ open, onClose }: UpgradeDialogProps) {
                                     <span className="font-bold text-base text-foreground group-hover:text-primary transition-colors flex items-center gap-1.5">
                                         <Trophy className="h-4 w-4 text-amber-500" /> Lifetime
                                     </span>
-                                    <span className="font-black text-lg text-foreground">€149.00<span className="text-xs font-normal text-muted-foreground"> one-time</span></span>
+                                    <span className="font-black text-lg text-foreground">€25.00<span className="text-xs font-normal text-muted-foreground"> one-time</span></span>
                                 </div>
                                 <p className="text-xs font-medium text-muted-foreground">Pay once, use Atara+ forever.</p>
                                 {loading === lifetimeId && <span className="absolute inset-y-0 right-4 flex items-center"><div className="animate-spin h-4 w-4 border-2 border-primary border-t-transparent rounded-full" /></span>}

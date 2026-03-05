@@ -69,6 +69,22 @@ export function StatsView({ history, onOpenSettings, onOpenUpgrade }: StatsViewP
 
   const quota = checkAiQuota(isPremium)
 
+  // Simple markdown-style formatter
+  const formatAiText = (text: string) => {
+    if (!text) return null
+    return text.split('\n').filter(line => line.trim() !== '').map((line, i) => {
+      // Handle bold text with **
+      const parts = line.split(/\*\*([^*]+)\*\*/)
+      return (
+        <div key={i} className={line.trim().startsWith('-') ? "mb-5 pl-5 -indent-5" : "mb-4"}>
+          {parts.map((part, j) => (
+            j % 2 === 1 ? <strong key={j} className="text-primary font-black uppercase tracking-tight">{part}</strong> : part
+          ))}
+        </div>
+      )
+    })
+  }
+
   const handleAnalyze = async () => {
     if (!quota.canUse) return
 
@@ -77,7 +93,7 @@ export function StatsView({ history, onOpenSettings, onOpenUpgrade }: StatsViewP
       const res = await fetch("/api/ai/analyze", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ history, stats })
+        body: JSON.stringify({ history, stats, lang })
       })
       const data = await res.json()
       if (data.analysis) {
@@ -280,8 +296,8 @@ export function StatsView({ history, onOpenSettings, onOpenUpgrade }: StatsViewP
             </h3>
 
             {aiAnalysis ? (
-              <div className="text-sm text-foreground/90 whitespace-pre-wrap leading-relaxed relative z-10 font-medium">
-                {aiAnalysis}
+              <div className="text-sm text-foreground/90 leading-relaxed relative z-10 font-medium">
+                {formatAiText(aiAnalysis)}
               </div>
             ) : (
               <div className="flex flex-col gap-3">

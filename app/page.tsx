@@ -140,6 +140,33 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* Ataraxia Origin */}
+      <section className="py-24 px-6 overflow-hidden bg-white/[0.02]">
+        <div className="max-w-4xl mx-auto flex flex-col items-center text-center">
+          <div className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-black uppercase tracking-[0.2em] mb-8" style={{ border: '1px solid rgba(255,255,255,0.1)', backgroundColor: 'rgba(255,255,255,0.03)', color: 'rgba(255,255,255,0.5)' }}>
+            The Philosophy
+          </div>
+
+          <h2 className="text-4xl sm:text-5xl font-black tracking-tighter mb-8 leading-tight">
+            Inspired by <span style={{ color: '#22c55e' }}>Ataraxia</span>
+          </h2>
+
+          <div className="relative p-10 rounded-[3rem] overflow-hidden group" style={{ border: '1px solid rgba(255,255,255,0.08)', backgroundColor: 'rgba(255,255,255,0.02)' }}>
+            <div className="absolute top-0 right-0 w-64 h-64 bg-[#22c55e] opacity-[0.03] blur-[100px] -mr-32 -mt-32" />
+            <div className="absolute bottom-0 left-0 w-64 h-64 bg-[#22c55e] opacity-[0.03] blur-[100px] -ml-32 -mb-32" />
+
+            <p className="text-xl sm:text-2xl font-medium leading-relaxed italic mb-8" style={{ color: 'rgba(255,255,255,0.8)' }}>
+              &ldquo;Ataraxia is the Stoic state of unshakeable inner calm and freedom from emotional disturbance.&rdquo;
+            </p>
+
+            <p className="text-base sm:text-lg leading-relaxed max-w-2xl mx-auto" style={{ color: 'rgba(255,255,255,0.45)' }}>
+              Fasting is more than just a biological process. It is a mental practice in discipline and stillness.
+              We built Atara to help you navigate your metabolic shifting with the same clarity and peace that the ancient Stoics practiced.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* Features */}
       <section id="features" className="py-24 px-6 max-w-5xl mx-auto">
         <div className="text-center mb-16">

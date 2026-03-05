@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 
 export async function POST(req: Request) {
     try {
-        const { history, stats } = await req.json()
+        const { history, stats, lang } = await req.json()
         const apiKey = process.env.OPENROUTER_API_KEY || process.env.Open_Router_API
 
         if (!apiKey) {
@@ -10,11 +10,13 @@ export async function POST(req: Request) {
         }
 
         const systemPrompt = `You are Atara AI, an elite, science-backed metabolic fasting coach. 
-Analyze the user's formatting history and statistics.
+Analyze the user's history and statistics.
+Respond in ${lang === 'bg' ? 'Bulgarian (български)' : 'English'}.
 Keep your response concise (max 3 short paragraphs).
-Format your response using ONLY bullet points (-) or bold text for emphasis.
-Do not use complicated markdown (no tables, no blockquotes, no headers).
-Be direct, authoritative, and helpful. Mention patterns and suggest improvements based on metabolic adaptation science. Respond in the user's primary language based on the context.`
+Format your response using ONLY bullet points (-) or bold text (**) for emphasis.
+Ensure there is a double newline between bullet points for readability.
+Do not use complicated markdown (no headers, no tables, no blockquotes).
+Be direct, authoritative, and helpful.`
 
         const userPrompt = `Here is my fasting history: ${JSON.stringify(history)}
     And my current stats: ${JSON.stringify(stats)}`
