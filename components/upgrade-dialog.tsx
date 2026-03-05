@@ -75,9 +75,9 @@ export function UpgradeDialog({ open, onClose }: UpgradeDialogProps) {
                                     <span className="font-bold text-base text-foreground group-hover:text-primary transition-colors flex items-center gap-1.5">
                                         <Star className="h-4 w-4 text-primary" /> Yearly
                                     </span>
-                                    <span className="font-black text-lg text-primary">€33.69<span className="text-xs font-normal text-primary/70">/yr</span></span>
+                                    <span className="font-black text-lg text-primary">€12<span className="text-xs font-normal text-primary/70">/yr</span></span>
                                 </div>
-                                <p className="text-xs font-medium text-muted-foreground/80">Save ~25% compared to monthly.</p>
+                                <p className="text-xs font-medium text-muted-foreground/80">Save ~73% compared to monthly.</p>
                                 {loading === yearlyId && <span className="absolute inset-y-0 right-4 flex items-center"><div className="animate-spin h-4 w-4 border-2 border-primary border-t-transparent rounded-full" /></span>}
                             </button>
                         )}
