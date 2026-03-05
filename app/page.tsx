@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
+import { CheckoutButton } from '@/components/checkout-button'
 
 export const metadata: Metadata = {
   title: 'Atara — Master Your Metabolism',
@@ -30,8 +31,8 @@ const features = [
   },
   {
     icon: '📱',
-    title: 'Works Offline',
-    desc: 'Installed directly on your phone as a PWA. No app store needed. Works even with no internet connection.',
+    title: 'Install as an App',
+    desc: 'Add Atara directly to your home screen — no App Store, no downloads. One tap to install, feels like a native app on iOS and Android.',
   },
   {
     icon: '🌍',
@@ -216,12 +217,18 @@ export default function LandingPage() {
               ))}
             </ul>
             <div className="flex gap-2">
-              <Link href="/app" className="flex-1 text-center rounded-xl font-bold py-3 text-sm transition-colors" style={{ backgroundColor: '#22c55e', color: '#0f0f0f', boxShadow: '0 8px 24px rgba(34,197,94,0.3)' }}>
-                Monthly
-              </Link>
-              <Link href="/app" className="flex-1 text-center rounded-xl font-bold py-3 text-sm transition-colors" style={{ border: '1px solid rgba(34,197,94,0.5)', color: '#22c55e' }}>
-                Yearly
-              </Link>
+              <CheckoutButton
+                priceId={process.env.NEXT_PUBLIC_STRIPE_PRICE_ID!}
+                label="Monthly — €3.69"
+                className="flex-1 text-center rounded-xl font-bold py-3 text-sm transition-colors cursor-pointer"
+                style={{ backgroundColor: '#22c55e', color: '#0f0f0f', boxShadow: '0 8px 24px rgba(34,197,94,0.3)' }}
+              />
+              <CheckoutButton
+                priceId={process.env.NEXT_PUBLIC_STRIPE_YEARLY_PRICE_ID!}
+                label="Yearly — €12"
+                className="flex-1 text-center rounded-xl font-bold py-3 text-sm transition-colors cursor-pointer"
+                style={{ border: '1px solid rgba(34,197,94,0.5)', color: '#22c55e', background: 'transparent' }}
+              />
             </div>
           </div>
         </div>

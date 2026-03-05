@@ -1,19 +1,24 @@
 import { auth } from '@clerk/nextjs/server'
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import Stripe from 'stripe'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
     apiVersion: '2026-02-25.clover',
 })
 
-export async function POST() {
+export async function POST(req: NextRequest) {
     const { userId, sessionClaims } = await auth()
 
     if (!userId) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    // If user already has an active subscription, redirect to billing portal instead
+    const body = await req.json().catch(() => ({}))
+    const requestedPriceId: string =
+        body.priceId ||
+        process.env.NEXT_PUBLIC_STRIPE_PRICE_ID!
+
+    // If user already has an active subscription, open billing portal instead
     const customerId = (sessionClaims?.publicMetadata as Record<string, string> | undefined)?.stripeCustomerId
 
     if (customerId) {
@@ -24,18 +29,18 @@ export async function POST() {
         return NextResponse.json({ url: portalSession.url })
     }
 
-    // Create a new checkout session with 14-day trial
+    // Create a new checkout session — NO trial here, trial is clock-based (free)
+    // Stripe is only charged when user explicitly subscribes
     const session = await stripe.checkout.sessions.create({
         mode: 'subscription',
         payment_method_types: ['card'],
         line_items: [
             {
-                price: process.env.NEXT_PUBLIC_STRIPE_PRICE_ID!,
+                price: requestedPriceId,
                 quantity: 1,
             },
         ],
         subscription_data: {
-            trial_period_days: 14,
             metadata: { clerkUserId: userId },
         },
         metadata: { clerkUserId: userId },
