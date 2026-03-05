@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import Stripe from 'stripe'
 
 export async function POST(req: NextRequest) {
-    // Initialize inside handler → avoids build-time evaluation without env vars
+    // Initialize inside handler to avoid build-time issues
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
         apiVersion: '2026-02-25.clover',
     })
@@ -15,11 +15,9 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json().catch(() => ({}))
-    const requestedPriceId: string =
-        body.priceId || process.env.NEXT_PUBLIC_STRIPE_PRICE_ID!
+    const requestedPriceId: string = body.priceId || process.env.NEXT_PUBLIC_STRIPE_PRICE_ID!
 
-    // If user already has an active subscription, open billing portal instead
-    const customerId = (sessionClaims?.publicMetadata as Record<string, string> | undefined)?.stripeCustomerId
+    const customerId = (sessionClaims?.publicMetadata as Record<string, any> | undefined)?.stripeCustomerId
 
     if (customerId) {
         const portalSession = await stripe.billingPortal.sessions.create({
@@ -29,7 +27,6 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ url: portalSession.url })
     }
 
-    // New subscriber — create Stripe Checkout (no Stripe trial; trial is clock-based)
     const session = await stripe.checkout.sessions.create({
         mode: 'subscription',
         payment_method_types: ['card'],

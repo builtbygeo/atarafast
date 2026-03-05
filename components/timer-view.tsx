@@ -20,6 +20,7 @@ import {
 } from "lucide-react"
 import { ShareDialog } from "@/components/share-dialog"
 import { CompletionAnimation } from "@/components/completion-animation"
+import { Logo } from "@/components/logo"
 import {
   startFast,
   endFast,
@@ -231,6 +232,8 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
       return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`
     }
 
+    const isYesterday = startTime.getDate() !== now.getDate()
+    const dayText = isYesterday ? (t.yesterday || "Yesterday") : (t.today || "Today")
     const hoursOverTarget = isComplete ? Math.round(((elapsedMs - targetMs) / 3600000) * 2) / 2 : 0
     const goalTime = addHours(startTime, activeFast.targetHours)
 
@@ -248,7 +251,8 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
                 size={340}
                 strokeWidth={28}
               >
-                <div className="flex flex-col items-center justify-center">
+                <div className="flex flex-col items-center justify-center -mt-4">
+                  <Logo className="w-24 text-foreground mb-4 opacity-70" />
                   <span className="text-4xl sm:text-5xl font-black text-foreground font-mono tabular-nums tracking-tighter leading-none relative z-10 w-full text-center">
                     {formatTime(settings.timerDirection === "down" && !isComplete ? remainingMs : elapsedMs)}
                   </span>
@@ -262,14 +266,15 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
                 progress={percentage / 100}
                 elapsedHours={elapsedMs / 3600000}
                 targetHours={activeFast.targetHours}
-                size={280}
-                strokeWidth={28}
+                size={320}
+                strokeWidth={22}
               >
-                <div className="flex flex-col items-center justify-center">
-                  <span className="text-5xl font-black text-foreground font-mono tabular-nums tracking-tighter leading-none relative z-10 w-full text-center">
+                <div className="flex flex-col items-center justify-center -mt-2">
+                  <Logo className="w-28 text-foreground mb-5 opacity-90" />
+                  <span className="text-[40px] font-black text-foreground font-mono tabular-nums tracking-tighter leading-none relative z-10 w-full text-center">
                     {formatTime(settings.timerDirection === "down" && !isComplete ? remainingMs : elapsedMs)}
                   </span>
-                  <span className="text-[11px] font-black text-muted-foreground mt-3 uppercase tracking-[0.2em] opacity-80">
+                  <span className="text-[10px] font-bold text-muted-foreground mt-2 uppercase tracking-[0.2em] opacity-80">
                     {isComplete ? t.elapsed : settings.timerDirection === "down" ? t.remaining : t.elapsed} ({percentage}%)
                   </span>
                 </div>
@@ -277,23 +282,36 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
             )}
           </motion.div>
 
-          <div className="flex gap-3 mt-6 w-full max-w-sm px-4">
-            <div className="flex-1 bg-gradient-to-br from-secondary/40 to-secondary/10 rounded-2xl p-4 border border-border/60 relative group backdrop-blur-sm shadow-lg shadow-black/5">
-              <span className="block text-[9px] font-black uppercase tracking-[0.2em] text-muted-foreground opacity-70 mb-1.5">{t.startTime.toUpperCase()}</span>
-              <div className="flex items-center justify-between">
-                <span className="block text-base font-black text-foreground">{format(startTime, "EEE, HH:mm")}</span>
-                <button
-                  onClick={() => setShowEditStartTime(true)}
-                  className="p-1.5 rounded-lg bg-secondary/40 text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  <Edit2 className="h-3 w-3" />
-                </button>
+          <div className="flex gap-4 mt-8 w-full max-w-[320px] px-2 relative z-20">
+            {/* STARTS CARD */}
+            <button
+              onClick={() => setShowEditStartTime(true)}
+              className="flex-1 rounded-[1.25rem] p-4 pb-3.5 border border-primary bg-primary/5 flex flex-col pt-3 shadow-[0_0_20px_-10px_rgba(34,197,94,0.3)] cursor-pointer hover:bg-primary/10 transition-colors text-left"
+            >
+              <div className="flex justify-between items-center mb-1 w-full">
+                <span className="block text-[10px] font-black text-primary uppercase tracking-widest">{t.startTime || "STARTS"}</span>
+                <Edit2 className="h-3 w-3 text-primary opacity-50" />
               </div>
-            </div>
-            <div className="flex-1 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-2xl p-4 border border-primary/20 backdrop-blur-sm shadow-lg shadow-black/5">
-              <span className="block text-[9px] font-black uppercase tracking-[0.2em] text-primary/70 mb-1.5">{`${activeFast.targetHours}${t.hours} ${t.goal.toUpperCase()}`}</span>
-              <span className="block text-base font-black text-foreground">{format(goalTime, "EEE, HH:mm")}</span>
-            </div>
+              <span className="block text-2xl font-black text-foreground mb-0.5 tracking-tighter leading-none">
+                {format(startTime, "h:mm a")}
+              </span>
+              <span className="block text-xs font-semibold text-muted-foreground opacity-80 mt-1">{dayText}</span>
+            </button>
+
+            {/* GOAL CARD */}
+            <button
+              onClick={() => navigateTo("presets")}
+              className="flex-1 rounded-[1.25rem] p-4 pb-3.5 border border-border/60 bg-secondary/30 flex flex-col pt-3 cursor-pointer hover:bg-secondary/40 transition-colors text-left"
+            >
+              <div className="flex justify-between items-center mb-1 w-full">
+                <span className="block text-[10px] font-black text-muted-foreground uppercase tracking-widest opacity-80">{t.goal || "GOAL"}</span>
+                <Edit2 className="h-3 w-3 text-muted-foreground opacity-50" />
+              </div>
+              <span className="block text-2xl font-black text-foreground mb-0.5 tracking-tighter leading-none">
+                {activeFast.targetHours}:00
+              </span>
+              <span className="block text-xs font-semibold text-muted-foreground opacity-80 mt-1">{t.fastComplete || "Fast Complete"}</span>
+            </button>
           </div>
 
           {isComplete && (
@@ -307,25 +325,17 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
 
         </div>
 
-        <div className="flex flex-col w-full gap-4 max-w-xs mt-auto pb-8">
-          <div className="grid grid-cols-[auto_auto_1fr] gap-3">
-            <button onClick={() => setShowDeleteConfirm(true)} className="h-14 w-14 flex items-center justify-center rounded-2xl bg-secondary/30 text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-all active:scale-90 border border-border/30">
-              <Trash2 className="h-5 w-5" />
-            </button>
-            <button onClick={() => navigateTo("presets")} className="h-14 w-14 flex items-center justify-center rounded-2xl bg-secondary/50 text-foreground transition-all hover:bg-secondary active:scale-95 border border-border/50">
-              <Repeat className="h-4 w-4" />
-            </button>
-            <button
-              onClick={handleEndFast}
-              className={`h-14 rounded-2xl font-black text-sm uppercase tracking-widest transition-all shadow-xl active:scale-95 px-4 ${confirmEnd
-                ? "bg-destructive text-white shadow-destructive/30"
-                : (isComplete ? "bg-primary text-primary-foreground shadow-primary/30" : "bg-card text-foreground border border-border")
-                }`}
-            >
-              {confirmEnd ? t.confirmEndFast : t.endFast}
-              {confirmEnd && <span className="block text-[8px] mt-1 opacity-70 normal-case tracking-normal font-medium">{t.tapToConfirm}</span>}
-            </button>
-          </div>
+        <div className="flex flex-col w-full gap-4 max-w-[320px] mt-auto pb-8 relative z-20">
+          <button
+            onClick={handleEndFast}
+            className={`w-full py-4 rounded-[2rem] font-black text-[15px] tracking-widest transition-all active:scale-95 border ${confirmEnd
+              ? "bg-destructive border-destructive text-white shadow-[0_0_30px_-5px_var(--destructive)]"
+              : "bg-primary/20 border-primary/50 text-primary uppercase shadow-[0_0_30px_-5px_rgba(34,197,94,0.4)] hover:bg-primary/30"
+              }`}
+          >
+            {confirmEnd ? t.confirmEndFast : "COMPLETE FAST"}
+            {confirmEnd && <span className="block text-[10px] mt-1 opacity-70 normal-case tracking-normal font-medium">{t.tapToConfirm}</span>}
+          </button>
           {/* Share */}
           <button
             onClick={() => setShowShare(true)}

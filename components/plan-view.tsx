@@ -4,10 +4,10 @@ import { useState } from "react"
 import { FASTING_PRESETS, CUSTOM_PRESET, type FastingPreset } from "@/lib/presets"
 import { useLang } from "@/lib/language-context"
 import { motion, AnimatePresence } from "framer-motion"
-import { ChevronLeft, Info, Sparkles, X } from "lucide-react"
+import { ChevronLeft, Info, Sparkles, Settings } from "lucide-react"
 
 export function PlanView() {
-  const { t } = useLang()
+  const { t, lang, setLang } = useLang()
   const [selectedPlan, setSelectedPlan] = useState<FastingPreset | null>(null)
   const [selectedCard, setSelectedCard] = useState<any | null>(null)
 
@@ -35,20 +35,23 @@ export function PlanView() {
   }
 
   const renderGrid = () => (
-    <div className="flex-1 overflow-y-auto px-5 py-6 no-scrollbar pb-20">
-      <div className="mb-8 px-1">
-        <p className="text-[10px] text-muted-foreground font-black uppercase tracking-[0.2em] mb-4 leading-tight opacity-60">
-          {t.appName} &middot; {t.planTitle}
-        </p>
+    <div className="relative flex-1 overflow-y-auto px-5 py-6 no-scrollbar pb-20">
+      <div className="mb-4 px-1 flex items-start flex-col gap-4">
+        <div>
+          <p className="text-[10px] text-muted-foreground font-black uppercase tracking-[0.2em] mb-4 leading-tight opacity-60">
+            {t.appName} &middot; {t.planTitle}
+          </p>
 
-        <p className="text-xs font-semibold text-primary/90 leading-relaxed italic opacity-90 border-l-2 border-primary/40 pl-3 mb-6 bg-primary/5 py-2 pr-2 rounded-r-lg">
-          {t.tagline}
-        </p>
+          <p className="text-xs font-semibold text-primary/90 leading-relaxed italic opacity-90 border-l-2 border-primary/40 pl-3 mb-6 bg-primary/5 py-2 pr-2 rounded-r-lg">
+            {t.tagline}
+          </p>
 
-        <h2 className="text-3xl font-black text-foreground tracking-tighter">{t.fastingPlans}</h2>
-        <p className="text-sm font-medium text-muted-foreground mt-2 leading-relaxed opacity-70">
-          {t.plansSubtitle}
-        </p>
+          <h2 className="text-3xl font-black text-foreground tracking-tighter">{t.fastingPlans}</h2>
+          <p className="text-sm font-medium text-muted-foreground mt-2 leading-relaxed opacity-70">
+            {t.plansSubtitle}
+          </p>
+        </div>
+
       </div>
 
       <motion.div

@@ -1,35 +1,20 @@
 "use client"
 
-import { motion } from "framer-motion"
-
 export function Logo({ className }: { className?: string }) {
     return (
         <div className={className}>
             <svg
-                viewBox="0 0 100 100"
+                viewBox="0 0 160 40"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
                 className="w-full h-full"
             >
-                <motion.circle
-                    cx="50"
-                    cy="50"
-                    r="45"
+                <path
+                    d="M 22 30 L 12 10 L 2 30 M 52 10 L 52 30 M 42 10 L 62 10 M 92 30 L 82 10 L 72 30 M 112 30 L 112 10 C 130 10 130 20 112 20 M 112 20 L 125 30 M 158 30 L 148 10 L 138 30"
                     stroke="currentColor"
-                    strokeWidth="4"
-                    initial={{ pathLength: 0, opacity: 0 }}
-                    animate={{ pathLength: 1, opacity: 1 }}
-                    transition={{ duration: 1.5, ease: "easeInOut" }}
-                />
-                <motion.path
-                    d="M30 70C30 70 35 30 50 30C65 30 70 70 70 70M35 55H65"
-                    stroke="currentColor"
-                    strokeWidth="5"
+                    strokeWidth="3"
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    initial={{ pathLength: 0, opacity: 0 }}
-                    animate={{ pathLength: 1, opacity: 1 }}
-                    transition={{ duration: 2, delay: 0.5, ease: "easeInOut" }}
                 />
             </svg>
         </div>

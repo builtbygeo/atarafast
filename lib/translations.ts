@@ -13,6 +13,9 @@ export const bg = {
   elapsed: "изминало",
   remaining: "остават",
   goal: "цел",
+  yesterday: "Вчера",
+  today: "Днес",
+  fastComplete: "Постът е завършен!",
   fastingPlans: "Планове",
   plansSubtitle: "Научете за различните протоколи за периодично гладуване.",
   planNote: "Винаги се консултирайте с медицинско лице преди започване на фастване, особено ако имате заболявания, бременна сте или приемате лекарства.",
@@ -158,7 +161,6 @@ export const bg = {
   date: "Дата",
   time: "Час",
   // Week Strip
-  today: "Днес",
   mon: "П",
   tue: "В",
   wed: "С",
@@ -256,6 +258,9 @@ export const en: typeof bg = {
   elapsed: "elapsed",
   remaining: "remaining",
   goal: "goal",
+  yesterday: "Yesterday",
+  today: "Today",
+  fastComplete: "Fast Complete",
   fastingPlans: "Fasting Plans",
   plansSubtitle: "Learn about different intermittent fasting protocols.",
   planNote: "Always consult with a healthcare provider before starting any fasting protocol, especially if you have existing health conditions, are pregnant, or take medication.",
@@ -378,7 +383,7 @@ export const en: typeof bg = {
 
   phase1: "SUGAR",
   phase2: "TRANSITION",
-  phase3: "KETOSIS & AUTOPHAGY",
+  phase3: "KETOSIS",
 
   addManualFast: "Add Past Fast",
   preset: "Preset",
@@ -394,7 +399,6 @@ export const en: typeof bg = {
   date: "Date",
   time: "Time",
 
-  today: "Today",
   mon: "M",
   tue: "T",
   wed: "W",

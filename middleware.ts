@@ -7,13 +7,7 @@ const isAppRoute = createRouteMatcher(['/app(.*)'])
 export default clerkMiddleware(async (auth, req) => {
     // The /app route requires authentication
     if (isAppRoute(req)) {
-        const { userId } = await auth()
-        if (!userId) {
-            // Redirect to sign-in, then back to /app
-            const signInUrl = new URL('/sign-in', req.url)
-            signInUrl.searchParams.set('redirect_url', req.url)
-            return NextResponse.redirect(signInUrl)
-        }
+        await auth.protect()
     }
 })
 

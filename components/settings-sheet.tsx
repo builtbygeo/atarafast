@@ -1,12 +1,14 @@
 "use client"
 
 import { useState } from "react"
-import { X, Download, Upload, Trash2, Sun, Moon, Monitor, ChevronUp, ChevronDown, Circle, Triangle } from "lucide-react"
+import { X, Download, Upload, Trash2, Sun, Moon, Monitor, ChevronUp, ChevronDown, Circle, Triangle, Bell, BellOff, Sparkles, LogOut, User as UserIcon } from "lucide-react"
 import { useTheme } from "next-themes"
 import { getSettings, updateSettings, exportData, importData, clearAllData, type AppSettings } from "@/lib/storage"
 import { useLang } from "@/lib/language-context"
 import { useNotifications } from "@/hooks/use-notifications"
-import { Bell, BellOff } from "lucide-react"
+import { useSubscription, startCheckout } from "@/lib/subscription"
+import { useUser, SignOutButton } from "@clerk/nextjs"
+import Link from "next/link"
 
 interface SettingsSheetProps {
   open: boolean
@@ -18,6 +20,8 @@ export function SettingsSheet({ open, onClose, onDataCleared }: SettingsSheetPro
   const { t } = useLang()
   const { theme, setTheme } = useTheme()
   const { permission, requestPermission } = useNotifications()
+  const { isPremium, isTrialing, trialDaysLeft, isSignedIn, isLoaded: subLoaded, status } = useSubscription()
+  const { user } = useUser()
   const [settings, setSettingsState] = useState<AppSettings>(getSettings())
   const [confirmClear, setConfirmClear] = useState(false)
 
@@ -87,8 +91,8 @@ export function SettingsSheet({ open, onClose, onDataCleared }: SettingsSheetPro
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center">
       <div className="fixed inset-0 bg-black/40 backdrop-blur-sm" onClick={onClose} />
-      <div className="relative z-50 w-full max-w-md rounded-t-2xl sm:rounded-2xl bg-background border border-border p-6 shadow-xl animate-in slide-in-from-bottom duration-300">
-        <div className="flex items-center justify-between mb-6">
+      <div className="relative z-50 w-full max-w-md max-h-[90vh] flex flex-col rounded-t-2xl sm:rounded-2xl bg-background border border-border pb-6 pt-0 px-0 shadow-xl animate-in slide-in-from-bottom duration-300">
+        <div className="flex items-center justify-between mb-4 px-6 pt-6 shrink-0 sticky top-0 bg-background/95 backdrop-blur-md pb-4 z-10 border-b border-border/50 rounded-t-2xl sm:rounded-2xl">
           <h2 className="text-lg font-semibold text-foreground">Settings</h2>
           <button
             onClick={onClose}
@@ -99,21 +103,80 @@ export function SettingsSheet({ open, onClose, onDataCleared }: SettingsSheetPro
           </button>
         </div>
 
-        <div className="flex flex-col gap-5">
-          {/* Account Section (MVP structure) */}
+        <div className="flex flex-col gap-5 overflow-y-auto px-6 pb-2 no-scrollbar">
+          {/* Account Section */}
           <div className="bg-secondary/20 p-4 rounded-2xl border border-border/50">
             <h3 className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-3">{t.authTitle}</h3>
-            <div className="flex flex-col gap-2">
-              <button
-                className="w-full relative flex items-center justify-center gap-3 rounded-xl bg-primary px-4 py-4 text-sm font-bold text-primary-foreground shadow-lg shadow-primary/10 active:scale-[0.98] transition-all overflow-hidden group"
-              >
-                <div className="absolute inset-0 bg-white/10 group-hover:bg-white/20 transition-colors" />
-                <span className="relative">{t.signIn}</span>
-              </button>
-              <p className="text-[10px] text-muted-foreground text-center mt-1">
-                {t.authDescription} <span className="text-primary/60 font-bold">({t.comingSoon})</span>
-              </p>
-            </div>
+            {!isSignedIn ? (
+              <div className="flex flex-col gap-2">
+                <Link
+                  href="/sign-up"
+                  className="w-full relative flex items-center justify-center gap-3 rounded-xl bg-primary px-4 py-3.5 text-sm font-bold text-primary-foreground shadow-lg shadow-primary/10 active:scale-[0.98] transition-all overflow-hidden group"
+                >
+                  <div className="absolute inset-0 bg-white/10 group-hover:bg-white/20 transition-colors" />
+                  <span className="relative">Create Free Account</span>
+                </Link>
+                <Link
+                  href="/sign-in"
+                  className="w-full text-center py-2 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  Already have an account? Sign In
+                </Link>
+              </div>
+            ) : (
+              <div className="flex flex-col gap-3">
+                <div className="flex items-center gap-3 pb-1">
+                  <div className="w-10 h-10 rounded-full flex items-center justify-center bg-primary/10 border border-primary/20">
+                    <UserIcon className="w-5 h-5 text-primary" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-bold text-foreground truncate mb-1">{user?.primaryEmailAddress?.emailAddress}</p>
+                  </div>
+                </div>
+
+                <div className="flex flex-col gap-2 p-3 bg-card rounded-xl border border-border/50">
+                  <div className="flex justify-between items-center">
+                    <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Plan</span>
+                    <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full ${isPremium ? 'bg-primary/20 text-primary border border-primary/30' : 'bg-muted text-muted-foreground border border-border'}`}>
+                      {isPremium ? (isTrialing ? '14-Day Free Trial' : 'Atara+ Premium') : 'Free Plan'}
+                    </span>
+                  </div>
+
+                  {isTrialing && (
+                    <p className="text-xs text-muted-foreground font-medium">
+                      Trial ends in <span className="text-primary font-bold">{trialDaysLeft} days</span>. Upgrade to keep full access!
+                    </p>
+                  )}
+
+                  {!isTrialing && isPremium && (
+                    <p className="text-xs text-muted-foreground font-medium">
+                      You have full access to all metabolic tracking features.
+                    </p>
+                  )}
+
+                  {!isPremium && !isTrialing && (
+                    <p className="text-xs text-muted-foreground font-medium">
+                      Your free trial has expired. Upgrade to Atara+ for full access.
+                    </p>
+                  )}
+
+                  <button
+                    onClick={() => startCheckout()}
+                    className="w-full mt-1 flex items-center justify-center gap-2 rounded-lg bg-primary/10 border border-primary/20 px-4 py-2 text-xs font-bold text-primary hover:bg-primary/20 transition-all"
+                  >
+                    <Sparkles className="w-3.5 h-3.5" />
+                    {isPremium && !isTrialing ? 'Manage Subscription' : 'Upgrade to Atara+'}
+                  </button>
+                </div>
+
+                <SignOutButton>
+                  <button className="flex items-center justify-center gap-2 py-2 text-xs font-medium text-destructive/70 hover:text-destructive transition-colors">
+                    <LogOut className="w-3.5 h-3.5" />
+                    Sign Out
+                  </button>
+                </SignOutButton>
+              </div>
+            )}
           </div>
 
           <div className="h-px bg-border" />
@@ -204,6 +267,22 @@ export function SettingsSheet({ open, onClose, onDataCleared }: SettingsSheetPro
                 </button>
               ))}
             </div>
+          </div>
+
+          <div className="h-px bg-border" />
+
+          {/* Feedback */}
+          <div className="flex items-center justify-between pb-2">
+            <div>
+              <p className="text-sm font-bold text-foreground">Feedback</p>
+              <p className="text-[10px] text-muted-foreground font-medium uppercase tracking-wider">Help us improve</p>
+            </div>
+            <a
+              href="mailto:gag1000x@icloud.com"
+              className="px-4 py-2 text-[10px] font-black uppercase tracking-widest rounded-xl bg-secondary text-secondary-foreground transition-all hover:bg-secondary/80 border border-border/50 text-center"
+            >
+              Send Feedback
+            </a>
           </div>
 
           <div className="h-px bg-border" />

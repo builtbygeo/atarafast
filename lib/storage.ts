@@ -9,6 +9,14 @@ export interface FastingRecord {
   notes?: string
 }
 
+export interface AiUsage {
+  lastResetMonth: number
+  lastResetWeek: number
+  monthlyCount: number
+  weeklyCount: number
+  lastUsedDate: string | null
+}
+
 export interface AppSettings {
   timerDirection: "up" | "down"
   timerStyle: "circle" | "triangle"
@@ -19,6 +27,7 @@ interface StoredData {
   history: FastingRecord[]
   settings: AppSettings
   lastFastInfo: { presetId: string; targetHours: number } | null
+  aiUsage: AiUsage
 }
 
 const STORAGE_KEY = "fasting-tracker-data"
@@ -31,6 +40,13 @@ const DEFAULT_DATA: StoredData = {
     timerStyle: "circle",
   },
   lastFastInfo: null,
+  aiUsage: {
+    lastResetMonth: new Date().getMonth(),
+    lastResetWeek: Math.floor(new Date().getDate() / 7),
+    monthlyCount: 0,
+    weeklyCount: 0,
+    lastUsedDate: null,
+  }
 }
 
 function loadData(): StoredData {
@@ -204,5 +220,42 @@ export function markApath(): void {
   const data = loadData()
   if (!data.activeFast) return
   data.activeFast.apathTime = new Date().toISOString()
+  saveData(data)
+}
+
+export function getAiUsage(): AiUsage {
+  const data = loadData()
+  // Ensure backward compatibility
+  if (!data.aiUsage) {
+    data.aiUsage = DEFAULT_DATA.aiUsage
+    saveData(data)
+  }
+
+  const now = new Date()
+  const currentMonth = now.getMonth()
+  const currentWeek = Math.floor(now.getDate() / 7)
+
+  if (data.aiUsage.lastResetMonth !== currentMonth) {
+    data.aiUsage.lastResetMonth = currentMonth
+    data.aiUsage.monthlyCount = 0
+  }
+
+  if (data.aiUsage.lastResetWeek !== currentWeek) {
+    data.aiUsage.lastResetWeek = currentWeek
+    data.aiUsage.weeklyCount = 0
+  }
+
+  saveData(data)
+  return data.aiUsage
+}
+
+export function incrementAiUsage(): void {
+  const data = loadData()
+  if (!data.aiUsage) {
+    data.aiUsage = { ...DEFAULT_DATA.aiUsage }
+  }
+  data.aiUsage.monthlyCount += 1
+  data.aiUsage.weeklyCount += 1
+  data.aiUsage.lastUsedDate = new Date().toISOString()
   saveData(data)
 }

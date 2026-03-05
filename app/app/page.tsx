@@ -36,9 +36,9 @@ export default function Home() {
   }, [])
 
   const tabs = [
-    { id: "timer" as Tab, label: t.timer, icon: Timer },
     { id: "history" as Tab, label: t.history, icon: CalendarDays },
     { id: "stats" as Tab, label: t.stats, icon: BarChart3 },
+    { id: "timer" as Tab, label: t.timer, icon: Timer },
     { id: "plan" as Tab, label: t.plan, icon: BookOpen },
   ]
 
@@ -52,45 +52,8 @@ export default function Home() {
 
   return (
     <main className="flex min-h-svh flex-col bg-background mx-auto max-w-md px-2">
-      {/* Header */}
-      <header className="flex items-center justify-between px-5 pt-4 pb-2 gap-3">
-        <div className="flex items-center gap-3 min-w-0">
-          <Logo className="h-10 w-10 text-primary shrink-0" />
-          <h1 className="text-xl font-bold text-foreground tracking-tight">{t.appName}</h1>
-        </div>
-        <div className="flex items-center gap-2 shrink-0">
-          {/* Language toggle */}
-          <div className="flex rounded-lg border border-border overflow-hidden text-xs font-semibold">
-            <button
-              onClick={() => setLang("bg")}
-              className={`px-2.5 py-1.5 transition-colors ${lang === "bg"
-                ? "bg-primary text-primary-foreground"
-                : "bg-card text-muted-foreground hover:text-foreground"
-                }`}
-              aria-label="Български"
-            >
-              БГ
-            </button>
-            <button
-              onClick={() => setLang("en")}
-              className={`px-2.5 py-1.5 transition-colors ${lang === "en"
-                ? "bg-primary text-primary-foreground"
-                : "bg-card text-muted-foreground hover:text-foreground"
-                }`}
-              aria-label="English"
-            >
-              EN
-            </button>
-          </div>
-          {/* Settings */}
-          <button
-            onClick={() => setSettingsOpen(true)}
-            className="flex h-9 w-9 items-center justify-center rounded-full bg-secondary text-secondary-foreground transition-colors hover:bg-secondary/80"
-            aria-label={t.settings}
-          >
-            <Settings className="h-4 w-4" />
-          </button>
-        </div>
+      <header className="flex items-center justify-center px-5 pt-6 pb-4">
+        <Logo className="h-6 w-auto text-foreground" />
       </header>
 
       {/* Content */}
@@ -107,7 +70,7 @@ export default function Home() {
         )}
         {activeTab === "stats" && (
           <PremiumGate featureName="Statistics" blur>
-            <StatsView history={history} />
+            <StatsView history={history} onOpenSettings={() => setSettingsOpen(true)} />
           </PremiumGate>
         )}
         {activeTab === "plan" && <PlanView />}
