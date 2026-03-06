@@ -111,13 +111,13 @@ export default function Home() {
   }
 
   return (
-    <main className="flex h-svh flex-col bg-background mx-auto max-w-md overflow-hidden relative">
+    <main className="flex h-svh flex-col bg-background mx-auto max-w-md overflow-hidden relative overscroll-none select-none">
       <header className="flex items-center justify-center px-5 pt-6 pb-4 shrink-0">
         <Logo className="h-6 w-auto text-foreground" />
       </header>
 
       {/* Content */}
-      <div className="flex-1 relative w-full">
+      <div className="flex-1 relative w-full overscroll-none">
         {activeTab === "timer" && (
           <TimerView
             onFastEnd={handleFastEnd}
@@ -144,7 +144,7 @@ export default function Home() {
       </div>
 
       {/* Bottom Tab Bar */}
-      <nav className="fixed bottom-0 inset-x-0 mx-auto max-w-md flex items-center justify-around border-t border-border bg-background/80 backdrop-blur-lg px-2 pb-[env(safe-area-inset-bottom)] pt-2 z-50">
+      <nav className="fixed bottom-0 inset-x-0 mx-auto max-w-md flex items-center justify-around border-t border-border bg-background/95 backdrop-blur-xl px-2 pb-[calc(env(safe-area-inset-bottom)+14px)] pt-4 z-50 shadow-[0_-15px_40px_rgba(0,0,0,0.5)]">
         {tabs.map(({ id, label, icon: Icon }) => (
           <button
             key={id}
@@ -152,14 +152,14 @@ export default function Home() {
               setActiveTab(id)
               if (id === "history" || id === "stats") refreshHistory()
             }}
-            className={`flex flex-col items-center gap-1 px-4 py-2 text-[10px] font-black uppercase tracking-widest transition-colors ${activeTab === id
+            className={`flex flex-col items-center gap-1.5 px-3 py-3 text-[9px] sm:text-[10px] font-black uppercase tracking-widest transition-all duration-200 active:scale-90 ${activeTab === id
               ? "text-primary"
-              : "text-muted-foreground hover:text-foreground"
+              : "text-muted-foreground/60 hover:text-foreground hover:bg-white/[0.03] rounded-2xl"
               }`}
             aria-label={label}
           >
-            <Icon className="h-5 w-5" />
-            <span>{label}</span>
+            <Icon className="h-6 w-6" />
+            <span className="mt-0.5">{label}</span>
           </button>
         ))}
       </nav>

@@ -288,7 +288,7 @@ export function StatsView({ history, settings, onOpenSettings, onOpenUpgrade }: 
   const strokeDashoffset = circumference - (streakPct / 100) * circumference
 
   return (
-    <div className="relative flex-1 overflow-y-auto px-4 sm:px-5 py-6 no-scrollbar pb-32">
+    <div className="relative flex-1 overflow-y-auto px-4 sm:px-5 py-6 no-scrollbar pb-44">
       <header className="flex items-start justify-between mb-8 mt-2 px-1 relative z-10">
         <div>
           <h2 className="text-3xl font-black text-foreground tracking-tighter leading-none mb-1">{t?.statsTitle || "Dashboard"}</h2>

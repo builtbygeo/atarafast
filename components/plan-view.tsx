@@ -36,7 +36,7 @@ export function PlanView() {
   }
 
   const renderGrid = () => (
-    <div className="relative flex-1 overflow-y-auto px-5 py-6 no-scrollbar pb-32">
+    <div className="relative flex-1 overflow-y-auto px-5 py-6 no-scrollbar pb-44">
       <div className="mb-4 px-1 flex items-start flex-col gap-4">
         <div>
           <p className="text-[10px] text-muted-foreground font-black uppercase tracking-[0.2em] mb-4 leading-tight opacity-60">
@@ -231,7 +231,7 @@ export function PlanView() {
   }
 
   return (
-    <div className="flex-1 relative flex flex-col h-full overflow-hidden">
+    <div className="flex-1 relative flex flex-col">
       <AnimatePresence initial={false} mode="wait">
         {selectedPlan ? (
           <motion.div
@@ -262,7 +262,7 @@ export function PlanView() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2, ease: "easeOut" }}
-            className="flex flex-col h-full w-full will-change-[opacity]"
+            className="flex flex-col w-full will-change-[opacity]"
           >
             {renderGrid()}
           </motion.div>
