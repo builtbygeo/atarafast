@@ -74,7 +74,7 @@ export function CircularProgress({
 
   const data = getPhaseData(targetHours, elapsedHours)
 
-  const gapDeg = 8
+  const gapDeg = 4 // Smaller gap for better curvature continuity
   const numPhases = (data.sugarPct > 0 ? 1 : 0) + (data.transitionPct > 0 ? 1 : 0) + (data.ketosisPct > 0 ? 1 : 0)
   const availableDeg = 360 - (numPhases > 0 ? numPhases * gapDeg : 0)
 
@@ -130,7 +130,7 @@ export function CircularProgress({
 
   return (
     <div className="relative inline-flex items-center justify-center select-none" style={{ width: size, height: size }}>
-      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="absolute inset-0 block">
+      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="absolute inset-0 block overflow-visible">
         <defs>
           <filter id="arc-glow" x="-50%" y="-50%" width="200%" height="200%">
             <feGaussianBlur stdDeviation="6" result="coloredBlur" />
