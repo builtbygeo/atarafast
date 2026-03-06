@@ -1,54 +1,71 @@
 import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server'
 import { NextResponse } from 'next/server'
 
-// Universal public routes
-const isPublic = createRouteMatcher(['/sign-in(.*)', '/sign-up(.*)', '/api/webhook/stripe'])
+// Public routes for both projects
+const isPublicRoute = createRouteMatcher([
+  '/sign-in(.*)', 
+  '/sign-up(.*)', 
+  '/api/webhook/stripe',
+  '/terms(.*)',
+  '/privacy(.*)'
+])
 
 export default clerkMiddleware(async (auth, req) => {
-    const host = (req.headers.get('host') || '').toLowerCase();
+    // 1. Get Host & Path
+    const hostHeader = req.headers.get('x-forwarded-host') || req.headers.get('host') || '';
+    const host = hostHeader.toLowerCase();
     const { pathname } = req.nextUrl;
-    
-    // REDUNDANT ROLE DETECTION (Env Var + Subdomain + Preview URLs)
+
+    // 2. Identify Role
+    // We trust NEXT_PUBLIC_APP_PROJECT, or the 'app.' subdomain, or the 'atara-app' vercel host.
     const isAppProject = 
         process.env.NEXT_PUBLIC_APP_PROJECT === 'true' || 
-        host.startsWith('app.') || 
-        host.includes('atara-app');
+        host.includes('app.atarafast.com') || 
+        host.includes('atara-app.vercel.app');
 
-    // REDIRECT WWW TO APEX
+    // DEBUG: This will show up in Vercel 'Logs' tab
+    console.log(`[Middleware] Host: ${host} | Role: ${isAppProject ? 'APP' : 'LANDING'} | Path: ${pathname}`);
+
+    // 3. Global WWW -> Apex Redirect
     if (host.startsWith('www.')) {
         return NextResponse.redirect(new URL(pathname, `https://${host.replace('www.', '')}`));
     }
 
+    // 4. Handle App Project
     if (isAppProject) {
-        // === APP PROJECT ROLE ===
-        
-        // Everything protected except sign-in/up
-        if (!isPublic(req)) {
+        // AUTH: Protect everything except predefined public routes
+        if (!isPublicRoute(req)) {
             await auth.protect();
         }
 
-        // FORCE Dashboard serve
-        // If they are on "/", we want to show the DASHBOARD (which is in /app folder)
-        // We only rewrite if it's NOT a static asset or API call
-        if (!pathname.startsWith('/app') && !pathname.startsWith('/api') && !pathname.includes('.')) {
+        // INTERNAL REWRITE: Force serve the dashboard contents
+        // Logic: app.atarafast.com/ -> serves /app (which is app/app/page.tsx)
+        if (!pathname.startsWith('/app') && !pathname.startsWith('/api') && !pathname.startsWith('/_next') && !pathname.includes('.')) {
             const rewriteUrl = new URL(`/app${pathname === '/' ? '' : pathname}`, req.url);
-            return NextResponse.rewrite(rewriteUrl);
+            const response = NextResponse.rewrite(rewriteUrl);
+            response.headers.set('x-atara-role', 'APP-REWRITTEN');
+            return response;
         }
-    } else {
-        // === LANDING PROJECT ROLE ===
-        
-        // Block /app access locally on landing, force to subdomain
-        if (pathname.startsWith('/app') && process.env.NODE_ENV === 'production') {
-            return NextResponse.redirect(`https://app.atarafast.com${pathname.replace(/^\/app/, '') || '/'}`);
+    } 
+    
+    // 5. Handle Landing Project
+    else {
+        // REDIRECT: If someone hits /app on the landing domain, throw them to the subdomain
+        if (pathname.startsWith('/app')) {
+            const redirectUrl = new URL(pathname, 'https://app.atarafast.com');
+            // Remove the duplicated /app if present (e.g. atarafast.com/app -> app.atarafast.com/)
+            redirectUrl.pathname = pathname.replace(/^\/app/, '') || '/';
+            return NextResponse.redirect(redirectUrl);
         }
     }
 
-    return NextResponse.next();
+    const res = NextResponse.next();
+    res.headers.set('x-atara-role', isAppProject ? 'APP-DIRECT' : 'LANDING');
+    return res;
 })
 
 export const config = {
   matcher: [
-    // Standard Next.js/Clerk matcher
     '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
     '/(api|trpc)(.*)',
   ],
