@@ -47,24 +47,19 @@ function ActiveShareCard({ elapsedMs, targetHours, presetId, percentage }: Omit<
                 height: 693,
                 background: "linear-gradient(160deg, #0a0a0a 0%, #0f1a0f 60%, #0a0a0a 100%)",
                 fontFamily: "'Inter', sans-serif",
-                padding: "48px 36px",
+                padding: "60px 36px 48px",
             }}
         >
             <div style={{ position: "absolute", top: -60, right: -60, width: 280, height: 280, borderRadius: "50%", background: "radial-gradient(circle, #22c55e30 0%, transparent 70%)", pointerEvents: "none" }} />
             <div style={{ position: "absolute", bottom: -80, left: -40, width: 260, height: 260, borderRadius: "50%", background: "radial-gradient(circle, #f59e0b20 0%, transparent 70%)", pointerEvents: "none" }} />
 
-            {/* Header */}
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 32 }}>
-                <div>
-                    <img src="/atara_c2.png" alt="Atara" style={{ height: 32, width: "auto", marginBottom: 6 }} />
-                    <div style={{ color: "#22c55e", fontWeight: 800, fontSize: 10, letterSpacing: "0.2em", textTransform: "uppercase", opacity: 0.8 }}>
-                        {t.appName}
-                    </div>
-                </div>
+            {/* Header - Centered Logo */}
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginBottom: 20 }}>
+                <img src="/atara_c2.png" alt="Atara" style={{ height: 90, width: "auto" }} />
             </div>
 
-            <div>
-                <p style={{ color: "#ffffff50", fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.2em", marginBottom: 10 }}>
+            <div style={{ marginTop: -10 }}>
+                <p style={{ color: "#ffffff60", fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.2em", marginBottom: 10 }}>
                     {isComplete ? t.shareAchieved : t.shareCurrent}
                 </p>
                 <h1 style={{ color: "#ffffff", fontSize: 54, fontWeight: 900, lineHeight: 1, letterSpacing: "-0.03em", margin: 0 }}>
@@ -80,7 +75,7 @@ function ActiveShareCard({ elapsedMs, targetHours, presetId, percentage }: Omit<
                 <div style={{ width: "100%", height: 6, borderRadius: 3, background: "#ffffff15", marginBottom: 8, overflow: "hidden" }}>
                     <div style={{ height: "100%", borderRadius: 3, width: `${Math.min(percentage, 100)}%`, background: isComplete ? "linear-gradient(90deg, #22c55e, #4ade80)" : "linear-gradient(90deg, #f59e0b, #fbbf24)" }} />
                 </div>
-                <p style={{ color: "#ffffff40", fontSize: 12, fontWeight: 700, letterSpacing: "0.15em" }}>
+                <p style={{ color: "#ffffff60", fontSize: 12, fontWeight: 700, letterSpacing: "0.15em" }}>
                     {Math.min(percentage, 100)}% {isComplete ? t.shareCompleted : t.shareProgress}
                 </p>
             </div>
@@ -94,24 +89,24 @@ function ActiveShareCard({ elapsedMs, targetHours, presetId, percentage }: Omit<
                 ].map(({ label, color, pct }) => pct > 0 && (
                     <div key={label} style={{ flex: 1, padding: "10px 12px", borderRadius: 12, background: "#ffffff08", border: `1px solid ${color}30` }}>
                         <div style={{ width: 6, height: 6, borderRadius: "50%", background: color, marginBottom: 6 }} />
-                        <p style={{ color: "#ffffff70", fontSize: 9, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", margin: 0 }}>{label}</p>
+                        <p style={{ color: "#ffffff80", fontSize: 9, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", margin: 0 }}>{label}</p>
                         <p style={{ color, fontSize: 14, fontWeight: 900, margin: "2px 0 0" }}>{Math.round(pct)}%</p>
                     </div>
                 ))}
             </div>
 
-            {/* Footer with QR */}
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginTop: 20 }}>
+            {/* Footer with ENLARGED QR */}
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginTop: 24 }}>
                 <div style={{ textAlign: "left" }}>
-                    <p style={{ color: "#ffffff20", fontSize: 10, fontWeight: 700, letterSpacing: "0.15em", marginBottom: 2 }}>
+                    <p style={{ color: "#ffffff70", fontSize: 10, fontWeight: 800, letterSpacing: "0.15em", marginBottom: 3 }}>
                         ATARA · FASTING APP
                     </p>
-                    <p style={{ color: "#ffffff15", fontSize: 9, fontWeight: 600, letterSpacing: "0.05em", margin: 0 }}>
+                    <p style={{ color: "#ffffff30", fontSize: 10, fontWeight: 700, letterSpacing: "0.05em", margin: 0 }}>
                         app.atarafast.com
                     </p>
                 </div>
-                <div style={{ background: "#ffffff", padding: 6, borderRadius: 8, boxShadow: "0 4px 12px rgba(0,0,0,0.5)" }}>
-                    <QRCodeSVG value={APP_URL} size={42} level="M" bgColor="#ffffff" fgColor="#000000" />
+                <div style={{ background: "#ffffff", padding: 8, borderRadius: 10, boxShadow: "0 8px 24px rgba(0,0,0,0.6)" }}>
+                    <QRCodeSVG value={APP_URL} size={84} level="H" bgColor="#ffffff" fgColor="#000000" />
                 </div>
             </div>
         </div>
@@ -145,23 +140,18 @@ function StatsShareCard({ history }: Omit<StatsShareCardProps, "type">) {
                 height: 693,
                 background: "linear-gradient(160deg, #0a0a0a 0%, #0f1a0f 60%, #0a0a0a 100%)",
                 fontFamily: "'Inter', sans-serif",
-                padding: "48px 36px",
+                padding: "60px 36px 48px",
             }}
         >
             <div style={{ position: "absolute", top: -80, left: "50%", transform: "translateX(-50%)", width: 320, height: 320, borderRadius: "50%", background: "radial-gradient(circle, #22c55e20 0%, transparent 70%)", pointerEvents: "none" }} />
 
-            {/* Header */}
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 32 }}>
-                <div>
-                    <img src="/atara_c2.png" alt="Atara" style={{ height: 32, width: "auto", marginBottom: 6 }} />
-                    <div style={{ color: "#22c55e", fontWeight: 800, fontSize: 10, letterSpacing: "0.2em", textTransform: "uppercase", opacity: 0.8 }}>
-                        {t.appName}
-                    </div>
-                </div>
+            {/* Header - Centered Logo */}
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginBottom: 30 }}>
+                <img src="/atara_c2.png" alt="Atara" style={{ height: 90, width: "auto" }} />
             </div>
 
-            <div>
-                <p style={{ color: "#ffffff50", fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.2em", marginBottom: 12 }}>
+            <div style={{ marginTop: -10 }}>
+                <p style={{ color: "#ffffff60", fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.2em", marginBottom: 12 }}>
                     {t.shareAchievements}
                 </p>
                 <h1 style={{ color: "#ffffff", fontSize: 48, fontWeight: 900, lineHeight: 1, letterSpacing: "-0.03em", margin: 0 }}>
@@ -182,24 +172,24 @@ function StatsShareCard({ history }: Omit<StatsShareCardProps, "type">) {
                 ].map(({ icon, label, value }) => (
                     <div key={label} style={{ padding: "16px", borderRadius: 16, background: "#ffffff06", border: "1px solid #ffffff10" }}>
                         <p style={{ fontSize: 22, margin: "0 0 6px" }}>{icon}</p>
-                        <p style={{ color: "#ffffff40", fontSize: 9, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.15em", margin: 0 }}>{label}</p>
+                        <p style={{ color: "#ffffff60", fontSize: 9, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.15em", margin: 0 }}>{label}</p>
                         <p style={{ color: "#ffffff", fontSize: 20, fontWeight: 900, margin: "4px 0 0", letterSpacing: "-0.02em" }}>{value}</p>
                     </div>
                 ))}
             </div>
 
-            {/* Footer with QR */}
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginTop: 20 }}>
+            {/* Footer with ENLARGED QR */}
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginTop: 24 }}>
                 <div style={{ textAlign: "left" }}>
-                    <p style={{ color: "#ffffff20", fontSize: 10, fontWeight: 700, letterSpacing: "0.15em", marginBottom: 2 }}>
+                    <p style={{ color: "#ffffff70", fontSize: 10, fontWeight: 800, letterSpacing: "0.15em", marginBottom: 3 }}>
                         ATARA · FASTING APP
                     </p>
-                    <p style={{ color: "#ffffff15", fontSize: 9, fontWeight: 600, letterSpacing: "0.05em", margin: 0 }}>
+                    <p style={{ color: "#ffffff30", fontSize: 10, fontWeight: 700, letterSpacing: "0.05em", margin: 0 }}>
                         app.atarafast.com
                     </p>
                 </div>
-                <div style={{ background: "#ffffff", padding: 6, borderRadius: 8, boxShadow: "0 4px 12px rgba(0,0,0,0.5)" }}>
-                    <QRCodeSVG value={APP_URL} size={42} level="M" bgColor="#ffffff" fgColor="#000000" />
+                <div style={{ background: "#ffffff", padding: 8, borderRadius: 10, boxShadow: "0 8px 24px rgba(0,0,0,0.6)" }}>
+                    <QRCodeSVG value={APP_URL} size={84} level="H" bgColor="#ffffff" fgColor="#000000" />
                 </div>
             </div>
         </div>
@@ -253,8 +243,8 @@ export function ShareDialog(props: ShareDialogProps) {
                     className="flex flex-col items-center gap-6 w-full max-w-[360px] px-4"
                     onClick={e => e.stopPropagation()}
                 >
-                    {/* Share Card Preview */}
-                    <div style={{ transform: "scale(0.72)", transformOrigin: "top center", marginBottom: -190 }}>
+                    {/* Share Card Preview - Scaled slightly more to fit larger logo/QR room */}
+                    <div style={{ transform: "scale(0.7)", transformOrigin: "top center", marginBottom: -210 }}>
                         <div ref={cardRef} className="rounded-[32px] overflow-hidden shadow-2xl ring-1 ring-white/10">
                             {props.type === "active" ? (
                                 <ActiveShareCard {...props} />
