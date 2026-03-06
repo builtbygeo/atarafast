@@ -36,7 +36,7 @@ export function PlanView() {
   }
 
   const renderGrid = () => (
-    <div className="relative flex-1 overflow-y-auto px-5 py-6 no-scrollbar pb-44">
+    <div className="relative flex-1 overflow-y-auto px-5 py-6 no-scrollbar pb-44 [touch-action:pan-y]">
       <div className="mb-4 px-1 flex items-start flex-col gap-4">
         <div>
           <p className="text-[10px] text-muted-foreground font-black uppercase tracking-[0.2em] mb-4 leading-tight opacity-60">
@@ -262,7 +262,7 @@ export function PlanView() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2, ease: "easeOut" }}
-            className="flex-1 flex flex-col w-full will-change-[opacity]"
+            className="absolute inset-0 flex flex-col w-full will-change-[opacity]"
           >
             {renderGrid()}
           </motion.div>
