@@ -15,8 +15,10 @@ export default clerkMiddleware(async (auth, req) => {
         effectivePath = `/app${url.pathname === '/' ? '' : url.pathname}`;
     }
 
-    // Only protect /app routes that are NOT the base landing or public webhooks
-    if (effectivePath.startsWith('/app') && !isPublicRoute(req)) {
+    // Only protect /app routes. For the app domain, `/` is not public (it maps to the app dashboard).
+    const isPublic = isPublicRoute(req) && !(isAppDomain && url.pathname === '/');
+
+    if (effectivePath.startsWith('/app') && !isPublic) {
         try {
             await auth.protect()
         } catch (error) {

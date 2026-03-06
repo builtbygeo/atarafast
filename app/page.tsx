@@ -306,7 +306,7 @@ export default function LandingPage() {
               Your discipline deserves recognition. Atara generates gorgeous, minimalist share cards for Instagram and beyond, so you can inspire others with your journey.
             </p>
             <div className="flex flex-wrap gap-4">
-              {['#MetabolicFlexibility', '#AtaraLife', '#StoicFasting'].map(tag => (
+              {['#MetabolicFlexibility', '#AtaraLife', '#AtaraFast','#StoicFasting'].map(tag => (
                 <span key={tag} className="px-5 py-2.5 rounded-full bg-white/5 border border-white/10 text-xs font-black tracking-widest uppercase text-white/40 italic">
                   {tag}
                 </span>

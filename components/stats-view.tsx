@@ -253,17 +253,48 @@ export function StatsView({ history, onOpenSettings, onOpenUpgrade }: StatsViewP
         </div>
       </header>
 
+      {/* 1. Glowing Streak Circle - ALWAYS VISIBLE */}
+      <div className="relative flex justify-center py-4 mb-4">
+        <div className="relative flex items-center justify-center w-64 h-64">
+          <svg width="256" height="256" viewBox="0 0 256 256" className="transform -rotate-90">
+            <defs>
+              <filter id="green-glow" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="15" result="blur" />
+                <feComposite in="SourceGraphic" in2="blur" operator="over" />
+              </filter>
+            </defs>
+            {/* Background ring */}
+            <circle cx="128" cy="128" r="110" stroke="rgba(255,255,255,0.05)" strokeWidth="12" fill="none" />
+            {/* Colored glow ring */}
+            <circle cx="128" cy="128" r="110" stroke="oklch(var(--primary))" strokeWidth="12" fill="none"
+              strokeDasharray={circumference} strokeDashoffset={strokeDashoffset} strokeLinecap="round" filter="url(#green-glow)" />
+            {/* Inner white indicator ring */}
+            <circle cx="128" cy="128" r="110" stroke="#ffffff" strokeWidth="6" fill="none"
+              strokeDasharray={circumference} strokeDashoffset={strokeDashoffset} strokeLinecap="round" />
+          </svg>
+          <div className="absolute flex flex-col items-center justify-center text-center inset-0">
+            <div className="flex gap-1.5 mb-2 mt-4 text-xl">🔥🌿</div>
+            <div className="text-6xl font-black text-foreground tracking-tighter mb-0 tabular-nums leading-none flex items-baseline">
+              {stats.currentStreak}
+            </div>
+            <div className="text-[12px] uppercase tracking-[0.2em] text-foreground font-black mb-1 mt-1 z-10">{t.days || "DAYS"}</div>
+            <div className="text-[11px] font-bold text-foreground/80 lowercase mt-1 tracking-wide">{t.currentStreak || "Current Streak"}</div>
+            <div className="text-[10px] font-medium text-muted-foreground mt-0.5 tracking-wide bg-secondary/30 px-2 py-0.5 rounded-full border border-border/30">On a Roll! 🌿</div>
+          </div>
+        </div>
+      </div>
+
       <div className="relative">
         {/* Blur overlay over advanced stats for free users */}
         {!isPremium && (
-          <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-background/60 backdrop-blur-sm rounded-3xl border border-white/5 mt-[-10px] pb-4">
+          <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-background/60 backdrop-blur-sm rounded-[2rem] border border-white/5 mt-[-10px] pb-4">
             <div className="bg-card/90 backdrop-blur-2xl border border-border/50 p-6 rounded-[2.5rem] shadow-2xl flex flex-col items-center text-center max-w-[280px]">
               <div className="h-14 w-14 rounded-2xl bg-primary/10 flex items-center justify-center mb-5 text-primary shadow-[0_0_20px_rgba(34,197,94,0.15)] ring-1 ring-primary/20">
                 <Lock className="h-6 w-6" />
               </div>
               <h3 className="text-lg font-black tracking-tighter mb-2">Unlock Dashboard</h3>
               <p className="text-xs text-muted-foreground mb-6 font-medium leading-relaxed">
-                Get full access to your streaks, metabolic trends, and daily AI performance coaching with Atara+.
+                Get full access to detailed metabolic trends and daily AI performance coaching with Atara+.
               </p>
               <button
                 onClick={onOpenUpgrade}
@@ -275,37 +306,6 @@ export function StatsView({ history, onOpenSettings, onOpenUpgrade }: StatsViewP
             </div>
           </div>
         )}
-
-        {/* 1. Glowing Streak Circle */}
-        <div className={`relative flex justify-center py-4 mb-4 ${!isPremium ? "opacity-30 pointer-events-none" : ""}`}>
-          <div className="relative flex items-center justify-center w-64 h-64">
-            <svg width="256" height="256" viewBox="0 0 256 256" className="transform -rotate-90">
-              <defs>
-                <filter id="green-glow" x="-50%" y="-50%" width="200%" height="200%">
-                  <feGaussianBlur stdDeviation="15" result="blur" />
-                  <feComposite in="SourceGraphic" in2="blur" operator="over" />
-                </filter>
-              </defs>
-              {/* Background ring */}
-              <circle cx="128" cy="128" r="110" stroke="rgba(255,255,255,0.05)" strokeWidth="12" fill="none" />
-              {/* Colored glow ring */}
-              <circle cx="128" cy="128" r="110" stroke="oklch(var(--primary))" strokeWidth="12" fill="none"
-                strokeDasharray={circumference} strokeDashoffset={strokeDashoffset} strokeLinecap="round" filter="url(#green-glow)" />
-              {/* Inner white indicator ring */}
-              <circle cx="128" cy="128" r="110" stroke="#ffffff" strokeWidth="6" fill="none"
-                strokeDasharray={circumference} strokeDashoffset={strokeDashoffset} strokeLinecap="round" />
-            </svg>
-            <div className="absolute flex flex-col items-center justify-center text-center inset-0">
-              <div className="flex gap-1.5 mb-2 mt-4 text-xl">🔥🌿</div>
-              <div className="text-6xl font-black text-foreground tracking-tighter mb-0 tabular-nums leading-none flex items-baseline">
-                {stats.currentStreak}
-              </div>
-              <div className="text-[12px] uppercase tracking-[0.2em] text-foreground font-black mb-1 mt-1 z-10">{t.days || "DAYS"}</div>
-              <div className="text-[11px] font-bold text-foreground/80 lowercase mt-1 tracking-wide">{t.currentStreak || "Current Streak"}</div>
-              <div className="text-[10px] font-medium text-muted-foreground mt-0.5 tracking-wide bg-secondary/30 px-2 py-0.5 rounded-full border border-border/30">On a Roll! 🌿</div>
-            </div>
-          </div>
-        </div>
 
         {/* 2. Weekly Activity Chart (Glowing Area) */}
         <div className={`rounded-3xl border border-white/5 bg-secondary/30 p-5 shadow-sm mb-4 transition-opacity ${!isPremium ? "opacity-30 pointer-events-none" : ""}`}>
