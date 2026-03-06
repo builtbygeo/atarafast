@@ -36,7 +36,7 @@ export function PlanView() {
   }
 
   const renderGrid = () => (
-    <div className="relative flex-1 overflow-y-auto px-5 py-6 no-scrollbar pb-44 [touch-action:pan-y]">
+    <div className="h-full flex flex-col relative overflow-y-auto px-5 py-6 no-scrollbar pb-44 [touch-action:pan-y]">
       <div className="mb-4 px-1 flex items-start flex-col gap-4">
         <div>
           <p className="text-[10px] text-muted-foreground font-black uppercase tracking-[0.2em] mb-4 leading-tight opacity-60">
@@ -117,7 +117,7 @@ export function PlanView() {
   const renderDetail = (preset: FastingPreset) => {
     const content = (t.planContent as any)?.[preset.id]
     return (
-      <div className="flex-1 flex flex-col bg-background">
+      <div className="h-full flex flex-col bg-background">
         <header className="px-5 py-6 border-b border-border/50 flex items-center gap-4 bg-background/90 backdrop-blur-xl sticky top-0 z-10">
           <button
             onClick={() => setSelectedPlan(null)}
@@ -191,7 +191,7 @@ export function PlanView() {
 
   const renderCardDetail = (card: any) => {
     return (
-      <div className="flex-1 flex flex-col bg-background">
+      <div className="h-full flex flex-col bg-background">
         <header className="px-5 py-6 border-b border-border/50 flex items-center gap-4 bg-background/90 backdrop-blur-xl sticky top-0 z-10">
           <button
             onClick={() => setSelectedCard(null)}

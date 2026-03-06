@@ -144,7 +144,7 @@ export default function Home() {
       </div>
 
       {/* Bottom Tab Bar */}
-      <nav className="fixed bottom-0 inset-x-0 mx-auto max-w-md flex items-center justify-around border-t border-border bg-background/95 backdrop-blur-xl px-2 pb-[calc(env(safe-area-inset-bottom)+14px)] pt-4 z-50 shadow-[0_-15px_40px_rgba(0,0,0,0.5)]">
+      <nav className="fixed bottom-0 inset-x-0 mx-auto max-w-md flex items-center justify-around border-t border-border bg-background/95 backdrop-blur-xl px-2 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3 z-50 shadow-[0_-15px_40px_rgba(0,0,0,0.5)]">
         {tabs.map(({ id, label, icon: Icon }) => (
           <button
             key={id}

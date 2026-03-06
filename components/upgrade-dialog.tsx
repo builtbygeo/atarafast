@@ -109,6 +109,15 @@ export function UpgradeDialog({ open, onClose }: UpgradeDialogProps) {
                                 {loading === lifetimeId && <span className="absolute inset-y-0 right-4 flex items-center"><div className="animate-spin h-4 w-4 border-2 border-primary border-t-transparent rounded-full" /></span>}
                             </button>
                         )}
+
+                        <div className="mt-4 pt-4 border-t border-border/50">
+                            <button
+                                onClick={() => handleSelect("")}
+                                className="w-full py-3 text-xs font-bold text-muted-foreground hover:text-foreground transition-colors uppercase tracking-[0.2em]"
+                            >
+                                Already have Atara+? Manage Subscription
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>

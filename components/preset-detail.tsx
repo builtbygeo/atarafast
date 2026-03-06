@@ -33,7 +33,7 @@ export function PresetDetail({ preset, isActive, isCurrentActivePreset, onBack, 
   const tipIcons = [Droplets, Salad, Leaf, Droplets]
 
   return (
-    <div className="flex flex-col gap-6 h-full">
+    <div className="flex flex-col gap-6 h-full overflow-y-auto no-scrollbar pb-32 px-1">
       <div className="flex items-center gap-4">
         <button
           onClick={onBack}

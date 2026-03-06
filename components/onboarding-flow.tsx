@@ -51,7 +51,6 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
 
     return (
         <div className="fixed inset-0 z-[100] bg-black flex flex-col items-center overflow-y-auto no-scrollbar py-12 px-6">
-            {/* Background Glows (Fixed) */}
             <div className="fixed top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/20 blur-[120px] rounded-full pointer-events-none" />
             <div className="fixed bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-primary/10 blur-[120px] rounded-full pointer-events-none" />
 

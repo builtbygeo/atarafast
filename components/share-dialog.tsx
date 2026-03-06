@@ -243,7 +243,7 @@ export function ShareDialog(props: ShareDialogProps) {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="fixed inset-0 z-[100] bg-black/98 backdrop-blur-3xl flex flex-col items-center justify-start overflow-y-auto no-scrollbar pt-6 pb-20"
+                className="fixed inset-0 z-[100] bg-black/98 backdrop-blur-3xl flex flex-col items-center justify-start overflow-y-auto no-scrollbar pt-[max(3rem,env(safe-area-inset-top))] pb-20"
                 onClick={props.onClose}
             >
                 <div
@@ -251,7 +251,7 @@ export function ShareDialog(props: ShareDialogProps) {
                     onClick={e => e.stopPropagation()}
                 >
                     {/* Share Card Preview - God-Tier Scale */}
-                    <div style={{ transform: "scale(0.74)", transformOrigin: "top center", marginBottom: -180 }}>
+                    <div style={{ transform: "scale(0.68)", transformOrigin: "top center", marginBottom: -210, marginTop: 20 }}>
                         <div ref={cardRef} className="rounded-[40px] overflow-hidden shadow-[0_0_100px_-20px_rgba(34,197,94,0.3)] ring-1 ring-white/10 bg-black">
                             {props.type === "active" ? (
                                 <ActiveShareCard {...props} />
