@@ -361,7 +361,7 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
             elapsedMs={elapsedMs}
             targetHours={activeFast.targetHours}
             presetId={activeFast.presetId}
-            percentage={percentage}
+            percentage={Math.min(100, Math.floor((elapsedMs / (activeFast.targetHours * 3600000)) * 100))}
             onClose={() => setShowShare(false)}
           />
         )}
