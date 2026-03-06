@@ -91,7 +91,7 @@ export default function LandingPage() {
         </a>
       </nav>
 
-      <section id="hero" className="relative pt-40 pb-32 px-6 flex flex-col items-center text-center">
+      <section id="hero" className="relative pt-32 pb-24 px-6 flex flex-col items-center text-center">
         <div className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-black uppercase tracking-[0.2em] animate-fade-in" style={{ border: '1px solid rgba(255,255,255,0.1)', backgroundColor: 'rgba(255,255,255,0.03)', color: 'rgba(255,255,255,0.5)' }}>
           Next-Gen Metabolic Fasting
         </div>
@@ -111,7 +111,7 @@ export default function LandingPage() {
         <div className="flex flex-col sm:flex-row gap-6">
           <a
             href="https://app.atarafast.com"
-            className="bg-white text-black px-12 py-5 rounded-[2rem] font-bold text-xl hover:scale-105 transition-all shadow-[0_20px_40px_rgba(0,0,0,0.1)]"
+            className="bg-white text-black px-12 py-5 rounded-[2rem] font-bold text-xl hover:scale-105 transition-all shadow-[0_20px_40px_rgba(255,255,255,0.1)]"
           >
             Launch App
           </a>
@@ -123,14 +123,14 @@ export default function LandingPage() {
           </a>
         </div>
 
-        <div className="relative w-full max-w-[580px] mx-auto mt-12">
+        <div className="relative w-full max-w-[580px] mx-auto mt-12 bg-transparent">
           <div className="absolute bottom-0 left-0 right-0 h-40 pointer-events-none z-10" style={{ background: 'linear-gradient(to top, #0f0f0f 0%, transparent 100%)' }} />
           <Image
             src="/atarahero.webp"
             alt="Atara app showing active fast with metabolic phase ring"
             width={800}
             height={1000}
-            className="w-full rounded-[3rem] border border-white/5"
+            className="w-full rounded-[3rem] border border-white/5 relative z-0"
             style={{ boxShadow: '0 30px 60px rgba(0,0,0,0.5)' }}
             priority
           />
