@@ -149,6 +149,9 @@ export const bg = {
   shareDone: "✓ Готово!",
   on: "Вкл.",
   off: "Изкл.",
+  aiCoachLocked: "AI ТРЕНЬОРЪТ Е ЗАКЛЮЧЕН",
+  aiCoachRequired: "Нужни са поне 5 завършени поста, за да започне анализът.",
+  aiCoachJournalNote: "AI вече анализира и вашия дневник за по-прецизни съвети.",
 
   // Plan View
   planTitle: "План",
@@ -180,6 +183,25 @@ export const bg = {
   cancel: "Отказ",
   confirm: "Потвърди",
   language: "Език",
+
+  // Journal
+  journalTitle: "Дневник",
+  fastCompleted: "ПОСТЪТ Е ЗАВЪРШЕН",
+  howDidYouFeel: "Как се чувствахте?",
+  energyLevel: "Ниво на енергия (1-5)",
+  mentalClarity: "Ментален фокус (1-5)",
+  sleepQuality: "Качество на съня",
+  sleepPoor: "Лошо",
+  sleepGood: "Добро",
+  sleepExcellent: "Отлично",
+  hydration: "Хидратация",
+  difficultMoments: "Трудни моменти",
+  hungerPangs: "Пристъпи на глад",
+  tagsOptional: "Тагове (по избор)",
+  saveJournal: "Запази дневника",
+  skipForNow: "Пропусни за сега",
+  postFastJournal: "Дневник след пост",
+  logReflection: "Запиши рефлексия след поста",
 
   // Manual Fast Dialog
   addManualFast: "Добави пост",
@@ -426,6 +448,9 @@ export const en: typeof bg = {
   shareDone: "✓ Done!",
   on: "On",
   off: "Off",
+  aiCoachLocked: "AI COACH LOCKED",
+  aiCoachRequired: "At least 5 completed fasts required to start analysis.",
+  aiCoachJournalNote: "AI now analyzes your journal entries for deeper metabolic insights.",
 
   // Plan View
   planTitle: "Plan",
@@ -458,6 +483,25 @@ export const en: typeof bg = {
   phase1: "SUGAR",
   phase2: "TRANSITION",
   phase3: "KETOSIS",
+
+  // Journal
+  journalTitle: "Journal",
+  fastCompleted: "FAST COMPLETED",
+  howDidYouFeel: "How did you feel?",
+  energyLevel: "Energy Level (1-5)",
+  mentalClarity: "Mental Clarity (1-5)",
+  sleepQuality: "Sleep quality",
+  sleepPoor: "Poor",
+  sleepGood: "Good",
+  sleepExcellent: "Excellent",
+  hydration: "Hydration",
+  difficultMoments: "Difficult Moments",
+  hungerPangs: "Hunger Pangs (times)",
+  tagsOptional: "Tags (optional)",
+  saveJournal: "Save Journal",
+  skipForNow: "Skip for now",
+  postFastJournal: "Post-Fast Journal",
+  logReflection: "Log reflection after fasts",
 
   addManualFast: "Add Past Fast",
   preset: "Preset",

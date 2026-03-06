@@ -17,9 +17,11 @@ import type { FastingRecord } from "@/lib/storage"
 import { useLang } from "@/lib/language-context"
 import { useSubscription, startCheckout } from "@/lib/subscription"
 import { getAiUsage, checkAiQuota, incrementAiUsage, saveAiReport } from "@/lib/storage"
+import type { AppSettings } from "@/lib/storage" // Assuming AppSettings is defined here or needs to be imported
 
 interface StatsViewProps {
   history: FastingRecord[]
+  settings: AppSettings
   onOpenSettings?: () => void
   onOpenUpgrade?: () => void
 }
@@ -39,7 +41,7 @@ const ChartTooltip = ({ active, payload, label }: any) => {
   return null
 }
 
-export function StatsView({ history, onOpenSettings, onOpenUpgrade }: StatsViewProps) {
+export function StatsView({ history, settings, onOpenSettings, onOpenUpgrade }: StatsViewProps) {
   const { t, lang, setLang } = useLang()
   const { isPremium } = useSubscription()
   const [aiAnalysis, setAiAnalysis] = useState<string | null>(null)
@@ -85,14 +87,29 @@ export function StatsView({ history, onOpenSettings, onOpenUpgrade }: StatsViewP
   }
 
   const handleAnalyze = async () => {
-    if (!quota.canUse) return
+    if (!quota.canUse || stats.totalFasts < 5) return
 
     setIsAnalyzing(true)
     try {
+      // Extract journal entries for analysis
+      const journals = history
+        .filter(r => r.journalData)
+        .map(r => ({
+          date: r.startTime,
+          ...r.journalData
+        }))
+
+      const userPrompt = `Here is my fasting history (last 20): ${JSON.stringify(history.slice(0, 20))}
+    And my current weekly stats: ${JSON.stringify(stats)}
+    And my latest journal reflections: ${JSON.stringify(journals)}`
+
       const res = await fetch("/api/ai/analyze", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ history, stats, lang })
+        body: JSON.stringify({
+          userPrompt,
+          lang
+        })
       })
       const data = await res.json()
       if (data.analysis) {
@@ -393,7 +410,17 @@ export function StatsView({ history, onOpenSettings, onOpenUpgrade }: StatsViewP
             </div>
 
             <div className="relative z-10 min-h-[60px]">
-              {aiAnalysis ? (
+              {stats.totalFasts < 5 ? (
+                <div className="flex flex-col items-center justify-center py-4 text-center">
+                  <div className="h-10 w-10 rounded-full bg-white/5 flex items-center justify-center mb-3">
+                    <Lock className="h-4 w-4 text-primary/40" />
+                  </div>
+                  <h4 className="text-[11px] font-black uppercase tracking-widest text-primary/80 mb-2">{t.aiCoachLocked}</h4>
+                  <p className="text-[12px] text-muted-foreground font-medium max-w-[200px] leading-relaxed">
+                    {t.aiCoachRequired}
+                  </p>
+                </div>
+              ) : aiAnalysis ? (
                 <div className="text-[13px] text-foreground/80 leading-relaxed font-medium mb-2">
                   {formatAiText(aiAnalysis)}
                 </div>
@@ -405,11 +432,18 @@ export function StatsView({ history, onOpenSettings, onOpenUpgrade }: StatsViewP
               )}
             </div>
 
-            {!aiAnalysis && (
+            {settings?.journalEnabled && stats.totalFasts >= 5 && (
+              <p className="text-[9px] font-bold text-primary/60 uppercase tracking-widest mb-4 flex items-center gap-1.5 relative z-10">
+                <Sparkles className="w-2.5 h-2.5" />
+                {t.aiCoachJournalNote}
+              </p>
+            )}
+
+            {stats.totalFasts >= 5 && !aiAnalysis && (
               <div className="flex items-center gap-3 relative z-10 w-full mb-4">
                 <button
                   onClick={handleAnalyze}
-                  disabled={isAnalyzing || history.length === 0 || !quota.canUse}
+                  disabled={isAnalyzing || !quota.canUse}
                   className="flex-1 py-3.5 rounded-2xl bg-white text-black font-black text-xs tracking-wide shadow-lg shadow-white/10 hover:shadow-white/20 active:scale-95 transition-all outline-none disabled:opacity-50 whitespace-nowrap"
                 >
                   {isAnalyzing ? "Analyzing..." : "Generate Insights"}

@@ -13,11 +13,12 @@ import {
   isSameDay,
   isAfter,
 } from "date-fns"
-import { Trash2, Clock, CheckCircle2, Plus, Edit2, Share2 } from "lucide-react"
+import { Trash2, Clock, CheckCircle2, Plus, Edit2, Share2, BookOpen } from "lucide-react"
 import { type FastingRecord, deleteHistoryRecord, addManualFast, updateHistoryRecord } from "@/lib/storage"
 import { getPresetById } from "@/lib/presets"
 import { ManualFastDialog } from "@/components/manual-fast-dialog"
 import { RecentFastsChart } from "@/components/recent-fasts-chart"
+import { JournalDialog } from "@/components/journal-dialog"
 import { useLang } from "@/lib/language-context"
 import { ShareDialog } from "@/components/share-dialog"
 import { useSubscription, startCheckout } from "@/lib/subscription"
@@ -45,6 +46,7 @@ export function HistoryView({ history, hasHiddenRecords, onHistoryChange }: Hist
   const [showManualFastDialog, setShowManualFastDialog] = useState(false)
   const [recordToDelete, setRecordToDelete] = useState<string | null>(null)
   const [recordToEdit, setRecordToEdit] = useState<FastingRecord | null>(null)
+  const [recordToJournal, setRecordToJournal] = useState<FastingRecord | null>(null)
   const [showShare, setShowShare] = useState(false)
 
   const fastDays = useMemo(() => {
@@ -199,6 +201,15 @@ export function HistoryView({ history, hasHiddenRecords, onHistoryChange }: Hist
                   </p>
                 </div>
                 <div className="flex items-center gap-1">
+                  {record.journalData && (
+                    <button
+                      onClick={() => setRecordToJournal(record)}
+                      className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-[#22c55e] transition-colors hover:bg-secondary hover:text-[#22c55e]/80"
+                      aria-label="View Journal"
+                    >
+                      <BookOpen className="h-4 w-4" />
+                    </button>
+                  )}
                   <button
                     onClick={() => setRecordToEdit(record)}
                     className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
@@ -252,6 +263,18 @@ export function HistoryView({ history, hasHiddenRecords, onHistoryChange }: Hist
           editingRecord={recordToEdit}
           onConfirm={handleUpdateFast}
           onCancel={() => setRecordToEdit(null)}
+        />
+      )}
+
+      {recordToJournal && (
+        <JournalDialog
+          initialData={recordToJournal.journalData}
+          onSave={(data) => {
+            updateHistoryRecord(recordToJournal.id, { journalData: data })
+            setRecordToJournal(null)
+            onHistoryChange()
+          }}
+          onSkip={() => setRecordToJournal(null)}
         />
       )}
 

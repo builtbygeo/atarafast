@@ -33,8 +33,8 @@ export default clerkMiddleware(async (auth, req) => {
     }
 
     // Apply the structural rewrite to direct to the /app folder internally
-    if (effectivePath !== url.pathname) {
-        url.pathname = effectivePath;
+    if (isAppDomain && !url.pathname.startsWith('/app') && !url.pathname.startsWith('/api')) {
+        url.pathname = `/app${url.pathname === '/' ? '' : url.pathname}`;
         return NextResponse.rewrite(url);
     }
 })

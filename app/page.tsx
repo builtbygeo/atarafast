@@ -4,45 +4,47 @@ import Image from 'next/image'
 import { CheckoutButton } from '@/components/checkout-button'
 import { Logo } from '@/components/logo'
 import { LifetimeOfferLink } from '@/components/lifetime-offer-link'
+import MetabolicJourneyChart from '@/components/MetabolicJourneyChart'
+import { Timer, BarChart3, Moon, Smartphone, Globe2, Sparkles } from 'lucide-react'
 
 export const metadata: Metadata = {
   title: 'Atara — Master Your Metabolism',
-  description: 'A science-backed fasting companion that tracks your metabolic phases in real time. Start your 14-day free trial today.',
+  description: 'Free forever with basic tracking and visuals. Pro unlocks unlimited history, analytics, custom themes & streak insights.',
   openGraph: {
     title: 'Atara — Master Your Metabolism',
-    description: 'Track sugar burning, transition, and ketosis phases with beautiful metabolic visualizations.',
+    description: 'The beautiful way to fast. Track sugar burning, transition, and ketosis phases with beautiful metabolic visualizations.',
     type: 'website',
   },
 }
 
 const features = [
   {
-    icon: '⏱',
+    icon: <Timer className="w-8 h-8 text-primary" />,
     title: 'Metabolic Phase Timer',
     desc: 'Watch your body shift from sugar burning to ketosis in real time. Color-coded phases make complex biology instantly readable.',
   },
   {
-    icon: '📊',
+    icon: <BarChart3 className="w-8 h-8 text-primary" />,
     title: 'Deep Analytics',
     desc: 'Weekly charts, completion rates, streaks — everything you need to understand and improve your fasting practice.',
   },
   {
-    icon: '🌙',
+    icon: <Moon className="w-8 h-8 text-primary" />,
     title: 'Science-Backed Plans',
     desc: 'From Circadian 12h to Warrior 20:4 — every plan is grounded in metabolic science and optimized for real results.',
   },
   {
-    icon: '📱',
+    icon: <Smartphone className="w-8 h-8 text-primary" />,
     title: 'Install as an App',
     desc: 'Tap "Share" then "Add to Home Screen" on iOS, or "Install App" from your browser menu on Android. Feels like a native app.',
   },
   {
-    icon: '🌍',
+    icon: <Globe2 className="w-8 h-8 text-primary" />,
     title: 'Bulgarian & English',
     desc: 'Fully localized in Bulgarian and English. Switch languages instantly without losing your data.',
   },
   {
-    icon: '✨',
+    icon: <Sparkles className="w-8 h-8 text-primary" />,
     title: 'Share Your Progress',
     desc: 'Generate gorgeous share cards for Instagram, TikTok and Pinterest directly from the app.',
   },
@@ -90,54 +92,57 @@ export default function LandingPage() {
       </nav>
 
       {/* Hero */}
-      <section className="relative pt-32 pb-24 px-6 flex flex-col items-center text-center overflow-hidden">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[400px] rounded-full pointer-events-none" style={{ background: 'radial-gradient(ellipse, rgba(34,197,94,0.12) 0%, transparent 70%)', filter: 'blur(40px)' }} />
+      <section className="relative pt-40 pb-32 px-6 flex flex-col items-center text-center overflow-hidden">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-[1000px] h-[600px] bg-[#22c55e]/10 blur-[160px] rounded-full pointer-events-none -z-10" />
 
-        <div className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-semibold mb-6" style={{ border: '1px solid rgba(34,197,94,0.3)', backgroundColor: 'rgba(34,197,94,0.1)', color: '#22c55e' }}>
-          <span className="w-1.5 h-1.5 rounded-full bg-current" style={{ animation: 'pulse 2s infinite' }} />
-          14-day free trial — no credit card required
+        <div className="inline-flex items-center gap-2 rounded-full px-6 py-2.5 text-sm font-bold mb-8 w-fit mx-auto relative z-10" style={{ border: '1px solid rgba(34,197,94,0.3)', backgroundColor: 'rgba(34,197,94,0.08)', color: '#22c55e' }}>
+          <span className="w-2 h-2 rounded-full bg-current shadow-[0_0_12px_currentColor]" style={{ animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite' }} />
+          Free forever • Pro unlocks unlimited features
         </div>
 
-        <h1 className="text-5xl sm:text-7xl font-black tracking-tighter mb-6 leading-none max-w-4xl">
-          Atara — The beautiful way to{' '}
+        <h1 className="text-7xl md:text-8xl lg:text-9xl font-black tracking-tighter mt-8 mb-8 leading-[0.9] max-w-5xl">
+          Atara — The beautiful<br />
+          way to{' '}
           <span style={{ background: 'linear-gradient(135deg, #22c55e, #4ade80)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
             fast.
           </span>
         </h1>
 
-        <p className="text-lg sm:text-xl max-w-2xl mb-10 leading-relaxed font-medium" style={{ color: 'rgba(255,255,255,0.7)' }}>
-          Free forever. Pro unlocks 1 per day (5 per week) history, analytics & custom themes.
+        <p className="mt-8 text-xl md:text-2xl text-zinc-400 max-w-3xl mx-auto mb-12 leading-relaxed font-medium">
+          Free forever with basic tracking and visuals.<br />
+          Pro unlocks unlimited history, analytics, custom themes & streak insights.
         </p>
 
-        <div className="flex flex-col sm:flex-row gap-3 mb-20">
+        <div className="flex flex-col sm:flex-row gap-6 mt-12 justify-center mb-16">
           <a
             href={process.env.NODE_ENV === "development" ? "/app" : "https://app.atarafast.com"}
-            className="rounded-2xl font-bold text-base px-8 py-4 transition-all hover:scale-105"
-            style={{ backgroundColor: '#22c55e', color: '#0f0f0f', boxShadow: '0 16px 40px rgba(34,197,94,0.35)' }}
+            className="bg-[#22c55e] hover:bg-[#16a34a] text-black px-12 py-5 rounded-[2rem] font-black text-xl transition-all hover:scale-105 active:scale-95 shadow-[0_20px_50px_rgba(34,197,94,0.4)]"
           >
-            Start 14-Day Free Trial
+            Install Free Now
           </a>
           <a
             href="#features"
-            className="rounded-2xl font-bold text-base px-8 py-4 transition-colors"
-            style={{ border: '1px solid rgba(255,255,255,0.12)', backgroundColor: 'rgba(255,255,255,0.05)', color: 'white' }}
+            className="border border-zinc-700 hover:bg-zinc-900 px-12 py-5 rounded-[2rem] font-bold text-xl transition-all text-white hover:border-zinc-500"
           >
             See How It Works
           </a>
         </div>
 
+        <p className="mt-8 text-base text-zinc-500 mb-16 font-bold tracking-tight">
+          Install in 3 seconds • No App Store • Works offline
+        </p>
+
         {/* Hero image — real mockup */}
-        <div className="relative w-full max-w-[420px] mx-auto mt-8">
-          <div className="absolute bottom-0 left-0 right-0 h-40 pointer-events-none z-10" style={{ background: 'linear-gradient(to top, #0f0f0f, transparent)' }} />
-          {/* Big glowing circle under the image to match the "glowing circle" request visually if needed, though the image itself has it */}
-          <div className="absolute inset-0 bg-primary/20 blur-[120px] rounded-full pointer-events-none -z-10" />
+        <div className="relative w-full max-w-[580px] mx-auto mt-12 group">
+          <div className="absolute bottom-0 left-0 right-0 h-60 pointer-events-none z-10" style={{ background: 'linear-gradient(to top, #0f0f0f, transparent)' }} />
+          <div className="absolute inset-0 bg-primary/20 blur-[140px] rounded-full pointer-events-none -z-10 group-hover:opacity-100 transition-opacity" />
           <Image
             src="/atarahero.webp"
             alt="Atara app showing active fast with metabolic phase ring"
-            width={520}
-            height={650}
-            className="w-full rounded-[2.5rem]"
-            style={{ boxShadow: '0 40px 100px rgba(34,197,94,0.15), 0 20px 60px rgba(0,0,0,0.8)' }}
+            width={800}
+            height={1000}
+            className="w-full rounded-[3rem] transition-transform duration-700 group-hover:scale-[1.02]"
+            style={{ boxShadow: '0 60px 120px rgba(34,197,94,0.2), 0 30px 80px rgba(0,0,0,0.9)' }}
             priority
           />
         </div>
@@ -306,13 +311,31 @@ export default function LandingPage() {
               Your discipline deserves recognition. Atara generates gorgeous, minimalist share cards for Instagram and beyond, so you can inspire others with your journey.
             </p>
             <div className="flex flex-wrap gap-4">
-              {['#MetabolicFlexibility', '#AtaraLife', '#AtaraFast','#StoicFasting'].map(tag => (
+              {['#MetabolicFlexibility', '#AtaraLife', '#AtaraFast', '#StoicFasting'].map(tag => (
                 <span key={tag} className="px-5 py-2.5 rounded-full bg-white/5 border border-white/10 text-xs font-black tracking-widest uppercase text-white/40 italic">
                   {tag}
                 </span>
               ))}
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Wellbeing Graph Section */}
+      <section className="py-24 px-6 max-w-5xl mx-auto">
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-black uppercase tracking-[0.2em] mb-4 bg-primary/10 text-primary border border-primary/20">
+            Results
+          </div>
+          <h2 className="text-4xl sm:text-5xl font-black tracking-tighter mb-6">
+            With regular fasting you increase your <span className="text-primary">wellbeing</span>
+          </h2>
+          <p className="text-lg text-white/50 leading-relaxed max-w-2xl mx-auto">
+            See how you start on low energy and poor sleep, but end up reaching the peak with high energy, sharp mental clarity, and deep, restorative sleep.
+          </p>
+        </div>
+        <div className="w-full max-w-4xl mx-auto">
+          <MetabolicJourneyChart />
         </div>
       </section>
 
@@ -327,11 +350,11 @@ export default function LandingPage() {
           {features.map((f) => (
             <div
               key={f.title}
-              className="rounded-2xl p-6 transition-all hover:border-primary/30"
+              className="rounded-2xl p-6 transition-all hover:border-primary/30 group cursor-default"
               style={{ border: '1px solid rgba(255,255,255,0.07)', backgroundColor: 'rgba(255,255,255,0.03)' }}
             >
-              <div className="text-3xl mb-4">{f.icon}</div>
-              <h3 className="font-bold text-white mb-2">{f.title}</h3>
+              <div className="text-3xl mb-4 transition-transform duration-300 group-hover:scale-110 group-hover:-translate-y-1">{f.icon}</div>
+              <h3 className="font-bold text-white mb-2 transition-colors duration-300 group-hover:text-primary">{f.title}</h3>
               <p className="text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.45)' }}>{f.desc}</p>
             </div>
           ))}

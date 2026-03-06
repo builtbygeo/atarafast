@@ -1,20 +1,33 @@
 'use client'
 
 import { useUser } from '@clerk/nextjs'
+import { useState, useEffect } from 'react'
+import { getSettings } from './storage'
 
 export type Plan = 'free' | 'premium'
 export type SubscriptionStatus = 'active' | 'trialing' | 'cancelled' | 'free'
 
 const TRIAL_DAYS = 14
-
 export function useSubscription() {
     const { user, isLoaded, isSignedIn } = useUser()
+
+    const [devForcePremium, setDevForcePremium] = useState(false)
+    useEffect(() => {
+        if (process.env.NODE_ENV === "development") {
+            try {
+                // Must handle case where getSettings runs before storage is available or similar
+                setDevForcePremium(!!getSettings().devForcePremium)
+            } catch (e) {
+                console.error("Failed to load dev settings", e)
+            }
+        }
+    }, [])
 
     if (!isLoaded) {
         return { isLoaded: false, isPremium: false, isTrialing: false, trialDaysLeft: 0, plan: 'free' as Plan, status: 'free' as SubscriptionStatus, isSignedIn: false }
     }
 
-    if (!isSignedIn) {
+    if (!isSignedIn || !user) {
         return { isLoaded: true, isPremium: false, isTrialing: false, trialDaysLeft: 0, plan: 'free' as Plan, status: 'free' as SubscriptionStatus, isSignedIn: false }
     }
 
@@ -47,7 +60,7 @@ export function useSubscription() {
     const envEmails = process.env.NEXT_PUBLIC_FREE_USERS?.split(",") || []
     const isFreeAccessEmail = Boolean(userEmail && (FREE_EMAILS.includes(userEmail) || envEmails.includes(userEmail)))
 
-    const isPremium = hasStripePremium || isClockTrial || isFreeAccessEmail
+    const isPremium = hasStripePremium || isClockTrial || isFreeAccessEmail || devForcePremium
     const isTrialing = isClockTrial && !hasStripePremium && !isFreeAccessEmail
 
     const status: SubscriptionStatus = hasStripePremium

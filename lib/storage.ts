@@ -1,3 +1,13 @@
+export interface JournalData {
+  energy: number     // 1-5
+  mental: number     // 1-5
+  sleep: 'Poor' | 'Good' | 'Excellent'
+  hydration: '1L' | '2L' | '3L' | '4L+'
+  difficult: 0 | 1 | 2 | 3
+  hungry: 0 | 1 | 2 | 3
+  tags: string[]
+}
+
 export interface FastingRecord {
   id: string
   presetId: string
@@ -7,6 +17,7 @@ export interface FastingRecord {
   completed: boolean
   apathTime?: string // Апатия - moment of freedom from hunger cravings
   notes?: string
+  journalData?: JournalData
 }
 
 export interface AiUsage {
@@ -22,6 +33,10 @@ export interface AppSettings {
   timerDirection: "up" | "down"
   timerStyle: "circle" | "triangle"
   notificationsEnabled: boolean
+  journalEnabled: boolean
+  devForcePremium?: boolean
+  hasCompletedOnboarding?: boolean
+  onboardingRecommendation?: string | null
 }
 
 interface StoredData {
@@ -34,14 +49,19 @@ interface StoredData {
 
 const STORAGE_KEY = "fasting-tracker-data"
 
+export const DEFAULT_SETTINGS: AppSettings = {
+  timerDirection: "up",
+  timerStyle: "circle",
+  notificationsEnabled: false,
+  journalEnabled: true,
+  hasCompletedOnboarding: false,
+  onboardingRecommendation: null
+}
+
 const DEFAULT_DATA: StoredData = {
   activeFast: null,
   history: [],
-  settings: {
-    timerDirection: "down",
-    timerStyle: "circle",
-    notificationsEnabled: true,
-  },
+  settings: DEFAULT_SETTINGS,
   lastFastInfo: null,
   aiUsage: {
     lastResetMonth: new Date().getMonth(),
@@ -159,6 +179,9 @@ export function updateSettings(updates: Partial<AppSettings>): AppSettings {
   // Ensure default added for older saves
   if (data.settings.notificationsEnabled === undefined) {
     data.settings.notificationsEnabled = true
+  }
+  if (data.settings.journalEnabled === undefined) {
+    data.settings.journalEnabled = true
   }
   saveData(data)
   return data.settings

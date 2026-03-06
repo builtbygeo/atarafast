@@ -21,7 +21,7 @@ export function SettingsSheet({ open, onClose, onDataCleared, onOpenUpgrade }: S
   const { t } = useLang()
   const { theme, setTheme } = useTheme()
   const { permission, requestPermission } = useNotifications()
-  const { isPremium, isTrialing, trialDaysLeft, isSignedIn, isLoaded: subLoaded, status } = useSubscription()
+  const { isPremium, isTrialing, trialDaysLeft, isSignedIn, isLoaded: subLoaded, status, stripeCustomerId } = useSubscription()
   const { user } = useUser()
   const [settings, setSettingsState] = useState<AppSettings>(getSettings())
   const [confirmClear, setConfirmClear] = useState(false)
@@ -162,7 +162,7 @@ export function SettingsSheet({ open, onClose, onDataCleared, onOpenUpgrade }: S
                   <div className="flex justify-between items-center">
                     <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Plan</span>
                     <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full ${isPremium ? 'bg-primary/20 text-primary border border-primary/30' : 'bg-muted text-muted-foreground border border-border'}`}>
-                      {isPremium ? (isTrialing ? '14-Day Free Trial' : 'Atara+ Premium') : 'Free Plan'}
+                      {isPremium ? (isTrialing ? '14-Day Free Trial' : 'Atara Pro') : 'Free Plan'}
                     </span>
                   </div>
 
@@ -185,11 +185,11 @@ export function SettingsSheet({ open, onClose, onDataCleared, onOpenUpgrade }: S
                   )}
 
                   <button
-                    onClick={isPremium && !isTrialing ? () => startCheckout() : onOpenUpgrade}
+                    onClick={stripeCustomerId ? () => startCheckout() : onOpenUpgrade}
                     className="w-full mt-1 flex items-center justify-center gap-2 rounded-lg bg-primary/10 border border-primary/20 px-4 py-2 text-xs font-bold text-primary hover:bg-primary/20 transition-all"
                   >
                     <Sparkles className="w-3.5 h-3.5" />
-                    {isPremium && !isTrialing ? 'Manage Subscription' : 'Upgrade to Atara+'}
+                    {stripeCustomerId ? 'Manage Subscription' : 'View Upgrade Plans'}
                   </button>
                 </div>
 
@@ -273,6 +273,42 @@ export function SettingsSheet({ open, onClose, onDataCleared, onOpenUpgrade }: S
 
           <div className="h-px bg-border" />
 
+          {/* Post-Fast Journal */}
+          <div className="flex items-center justify-between pb-2 pt-1">
+            <div>
+              <p className="text-sm font-bold text-foreground flex items-center gap-1.5">
+                Post-Fast Journal
+                {!isPremium && <Lock className="h-3 w-3 text-primary/50" />}
+              </p>
+              <p className="text-[10px] text-muted-foreground font-medium uppercase tracking-wider">
+                Log reflection after fasts
+              </p>
+            </div>
+            <button
+              onClick={() => {
+                if (!isPremium) {
+                  onOpenUpgrade?.();
+                  return;
+                }
+                const newVal = !settings.journalEnabled;
+                updateSettings({ journalEnabled: newVal });
+                setSettingsState((prev) => ({ ...prev, journalEnabled: newVal }));
+              }}
+              className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ${settings.journalEnabled && isPremium ? 'bg-primary' : 'bg-secondary'
+                }`}
+              role="switch"
+              aria-checked={settings.journalEnabled}
+            >
+              <span
+                aria-hidden="true"
+                className={`pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${settings.journalEnabled ? 'translate-x-[20px]' : 'translate-x-[2px]'
+                  }`}
+              />
+            </button>
+          </div>
+
+          <div className="h-px bg-border" />
+
           {/* Theme */}
           <div className="flex items-center justify-between">
             <p className="text-sm font-medium text-foreground">Theme</p>
@@ -302,7 +338,7 @@ export function SettingsSheet({ open, onClose, onDataCleared, onOpenUpgrade }: S
               <p className="text-[10px] text-muted-foreground font-medium uppercase tracking-wider">Help us improve</p>
             </div>
             <a
-              href="mailto:gag1000x@icloud.com"
+              href="mailto:support@atarafast.com"
               className="px-4 py-2 text-[10px] font-black uppercase tracking-widest rounded-xl bg-secondary text-secondary-foreground transition-all hover:bg-secondary/80 border border-border/50 text-center"
             >
               Send Feedback
@@ -340,6 +376,37 @@ export function SettingsSheet({ open, onClose, onDataCleared, onOpenUpgrade }: S
 
           <div className="h-px bg-border" />
 
+          {/* Dev Mode Options */}
+          {process.env.NODE_ENV === "development" && (
+            <>
+              <div className="flex items-center justify-between pb-2">
+                <div>
+                  <p className="text-sm font-bold text-[#22c55e]">Force Premium (Dev)</p>
+                  <p className="text-[10px] text-muted-foreground font-medium uppercase tracking-wider">Local testing only</p>
+                </div>
+                <button
+                  onClick={() => {
+                    const newVal = !settings.devForcePremium;
+                    updateSettings({ devForcePremium: newVal });
+                    setSettingsState((prev) => ({ ...prev, devForcePremium: newVal }));
+                    window.location.reload(); // Reload to apply across the app immediately
+                  }}
+                  className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ${settings.devForcePremium ? 'bg-[#22c55e]' : 'bg-secondary'
+                    }`}
+                  role="switch"
+                  aria-checked={settings.devForcePremium}
+                >
+                  <span
+                    aria-hidden="true"
+                    className={`pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${settings.devForcePremium ? 'translate-x-[20px]' : 'translate-x-[2px]'
+                      }`}
+                  />
+                </button>
+              </div>
+              <div className="h-px bg-border" />
+            </>
+          )}
+
           {/* Data Section */}
           <div className="flex flex-col gap-3">
             <h3 className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-1 ml-1">{t.data}</h3>
@@ -362,6 +429,20 @@ export function SettingsSheet({ open, onClose, onDataCleared, onOpenUpgrade }: S
               </button>
             </div>
           </div>
+
+          <div className="h-px bg-border text-transparent select-none">-</div>
+
+          {/* Onboarding */}
+          <button
+            onClick={() => {
+              updateSettings({ hasCompletedOnboarding: false });
+              window.location.reload();
+            }}
+            className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium bg-secondary text-foreground hover:bg-secondary/80 border border-border/50 transition-colors"
+          >
+            <Sparkles className="h-4 w-4 text-primary" />
+            Retake Onboarding Quiz
+          </button>
 
           {/* Clear */}
           <button

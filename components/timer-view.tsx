@@ -53,7 +53,7 @@ type ViewState = "timer" | "presets" | "detail"
 
 interface TimerViewProps {
   history: FastingRecord[]
-  onFastEnd?: () => void
+  onFastEnd?: (record: FastingRecord) => void
   onNavigateToHistory?: () => void
 }
 
@@ -174,7 +174,7 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
           setActiveFast(null)
           setConfirmEnd(false)
           navigateTo("presets")
-          onFastEnd?.()
+          onFastEnd?.(record)
         }
       }, 3500) // 3.5s celebration delay
     } else {
@@ -183,7 +183,7 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
         setActiveFast(null)
         setConfirmEnd(false)
         navigateTo("presets")
-        onFastEnd?.()
+        onFastEnd?.(record)
       }
     }
   }, [onFastEnd, navigateTo, confirmEnd, activeFast])

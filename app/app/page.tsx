@@ -10,7 +10,10 @@ import { PlanView } from "@/components/plan-view"
 import { PremiumGate } from "@/components/premium-gate"
 import { SettingsSheet } from "@/components/settings-sheet"
 import { UpgradeDialog } from "@/components/upgrade-dialog"
-import { getHistory, type FastingRecord } from "@/lib/storage"
+import { JournalDialog } from "@/components/journal-dialog"
+import { OnboardingFlow } from "@/components/onboarding-flow"
+import { getHistory, getSettings, updateHistoryRecord, updateSettings, startFast, type FastingRecord, type JournalData } from "@/lib/storage"
+import { getPresetById } from "@/lib/presets"
 import { useLang } from "@/lib/language-context"
 import { useSubscription } from "@/lib/subscription"
 
@@ -24,9 +27,15 @@ export default function Home() {
   const [upgradeOpen, setUpgradeOpen] = useState(false)
   const [history, setHistory] = useState<FastingRecord[]>([])
   const [mounted, setMounted] = useState(false)
+  const [journalRecord, setJournalRecord] = useState<FastingRecord | null>(null)
+  const [showOnboarding, setShowOnboarding] = useState(false)
 
   useEffect(() => {
     setMounted(true)
+    const settings = getSettings()
+    if (!settings.hasCompletedOnboarding) {
+      setShowOnboarding(true)
+    }
     const rawHistory = getHistory()
     setHistory(rawHistory)
 
@@ -39,6 +48,40 @@ export default function Home() {
   const refreshHistory = useCallback(() => {
     setHistory(getHistory())
   }, [])
+
+  const handleFastEnd = useCallback((record: FastingRecord) => {
+    refreshHistory()
+    if (isPremium && getSettings().journalEnabled) {
+      setJournalRecord(record)
+    }
+  }, [refreshHistory, isPremium])
+
+  const handleSaveJournal = useCallback((data: JournalData) => {
+    if (journalRecord) {
+      updateHistoryRecord(journalRecord.id, { journalData: data })
+      refreshHistory()
+    }
+    setJournalRecord(null)
+  }, [journalRecord, refreshHistory])
+
+  const handleOnboardingComplete = useCallback((recommendedPlanId: string, startImmediately: boolean) => {
+    updateSettings({
+      hasCompletedOnboarding: true,
+      onboardingRecommendation: recommendedPlanId
+    })
+
+    if (startImmediately) {
+      const preset = getPresetById(recommendedPlanId)
+      if (preset) {
+        startFast(preset.id, preset.fastHours)
+      }
+    }
+
+    setShowOnboarding(false)
+    // Force a re-render/refresh of the timer view state if needed
+    // The easiest way is to refresh history or just let it naturally happen
+    refreshHistory()
+  }, [refreshHistory])
 
   const displayHistory = useMemo(() => {
     if (isPremium) return history
@@ -77,7 +120,7 @@ export default function Home() {
       <div className="flex-1 flex flex-col relative overflow-hidden">
         {activeTab === "timer" && (
           <TimerView
-            onFastEnd={refreshHistory}
+            onFastEnd={handleFastEnd}
             history={displayHistory}
             onNavigateToHistory={() => setActiveTab("history")}
           />
@@ -138,6 +181,19 @@ export default function Home() {
         open={upgradeOpen}
         onClose={() => setUpgradeOpen(false)}
       />
+
+      {/* Journal Dialog */}
+      {journalRecord && (
+        <JournalDialog
+          initialData={journalRecord.journalData}
+          onSave={handleSaveJournal}
+          onSkip={() => setJournalRecord(null)}
+        />
+      )}
+
+      {showOnboarding && (
+        <OnboardingFlow onComplete={handleOnboardingComplete} />
+      )}
     </main>
   )
 }
