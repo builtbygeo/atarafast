@@ -98,31 +98,44 @@ export default function LandingPage() {
           Next-Gen Metabolic Fasting
         </div>
 
-        <h1 className="text-7xl md:text-8xl lg:text-9xl font-black tracking-tighter mt-8 mb-8 leading-[0.9] max-w-5xl">
-          Atara — The beautiful<br />
-          way to{' '}
+        <h1 className="text-6xl md:text-8xl lg:text-9xl font-black tracking-tighter mt-8 mb-8 leading-[0.9] max-w-5xl">
+          Tired of ugly<br />
+          fasting{' '}
           <span className="text-[#22c55e]">
-            fast.
+            apps?
           </span>
         </h1>
 
-        <p className="text-xl md:text-2xl text-zinc-400 max-w-2xl mb-12 font-medium leading-relaxed font-sans">
-          Stoic-inspired fasting for modern humans. Achieve metabolic flexibility with unshakeable inner calm.
+        <p className="text-xl md:text-2xl text-zinc-400 max-w-3xl mb-12 font-medium leading-relaxed font-sans">
+          Atara gives you beautiful, science-backed tracking, electrolyte intelligence, and stoic mindset tools — so fasting finally feels effortless and powerful.
         </p>
 
-        <div className="flex flex-col sm:flex-row gap-6">
-          <Link
-            href="/app"
-            className="bg-white text-black px-12 py-5 rounded-[2rem] font-bold text-xl hover:scale-105 transition-all shadow-2xl"
-          >
-            Launch App
-          </Link>
-          <a
-            href="#features"
-            className="border border-zinc-700 hover:bg-zinc-900 px-12 py-5 rounded-[2rem] font-bold text-xl transition-all text-white hover:border-zinc-500"
-          >
-            See How It Works
-          </a>
+        <div className="flex flex-col items-center gap-8">
+          <div className="flex flex-col sm:flex-row gap-6">
+            <Link
+              href="/app"
+              className="bg-white text-black px-12 py-5 rounded-[2rem] font-bold text-xl hover:scale-105 transition-all shadow-2xl"
+            >
+              Try Atara Free
+            </Link>
+            <a
+              href="#features"
+              className="border border-zinc-700 hover:bg-zinc-900 px-12 py-5 rounded-[2rem] font-bold text-xl transition-all text-white hover:border-zinc-500"
+            >
+              See How It Works
+            </a>
+          </div>
+
+          <div className="flex flex-col items-center gap-4">
+            <p className="text-sm font-bold text-zinc-500 uppercase tracking-widest">
+              Built for serious fasters who want to master their metabolism.
+            </p>
+            <div className="flex flex-wrap justify-center gap-x-8 gap-y-2 text-sm font-bold text-[#22c55e]/90">
+              <span className="flex items-center gap-2">✓ Metabolic flexibility</span>
+              <span className="flex items-center gap-2">✓ Real-time metabolic phases</span>
+              <span className="flex items-center gap-2">✓ Progress you can feel</span>
+            </div>
+          </div>
         </div>
 
         {/* Hero image container - Locked Aspect Ratio & Clean UI */}
