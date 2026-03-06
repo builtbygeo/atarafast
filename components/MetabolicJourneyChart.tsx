@@ -46,9 +46,8 @@ export default function MetabolicJourneyChart() {
 
   return (
     <div className="w-full flex flex-col rounded-[2rem] sm:rounded-[2.5rem] border border-white/5 bg-white/[0.01] p-4 sm:p-10 relative overflow-hidden group hover:border-white/10 transition-all duration-700">
-      {/* Background Decorative Elements */}
-      <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-primary/10 blur-[120px] rounded-full -mr-48 -mt-48 transition-opacity group-hover:opacity-60" />
-      <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-blue-500/5 blur-[100px] rounded-full -ml-32 -mb-32" />
+      <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-primary/5 rounded-full -mr-48 -mt-48 transition-opacity group-hover:opacity-60" />
+      <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-blue-500/5 rounded-full -ml-32 -mb-32" />
       
       {/* Header */}
       <div className="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-8 relative z-10">
@@ -69,8 +68,8 @@ export default function MetabolicJourneyChart() {
           </p>
         </div>
 
-        {/* Tab Selector - Responsive Glassmorphism */}
-        <div className="flex bg-white/[0.03] p-1 rounded-xl sm:p-1.5 sm:rounded-2xl border border-white/5 backdrop-blur-2xl ring-1 ring-white/5 w-fit">
+        {/* Tab Selector - Responsive Solid UI */}
+        <div className="flex bg-white/[0.03] p-1 rounded-xl sm:p-1.5 sm:rounded-2xl border border-white/5 ring-1 ring-white/5 w-fit">
           <button
             onClick={() => setActiveTab('wellbeing')}
             className={`px-4 sm:px-8 py-2 sm:py-3 rounded-lg sm:rounded-xl text-[10px] sm:text-[11px] font-black uppercase tracking-[0.15em] transition-all duration-500 relative ${activeTab === 'wellbeing' ? 'bg-white text-black shadow-[0_10px_30px_rgba(255,255,255,0.2)] scale-[1.02]' : 'text-white/40 hover:text-white/80 hover:bg-white/5'}`}

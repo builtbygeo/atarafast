@@ -132,7 +132,7 @@ export default function LandingPage() {
         {/* Hero image — real mockup */}
         <div className="relative w-full max-w-[580px] mx-auto mt-12 group">
           <div className="absolute bottom-0 left-0 right-0 h-60 pointer-events-none z-10" style={{ background: 'linear-gradient(to top, #0f0f0f, transparent)' }} />
-          <div className="absolute inset-0 bg-primary/20 blur-[140px] rounded-full pointer-events-none -z-10 group-hover:opacity-100 transition-opacity" />
+          <div className="absolute inset-0 bg-primary/5 rounded-full pointer-events-none -z-10 group-hover:opacity-100 transition-opacity" />
           <Image
             src="/atarahero.webp"
             alt="Atara app showing active fast with metabolic phase ring"
@@ -157,8 +157,8 @@ export default function LandingPage() {
           </h2>
 
           <div className="relative p-10 rounded-[3rem] overflow-hidden group" style={{ border: '1px solid rgba(255,255,255,0.08)', backgroundColor: 'rgba(255,255,255,0.02)' }}>
-            <div className="absolute top-0 right-0 w-64 h-64 bg-[#22c55e] opacity-[0.03] blur-[100px] -mr-32 -mt-32" />
-            <div className="absolute bottom-0 left-0 w-64 h-64 bg-[#22c55e] opacity-[0.03] blur-[100px] -ml-32 -mb-32" />
+            <div className="absolute top-0 right-0 w-64 h-64 bg-[#22c55e] opacity-[0.03] -mr-32 -mt-32" />
+            <div className="absolute bottom-0 left-0 w-64 h-64 bg-[#22c55e] opacity-[0.03] -ml-32 -mb-32" />
 
             <p className="text-xl sm:text-2xl font-medium leading-relaxed italic mb-8" style={{ color: 'rgba(255,255,255,0.8)' }}>
               &ldquo;Ataraxia is the Stoic state of unshakeable inner calm and freedom from emotional disturbance.&rdquo;
@@ -177,7 +177,7 @@ export default function LandingPage() {
         <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <div className="order-2 lg:order-1">
             <div className="relative inline-block">
-              <div className="absolute -inset-4 bg-[#22c55e]/10 blur-3xl rounded-full" />
+              <div className="absolute -inset-4 bg-[#22c55e]/5 rounded-full" />
               <Image
                 src="/atarasamsung.webp"
                 alt="Atara Presets Screen"
@@ -236,7 +236,7 @@ export default function LandingPage() {
             </div>
           </div>
           <div className="relative">
-            <div className="absolute -inset-10 bg-primary/10 blur-[120px] rounded-full opacity-50" />
+            <div className="absolute -inset-10 bg-primary/5 rounded-full opacity-50" />
             <Image
               src="/atara_c2.png"
               alt="Atara Metabolic Timeline Interface"
@@ -269,7 +269,7 @@ export default function LandingPage() {
           </div>
           <div className="flex justify-center">
             <div className="relative inline-block">
-              <div className="absolute -inset-4 bg-[#22c55e]/10 blur-3xl rounded-full" />
+              <div className="absolute -inset-4 bg-[#22c55e]/5 rounded-full" />
               <Image
                 src="/ataraai.png"
                 alt="Atara Coach Card"
@@ -287,7 +287,7 @@ export default function LandingPage() {
         <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
           <div className="order-2 lg:order-1 flex justify-center">
             <div className="relative rotate-[-2deg] hover:rotate-0 transition-transform duration-500">
-              <div className="absolute -inset-10 bg-primary/10 blur-[100px] opacity-40" />
+              <div className="absolute -inset-10 bg-primary/5 opacity-40" />
               <Image
                 src="/streak.webp"
                 alt="Atara Streak Stats"
@@ -477,7 +477,7 @@ export default function LandingPage() {
       <section className="py-24 px-6 text-center max-w-4xl mx-auto flex flex-col gap-12">
         {/* PWA Banner */}
         <div className="rounded-[3rem] p-10 md:p-16 relative flex flex-col md:flex-row items-center gap-10 text-left overflow-hidden bg-white/[0.02] border border-white/10 hover:border-white/20 transition-colors">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-primary/10 blur-[100px] pointer-events-none" />
+          <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 pointer-events-none" />
           <div className="flex-1 relative z-10">
             <h2 className="text-3xl sm:text-4xl font-black tracking-tight mb-4">Install Atara in 3 seconds <br /><span className="text-white/40 text-2xl font-bold">(no App Store required)</span></h2>
             <p className="mb-8 text-white/60 text-lg">Atara is a Progressive Web App. That means zero App Store fees, total privacy, and instant installation directly to your home screen.</p>
