@@ -64,7 +64,7 @@ function ActiveShareCard({ elapsedMs, targetHours, presetId, percentage }: Omit<
             </div>
 
             {/* Content Spacing - Airy & High End */}
-            <div style={{ textAlign: "center", position: "relative", zIndex: 10, width: "100%", marginTop: 20 }}>
+            <div style={{ textAlign: "center", position: "relative", zIndex: 10, width: "100%", marginTop: 0 }}>
                 <p style={{ color: "#ffffff40", fontSize: 10, fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.4em", marginBottom: 15 }}>
                     {isComplete ? t.shareAchieved : t.shareCurrent}
                 </p>
@@ -77,7 +77,7 @@ function ActiveShareCard({ elapsedMs, targetHours, presetId, percentage }: Omit<
             </div>
 
             {/* Progress - More Space */}
-            <div style={{ width: "100%", marginTop: 45, position: "relative", zIndex: 10 }}>
+            <div style={{ width: "100%", marginTop: 35, position: "relative", zIndex: 10 }}>
                 <div style={{ width: "100%", height: 4, borderRadius: 2, background: "#ffffff10", marginBottom: 12, overflow: "hidden" }}>
                     <div style={{ height: "100%", borderRadius: 2, width: `${Math.min(percentage, 100)}%`, background: isComplete ? "linear-gradient(90deg, #22c55e, #4ade80)" : "linear-gradient(90deg, #f59e0b, #fbbf24)" }} />
                 </div>
@@ -143,10 +143,10 @@ function StatsShareCard({ history }: Omit<StatsShareCardProps, "type">) {
             className="relative flex flex-col items-center overflow-hidden"
             style={{
                 width: 390,
-                height: 740,
+                height: 750,
                 background: "linear-gradient(160deg, #0a0a0a 0%, #0c180c 50%, #0a0a0a 100%)",
                 fontFamily: "'Inter', sans-serif",
-                padding: "10px 36px 40px",
+                padding: "0px 36px 40px",
             }}
         >
             <div style={{ position: "absolute", top: -140, left: "50%", transform: "translateX(-50%)", width: 440, height: 440, borderRadius: "50%", background: "radial-gradient(circle, #22c55e15 0%, transparent 70%)", pointerEvents: "none" }} />
@@ -160,7 +160,7 @@ function StatsShareCard({ history }: Omit<StatsShareCardProps, "type">) {
                 />
             </div>
 
-            <div style={{ textAlign: "center", position: "relative", zIndex: 10, width: "100%", marginTop: 25 }}>
+            <div style={{ textAlign: "center", position: "relative", zIndex: 10, width: "100%", marginTop: 5 }}>
                 <p style={{ color: "#ffffff40", fontSize: 10, fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.4em", marginBottom: 15 }}>
                     {t.shareAchievements}
                 </p>
@@ -177,8 +177,6 @@ function StatsShareCard({ history }: Omit<StatsShareCardProps, "type">) {
                 {[
                     { icon: "🔥", label: t.shareStreak, value: `${streak} ${t.days || "дни"}` },
                     { icon: "⚡", label: t.shareAvgDuration, value: `${avgHours}ч` },
-                    { icon: "✅", label: t.shareCompletedFasts, value: totalFasts },
-                    { icon: "🕐", label: t.shareTotalHours, value: `${Math.round(totalMs / 3600000)}ч` },
                 ].map(({ icon, label, value }) => (
                     <div key={label} style={{ padding: "18px 12px", borderRadius: 20, background: "#ffffff04", border: "1px solid #ffffff08", textAlign: "center" }}>
                         <p style={{ fontSize: 24, margin: "0 0 10px" }}>{icon}</p>
