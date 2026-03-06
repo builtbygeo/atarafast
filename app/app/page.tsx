@@ -117,7 +117,7 @@ export default function Home() {
       </header>
 
       {/* Content */}
-      <div className="flex-1 relative w-full overscroll-none">
+      <div className="flex-1 relative w-full flex flex-col overflow-hidden">
         {activeTab === "timer" && (
           <TimerView
             onFastEnd={handleFastEnd}
