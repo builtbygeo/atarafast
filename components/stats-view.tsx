@@ -17,7 +17,17 @@ import type { FastingRecord } from "@/lib/storage"
 import { useLang } from "@/lib/language-context"
 import { useSubscription, startCheckout } from "@/lib/subscription"
 import { getAiUsage, checkAiQuota, incrementAiUsage, saveAiReport } from "@/lib/storage"
-import type { AppSettings } from "@/lib/storage" // Assuming AppSettings is defined here or needs to be imported
+import type { AppSettings } from "@/lib/storage"
+
+const safeFormat = (date: Date | number | string, formatStr: string, fallback: string = "") => {
+  try {
+    const d = new Date(date)
+    if (isNaN(d.getTime())) return fallback
+    return format(d, formatStr)
+  } catch {
+    return fallback
+  }
+}
 
 interface StatsViewProps {
   history: FastingRecord[]
@@ -33,7 +43,7 @@ const ChartTooltip = ({ active, payload, label }: any) => {
       <div className="bg-card/95 backdrop-blur-md border border-border/50 p-2.5 rounded-xl shadow-2xl">
         <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-0.5">{label}</p>
         <p className="text-sm font-black text-foreground">
-          {payload[0].value} <span className="text-[10px] text-muted-foreground">{t.hours || "h"}</span>
+          {payload[0].value} <span className="text-[10px] text-muted-foreground">{t?.hours || "h"}</span>
         </p>
       </div>
     )
@@ -68,7 +78,6 @@ export function StatsView({ history, settings, onOpenSettings, onOpenUpgrade }: 
     }
   }, [isUserLoaded, user])
 
-  const quota = checkAiQuota(isPremium)
 
   // Simple markdown-style formatter
   const formatAiText = (text: string) => {
@@ -85,6 +94,105 @@ export function StatsView({ history, settings, onOpenSettings, onOpenUpgrade }: 
       )
     })
   }
+
+  // 1. STATS CALCULATION (Moved up to avoid TDZ)
+  const stats = useMemo(() => {
+    if (!history || history.length === 0) {
+      return {
+        totalFasts: 0,
+        totalHours: 0,
+        avgDuration: 0,
+        currentStreak: 0,
+        longestStreak: 0,
+        completionRate: 0,
+      }
+    }
+
+    // Filter out records with invalid dates to prevent crashes
+    const validHistory = history.filter(r => r && r.startTime && !isNaN(new Date(r.startTime).getTime()))
+
+    if (validHistory.length === 0) {
+      return {
+        totalFasts: 0,
+        totalHours: 0,
+        avgDuration: 0,
+        currentStreak: 0,
+        longestStreak: 0,
+        completionRate: 0,
+      }
+    }
+
+    let totalMs = 0
+    let completedCount = 0
+    validHistory.forEach((r) => {
+      const start = new Date(r.startTime).getTime()
+      const end = r.endTime ? new Date(r.endTime).getTime() : null
+      
+      if (end && !isNaN(end)) {
+        totalMs += end - start
+      }
+      if (r.completed) completedCount++
+    })
+
+    const totalHours = Math.round(totalMs / (1000 * 60 * 60))
+    const avgMs = totalMs / validHistory.length
+    const avgHours = Math.round(avgMs / (1000 * 60 * 60) * 10) / 10
+
+    // Streak calculation: consecutive days with a completed fast
+    const fastDates = [...new Set(
+      validHistory
+        .filter((r) => r.completed)
+        .map((r) => safeFormat(r.startTime, "yyyy-MM-dd"))
+        .filter(Boolean)
+    )].sort()
+
+    let currentStreak = 0
+    let longestStreak = 0
+    let streak = 0
+    const today = safeFormat(new Date(), "yyyy-MM-dd")
+
+    for (let i = fastDates.length - 1; i >= 0; i--) {
+      const dateStr = fastDates[i]
+      if (!dateStr) continue
+      const date = new Date(dateStr)
+      const prevDateStr = i > 0 ? fastDates[i - 1] : null
+      const prevDate = prevDateStr ? new Date(prevDateStr) : null
+
+      if (i === fastDates.length - 1) {
+        const daysDiff = differenceInDays(new Date(today), date)
+        if (daysDiff <= 1) {
+          streak = 1
+          currentStreak = 1
+        } else {
+          streak = 0
+        }
+      }
+
+      if (prevDate) {
+        const daysDiff = differenceInDays(date, prevDate)
+        if (daysDiff === 1) {
+          streak++
+          if (i === fastDates.length - 1 || currentStreak > 0) currentStreak = streak
+        } else {
+          longestStreak = Math.max(longestStreak, streak)
+          streak = 1
+          if (currentStreak === 0) currentStreak = 0
+        }
+      }
+    }
+    longestStreak = Math.max(longestStreak, streak)
+
+    return {
+      totalFasts: validHistory.length,
+      totalHours,
+      avgDuration: avgHours,
+      currentStreak,
+      longestStreak,
+      completionRate: Math.round((completedCount / validHistory.length) * 100),
+    }
+  }, [history])
+
+  const quota = checkAiQuota(isPremium)
 
   const handleAnalyze = async () => {
     if (!quota.canUse || stats.totalFasts < 5) return
@@ -129,106 +237,46 @@ export function StatsView({ history, settings, onOpenSettings, onOpenUpgrade }: 
     }
   }
 
-  const stats = useMemo(() => {
-    if (history.length === 0) {
-      return {
-        totalFasts: 0,
-        totalHours: 0,
-        avgDuration: 0,
-        currentStreak: 0,
-        longestStreak: 0,
-        completionRate: 0,
-      }
-    }
-
-    let totalMs = 0
-    let completedCount = 0
-    history.forEach((r) => {
-      if (r.endTime) {
-        totalMs += new Date(r.endTime).getTime() - new Date(r.startTime).getTime()
-      }
-      if (r.completed) completedCount++
-    })
-
-    const totalHours = Math.round(totalMs / (1000 * 60 * 60))
-    const avgMs = totalMs / history.length
-    const avgHours = Math.round(avgMs / (1000 * 60 * 60) * 10) / 10
-
-    // Streak calculation: consecutive days with a completed fast
-    const fastDates = [...new Set(
-      history
-        .filter((r) => r.completed)
-        .map((r) => format(new Date(r.startTime), "yyyy-MM-dd"))
-    )].sort()
-
-    let currentStreak = 0
-    let longestStreak = 0
-    let streak = 0
-    const today = format(new Date(), "yyyy-MM-dd")
-
-    for (let i = fastDates.length - 1; i >= 0; i--) {
-      const date = new Date(fastDates[i])
-      const prevDate = i > 0 ? new Date(fastDates[i - 1]) : null
-
-      if (i === fastDates.length - 1) {
-        const daysDiff = differenceInDays(new Date(today), date)
-        if (daysDiff <= 1) {
-          streak = 1
-          currentStreak = 1
-        } else {
-          streak = 0
-        }
-      }
-
-      if (prevDate) {
-        const daysDiff = differenceInDays(date, prevDate)
-        if (daysDiff === 1) {
-          streak++
-          if (i === fastDates.length - 1 || currentStreak > 0) currentStreak = streak
-        } else {
-          longestStreak = Math.max(longestStreak, streak)
-          streak = 1
-          if (currentStreak === 0) currentStreak = 0
-        }
-      }
-    }
-    longestStreak = Math.max(longestStreak, streak)
-    if (currentStreak === 0 && longestStreak > 0) currentStreak = 0
-
-    return {
-      totalFasts: history.length,
-      totalHours,
-      avgDuration: avgHours,
-      currentStreak,
-      longestStreak,
-      completionRate: Math.round((completedCount / history.length) * 100),
-    }
-  }, [history])
-
   // Weekly chart data (Last 30 days)
   const weeklyData = useMemo(() => {
     const daysData = []
     const now = new Date()
 
-    const dayLabelsGlobal = [t.sun, t.mon, t.tue, t.wed, t.thu, t.fri, t.sat]
+    const dayLabelsGlobal = [
+      t?.sun || "S",
+      t?.mon || "M",
+      t?.tue || "T",
+      t?.wed || "W",
+      t?.thu || "T",
+      t?.fri || "F",
+      t?.sat || "S"
+    ]
 
     for (let i = 0; i < 7; i++) {
       const currentDate = new Date(now)
       currentDate.setDate(currentDate.getDate() - (6 - i))
 
       let dayHours = 0
+      const dayStart = new Date(currentDate.setHours(0,0,0,0)).getTime()
+      const dayEnd = new Date(currentDate.setHours(23,59,59,999)).getTime()
+
       history.forEach((r: FastingRecord) => {
-        if (!r.endTime) return
-        const rStart = new Date(r.startTime)
-        if (isSameDay(rStart, currentDate)) {
-          dayHours += (new Date(r.endTime).getTime() - rStart.getTime()) / (1000 * 60 * 60)
+        if (!r || !r.startTime || !r.endTime) return
+        const rStart = new Date(r.startTime).getTime()
+        const rEnd = new Date(r.endTime).getTime()
+        
+        if (isNaN(rStart) || isNaN(rEnd)) return
+
+        // Check if the fast overlaps with this day
+        if (isSameDay(new Date(rStart), new Date(dayStart))) {
+          dayHours += (rEnd - rStart) / (1000 * 60 * 60)
         }
       })
 
       const hours = Math.round(dayHours * 10) / 10
 
       daysData.push({
-        label: dayLabelsGlobal[currentDate.getDay()] || format(currentDate, "EE").charAt(0),
+        label: dayLabelsGlobal[new Date(dayStart).getDay()] || safeFormat(new Date(dayStart), "EE").charAt(0),
         hours,
       })
     }
@@ -243,8 +291,8 @@ export function StatsView({ history, settings, onOpenSettings, onOpenUpgrade }: 
     <div className="relative flex-1 overflow-y-auto px-4 sm:px-5 py-6 no-scrollbar pb-32">
       <header className="flex items-start justify-between mb-8 mt-2 px-1 relative z-10">
         <div>
-          <h2 className="text-3xl font-black text-foreground tracking-tighter leading-none mb-1">{t.statsTitle || "Dashboard"}</h2>
-          <p className="text-xs font-bold text-muted-foreground uppercase tracking-[0.2em]">{format(new Date(), "EEE, MMM d")}</p>
+          <h2 className="text-3xl font-black text-foreground tracking-tighter leading-none mb-1">{t?.statsTitle || "Dashboard"}</h2>
+          <p className="text-xs font-bold text-muted-foreground uppercase tracking-[0.2em]">{safeFormat(new Date(), "EEE, MMM d")}</p>
         </div>
         <div className="flex gap-2">
           <div className="flex rounded-full bg-secondary/40 p-1 border border-border/50 text-[10px] font-black tracking-widest shadow-sm backdrop-blur-md">
@@ -294,8 +342,8 @@ export function StatsView({ history, settings, onOpenSettings, onOpenUpgrade }: 
             <div className="text-6xl font-black text-foreground tracking-tighter mb-0 tabular-nums leading-none flex items-baseline">
               {stats.currentStreak}
             </div>
-            <div className="text-[12px] uppercase tracking-[0.2em] text-foreground font-black mb-1 mt-1 z-10">{t.days || "DAYS"}</div>
-            <div className="text-[11px] font-bold text-foreground/80 lowercase mt-1 tracking-wide">{t.currentStreak || "Current Streak"}</div>
+            <div className="text-[12px] uppercase tracking-[0.2em] text-foreground font-black mb-1 mt-1 z-10">{t?.days || "DAYS"}</div>
+            <div className="text-[11px] font-bold text-foreground/80 lowercase mt-1 tracking-wide">{t?.currentStreak || "Current Streak"}</div>
             <div className="text-[10px] font-medium text-muted-foreground mt-0.5 tracking-wide bg-secondary/30 px-2 py-0.5 rounded-full border border-border/30">On a Roll! 🌿</div>
           </div>
         </div>
@@ -327,7 +375,7 @@ export function StatsView({ history, settings, onOpenSettings, onOpenUpgrade }: 
         <div className={`rounded-3xl border border-white/5 bg-secondary/30 p-5 shadow-sm mb-4 transition-opacity ${!isPremium ? "opacity-30 pointer-events-none" : ""}`}>
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h3 className="text-[17px] font-bold text-foreground tracking-tight mb-1">{t.weeklyActivity || "Weekly Activity"}</h3>
+              <h3 className="text-[17px] font-bold text-foreground tracking-tight mb-1">{t?.weeklyActivity || "Weekly Activity"}</h3>
               <p className="text-[13px] font-medium text-muted-foreground">
                 Active Time: <span className="text-foreground/90">{stats.avgDuration} hrs/avg</span>
               </p>
@@ -366,22 +414,22 @@ export function StatsView({ history, settings, onOpenSettings, onOpenUpgrade }: 
         {/* 3. Weekly Stats Counters */}
         <div className={`rounded-[2rem] border border-border/80 bg-secondary/20 p-5 shadow-sm backdrop-blur-sm mb-6 transition-opacity ${!isPremium ? "opacity-30 pointer-events-none" : ""}`}>
           <div className="flex items-center justify-between mb-5 px-1">
-            <h3 className="text-sm font-black text-foreground tracking-tight">{t.weeklyStats || "Weekly Stats"}</h3>
+            <h3 className="text-sm font-black text-foreground tracking-tight">{t?.weeklyStats || "Weekly Stats"}</h3>
           </div>
 
           <div className="grid grid-cols-3 gap-2 divide-x divide-border/50 px-1">
             <div className="flex justify-center flex-col">
-              <span className="text-[9px] font-black uppercase text-muted-foreground tracking-widest mb-1">{t.totalHours || "Total Hours"}</span>
+              <span className="text-[9px] font-black uppercase text-muted-foreground tracking-widest mb-1">{t?.totalHours || "Total Hours"}</span>
               <span className="text-xl sm:text-2xl font-black text-foreground mb-1 tabular-nums tracking-tighter leading-none">{stats.totalHours}<span className="text-sm">h</span></span>
               <span className="text-[8px] font-bold text-primary flex items-center gap-0.5 tracking-wide">▲ +12%</span>
             </div>
             <div className="flex justify-center flex-col pl-4">
-              <span className="text-[9px] font-black uppercase text-muted-foreground tracking-widest mb-1">{t.completionRate || "Avg Focus"}</span>
+              <span className="text-[9px] font-black uppercase text-muted-foreground tracking-widest mb-1">{t?.completionRate || "Avg Focus"}</span>
               <span className="text-xl sm:text-2xl font-black text-foreground mb-1 tabular-nums tracking-tighter leading-none">{stats.completionRate}<span className="text-sm">%</span></span>
               <span className="text-[8px] font-bold text-primary flex items-center gap-0.5 tracking-wide">▲ +5%</span>
             </div>
             <div className="flex justify-center flex-col pl-4">
-              <span className="text-[9px] font-black uppercase text-muted-foreground tracking-widest mb-1">{t.longestStreak || "Peak Perf."}</span>
+              <span className="text-[9px] font-black uppercase text-muted-foreground tracking-widest mb-1">{t?.longestStreak || "Peak Perf."}</span>
               <span className="text-xl sm:text-2xl font-black text-foreground mb-1 tabular-nums tracking-tighter leading-none">{stats.longestStreak}<span className="text-sm">d</span></span>
               <span className="text-[8px] font-bold text-transparent select-none flex items-center gap-0.5 tracking-wide">▲</span>
             </div>
@@ -414,9 +462,9 @@ export function StatsView({ history, settings, onOpenSettings, onOpenUpgrade }: 
                   <div className="h-10 w-10 rounded-full bg-white/5 flex items-center justify-center mb-3">
                     <Lock className="h-4 w-4 text-primary/40" />
                   </div>
-                  <h4 className="text-[11px] font-black uppercase tracking-widest text-primary/80 mb-2">{t.aiCoachLocked}</h4>
+                  <h4 className="text-[11px] font-black uppercase tracking-widest text-primary/80 mb-2">{t?.aiCoachLocked}</h4>
                   <p className="text-[12px] text-muted-foreground font-medium max-w-[200px] leading-relaxed">
-                    {t.aiCoachRequired}
+                    {t?.aiCoachRequired}
                   </p>
                 </div>
               ) : aiAnalysis ? (
@@ -434,7 +482,7 @@ export function StatsView({ history, settings, onOpenSettings, onOpenUpgrade }: 
             {settings?.journalEnabled && stats.totalFasts >= 5 && (
               <p className="text-[9px] font-bold text-primary/60 uppercase tracking-widest mb-4 flex items-center gap-1.5 relative z-10">
                 <Sparkles className="w-2.5 h-2.5" />
-                {t.aiCoachJournalNote}
+                {t?.aiCoachJournalNote}
               </p>
             )}
 

@@ -51,10 +51,10 @@ export default function Home() {
 
   const handleFastEnd = useCallback((record: FastingRecord) => {
     refreshHistory()
-    if (isPremium && getSettings().journalEnabled) {
+    if (getSettings().journalEnabled) {
       setJournalRecord(record)
     }
-  }, [refreshHistory, isPremium])
+  }, [refreshHistory])
 
   const handleSaveJournal = useCallback((data: JournalData) => {
     if (journalRecord) {

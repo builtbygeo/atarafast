@@ -85,7 +85,7 @@ export default function LandingPage() {
           <a href="#pricing" className="hover:text-white transition-colors text-xs font-black uppercase tracking-widest">Pricing</a>
         </div>
         <a
-          href={process.env.NODE_ENV === "development" ? "/app" : "https://app.atarafast.com"}
+          href="/app"
           className="rounded-xl font-bold text-xs px-5 py-2.5 transition-colors uppercase tracking-widest"
           style={{ backgroundColor: '#22c55e', color: '#0f0f0f' }}
         >
@@ -111,12 +111,12 @@ export default function LandingPage() {
         </p>
 
         <div className="flex flex-col sm:flex-row gap-6">
-          <a
-            href="https://app.atarafast.com"
+          <Link
+            href="/app"
             className="bg-white text-black px-12 py-5 rounded-[2rem] font-bold text-xl hover:scale-105 transition-all shadow-2xl"
           >
             Launch App
-          </a>
+          </Link>
           <a
             href="#features"
             className="border border-zinc-700 hover:bg-zinc-900 px-12 py-5 rounded-[2rem] font-bold text-xl transition-all text-white hover:border-zinc-500"
@@ -414,9 +414,9 @@ export default function LandingPage() {
             <div className="text-4xl font-black text-white mb-2">€0<span className="text-base font-normal" style={{ color: 'rgba(255,255,255,0.35)' }}></span></div>
             <p className="text-xs font-semibold mb-6 text-white/40">Free forever</p>
 
-            <a href={process.env.NODE_ENV === "development" ? "/app" : "https://app.atarafast.com"} className="mt-auto w-full text-center rounded-xl font-bold py-4 transition-all hover:bg-white/10 block" style={{ border: '1px solid rgba(255,255,255,0.15)', backgroundColor: 'transparent', color: 'white' }}>
+            <Link href="/app" className="mt-auto w-full text-center rounded-xl font-bold py-4 transition-all hover:bg-white/10 block" style={{ border: '1px solid rgba(255,255,255,0.15)', backgroundColor: 'transparent', color: 'white' }}>
               Get Started
-            </a>
+            </Link>
           </div>
 
           {/* Atara Pro Monthly */}
@@ -477,9 +477,9 @@ export default function LandingPage() {
           <div className="flex-1 relative z-10">
             <h2 className="text-3xl sm:text-4xl font-black tracking-tight mb-4">Install Atara in 3 seconds <br /><span className="text-white/40 text-2xl font-bold">(no App Store required)</span></h2>
             <p className="mb-8 text-white/60 text-lg">Atara is a Progressive Web App. That means zero App Store fees, total privacy, and instant installation directly to your home screen.</p>
-            <a href={process.env.NODE_ENV === "development" ? "/app" : "https://app.atarafast.com"} className="inline-block rounded-2xl font-bold px-8 py-4 bg-white text-black transition-transform hover:scale-105 shadow-2xl cursor-pointer">
+            <Link href="/app" className="inline-block rounded-2xl font-bold px-8 py-4 bg-white text-black transition-transform hover:scale-105 shadow-2xl cursor-pointer">
               Open App to Install
-            </a>
+            </Link>
           </div>
           <div className="w-48 sm:w-64 relative z-10 shrink-0 hidden sm:block">
             <Image src="/atarahero.webp" width={256} height={400} alt="PWA on phone screen" className="w-full rounded-[2rem] shadow-2xl border border-white/10 rotate-3 hover:rotate-0 transition-transform" />
@@ -490,13 +490,13 @@ export default function LandingPage() {
         <div className="rounded-[3xl] p-12" style={{ border: '1px solid rgba(34,197,94,0.2)', background: 'linear-gradient(180deg, rgba(34,197,94,0.08) 0%, transparent 100%)' }}>
           <h2 className="text-4xl font-black tracking-tight mb-4">Ready to start fasting smarter?</h2>
           <p className="mb-8" style={{ color: 'rgba(255,255,255,0.45)' }}>Join Atara. Your body has been waiting for this.</p>
-          <a
-            href={process.env.NODE_ENV === "development" ? "/app" : "https://app.atarafast.com"}
+          <Link
+            href="/app"
             className="inline-block rounded-2xl font-bold px-10 py-4 transition-all hover:scale-105"
             style={{ backgroundColor: '#22c55e', color: '#0f0f0f', boxShadow: '0 16px 40px rgba(34,197,94,0.35)' }}
           >
             Start Your Free Trial →
-          </a>
+          </Link>
         </div>
       </section>
 
@@ -517,7 +517,7 @@ export default function LandingPage() {
             <ul className="space-y-2 text-white/50">
               <li><a href="#features" className="hover:text-white transition-colors">Features</a></li>
               <li><a href="#pricing" className="hover:text-white transition-colors">Pricing</a></li>
-              <li><a href={process.env.NODE_ENV === "development" ? "/app" : "https://app.atarafast.com"} className="hover:text-white transition-colors">Login</a></li>
+              <li><Link href="/app" className="hover:text-white transition-colors">Login</Link></li>
             </ul>
           </div>
           <div>

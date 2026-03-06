@@ -278,7 +278,6 @@ export function SettingsSheet({ open, onClose, onDataCleared, onOpenUpgrade }: S
             <div>
               <p className="text-sm font-bold text-foreground flex items-center gap-1.5">
                 Post-Fast Journal
-                {!isPremium && <Lock className="h-3 w-3 text-primary/50" />}
               </p>
               <p className="text-[10px] text-muted-foreground font-medium uppercase tracking-wider">
                 Log reflection after fasts
@@ -286,15 +285,11 @@ export function SettingsSheet({ open, onClose, onDataCleared, onOpenUpgrade }: S
             </div>
             <button
               onClick={() => {
-                if (!isPremium) {
-                  onOpenUpgrade?.();
-                  return;
-                }
                 const newVal = !settings.journalEnabled;
                 updateSettings({ journalEnabled: newVal });
                 setSettingsState((prev) => ({ ...prev, journalEnabled: newVal }));
               }}
-              className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ${settings.journalEnabled && isPremium ? 'bg-primary' : 'bg-secondary'
+              className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ${settings.journalEnabled ? 'bg-primary' : 'bg-secondary'
                 }`}
               role="switch"
               aria-checked={settings.journalEnabled}

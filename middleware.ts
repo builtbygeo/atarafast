@@ -13,17 +13,19 @@ const isPublicRoute = createRouteMatcher([
 export default clerkMiddleware(async (auth, req) => {
     const host = req.nextUrl.hostname.toLowerCase();
     const { pathname } = req.nextUrl;
+    const isDev = host.includes('localhost') || host.includes('127.0.0.1');
 
     // REDUNDANT ROLE DETECTION
     const isApp = 
         process.env.NEXT_PUBLIC_APP_PROJECT === 'true' || 
         host.startsWith('app.') || 
         host.includes('.app.') ||
-        host.includes('atara-app');
+        host.includes('atara-app') ||
+        (isDev && pathname.startsWith('/app'));
 
     // 1. Landing Project Logic
     if (!isApp) {
-        if (pathname.startsWith('/app')) {
+        if (pathname.startsWith('/app') && !isDev) {
             const cleanPath = pathname.replace(/^\/app/, '') || '/';
             return NextResponse.redirect(new URL(cleanPath, 'https://app.atarafast.com'));
         }
@@ -32,7 +34,8 @@ export default clerkMiddleware(async (auth, req) => {
 
     // 2. App Project Logic (app.atarafast.com)
     // EXTERNAL REDIRECT: app.atarafast.com/app -> app.atarafast.com/
-    if (pathname === '/app' || pathname === '/app/') {
+    // Skip this redirect in dev mode to allow testing the app at /app
+    if (!isDev && (pathname === '/app' || pathname === '/app/')) {
         return NextResponse.redirect(new URL('/', req.url));
     }
 
