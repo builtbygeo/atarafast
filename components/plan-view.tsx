@@ -117,7 +117,7 @@ export function PlanView() {
   const renderDetail = (preset: FastingPreset) => {
     const content = (t.planContent as any)?.[preset.id]
     return (
-      <div className="flex-1 flex flex-col h-full bg-background overflow-hidden">
+      <div className="flex-1 flex flex-col bg-background">
         <header className="px-5 py-6 border-b border-border/50 flex items-center gap-4 bg-background/90 backdrop-blur-xl sticky top-0 z-10">
           <button
             onClick={() => setSelectedPlan(null)}
@@ -134,7 +134,7 @@ export function PlanView() {
           </div>
         </header>
 
-        <div className="flex-1 overflow-y-auto px-6 py-8 space-y-10 no-scrollbar pb-32">
+        <div className="flex-1 overflow-y-auto px-6 py-8 space-y-10 no-scrollbar pb-44">
           {/* Hero Icon */}
           <div className="flex justify-center">
             <motion.div
@@ -191,7 +191,7 @@ export function PlanView() {
 
   const renderCardDetail = (card: any) => {
     return (
-      <div className="flex-1 flex flex-col h-full bg-background overflow-hidden">
+      <div className="flex-1 flex flex-col bg-background">
         <header className="px-5 py-6 border-b border-border/50 flex items-center gap-4 bg-background/90 backdrop-blur-xl sticky top-0 z-10">
           <button
             onClick={() => setSelectedCard(null)}
@@ -205,7 +205,7 @@ export function PlanView() {
           </div>
         </header>
 
-        <div className="flex-1 overflow-y-auto px-6 py-8 no-scrollbar pb-32">
+        <div className="flex-1 overflow-y-auto px-6 py-8 no-scrollbar pb-44">
           <div className="bg-secondary/10 p-5 sm:p-6 rounded-[2.5rem] mb-8 border border-border/50 shadow-sm flex items-start gap-4">
             <Info className="h-6 w-6 sm:h-8 sm:w-8 text-primary/40 shrink-0 mt-0.5" />
             <p className="text-base text-foreground font-black leading-snug">{card.short}</p>
@@ -262,7 +262,7 @@ export function PlanView() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2, ease: "easeOut" }}
-            className="flex flex-col w-full will-change-[opacity]"
+            className="flex-1 flex flex-col w-full will-change-[opacity]"
           >
             {renderGrid()}
           </motion.div>
