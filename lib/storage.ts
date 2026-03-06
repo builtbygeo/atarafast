@@ -78,7 +78,14 @@ function loadData(): StoredData {
   try {
     const raw = localStorage.getItem(STORAGE_KEY)
     if (!raw) return DEFAULT_DATA
-    return JSON.parse(raw) as StoredData
+    const parsed = JSON.parse(raw)
+    // Deep-ish merge to ensure nested objects like aiUsage and settings exist
+    return {
+      ...DEFAULT_DATA,
+      ...parsed,
+      settings: { ...DEFAULT_DATA.settings, ...(parsed.settings || {}) },
+      aiUsage: { ...DEFAULT_DATA.aiUsage, ...(parsed.aiUsage || {}) }
+    }
   } catch {
     return DEFAULT_DATA
   }
