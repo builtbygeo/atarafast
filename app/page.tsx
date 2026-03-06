@@ -91,10 +91,9 @@ export default function LandingPage() {
         </a>
       </nav>
 
-      <section className="relative pt-40 pb-32 px-6 flex flex-col items-center text-center overflow-hidden">
-        <div className="inline-flex items-center gap-2 rounded-full px-6 py-2.5 text-sm font-bold mb-8 w-fit mx-auto relative z-10" style={{ border: '1px solid rgba(34,197,94,0.3)', backgroundColor: 'rgba(34,197,94,0.08)', color: '#22c55e' }}>
-          <span className="w-2 h-2 rounded-full bg-current" />
-          Free forever • Pro unlocks unlimited features
+      <section id="hero" className="relative pt-40 pb-32 px-6 flex flex-col items-center text-center">
+        <div className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-black uppercase tracking-[0.2em] animate-fade-in" style={{ border: '1px solid rgba(255,255,255,0.1)', backgroundColor: 'rgba(255,255,255,0.03)', color: 'rgba(255,255,255,0.5)' }}>
+          Next-Gen Metabolic Fasting
         </div>
 
         <h1 className="text-7xl md:text-8xl lg:text-9xl font-black tracking-tighter mt-8 mb-8 leading-[0.9] max-w-5xl">
@@ -105,17 +104,16 @@ export default function LandingPage() {
           </span>
         </h1>
 
-        <p className="mt-8 text-xl md:text-2xl text-zinc-400 max-w-3xl mx-auto mb-12 leading-relaxed font-medium">
-          Free forever with basic tracking and visuals.<br />
-          Pro unlocks unlimited history, analytics, custom themes & streak insights.
+        <p className="text-xl md:text-2xl text-zinc-400 max-w-2xl mb-12 font-medium leading-relaxed font-sans">
+          Stoic-inspired fasting for modern humans. Achieve metabolic flexibility with unshakeable inner calm.
         </p>
 
-        <div className="flex flex-col sm:flex-row gap-6 mt-12 justify-center mb-16">
+        <div className="flex flex-col sm:flex-row gap-6">
           <a
-            href={process.env.NODE_ENV === "development" ? "/app" : "https://app.atarafast.com"}
-            className="bg-[#22c55e] hover:bg-[#16a34a] text-black px-12 py-5 rounded-[2rem] font-black text-xl transition-all hover:scale-105 active:scale-95 shadow-[0_20px_50px_rgba(34,197,94,0.4)]"
+            href="https://app.atarafast.com"
+            className="bg-white text-black px-12 py-5 rounded-[2rem] font-bold text-xl hover:scale-105 transition-all shadow-[0_20px_40px_rgba(0,0,0,0.1)]"
           >
-            Install Free Now
+            Launch App
           </a>
           <a
             href="#features"
@@ -125,19 +123,18 @@ export default function LandingPage() {
           </a>
         </div>
 
-        <p className="mt-8 text-base text-zinc-500 mb-16 font-bold tracking-tight">
-          Install in 3 seconds • No App Store • Works offline
-        </p>
-
+        <div className="relative w-full max-w-[580px] mx-auto mt-12">
+          <div className="absolute bottom-0 left-0 right-0 h-40 pointer-events-none z-10" style={{ background: 'linear-gradient(to top, #0f0f0f 0%, transparent 100%)' }} />
           <Image
             src="/atarahero.webp"
             alt="Atara app showing active fast with metabolic phase ring"
             width={800}
             height={1000}
-            className="w-full rounded-[3rem]"
-            style={{ boxShadow: '0 30px 60px rgba(0,0,0,0.9)' }}
+            className="w-full rounded-[3rem] border border-white/5"
+            style={{ boxShadow: '0 30px 60px rgba(0,0,0,0.5)' }}
             priority
           />
+        </div>
       </section>
 
       {/* Ataraxia Origin */}

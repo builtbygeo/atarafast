@@ -7,27 +7,41 @@ const isAppRoute = createRouteMatcher(['/app(.*)'])
 export default clerkMiddleware(async (auth, req) => {
     const url = new URL(req.url);
     const host = req.headers.get('host') || '';
+    const isAppProject = process.env.NEXT_PUBLIC_APP_PROJECT === 'true';
 
-    // 1. WWW Redirect
+    // 1. WWW Redirect (Global)
     if (host.startsWith('www.atarafast.com')) {
         return NextResponse.redirect(new URL(req.url.replace('www.', ''), req.url));
     }
 
-    // 2. Cross-domain Enforcement (atarafast.com/app -> app.atarafast.com)
-    // Only redirect if we are on the landing domain and NOT in local dev
-    if (host === 'atarafast.com' && url.pathname.startsWith('/app') && process.env.NODE_ENV === 'production') {
-        const appUrl = new URL(url.toString());
-        appUrl.hostname = 'app.atarafast.com';
-        appUrl.pathname = url.pathname.replace(/^\/app/, '') || '/';
-        return NextResponse.redirect(appUrl);
-    }
+    // 2. Role-based Routing
+    if (isAppProject) {
+        // === APP PROJECT LOGIC ===
+        
+        // AUTH: Everything on the app project requires auth (except public routes)
+        const isPublic = isPublicRoute(req);
+        if (!isPublic) {
+            await auth.protect();
+        }
 
-    // 3. Auth Enforcement
-    // We protect everything that STARTS with /app in the internal path.
-    // Note: Vercel rewrites app.atarafast.com/ to /app/ internally, so Clerk will see /app.
-    const isPublic = isPublicRoute(req);
-    if (url.pathname.startsWith('/app') && !isPublic) {
-        await auth.protect();
+        // REWRITE: Silent internal rewrite to /app folder
+        // If the path is already /app (from a legacy link), we leave it or rewrite it.
+        // The goal is that internally Next.js sees /app/...
+        if (!url.pathname.startsWith('/app') && !url.pathname.startsWith('/api')) {
+            const newUrl = new URL(req.url);
+            newUrl.pathname = `/app${url.pathname === '/' ? '' : url.pathname}`;
+            return NextResponse.rewrite(newUrl);
+        }
+    } else {
+        // === LANDING PROJECT LOGIC ===
+        
+        // REDIRECT: If someone hits /app on landing, send them to the App Project
+        if (url.pathname.startsWith('/app') && process.env.NODE_ENV === 'production') {
+            const appUrl = new URL(req.url);
+            appUrl.hostname = 'app.atarafast.com';
+            appUrl.pathname = url.pathname.replace(/^\/app/, '') || '/';
+            return NextResponse.redirect(appUrl);
+        }
     }
 
     return NextResponse.next();
