@@ -11,46 +11,60 @@ export default clerkMiddleware(async (auth, req) => {
     const hostname = (xForwardedHost || hostHeader).toLowerCase();
     
     const isWWW = hostname.startsWith('www.');
-    const isAppDomain = hostname.includes('app.atarafast.com');
+    const isAppDomain = hostname.startsWith('app.atarafast.com');
+    const isLandingDomain = hostname === 'atarafast.com' || hostname.startsWith('localhost') || hostname.startsWith('127.0.0.1');
 
-    // Handle WWW redirect
+    // 1. WWW Redirect (Absolute priority)
     if (isWWW) {
         const apexHost = hostname.replace('www.', '');
         return NextResponse.redirect(`https://${apexHost}${url.pathname}${url.search}`);
     }
 
-    // Calculate effective path based on host
-    // If it's the app domain, we treat it as strictly pointing to our /app folder
-    let effectivePath = url.pathname;
-    if (isAppDomain && !url.pathname.startsWith('/app') && !url.pathname.startsWith('/api')) {
-        effectivePath = `/app${url.pathname === '/' ? '' : url.pathname}`;
+    // 2. Cross-domain Enforcement
+    // If on landing domain but trying to access /app, redirect to app subdomain
+    if (isLandingDomain && url.pathname.startsWith('/app') && process.env.NODE_ENV === 'production') {
+        const appUrl = new URL(url.toString());
+        appUrl.hostname = 'app.atarafast.com';
+        return NextResponse.redirect(appUrl);
     }
 
-    // Auth rules:
-    // 1. Landing page (atarafast.com) is public
-    // 2. Auth pages (sign-in/sign-up) are public
-    // 3. Webhooks are public
-    // 4. EVERYTHING on the app domain (app.atarafast.com) requires auth, including the root.
-    const isPublic = isPublicRoute(req) && !(isAppDomain && (url.pathname === '/' || url.pathname === ''));
-
-    if (effectivePath.startsWith('/app') && !isPublic) {
-        try {
-            await auth.protect()
-        } catch (error) {
-            // Redirect to sign-in on app subdomain, otherwise to landing
-            if (isAppDomain) {
-                return NextResponse.redirect(new URL('/sign-in', req.url));
-            }
-            if (process.env.NODE_ENV === 'development') {
-                return NextResponse.redirect(new URL('/', req.url));
-            }
-            return NextResponse.redirect(`https://atarafast.com`);
+    // 3. Subdomain Structural Rewrite
+    // For app.atarafast.com, every path (including /) is treated as being inside /app
+    if (isAppDomain && !url.pathname.startsWith('/api')) {
+        // If they visit app.atarafast.com/app, we could leave it or redirect to / to keep it clean.
+        // But for now, just ensure the internal path is prefixed with /app for Next.js folder routing.
+        if (!url.pathname.startsWith('/app')) {
+            url.pathname = `/app${url.pathname === '/' ? '' : url.pathname}`;
+            // We rewrite here, but we still need to check auth below on the effective path
         }
     }
 
-    // Apply the structural rewrite to direct to the /app folder internally for the app subdomain
-    if (isAppDomain && !url.pathname.startsWith('/app') && !url.pathname.startsWith('/api')) {
-        url.pathname = `/app${url.pathname === '/' ? '' : url.pathname}`;
+    const effectivePath = url.pathname;
+    const isPublic = isPublicRoute(req);
+    
+    // 4. Auth Enforcement
+    // The app folder /app and the app subdomain ALWAYS require auth.
+    const requiresAuth = effectivePath.startsWith('/app') || isAppDomain;
+
+    if (requiresAuth && !isPublic) {
+        try {
+            await auth.protect();
+        } catch (error) {
+            // If they are on the app subdomain, we MUST send them to sign-in.
+            // If we send them to '/' on the same domain, it loops.
+            if (isAppDomain) {
+                return NextResponse.redirect(new URL('/sign-in', req.url));
+            }
+            // Otherwise, back to landing
+            return NextResponse.redirect(process.env.NODE_ENV === 'development' 
+                ? new URL('/', req.url) 
+                : `https://atarafast.com`);
+        }
+    }
+
+    // Apply the rewrite for the app subdomain after auth check
+    if (isAppDomain && !url.pathname.startsWith('/api') && (xForwardedHost || hostHeader)) {
+        // This is the dual rewrite/auth logic. Next.js will see the /app folder.
         return NextResponse.rewrite(url);
     }
 })

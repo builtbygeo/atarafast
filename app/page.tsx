@@ -73,7 +73,7 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen bg-[#0f0f0f] text-white" style={{ fontFamily: 'var(--font-inter), Inter, system-ui, sans-serif' }}>
       {/* Nav */}
-      <nav className="fixed top-0 inset-x-0 z-50 flex items-center justify-between px-6 py-4 backdrop-blur-xl border-b" style={{ backgroundColor: 'rgba(15,15,15,0.8)', borderColor: 'rgba(255,255,255,0.05)' }}>
+      <nav className="fixed top-0 inset-x-0 z-50 flex items-center justify-between px-6 py-4 border-b" style={{ backgroundColor: '#0f0f0f', borderColor: 'rgba(255,255,255,0.05)' }}>
         <div className="flex items-center">
           <Logo className="w-24 text-white" />
         </div>
@@ -91,15 +91,9 @@ export default function LandingPage() {
         </a>
       </nav>
 
-      {/* Hero */}
       <section className="relative pt-40 pb-32 px-6 flex flex-col items-center text-center overflow-hidden">
-        {/* Safe Background Glow - Using radial gradient instead of heavy blur filter to fix mobile Safari black box artifact */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-[1200px] h-[800px] pointer-events-none -z-10 opacity-40" 
-             style={{ background: 'radial-gradient(circle at center, rgba(34,197,94,0.15) 0%, transparent 70%)' }} 
-        />
-
         <div className="inline-flex items-center gap-2 rounded-full px-6 py-2.5 text-sm font-bold mb-8 w-fit mx-auto relative z-10" style={{ border: '1px solid rgba(34,197,94,0.3)', backgroundColor: 'rgba(34,197,94,0.08)', color: '#22c55e' }}>
-          <span className="w-2 h-2 rounded-full bg-current shadow-[0_0_12px_currentColor]" style={{ animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite' }} />
+          <span className="w-2 h-2 rounded-full bg-current" />
           Free forever • Pro unlocks unlimited features
         </div>
 
