@@ -468,8 +468,13 @@ export function StatsView({ history, settings, onOpenSettings, onOpenUpgrade }: 
                   </p>
                 </div>
               ) : aiAnalysis ? (
-                <div className="text-[13px] text-foreground/80 leading-relaxed font-medium mb-2">
-                  {formatAiText(aiAnalysis)}
+                <div className="flex flex-col gap-6">
+                  <div className="text-[13px] text-foreground/80 leading-relaxed font-medium">
+                    {formatAiText(aiAnalysis)}
+                  </div>
+                  {quota.canUse && (
+                    <div className="h-px w-full bg-primary/10 my-1" />
+                  )}
                 </div>
               ) : (
                 <div className="text-[13px] text-foreground/80 leading-relaxed font-medium mb-6 max-w-[90%]">
@@ -486,12 +491,17 @@ export function StatsView({ history, settings, onOpenSettings, onOpenUpgrade }: 
               </p>
             )}
 
-            {stats.totalFasts >= 5 && !aiAnalysis && (
-              <div className="flex items-center gap-3 relative z-10 w-full mb-4">
+            {stats.totalFasts >= 5 && quota.canUse && (
+              <div className="flex flex-col items-center gap-3 relative z-10 w-full mb-4">
+                {!aiAnalysis && (
+                  <div className="text-[13px] text-foreground/80 leading-relaxed font-medium mb-2 self-start text-left">
+                    Ready to optimize further? Generate your daily performance insights.
+                  </div>
+                )}
                 <button
                   onClick={handleAnalyze}
-                  disabled={isAnalyzing || !quota.canUse}
-                  className="flex-1 py-3.5 rounded-2xl bg-white text-black font-black text-xs tracking-wide shadow-lg shadow-white/10 hover:shadow-white/20 active:scale-95 transition-all outline-none disabled:opacity-50 whitespace-nowrap"
+                  disabled={isAnalyzing}
+                  className="w-full py-3.5 rounded-2xl bg-white text-black font-black text-xs tracking-wide shadow-lg shadow-white/10 hover:shadow-white/20 active:scale-95 transition-all outline-none disabled:opacity-50 whitespace-nowrap"
                 >
                   {isAnalyzing ? "Analyzing..." : "Generate Insights"}
                 </button>
@@ -510,7 +520,7 @@ export function StatsView({ history, settings, onOpenSettings, onOpenUpgrade }: 
             {quota.canUse && (
               <p className="text-[9px] text-muted-foreground font-bold tracking-widest uppercase mt-4 text-center opacity-60 relative z-10">
                 {isPremium
-                  ? `${quota.remaining} Weekly Credits Left`
+                  ? `Daily Credit Available`
                   : "1 Monthly Credit Remaining"}
               </p>
             )}

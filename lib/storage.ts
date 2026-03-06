@@ -309,7 +309,7 @@ export function checkAiQuota(isPremium: boolean): { canUse: boolean; reason?: st
     }
     return { canUse: true, remaining: 1 - usage.monthlyCount }
   } else {
-    // Premium: 1 per day, max 5 per week
+    // Premium: 1 per day
     if (usage.lastUsedDate) {
       const last = new Date(usage.lastUsedDate)
       const isToday =
@@ -318,14 +318,10 @@ export function checkAiQuota(isPremium: boolean): { canUse: boolean; reason?: st
         last.getFullYear() === now.getFullYear()
 
       if (isToday) {
-        return { canUse: false, reason: "Limit reached (1 per day for Atara+)", remaining: 0 }
+        return { canUse: false, reason: "Daily limit reached (Atara+)", remaining: 0 }
       }
     }
 
-    if (usage.weeklyCount >= 5) {
-      return { canUse: false, reason: "Weekly limit reached (5 per week for Atara+)", remaining: 0 }
-    }
-
-    return { canUse: true, remaining: 5 - usage.weeklyCount }
+    return { canUse: true, remaining: 1 }
   }
 }

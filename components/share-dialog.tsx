@@ -59,7 +59,7 @@ function ActiveShareCard({ elapsedMs, targetHours, presetId, percentage }: Omit<
                 <img 
                     src="/atara_c2.png" 
                     alt="Atara" 
-                    style={{ height: 520, width: 520, objectFit: "contain" }} 
+                    style={{ height: 520, width: 520, objectFit: "contain", maxWidth: "none" }} 
                 />
             </div>
 
@@ -156,7 +156,7 @@ function StatsShareCard({ history }: Omit<StatsShareCardProps, "type">) {
                 <img 
                     src="/atara_c2.png" 
                     alt="Atara" 
-                    style={{ height: 520, width: 520, objectFit: "contain" }} 
+                    style={{ height: 520, width: 520, objectFit: "contain", maxWidth: "none" }} 
                 />
             </div>
 
@@ -250,8 +250,8 @@ export function ShareDialog(props: ShareDialogProps) {
                     className="flex flex-col items-center w-full"
                     onClick={e => e.stopPropagation()}
                 >
-                    {/* Share Card Preview - God-Tier Scale */}
-                    <div style={{ transform: "scale(0.68)", transformOrigin: "top center", marginBottom: -210, marginTop: 20 }}>
+                    {/* Share Card Preview - God-Tier Scale Restoration */}
+                    <div style={{ transform: "scale(0.8)", transformOrigin: "top center", marginBottom: -135, marginTop: 10 }}>
                         <div ref={cardRef} className="rounded-[40px] overflow-hidden shadow-[0_0_100px_-20px_rgba(34,197,94,0.3)] ring-1 ring-white/10 bg-black">
                             {props.type === "active" ? (
                                 <ActiveShareCard {...props} />
