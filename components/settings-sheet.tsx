@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { X, Download, Upload, Trash2, Sun, Moon, Monitor, ChevronUp, ChevronDown, Circle, Triangle, Bell, BellOff, Sparkles, LogOut, User as UserIcon } from "lucide-react"
+import { X, Download, Upload, Trash2, Sun, Moon, Monitor, ChevronUp, ChevronDown, Circle, Triangle, Bell, BellOff, Sparkles, LogOut, User as UserIcon, Lock } from "lucide-react"
 import { useTheme } from "next-themes"
 import { getSettings, updateSettings, exportData, importData, clearAllData, type AppSettings } from "@/lib/storage"
 import { useLang } from "@/lib/language-context"
@@ -54,6 +54,10 @@ export function SettingsSheet({ open, onClose, onDataCleared, onOpenUpgrade }: S
   }
 
   function handleImport() {
+    if (!isPremium) {
+      onOpenUpgrade?.()
+      return
+    }
     const input = document.createElement("input")
     input.type = "file"
     input.accept = ".json"
@@ -77,6 +81,10 @@ export function SettingsSheet({ open, onClose, onDataCleared, onOpenUpgrade }: S
   }
 
   function handleExport() {
+    if (!isPremium) {
+      onOpenUpgrade?.()
+      return
+    }
     const data = exportData()
     const blob = new Blob([data], { type: "application/json" })
     const url = URL.createObjectURL(blob)
@@ -337,18 +345,20 @@ export function SettingsSheet({ open, onClose, onDataCleared, onOpenUpgrade }: S
             <h3 className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-1 ml-1">{t.data}</h3>
             <div className="grid grid-cols-2 gap-3">
               <button
-                onClick={handleExport}
-                className="flex flex-col items-center justify-center gap-2 rounded-2xl bg-secondary/50 p-4 transition-all hover:bg-secondary active:scale-95 border border-border/50"
+                onClick={isPremium ? handleExport : onOpenUpgrade}
+                className="relative flex flex-col items-center justify-center gap-2 rounded-2xl bg-secondary/50 p-4 transition-all hover:bg-secondary active:scale-95 border border-border/50"
               >
-                <Download className="h-5 w-5 text-primary" />
-                <span className="text-[10px] font-black uppercase tracking-widest">{t.exportData}</span>
+                {!isPremium && <div className="absolute top-2 right-2"><Lock className="w-3 h-3 text-primary/50" /></div>}
+                <Download className={`h-5 w-5 ${isPremium ? 'text-primary' : 'text-muted-foreground'}`} />
+                <span className={`text-[10px] font-black uppercase tracking-widest ${!isPremium ? 'text-muted-foreground' : ''}`}>{t.exportData}</span>
               </button>
               <button
-                onClick={handleImport}
-                className="flex flex-col items-center justify-center gap-2 rounded-2xl bg-secondary/50 p-4 transition-all hover:bg-secondary active:scale-95 border border-border/50"
+                onClick={isPremium ? handleImport : onOpenUpgrade}
+                className="relative flex flex-col items-center justify-center gap-2 rounded-2xl bg-secondary/50 p-4 transition-all hover:bg-secondary active:scale-95 border border-border/50"
               >
-                <Upload className="h-5 w-5 text-primary" />
-                <span className="text-[10px] font-black uppercase tracking-widest">{t.importData}</span>
+                {!isPremium && <div className="absolute top-2 right-2"><Lock className="w-3 h-3 text-primary/50" /></div>}
+                <Upload className={`h-5 w-5 ${isPremium ? 'text-primary' : 'text-muted-foreground'}`} />
+                <span className={`text-[10px] font-black uppercase tracking-widest ${!isPremium ? 'text-muted-foreground' : ''}`}>{t.importData}</span>
               </button>
             </div>
           </div>

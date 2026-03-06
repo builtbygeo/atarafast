@@ -17,9 +17,9 @@ export default function PrivacyPage() {
                     </div>
                     <span className="font-bold text-sm">Atara</span>
                 </Link>
-                <Link href="/app" className="text-sm font-semibold px-4 py-2 rounded-lg" style={{ backgroundColor: 'rgba(255,255,255,0.07)', color: 'rgba(255,255,255,0.7)' }}>
+                <a href="https://app.atarafast.com" className="text-sm font-semibold px-4 py-2 rounded-lg" style={{ backgroundColor: 'rgba(255,255,255,0.07)', color: 'rgba(255,255,255,0.7)' }}>
                     Open App
-                </Link>
+                </a>
             </nav>
 
             <main className="max-w-2xl mx-auto px-6 py-16">
@@ -94,7 +94,7 @@ export default function PrivacyPage() {
                             <li>Request data portability</li>
                             <li>Withdraw consent at any time</li>
                         </ul>
-                        <p className="mt-3">To exercise these rights, contact us at <a href="mailto:privacy@atara.app" className="underline" style={{ color: '#22c55e' }}>privacy@atara.app</a></p>
+                        <p className="mt-3">To exercise these rights, contact us at <a href="mailto:privacy@atarafast.com" className="underline" style={{ color: '#22c55e' }}>privacy@atarafast.com</a></p>
                     </section>
 
                     <section>
@@ -114,8 +114,8 @@ export default function PrivacyPage() {
 
                     <section>
                         <h2 className="text-lg font-bold text-white mb-3">10. Contact</h2>
-                        <p>For privacy-related inquiries: <a href="mailto:privacy@atara.app" className="underline" style={{ color: '#22c55e' }}>privacy@atara.app</a></p>
-                        <p className="mt-1">For general support: <a href="mailto:support@atara.app" className="underline" style={{ color: '#22c55e' }}>support@atara.app</a></p>
+                        <p>For privacy-related inquiries: <a href="mailto:privacy@atarafast.com" className="underline" style={{ color: '#22c55e' }}>privacy@atarafast.com</a></p>
+                        <p className="mt-1">For general support: <a href="mailto:support@atarafast.com" className="underline" style={{ color: '#22c55e' }}>support@atarafast.com</a></p>
                     </section>
                 </div>
             </main>
@@ -124,7 +124,7 @@ export default function PrivacyPage() {
                 <div className="flex justify-center gap-6">
                     <Link href="/" className="hover:text-white transition-colors">Home</Link>
                     <Link href="/terms" className="hover:text-white transition-colors">Terms of Service</Link>
-                    <Link href="/app" className="hover:text-white transition-colors">Open App</Link>
+                    <a href="https://app.atarafast.com" className="hover:text-white transition-colors">Open App</a>
                 </div>
             </footer>
         </div>

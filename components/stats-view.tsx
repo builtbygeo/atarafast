@@ -188,7 +188,7 @@ export function StatsView({ history, onOpenSettings, onOpenUpgrade }: StatsViewP
     }
   }, [history])
 
-  // Weekly chart data (Last 7 days)
+  // Weekly chart data (Last 30 days)
   const weeklyData = useMemo(() => {
     const daysData = []
     const now = new Date()

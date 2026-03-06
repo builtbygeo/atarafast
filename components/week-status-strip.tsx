@@ -14,7 +14,7 @@ export function WeekStatusStrip({ history, activeFast }: WeekStatusStripProps) {
         const days = []
         const now = new Date()
 
-        // Last 7 days including today (like Zero)
+        // Last 30 days including today (like Zero)
         for (let i = 6; i >= 0; i--) {
             const date = subDays(now, i)
             const dayFasts = history.filter(f => isSameDay(new Date(f.startTime), date))

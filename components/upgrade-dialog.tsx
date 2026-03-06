@@ -43,7 +43,7 @@ export function UpgradeDialog({ open, onClose }: UpgradeDialogProps) {
                     </div>
                     <h2 className="text-2xl font-black text-foreground tracking-tight mb-2">Upgrade to Atara+</h2>
                     <p className="text-sm text-muted-foreground max-w-[280px] leading-relaxed">
-                        Unlock advanced statistics, AI coaching, all fasting protocols, and unlimited features.
+                        Unlock advanced statistics, AI coaching, all fasting protocols, and 1 per day (5 per week) features.
                     </p>
                 </div>
 
@@ -57,7 +57,7 @@ export function UpgradeDialog({ open, onClose }: UpgradeDialogProps) {
                             >
                                 <div className="flex justify-between items-center w-full mb-1">
                                     <span className="font-bold text-base text-foreground group-hover:text-primary transition-colors">Monthly</span>
-                                    <span className="font-black text-lg text-foreground">€3.69<span className="text-xs font-normal text-muted-foreground">/mo</span></span>
+                                    <span className="font-black text-lg text-foreground">€4.99<span className="text-xs font-normal text-muted-foreground">/mo</span></span>
                                 </div>
                                 <p className="text-xs font-medium text-muted-foreground">Billed monthly, cancel anytime.</p>
                                 {loading === monthlyId && <span className="absolute inset-y-0 right-4 flex items-center"><div className="animate-spin h-4 w-4 border-2 border-primary border-t-transparent rounded-full" /></span>}
@@ -75,9 +75,9 @@ export function UpgradeDialog({ open, onClose }: UpgradeDialogProps) {
                                     <span className="font-bold text-base text-foreground group-hover:text-primary transition-colors flex items-center gap-1.5">
                                         <Star className="h-4 w-4 text-primary" /> Yearly
                                     </span>
-                                    <span className="font-black text-lg text-primary">€12<span className="text-xs font-normal text-primary/70">/yr</span></span>
+                                    <span className="font-black text-lg text-primary">€29<span className="text-xs font-normal text-primary/70">/yr</span></span>
                                 </div>
-                                <p className="text-xs font-medium text-muted-foreground/80">Save ~73% compared to monthly.</p>
+                                <p className="text-xs font-medium text-muted-foreground/80">Only €2.42/mo (Save 51%)</p>
                                 {loading === yearlyId && <span className="absolute inset-y-0 right-4 flex items-center"><div className="animate-spin h-4 w-4 border-2 border-primary border-t-transparent rounded-full" /></span>}
                             </button>
                         )}
@@ -92,7 +92,7 @@ export function UpgradeDialog({ open, onClose }: UpgradeDialogProps) {
                                     <span className="font-bold text-base text-foreground group-hover:text-primary transition-colors flex items-center gap-1.5">
                                         <Trophy className="h-4 w-4 text-amber-500" /> Lifetime
                                     </span>
-                                    <span className="font-black text-lg text-foreground">€25.00<span className="text-xs font-normal text-muted-foreground"> one-time</span></span>
+                                    <span className="font-black text-lg text-foreground">€49<span className="text-xs font-normal text-muted-foreground"> one-time</span></span>
                                 </div>
                                 <p className="text-xs font-medium text-muted-foreground">Pay once, use Atara+ forever.</p>
                                 {loading === lifetimeId && <span className="absolute inset-y-0 right-4 flex items-center"><div className="animate-spin h-4 w-4 border-2 border-primary border-t-transparent rounded-full" /></span>}

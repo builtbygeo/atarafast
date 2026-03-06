@@ -17,9 +17,9 @@ export default function TermsPage() {
                     </div>
                     <span className="font-bold text-sm">Atara</span>
                 </Link>
-                <Link href="/app" className="text-sm font-semibold px-4 py-2 rounded-lg" style={{ backgroundColor: 'rgba(255,255,255,0.07)', color: 'rgba(255,255,255,0.7)' }}>
+                <a href="https://app.atarafast.com" className="text-sm font-semibold px-4 py-2 rounded-lg" style={{ backgroundColor: 'rgba(255,255,255,0.07)', color: 'rgba(255,255,255,0.7)' }}>
                     Open App
-                </Link>
+                </a>
             </nav>
 
             <main className="max-w-2xl mx-auto px-6 py-16">
@@ -29,7 +29,7 @@ export default function TermsPage() {
                 <div className="space-y-10 text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.7)' }}>
                     <section>
                         <h2 className="text-lg font-bold text-white mb-3">1. Acceptance of Terms</h2>
-                        <p>By accessing or using the Atara application (&ldquo;the App&rdquo;), you agree to be bound by these Terms of Service. If you do not agree to these terms, you may not use the App.</p>
+                        <p>By accessing or using the Atara application and website (atarafast.com and app.atarafast.com), you agree to be bound by these Terms of Service. If you do not agree to these terms, you may not use the App.</p>
                     </section>
 
                     <section>
@@ -51,7 +51,7 @@ export default function TermsPage() {
 
                     <section>
                         <h2 className="text-lg font-bold text-white mb-3">4. Refund Policy</h2>
-                        <p>Payments are generally non-refundable. However, if you experience a technical issue that prevents you from accessing the service, please contact us at <a href="mailto:support@atara.app" className="underline" style={{ color: '#22c55e' }}>support@atara.app</a> within 7 days of the charge.</p>
+                        <p>Payments are generally non-refundable. However, if you experience a technical issue that prevents you from accessing the service, please contact us at <a href="mailto:support@atarafast.com" className="underline" style={{ color: '#22c55e' }}>support@atarafast.com</a> within 7 days of the charge.</p>
                     </section>
 
                     <section>
@@ -97,7 +97,7 @@ export default function TermsPage() {
 
                     <section>
                         <h2 className="text-lg font-bold text-white mb-3">12. Contact</h2>
-                        <p>For any questions regarding these Terms, please contact us at: <a href="mailto:support@atara.app" className="underline" style={{ color: '#22c55e' }}>support@atara.app</a></p>
+                        <p>For any questions regarding these Terms, please contact us at: <a href="mailto:support@atarafast.com" className="underline" style={{ color: '#22c55e' }}>support@atarafast.com</a></p>
                     </section>
                 </div>
             </main>
@@ -106,7 +106,7 @@ export default function TermsPage() {
                 <div className="flex justify-center gap-6">
                     <Link href="/" className="hover:text-white transition-colors">Home</Link>
                     <Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
-                    <Link href="/app" className="hover:text-white transition-colors">Open App</Link>
+                    <a href="https://app.atarafast.com" className="hover:text-white transition-colors">Open App</a>
                 </div>
             </footer>
         </div>

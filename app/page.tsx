@@ -79,13 +79,13 @@ export default function LandingPage() {
           <a href="#philosophy" className="hover:text-white transition-colors text-xs font-black uppercase tracking-widest">Philosophy</a>
           <a href="#pricing" className="hover:text-white transition-colors text-xs font-black uppercase tracking-widest">Pricing</a>
         </div>
-        <Link
-          href="/app"
+        <a
+          href={process.env.NODE_ENV === "development" ? "/app" : "https://app.atarafast.com"}
           className="rounded-xl font-bold text-xs px-5 py-2.5 transition-colors uppercase tracking-widest"
           style={{ backgroundColor: '#22c55e', color: '#0f0f0f' }}
         >
           Launch App
-        </Link>
+        </a>
       </nav>
 
       {/* Hero */}
@@ -97,25 +97,25 @@ export default function LandingPage() {
           14-day free trial — no credit card required
         </div>
 
-        <h1 className="text-5xl sm:text-7xl font-black tracking-tighter mb-6 leading-none max-w-3xl">
-          Master Your{' '}
+        <h1 className="text-5xl sm:text-7xl font-black tracking-tighter mb-6 leading-none max-w-4xl">
+          Atara — The beautiful way to{' '}
           <span style={{ background: 'linear-gradient(135deg, #22c55e, #4ade80)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
-            Metabolism
+            fast.
           </span>
         </h1>
 
-        <p className="text-lg sm:text-xl max-w-xl mb-10 leading-relaxed" style={{ color: 'rgba(255,255,255,0.55)' }}>
-          Atara tracks your fasting journey at the metabolic level — from sugar burning to ketosis — with science-backed plans and stunning real-time visualizations.
+        <p className="text-lg sm:text-xl max-w-2xl mb-10 leading-relaxed font-medium" style={{ color: 'rgba(255,255,255,0.7)' }}>
+          Free forever. Pro unlocks 1 per day (5 per week) history, analytics & custom themes.
         </p>
 
         <div className="flex flex-col sm:flex-row gap-3 mb-20">
-          <Link
-            href="/app"
+          <a
+            href={process.env.NODE_ENV === "development" ? "/app" : "https://app.atarafast.com"}
             className="rounded-2xl font-bold text-base px-8 py-4 transition-all hover:scale-105"
             style={{ backgroundColor: '#22c55e', color: '#0f0f0f', boxShadow: '0 16px 40px rgba(34,197,94,0.35)' }}
           >
             Start 14-Day Free Trial
-          </Link>
+          </a>
           <a
             href="#features"
             className="rounded-2xl font-bold text-base px-8 py-4 transition-colors"
@@ -128,6 +128,8 @@ export default function LandingPage() {
         {/* Hero image — real mockup */}
         <div className="relative w-full max-w-[420px] mx-auto mt-8">
           <div className="absolute bottom-0 left-0 right-0 h-40 pointer-events-none z-10" style={{ background: 'linear-gradient(to top, #0f0f0f, transparent)' }} />
+          {/* Big glowing circle under the image to match the "glowing circle" request visually if needed, though the image itself has it */}
+          <div className="absolute inset-0 bg-primary/20 blur-[120px] rounded-full pointer-events-none -z-10" />
           <Image
             src="/atarahero.webp"
             alt="Atara app showing active fast with metabolic phase ring"
@@ -335,116 +337,209 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Pricing */}
-      <section id="pricing" className="py-24 px-6 max-w-4xl mx-auto">
+      {/* Pricing & Comparison */}
+      <section id="pricing" className="py-24 px-6 max-w-5xl mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-black tracking-tight mb-4">Simple, Transparent Pricing</h2>
-          <p className="text-lg" style={{ color: 'rgba(255,255,255,0.45)' }}>Start free. Upgrade when you&apos;re ready.</p>
+          <p className="text-lg" style={{ color: 'rgba(255,255,255,0.45)' }}>Start free. Upgrade when you're ready.</p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Free Tier */}
-          <div className="rounded-2xl p-8 flex flex-col" style={{ border: '1px solid rgba(255,255,255,0.1)', backgroundColor: 'rgba(255,255,255,0.03)' }}>
-            <h3 className="font-black text-xl mb-1 text-white">Free</h3>
-            <p className="text-sm mb-6" style={{ color: 'rgba(255,255,255,0.45)' }}>Full basic experience</p>
-            <div className="text-4xl font-black mb-8 text-white">€0<span className="text-base font-normal" style={{ color: 'rgba(255,255,255,0.35)' }}>/month</span></div>
-            <ul className="space-y-3 mb-8 flex-grow">
-              {freeFeatures.map((f) => (
-                <li key={f} className="flex items-start gap-2.5 text-sm" style={{ color: 'rgba(255,255,255,0.65)' }}>
-                  <span className="mt-0.5 shrink-0" style={{ color: '#22c55e' }}>✓</span>
-                  {f}
-                </li>
-              ))}
-            </ul>
-            <Link href="/app" className="block w-full text-center rounded-xl font-bold py-3.5 text-white transition-all hover:bg-white/10" style={{ border: '1px solid rgba(255,255,255,0.15)', backgroundColor: 'rgba(255,255,255,0.07)' }}>
-              Get Started Free
-            </Link>
-          </div>
+        {/* Comparison Table */}
+        <div className="mb-20 overflow-x-auto">
+          <table className="w-full text-left border-collapse min-w-[600px]">
+            <thead>
+              <tr className="border-b" style={{ borderColor: 'rgba(255,255,255,0.1)' }}>
+                <th className="py-4 px-6 text-lg font-bold text-white/50 w-1/3">Feature</th>
+                <th className="py-4 px-6 text-lg font-bold text-white w-1/3">Free</th>
+                <th className="py-4 px-6 text-lg font-black text-primary w-1/3">Atara Pro</th>
+              </tr>
+            </thead>
+            <tbody className="text-sm">
+              <tr className="border-b" style={{ borderColor: 'rgba(255,255,255,0.05)' }}>
+                <td className="py-5 px-6 font-medium text-white/80">Triangle + Circle visual</td>
+                <td className="py-5 px-6 text-white/60">Yes</td>
+                <td className="py-5 px-6 font-bold text-white">Yes</td>
+              </tr>
+              <tr className="border-b" style={{ borderColor: 'rgba(255,255,255,0.05)' }}>
+                <td className="py-5 px-6 font-medium text-white/80">AI Analysis</td>
+                <td className="py-5 px-6 text-white/60">Limited (1/mo)</td>
+                <td className="py-5 px-6 font-bold text-white">1 per day (5 per week)</td>
+              </tr>
+              <tr className="border-b" style={{ borderColor: 'rgba(255,255,255,0.05)' }}>
+                <td className="py-5 px-6 font-medium text-white/80">History & Stats</td>
+                <td className="py-5 px-6 text-white/60">Last 30 days</td>
+                <td className="py-5 px-6 font-bold text-white">1 per day (5 per week) + Advanced Stats</td>
+              </tr>
+              <tr className="border-b" style={{ borderColor: 'rgba(255,255,255,0.05)' }}>
+                <td className="py-5 px-6 font-medium text-white/80">Ketosis prediction</td>
+                <td className="py-5 px-6 text-white/60">No</td>
+                <td className="py-5 px-6 font-bold text-white">Yes</td>
+              </tr>
+              <tr className="border-b" style={{ borderColor: 'rgba(255,255,255,0.05)' }}>
+                <td className="py-5 px-6 font-medium text-white/80">Data export</td>
+                <td className="py-5 px-6 text-white/60">No</td>
+                <td className="py-5 px-6 font-bold text-white">JSON (PDF/CSV ready)</td>
+              </tr>
+              <tr className="border-b" style={{ borderColor: 'rgba(255,255,255,0.05)' }}>
+                <td className="py-5 px-6 font-medium text-white/80">Data Privacy</td>
+                <td className="py-5 px-6 text-white/60">Local/Private</td>
+                <td className="py-5 px-6 font-bold text-white">Local/Private</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
-          {/* Atara+ Monthly */}
-          <div className="rounded-2xl p-8 relative overflow-hidden flex flex-col" style={{ border: '1px solid rgba(34,197,94,0.3)', backgroundColor: 'rgba(34,197,94,0.03)' }}>
+        {/* Pricing Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {/* Atara Pro Monthly */}
+          <div className="rounded-2xl p-8 relative overflow-hidden flex flex-col" style={{ border: '1px solid rgba(255,255,255,0.1)', backgroundColor: 'rgba(255,255,255,0.03)' }}>
             <h3 className="font-black text-xl mb-1 text-white">Monthly</h3>
-            <p className="text-sm mb-4" style={{ color: 'rgba(255,255,255,0.45)' }}>Flexible metabolic mastery</p>
-            <div className="text-4xl font-black text-white mb-2">€3.69<span className="text-base font-normal" style={{ color: 'rgba(255,255,255,0.35)' }}>/mo</span></div>
-            <p className="text-xs font-semibold mb-6" style={{ color: '#22c55e' }}>✓ 14-day free trial (no card)</p>
-            <div className="h-px mb-6" style={{ backgroundColor: 'rgba(255,255,255,0.08)' }} />
-            <ul className="space-y-3 mb-8 flex-grow">
-              {premiumFeatures.slice(0, 5).map((f) => (
-                <li key={f} className="flex items-start gap-2.5 text-sm" style={{ color: 'rgba(255,255,255,0.75)' }}>
-                  <span className="mt-0.5 shrink-0" style={{ color: '#22c55e' }}>✓</span>
-                  {f}
-                </li>
-              ))}
-            </ul>
-            <p className="text-[10px] mt-auto pt-6 text-center text-white/40 font-medium leading-relaxed italic">
-              "Thanks to your support we can invest back into building a better app for you."
-            </p>
+            <p className="text-sm mb-4" style={{ color: 'rgba(255,255,255,0.45)' }}>Less than a Burrito</p>
+            <div className="text-4xl font-black text-white mb-2">€4.99<span className="text-base font-normal" style={{ color: 'rgba(255,255,255,0.35)' }}>/mo</span></div>
+            <p className="text-xs font-semibold mb-6 text-white/40">Renews every month</p>
+
             <CheckoutButton
               priceId={process.env.NEXT_PUBLIC_STRIPE_PRICE_ID!}
               label="Choose Monthly"
-              className="w-full text-center rounded-xl font-bold py-4 transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer mt-4"
-              style={{ backgroundColor: '#22c55e', color: '#0f0f0f', boxShadow: '0 8px 24px rgba(34,197,94,0.2)' }}
+              className="mt-auto w-full text-center rounded-xl font-bold py-4 transition-all hover:bg-white/10"
+              style={{ border: '1px solid rgba(255,255,255,0.15)', backgroundColor: 'rgba(255,255,255,0.07)', color: 'white' }}
             />
           </div>
 
-          {/* Atara+ Yearly */}
+          {/* Atara Pro Yearly */}
           <div className="rounded-2xl p-8 relative overflow-hidden flex flex-col" style={{ border: '1px solid #22c55e', background: 'linear-gradient(135deg, rgba(34,197,94,0.15) 0%, transparent 60%)' }}>
-            <div className="absolute top-0 right-0 text-[10px] font-black px-3 py-1 rounded-bl-xl" style={{ backgroundColor: '#22c55e', color: '#0f0f0f' }}>
-              BEST VALUE
+            <div className="absolute top-0 right-0 text-[10px] font-black px-4 py-1.5 rounded-bl-xl uppercase tracking-wider" style={{ backgroundColor: '#f97316', color: '#fff' }}>
+              Most Popular
             </div>
             <h3 className="font-black text-xl mb-1 text-white">Yearly</h3>
-            <p className="text-sm mb-4" style={{ color: 'rgba(255,255,255,0.45)' }}>Long-term transformation</p>
-            <div className="text-4xl font-black text-white mb-2">€12<span className="text-base font-normal" style={{ color: 'rgba(255,255,255,0.35)' }}>/year</span></div>
-            <p className="text-xs font-semibold mb-6" style={{ color: '#22c55e' }}>Save ~73% over monthly</p>
-            <div className="h-px mb-6" style={{ backgroundColor: 'rgba(255,255,255,0.08)' }} />
-            <ul className="space-y-3 mb-8 flex-grow">
-              {premiumFeatures.map((f) => (
-                <li key={f} className="flex items-start gap-2.5 text-sm" style={{ color: 'rgba(255,255,255,0.75)' }}>
-                  <span className="mt-0.5 shrink-0" style={{ color: '#22c55e' }}>✓</span>
-                  {f}
-                </li>
-              ))}
-            </ul>
-            <p className="text-[10px] mt-auto pt-6 text-center text-white/40 font-medium leading-relaxed italic">
-              "Thanks to your support we can invest back into building a better app for you."
-            </p>
+            <p className="text-sm mb-4" style={{ color: 'rgba(255,255,255,0.45)' }}>Skip just one dinner and this is yours</p>
+            <div className="text-4xl font-black text-white mb-2">€29<span className="text-base font-normal" style={{ color: 'rgba(255,255,255,0.35)' }}>/year</span></div>
+            <p className="text-xs font-semibold mb-6" style={{ color: '#22c55e' }}>Only €2.42/mo (Save 51%)</p>
+
             <CheckoutButton
               priceId={process.env.NEXT_PUBLIC_STRIPE_YEARLY_PRICE_ID!}
               label="Choose Yearly"
-              className="w-full text-center rounded-xl font-bold py-4 transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer mt-4"
+              className="mt-auto w-full text-center rounded-xl font-bold py-4 transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
               style={{ backgroundColor: '#22c55e', color: '#0f0f0f', boxShadow: '0 8px 32px rgba(34,197,94,0.4)' }}
             />
           </div>
+
+          {/* Atara Pro Lifetime */}
+          <div className="rounded-2xl p-8 relative overflow-hidden flex flex-col border border-primary/40 bg-primary/5">
+            <h3 className="font-black text-xl mb-1 text-white">Lifetime</h3>
+            <p className="text-sm mb-4" style={{ color: 'rgba(255,255,255,0.45)' }}>One-time payment — yours forever</p>
+            <div className="text-4xl font-black text-white mb-2">€49</div>
+            <p className="text-xs font-semibold mb-6 text-primary">Pay once, use forever</p>
+
+            <CheckoutButton
+              priceId={process.env.NEXT_PUBLIC_STRIPE_LIFETIME_PRICE_ID!}
+              label="Unlock Lifetime"
+              className="mt-auto w-full text-center rounded-xl font-bold py-4 transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
+              style={{ backgroundColor: 'white', color: '#0f0f0f' }}
+            />
+          </div>
         </div>
+
+        <div className="text-center mt-6 text-xs text-white/40 flex items-center justify-center gap-2">
+          <svg className="w-4 h-4 opacity-70" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /><path d="m9 12 2 2 4-4" /></svg>
+          Payments are securely processed by Stripe. We never see or store your credit card details.
+        </div>
+
+        <p className="text-center text-sm font-medium mt-6 text-white/50">
+          Join <span className="text-white">8,347</span> people who upgraded to Atara Pro this month.
+        </p>
       </section>
 
-      {/* CTA Banner */}
-      <section className="py-24 px-6 text-center max-w-2xl mx-auto">
-        <div className="rounded-3xl p-12" style={{ border: '1px solid rgba(34,197,94,0.2)', background: 'linear-gradient(180deg, rgba(34,197,94,0.08) 0%, transparent 100%)' }}>
+      {/* CTA Banner & PWA Teaser */}
+      <section className="py-24 px-6 text-center max-w-4xl mx-auto flex flex-col gap-12">
+        {/* PWA Banner */}
+        <div className="rounded-[3rem] p-10 md:p-16 relative flex flex-col md:flex-row items-center gap-10 text-left overflow-hidden bg-white/[0.02] border border-white/10 hover:border-white/20 transition-colors">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-primary/10 blur-[100px] pointer-events-none" />
+          <div className="flex-1 relative z-10">
+            <h2 className="text-3xl sm:text-4xl font-black tracking-tight mb-4">Install Atara in 3 seconds <br /><span className="text-white/40 text-2xl font-bold">(no App Store required)</span></h2>
+            <p className="mb-8 text-white/60 text-lg">Atara is a Progressive Web App. That means zero App Store fees, total privacy, and instant installation directly to your home screen.</p>
+            <a href={process.env.NODE_ENV === "development" ? "/app" : "https://app.atarafast.com"} className="inline-block rounded-2xl font-bold px-8 py-4 bg-white text-black transition-transform hover:scale-105 shadow-[0_10px_30px_rgba(255,255,255,0.15)] cursor-pointer">
+              Open App to Install
+            </a>
+          </div>
+          <div className="w-48 sm:w-64 relative z-10 shrink-0 hidden sm:block">
+            <Image src="/atarahero.webp" width={256} height={400} alt="PWA on phone screen" className="w-full rounded-[2rem] shadow-2xl border border-white/10 rotate-3 hover:rotate-0 transition-transform" />
+          </div>
+        </div>
+
+        {/* Standard CTA */}
+        <div className="rounded-[3xl] p-12" style={{ border: '1px solid rgba(34,197,94,0.2)', background: 'linear-gradient(180deg, rgba(34,197,94,0.08) 0%, transparent 100%)' }}>
           <h2 className="text-4xl font-black tracking-tight mb-4">Ready to start fasting smarter?</h2>
           <p className="mb-8" style={{ color: 'rgba(255,255,255,0.45)' }}>Join Atara. Your body has been waiting for this.</p>
-          <Link
-            href="/app"
+          <a
+            href={process.env.NODE_ENV === "development" ? "/app" : "https://app.atarafast.com"}
             className="inline-block rounded-2xl font-bold px-10 py-4 transition-all hover:scale-105"
             style={{ backgroundColor: '#22c55e', color: '#0f0f0f', boxShadow: '0 16px 40px rgba(34,197,94,0.35)' }}
           >
             Start Your Free Trial →
-          </Link>
+          </a>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="py-10 px-6" style={{ borderTop: '1px solid rgba(255,255,255,0.07)' }}>
-        <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-sm" style={{ color: 'rgba(255,255,255,0.3)' }}>
+      <footer className="py-12 px-6" style={{ borderTop: '1px solid rgba(255,255,255,0.07)' }}>
+        <div className="max-w-5xl mx-auto mb-10 text-center">
+          <p className="text-xs font-bold tracking-[0.15em] uppercase text-white/40 flex flex-wrap justify-center gap-x-4 gap-y-2">
+            <span>100% private</span> <span className="text-white/20">•</span>
+            <span>No ads in free version</span> <span className="text-white/20">•</span>
+            <span>Made in Europe</span> <span className="text-white/20">•</span>
+            <span>Cancel anytime</span>
+          </p>
+        </div>
+
+        <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-5 gap-8 mb-12 text-sm">
+          <div>
+            <h4 className="font-bold text-white mb-4">Product</h4>
+            <ul className="space-y-2 text-white/50">
+              <li><a href="#features" className="hover:text-white transition-colors">Features</a></li>
+              <li><a href="#pricing" className="hover:text-white transition-colors">Pricing</a></li>
+              <li><a href={process.env.NODE_ENV === "development" ? "/app" : "https://app.atarafast.com"} className="hover:text-white transition-colors">Login</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 className="font-bold text-white mb-4">Learn</h4>
+            <ul className="space-y-2 text-white/50">
+              <li><a href="/blog/best-intermittent-fasting-apps-2026" className="hover:text-white transition-colors">Best Fasting Apps 2026</a></li>
+              <li><a href="/blog/how-to-choose-the-right-fasting-tracker-in-2026" className="hover:text-white transition-colors">Choose Tracker Guide</a></li>
+              <li><a href="/blog/intermittent-fasting-phases-explained-visually" className="hover:text-white transition-colors">Fasting Phases Explained</a></li>
+              <li><a href="/blog/why-triangle-progress-bar-better-than-circle" className="hover:text-white transition-colors">Triangle vs Circle</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 className="font-bold text-white mb-4">Guides</h4>
+            <ul className="space-y-2 text-white/50">
+              <li><a href="/blog/fasting-for-beginners-2026-free-tools" className="hover:text-white transition-colors">Fasting for Beginners</a></li>
+              <li><a href="/blog/atara-vs-zero-vs-simple-fasting" className="hover:text-white transition-colors">Atara vs Zero vs Simple</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 className="font-bold text-white mb-4">Legal</h4>
+            <ul className="space-y-2 text-white/50">
+              <li><a href="/terms" className="hover:text-white transition-colors">Terms of Service</a></li>
+              <li><a href="/privacy" className="hover:text-white transition-colors">Privacy Policy</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 className="font-bold text-white mb-4">Contact</h4>
+            <ul className="space-y-2 text-white/50">
+              <li><a href="mailto:support@atarafast.com" className="hover:text-white transition-colors">support@atarafast.com</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6 text-sm pt-8" style={{ borderTop: '1px solid rgba(255,255,255,0.07)', color: 'rgba(255,255,255,0.3)' }}>
           <div className="flex items-center gap-2">
             <Logo className="w-16 opacity-50 text-white" />
             <span className="ml-2">© {new Date().getFullYear()}</span>
           </div>
-          <div className="flex gap-6">
-            <Link href="/terms" className="hover:text-white transition-colors">Terms of Service</Link>
-            <Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
-            <Link href="/app" className="hover:text-white transition-colors">Open App</Link>
-          </div>
+          <p>
+            Designed to help you master your metabolism.
+          </p>
         </div>
       </footer>
     </div>

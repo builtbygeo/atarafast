@@ -358,7 +358,7 @@ export const en: typeof bg = {
   seeMore: "See more",
   showingLast30Days: "Showing last 30 days",
   unlockFullHistory: "Unlock Full History",
-  historyLimitNote: "Free plan stores history for 30 days. Upgrade to Atara+ for unlimited access to your records.",
+  historyLimitNote: "Free plan stores history for 30 days. Upgrade to Atara+ for 1 per day (5 per week) access to your records.",
 
   statsTitle: "Info",
   statsSubtitle: "Your fasting overview",
