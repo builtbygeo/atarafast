@@ -68,8 +68,8 @@ export function CircularProgress({
   const { t } = useLang()
 
   const outerRadius = size / 2
-  const padding = strokeWidth / 2 + 10 // Reverting to standard padding
-  const trackRadius = outerRadius - 32 // Tighter radius to ensure BREATHING ROOM for glow
+  const padding = strokeWidth / 2 + 10 
+  const trackRadius = outerRadius - 40 // Safer radius for breathing room
   const center = size / 2
 
   const data = getPhaseData(targetHours, elapsedHours)
@@ -129,7 +129,7 @@ export function CircularProgress({
   const dotPos = polarToCartesian(center, center, trackRadius + padding - 4, progressDeg)
 
   return (
-    <div className="relative inline-flex items-center justify-center select-none" style={{ width: size, height: size }}>
+    <div className="relative inline-flex items-center justify-center select-none overflow-visible" style={{ width: size, height: size }}>
       <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="absolute inset-0 block overflow-visible">
         <defs>
           <filter id="arc-glow" x="-50%" y="-50%" width="200%" height="200%">
