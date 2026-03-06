@@ -143,7 +143,7 @@ function StatsShareCard({ history }: Omit<StatsShareCardProps, "type">) {
             className="relative flex flex-col items-center overflow-hidden"
             style={{
                 width: 390,
-                height: 693,
+                height: 740,
                 background: "linear-gradient(160deg, #0a0a0a 0%, #0c180c 50%, #0a0a0a 100%)",
                 fontFamily: "'Inter', sans-serif",
                 padding: "10px 36px 40px",
