@@ -100,7 +100,7 @@ export default function LandingPage() {
         <h1 className="text-7xl md:text-8xl lg:text-9xl font-black tracking-tighter mt-8 mb-8 leading-[0.9] max-w-5xl">
           Atara — The beautiful<br />
           way to{' '}
-          <span style={{ background: 'linear-gradient(135deg, #22c55e, #4ade80)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
+          <span className="text-[#22c55e]">
             fast.
           </span>
         </h1>
@@ -129,20 +129,15 @@ export default function LandingPage() {
           Install in 3 seconds • No App Store • Works offline
         </p>
 
-        {/* Hero image — real mockup */}
-        <div className="relative w-full max-w-[580px] mx-auto mt-12 group">
-          <div className="absolute bottom-0 left-0 right-0 h-60 pointer-events-none z-10" style={{ background: 'linear-gradient(to top, #0f0f0f, transparent)' }} />
-          <div className="absolute inset-0 bg-primary/5 rounded-full pointer-events-none -z-10 group-hover:opacity-100 transition-opacity" />
           <Image
             src="/atarahero.webp"
             alt="Atara app showing active fast with metabolic phase ring"
             width={800}
             height={1000}
-            className="w-full rounded-[3rem] transition-transform duration-700 group-hover:scale-[1.02]"
-            style={{ boxShadow: '0 60px 120px rgba(34,197,94,0.2), 0 30px 80px rgba(0,0,0,0.9)' }}
+            className="w-full rounded-[3rem]"
+            style={{ boxShadow: '0 30px 60px rgba(0,0,0,0.9)' }}
             priority
           />
-        </div>
       </section>
 
       {/* Ataraxia Origin */}

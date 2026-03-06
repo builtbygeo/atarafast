@@ -7,42 +7,29 @@ const isAppRoute = createRouteMatcher(['/app(.*)'])
 export default clerkMiddleware(async (auth, req) => {
     const url = new URL(req.url);
     const host = req.headers.get('host') || '';
-    
+
     // 1. WWW Redirect
     if (host.startsWith('www.atarafast.com')) {
         return NextResponse.redirect(new URL(req.url.replace('www.', ''), req.url));
     }
 
-    // 2. App Subdomain Logic (app.atarafast.com)
-    if (host.includes('app.atarafast.com')) {
-        // CLEAN UP: Prevent "app.atarafast.com/app" -> redirect to "app.atarafast.com/"
-        if (url.pathname.startsWith('/app')) {
-            const cleanPath = url.pathname.replace(/^\/app/, '') || '/';
-            return NextResponse.redirect(new URL(cleanPath, req.url));
-        }
-
-        // AUTH: Everything on app subdomain requires auth (unless it's public)
-        const isPublic = isPublicRoute(req);
-        if (!isPublic) {
-            await auth.protect();
-        }
-
-        // REWRITE: Direct root/paths to /app folder internally
-        const newUrl = new URL(req.url);
-        newUrl.pathname = `/app${url.pathname === '/' ? '' : url.pathname}`;
-        return NextResponse.rewrite(newUrl);
-    }
-
-    // 3. Root Domain Logic (atarafast.com)
-    // If someone tries to open /app on root domain -> redirect to app subdomain
-    if (url.pathname.startsWith('/app')) {
-        const appUrl = new URL(req.url);
+    // 2. Cross-domain Enforcement (atarafast.com/app -> app.atarafast.com)
+    // Only redirect if we are on the landing domain and NOT in local dev
+    if (host === 'atarafast.com' && url.pathname.startsWith('/app') && process.env.NODE_ENV === 'production') {
+        const appUrl = new URL(url.toString());
         appUrl.hostname = 'app.atarafast.com';
         appUrl.pathname = url.pathname.replace(/^\/app/, '') || '/';
         return NextResponse.redirect(appUrl);
     }
 
-    // Default: Just proceed for landing/public routes
+    // 3. Auth Enforcement
+    // We protect everything that STARTS with /app in the internal path.
+    // Note: Vercel rewrites app.atarafast.com/ to /app/ internally, so Clerk will see /app.
+    const isPublic = isPublicRoute(req);
+    if (url.pathname.startsWith('/app') && !isPublic) {
+        await auth.protect();
+    }
+
     return NextResponse.next();
 })
 

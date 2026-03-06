@@ -85,8 +85,7 @@ export default function MetabolicJourneyChart() {
         </div>
       </div>
 
-      {/* Main Chart Section */}
-      <div className="h-[280px] sm:h-[400px] w-full relative z-10 cursor-crosshair bg-black/20 rounded-2xl sm:rounded-3xl p-2 sm:p-4">
+      <div className="h-[280px] sm:h-[400px] w-full relative z-10 cursor-crosshair bg-black/40 rounded-2xl sm:rounded-3xl p-2 sm:p-4 border border-white/5">
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart data={data} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
             <defs>
