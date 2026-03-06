@@ -14,35 +14,47 @@ export default clerkMiddleware(async (auth, req) => {
     const host = (req.headers.get('x-forwarded-host') || req.headers.get('host') || '').toLowerCase();
     const { pathname } = req.nextUrl;
 
+    // REDUNDANT ROLE DETECTION
     const isApp = 
         process.env.NEXT_PUBLIC_APP_PROJECT === 'true' || 
-        host.includes('app.');
+        host.includes('app.') ||
+        host.includes('atara-app');
 
-    // 1. Landing Project -> Redirect /app to subdomain
+    // 1. Landing Project Logic
     if (!isApp) {
+        // Redirect /app (and deep links) to the app subdomain root
         if (pathname.startsWith('/app')) {
-            const redirectUrl = new URL(pathname, 'https://app.atarafast.com');
-            redirectUrl.pathname = pathname.replace(/^\/app/, '') || '/';
-            return NextResponse.redirect(redirectUrl);
+            const cleanPath = pathname.replace(/^\/app/, '') || '/';
+            return NextResponse.redirect(new URL(cleanPath, 'https://app.atarafast.com'));
         }
         return NextResponse.next();
     }
 
-    // 2. App Project -> Auth + Force /app path
+    // 2. App Project Logic
     if (isApp) {
-        // Auth Protection
+        // EXTERNAL REDIRECT: app.atarafast.com/app -> app.atarafast.com/
+        // We only do this for the exact path to avoid interfering with deep-link rewrites
+        if (pathname === '/app') {
+            return NextResponse.redirect(new URL('/', req.url));
+        }
+
+        // Auth
         if (!isPublicRoute(req)) {
             await auth.protect();
         }
 
-        // FORCE REDIRECT from root to /app
-        // This makes https://app.atarafast.com -> https://app.atarafast.com/app
-        // Definitive fix for landing page showing on app subdomain
+        // INTERNAL REWRITE: Show dashboard content at /
         if (pathname === '/') {
-            return NextResponse.redirect(new URL('/app', req.url));
+            return NextResponse.rewrite(new URL('/app', req.url));
         }
 
-        return NextResponse.next();
+        // DEEP LINKS: app.atarafast.com/settings -> internally /app/settings
+        if (!pathname.startsWith('/api') && !pathname.startsWith('/_next') && !pathname.includes('.')) {
+            // If the path isn't /app already, move it there internally
+            if (!pathname.startsWith('/app')) {
+                return NextResponse.rewrite(new URL(`/app${pathname}`, req.url));
+            }
+        }
     }
 
     return NextResponse.next();

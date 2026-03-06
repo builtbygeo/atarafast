@@ -125,17 +125,17 @@ export default function LandingPage() {
           </a>
         </div>
 
-        {/* Hero image container - Strictly constrained */}
-        <div className="relative w-full max-w-[580px] mx-auto mt-12 bg-transparent h-auto aspect-[4/5] sm:aspect-auto overflow-hidden rounded-[3rem]">
-          {/* Solid gradient fade (no blurs) */}
+        {/* Hero image container - Locked Aspect Ratio & Clean UI */}
+        <div className="relative w-full max-w-[580px] mx-auto mt-12 overflow-hidden rounded-[3rem]">
+          {/* Sharp gradient fade */}
           <div className="absolute bottom-0 left-0 right-0 h-40 pointer-events-none z-10" style={{ background: 'linear-gradient(to top, #0f0f0f 0%, transparent 100%)' }} />
           <Image
             src="/atarahero.webp"
             alt="Atara app showing active fast with metabolic phase ring"
             width={580}
             height={725}
-            className="w-full h-auto rounded-[3rem] border border-white/5 relative z-0"
-            style={{ boxShadow: '0 30px 60px rgba(0,0,0,0.5)', objectFit: 'contain' }}
+            className="w-full h-auto relative z-0"
+            style={{ objectFit: 'contain' }}
             priority
           />
         </div>
@@ -477,7 +477,7 @@ export default function LandingPage() {
           <div className="flex-1 relative z-10">
             <h2 className="text-3xl sm:text-4xl font-black tracking-tight mb-4">Install Atara in 3 seconds <br /><span className="text-white/40 text-2xl font-bold">(no App Store required)</span></h2>
             <p className="mb-8 text-white/60 text-lg">Atara is a Progressive Web App. That means zero App Store fees, total privacy, and instant installation directly to your home screen.</p>
-            <a href={process.env.NODE_ENV === "development" ? "/app" : "https://app.atarafast.com"} className="inline-block rounded-2xl font-bold px-8 py-4 bg-white text-black transition-transform hover:scale-105 shadow-[0_10px_30px_rgba(255,255,255,0.15)] cursor-pointer">
+            <a href={process.env.NODE_ENV === "development" ? "/app" : "https://app.atarafast.com"} className="inline-block rounded-2xl font-bold px-8 py-4 bg-white text-black transition-transform hover:scale-105 shadow-2xl cursor-pointer">
               Open App to Install
             </a>
           </div>
