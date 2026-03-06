@@ -25,12 +25,12 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
             setTimeout(() => {
                 let plan = { id: "16:8", name: "Gold Standard 16:8", desc: "The perfect balance of fasting and eating for daily results." }
 
-                if (experience === "No" || experience === "A little bit") {
+                if (experience === "Never tried it before" || experience === "Just starting out") {
                     plan = { id: "14:10", name: "Starter 14:10", desc: "A gentle introduction to time-restricted eating." }
                     if (goal === "Better sleep") {
                         plan = { id: "12:12", name: "Circadian 12:12", desc: "Aligns with your natural circadian rhythm for restorative sleep." }
                     }
-                } else if (experience === "I'm a pro") {
+                } else if (experience === "I fast regularly") {
                     plan = { id: "20:4", name: "The Warrior 20:4", desc: "Advanced protocol for maximum metabolic flexibility and autophagy." }
                 } else if (goal === "Weight loss") {
                     plan = { id: "18:6", name: "Advanced 18:6", desc: "Pushes deeper into fat-burning ketosis for accelerated results." }
@@ -72,10 +72,12 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
                             >
                                 Welcome to Atara.
                             </motion.h2>
-                            <p className="text-white/40 text-lg font-medium tracking-wide">Have you experienced fasting before?</p>
+                            <p className="text-white/40 text-lg font-medium tracking-wide">
+                                Let’s build your perfect fasting rhythm. How familiar are you with intermittent fasting?
+                            </p>
                         </div>
                         <div className="w-full space-y-3">
-                            {['No', 'A little bit', 'From time to time', "I'm a pro"].map((opt, i) => (
+                            {['Never tried it before', 'Just starting out', 'I’ve tried it a few times', "I fast regularly"].map((opt, i) => (
                                 <motion.button
                                     key={opt}
                                     initial={{ opacity: 0, x: -20 }}
@@ -113,7 +115,7 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
                             <p className="text-white/40 text-lg font-medium tracking-wide">Why do you fast?</p>
                         </div>
                         <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            {['Better sleep', 'Weight loss', 'Mental clarity', 'Discipline', 'Longevity', 'Digestion'].map((opt, i) => (
+                            {['Better sleep', 'Weight loss', 'Mental clarity', 'Discipline', 'Longevity', 'Digestion', 'General health & longevity'].map((opt, i) => (
                                 <motion.button
                                     key={opt}
                                     initial={{ opacity: 0, y: 10 }}
@@ -151,7 +153,7 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
                             <Loader2 className="w-20 h-20 text-primary animate-spin relative z-10" />
                         </div>
                         <h3 className="text-3xl font-black text-white tracking-[0.2em] uppercase mb-4 animate-pulse">Analyzing</h3>
-                        <p className="text-primary/60 text-sm font-bold uppercase tracking-widest italic">Crafting your perfect metabolic protocol...</p>
+                        <p className="text-primary/60 text-sm font-bold uppercase tracking-widest italic">Crafting your perfect metabolic protocol…</p>
                     </motion.div>
                 )}
 

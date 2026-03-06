@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
     if (customerId) {
         const portalSession = await stripe.billingPortal.sessions.create({
             customer: customerId,
-            return_url: `${process.env.NEXT_PUBLIC_APP_URL}/app`,
+            return_url: `${process.env.NEXT_PUBLIC_APP_URL}/`,
         })
         return NextResponse.json({ url: portalSession.url })
     }
@@ -39,8 +39,8 @@ export async function POST(req: NextRequest) {
             }
         }),
         metadata: { clerkUserId: userId },
-        success_url: `${process.env.NEXT_PUBLIC_APP_URL}/app?payment=success`,
-        cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/app?payment=cancelled`,
+        success_url: `${process.env.NEXT_PUBLIC_APP_URL}/?payment=success`,
+        cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/?payment=cancelled`,
     })
 
     return NextResponse.json({ url: session.url })

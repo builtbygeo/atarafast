@@ -3,9 +3,9 @@
 ## Current Focus
 - Finalizing UI/UX micro-interactions for the metabolic coach.
 - Preparing for Cloud Sync (Phase 2 of Roadmap).
-- Ensuring local storage robustness before moving to cloud sync.
 
 ## Recent Achievements
+- Fixed routing issue between `atarafast.com` and `app.atarafast.com` ensuring clean URLs.
 - Added PWA capabilities, fixing iOS icons.
 - Implemented Triangular timer visualization with dynamic metabolic phases.
 - Added Celebratory Animation for successful fast completions.
@@ -21,7 +21,8 @@
 3. **Monetization (Stripe)**: Implement a 14-day trial followed by paid subscription model.
 
 ## Next Steps
-- Implement Middleware fix using `NextResponse` for reliable redirects.
+- Implement Clerk redirect fix and middleware robustification.
+- Verify routing on production/staging domains.
 - Fix Landing Page Logo/Navbar responsiveness.
 - Adjust `TimerView` to show "Target" instead of "Fast Complete" when ongoing, and fix percentage logic.
 - Center-bottom pin the app navigation for mobile stability.
