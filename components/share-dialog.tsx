@@ -251,7 +251,7 @@ export function ShareDialog(props: ShareDialogProps) {
                     onClick={e => e.stopPropagation()}
                 >
                     {/* Share Card Preview - God-Tier Scale Restoration */}
-                    <div style={{ transform: "scale(0.8)", transformOrigin: "top center", marginBottom: -135, marginTop: 10 }}>
+                    <div style={{ transform: "scale(0.8)", transformOrigin: "top center", marginBottom: -150, marginTop: 10 }}>
                         <div ref={cardRef} className="rounded-[40px] overflow-hidden shadow-[0_0_100px_-20px_rgba(34,197,94,0.3)] ring-1 ring-white/10 bg-black">
                             {props.type === "active" ? (
                                 <ActiveShareCard {...props} />
@@ -261,35 +261,34 @@ export function ShareDialog(props: ShareDialogProps) {
                         </div>
                     </div>
 
-                    {/* Highly Aesthetic Actions */}
-                    <div className="flex flex-col items-center gap-8 w-[300px] mt-8 px-4">
-                        <div className="flex gap-3 w-full">
-                             {typeof navigator !== "undefined" && "share" in navigator && (
-                                <button
-                                    onClick={() => captureAndShare(false)}
-                                    disabled={loading}
-                                    className="flex-1 flex items-center justify-center gap-3 h-12 rounded-[1.25rem] bg-primary text-primary-foreground font-black text-[11px] tracking-[0.2em] active:scale-95 transition-all shadow-2xl shadow-primary/30 disabled:opacity-50"
-                                >
-                                    {loading ? <div className="h-4 w-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : <Share2 className="h-4 w-4" />}
-                                    SHARE
-                                </button>
-                            )}
+                    {/* Highly Aesthetic Actions - Single Row Layout */}
+                    <div className="flex items-center gap-3 w-full max-w-[340px] mt-8 px-4 relative z-[110]">
+                        <button
+                            onClick={() => captureAndShare(true)}
+                            disabled={loading}
+                            className="flex-1 flex items-center justify-center gap-2 h-12 rounded-[1.25rem] bg-secondary/80 border border-white/5 text-foreground font-black text-[11px] tracking-[0.2em] active:scale-95 transition-all disabled:opacity-50"
+                        >
+                            <Download className="h-3.5 w-3.5" />
+                            SAVE
+                        </button>
+                        
+                        {typeof navigator !== "undefined" && "share" in navigator && (
                             <button
-                                onClick={() => captureAndShare(true)}
+                                onClick={() => captureAndShare(false)}
                                 disabled={loading}
-                                className="flex-1 flex items-center justify-center gap-3 h-12 rounded-[1.25rem] bg-secondary/80 border border-white/5 text-foreground font-black text-[11px] tracking-[0.2em] active:scale-95 transition-all disabled:opacity-50"
+                                className="flex-[1.5] flex items-center justify-center gap-2 h-12 rounded-[1.25rem] bg-primary text-primary-foreground font-black text-[11px] tracking-[0.2em] active:scale-95 transition-all shadow-2xl shadow-primary/30 disabled:opacity-50"
                             >
-                                <Download className="h-4 w-4" />
-                                SAVE
+                                {loading ? <div className="h-4 w-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : <Share2 className="h-3.5 w-3.5" />}
+                                SHARE
                             </button>
-                        </div>
+                        )}
                         
                         <button
                             onClick={props.onClose}
-                            className="flex items-center justify-center gap-3 text-[10px] font-black text-white/20 uppercase tracking-[0.5em] py-4 hover:text-white/60 transition-all hover:scale-105 active:scale-95"
+                            className="w-12 h-12 flex items-center justify-center rounded-[1.25rem] bg-secondary/80 border border-white/5 text-white/40 active:scale-95 transition-all hover:text-white/80"
+                            aria-label="Close"
                         >
-                            <X className="h-3.5 w-3.5" />
-                            CLOSE
+                            <X className="h-5 w-5" />
                         </button>
                     </div>
 
