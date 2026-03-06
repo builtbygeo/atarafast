@@ -79,11 +79,11 @@ export function PresetDetail({ preset, isActive, isCurrentActivePreset, onBack, 
             color={preset.color}
           >
             <div className="flex flex-col items-center justify-center">
-              <span className="text-3xl font-black text-foreground font-mono tabular-nums leading-none">
-                {displayHours}
+              <span className="text-[22px] font-black text-foreground font-mono tabular-nums leading-none tracking-tighter">
+                {new Date(Date.now() + displayHours * 3600000).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}
               </span>
-              <span className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mt-1 opacity-60">
-                {t.hours}
+              <span className="text-[8px] font-black text-muted-foreground uppercase tracking-widest mt-1.5 opacity-60">
+                {t.goal || "GOAL"}
               </span>
             </div>
           </CircularProgress>
