@@ -1,4 +1,5 @@
 import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server'
+import { NextResponse } from 'next/server'
 
 const isPublicRoute = createRouteMatcher(['/', '/sign-in(.*)', '/sign-up(.*)', '/api/webhook/stripe'])
 const isAppRoute = createRouteMatcher(['/app(.*)'])
@@ -10,7 +11,7 @@ export default clerkMiddleware(async (auth, req) => {
             await auth.protect()
         } catch (error) {
             // If auth protection fails during redirect loops, fall back to home
-            return Response.redirect(new URL('/', req.url))
+            return NextResponse.redirect(new URL('/', req.url))
         }
     }
 })

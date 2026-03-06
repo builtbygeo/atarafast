@@ -5,8 +5,8 @@ export const bg = {
 
   // Tabs
   timer: "Днес",
-  history: "История",
-  stats: "Статистика",
+  history: "Лог",
+  stats: "Инфо",
   plan: "План",
 
   // Timer View
@@ -65,8 +65,8 @@ export const bg = {
   tips: "Съвети",
   backToTimer: "Обратно към таймера",
 
-  // History
-  historyTitle: "История",
+  // Log
+  historyTitle: "Лог",
   yearCalendar: "{{year}} календар на постите",
   addFast: "Добави",
   recentFasts: "Предишни фастове",
@@ -78,9 +78,12 @@ export const bg = {
   goalMet: "Целта е постигната",
   goalNotMet: "Целта не е постигната",
   seeMore: "Виж още",
+  showingLast30Days: "Показване на последните 30 дни",
+  unlockFullHistory: "Отключи пълната история",
+  historyLimitNote: "Безплатният план пази история до 30 дни. Апгрейднете до Atara+ за достъп до всички ваши записи.",
 
-  // Stats
-  statsTitle: "Статистика",
+  // Info
+  statsTitle: "Инфо",
   statsSubtitle: "Вашият прогрес до момента",
   totalFasts: "Общо фастове",
   totalHours: "Общо часове",
@@ -89,6 +92,7 @@ export const bg = {
   avgDuration: "Средна продължителност",
   completionRate: "Процент завършени",
   weeklyActivity: "Седмична активност",
+  weeklyStats: "Седмична статистика",
   weeklyFastingHours: "Седмични часове гладуване",
   hoursFastedLabel: "часа пост",
   hitTarget: "постигната цел",
@@ -116,10 +120,42 @@ export const bg = {
   lastFast: "ПОСЛЕДЕН ФАСТ",
   duration: "ПРОДЪЛЖИТЕЛНОСТ",
 
+  upgradeTitle: "Отключете пълния си потенциал",
+  upgradeDesc: "Вземете повече от вашите данни с Atara+",
+  upgradeNow: "Абонирай се",
+  upgradeSuccess: "Абонаментът е успешен! Добре дошли в Atara+",
+  upgradeError: "Възникна грешка",
+
+  // Share Cards
+  shareAchieved: "ПОСТИГНАТО",
+  shareCurrent: "В МОМЕНТА",
+  shareCompleted: "ЗАВЪРШЕНО 🎉",
+  shareProgress: "ПРОГРЕС",
+  shareSugar: "Захар",
+  shareTransition: "Преход",
+  shareKetosis: "Кетоза",
+  shareAchievements: "МОИТЕ ПОСТИЖЕНИЯ",
+  shareFastsNum: "фаста",
+  shareTotal: "общо",
+  shareStreak: "Серия",
+  shareAvgDuration: "Ср. продълж.",
+  shareCompletedFasts: "Завършени",
+  shareTotalHours: "Общо часове",
+  shareButton: "Сподели",
+  saveButton: "Запази",
+  closeButton: "Затвори",
+  shareStories: "Сподели в Stories",
+  hGoal: "ч цел",
+  shareDone: "✓ Готово!",
+  on: "Вкл.",
+  off: "Изкл.",
+
   // Plan View
   planTitle: "План",
   planSubtitle: "Научете за различните типове постове",
   learnMore: "Научете повече",
+  fastingBasics: "Основи на гладуването",
+  understood: "Разбрах",
 
   // Settings
   settings: "Настройки",
@@ -134,7 +170,7 @@ export const bg = {
   data: "Данни",
   phase1: "ЗАХАР",
   phase2: "ПРЕХОД",
-  phase3: "КЕТОЗА И АВТОФАГИЯ",
+  phase3: "КЕТОЗА",
   exportData: "Експорт",
   importData: "Импорт",
   importSuccess: "Успешен импорт!",
@@ -251,8 +287,8 @@ export const en: typeof bg = {
   tagline: "From Ataraxia — the Stoic state of unshakeable inner calm. Track your fasting windows with clarity.",
 
   timer: "Today",
-  history: "History",
-  stats: "Stats",
+  history: "Log",
+  stats: "Info",
   plan: "Plan",
 
   elapsed: "elapsed",
@@ -308,7 +344,7 @@ export const en: typeof bg = {
   tips: "Tips",
   backToTimer: "Back to Timer",
 
-  historyTitle: "History",
+  historyTitle: "Log",
   yearCalendar: "{{year}} fasting calendar",
   addFast: "Add Fast",
   recentFasts: "Recent Fasts",
@@ -320,8 +356,11 @@ export const en: typeof bg = {
   goalMet: "Goal met",
   goalNotMet: "Goal not met",
   seeMore: "See more",
+  showingLast30Days: "Showing last 30 days",
+  unlockFullHistory: "Unlock Full History",
+  historyLimitNote: "Free plan stores history for 30 days. Upgrade to Atara+ for unlimited access to your records.",
 
-  statsTitle: "Stats",
+  statsTitle: "Info",
   statsSubtitle: "Your fasting overview",
   totalFasts: "Total Fasts",
   totalHours: "Total Hours",
@@ -330,6 +369,7 @@ export const en: typeof bg = {
   avgDuration: "Avg Duration",
   completionRate: "Completion Rate",
   weeklyActivity: "Weekly Activity",
+  weeklyStats: "Weekly Stats",
   weeklyFastingHours: "Weekly fasting hours",
   hoursFastedLabel: "hours fasted",
   hitTarget: "hit target",
@@ -357,10 +397,44 @@ export const en: typeof bg = {
   lastFast: "LAST FAST",
   duration: "DURATION",
 
+  upgradeTitle: "Unlock your full potential",
+  upgradeDesc: "Get more out of your data with Atara+",
+  upgradeNow: "Upgrade Now",
+  upgradeSuccess: "Upgrade successful! Welcome to Atara+",
+  upgradeError: "There was an error upgrading your account",
+
+  // Share Cards
+  shareAchieved: "ACHIEVED",
+  shareCurrent: "CURRENTLY",
+  shareCompleted: "COMPLETED 🎉",
+  shareProgress: "PROGRESS",
+  shareSugar: "Sugar",
+  shareTransition: "Transition",
+  shareKetosis: "Ketosis",
+  shareAchievements: "MY ACHIEVEMENTS",
+  shareFastsNum: "fasts",
+  shareTotal: "total",
+  shareStreak: "Streak",
+  shareAvgDuration: "Avg. Duration",
+  shareCompletedFasts: "Completed",
+  shareTotalHours: "Total hours",
+  shareButton: "Share",
+  saveButton: "Save",
+  closeButton: "Close",
+  shareStories: "Share in Stories",
+  hGoal: "h goal",
+  shareDone: "✓ Done!",
+  on: "On",
+  off: "Off",
+
+  // Plan View
   planTitle: "Plan",
   planSubtitle: "Learn about different fasting protocols",
   learnMore: "Learn more",
+  fastingBasics: "Fasting Basics",
+  understood: "Got it",
 
+  // Settings
   settings: "Settings",
   preferences: "Preferences",
   timerDirection: "Timer direction",

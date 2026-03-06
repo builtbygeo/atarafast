@@ -38,6 +38,21 @@ export function SettingsSheet({ open, onClose, onDataCleared, onOpenUpgrade }: S
     setSettingsState((prev) => ({ ...prev, timerStyle: style }))
   }
 
+  function handleToggleNotifications() {
+    if (permission !== "granted") {
+      requestPermission().then((res) => {
+        if (res === "granted") {
+          updateSettings({ notificationsEnabled: true })
+          setSettingsState((prev) => ({ ...prev, notificationsEnabled: true }))
+        }
+      })
+    } else {
+      const newVal = !settings.notificationsEnabled
+      updateSettings({ notificationsEnabled: newVal })
+      setSettingsState((prev) => ({ ...prev, notificationsEnabled: newVal }))
+    }
+  }
+
   function handleImport() {
     const input = document.createElement("input")
     input.type = "file"
@@ -295,21 +310,21 @@ export function SettingsSheet({ open, onClose, onDataCleared, onOpenUpgrade }: S
               <p className="text-[10px] text-muted-foreground font-medium uppercase tracking-wider">{t.notificationsDesc}</p>
             </div>
             <button
-              onClick={requestPermission}
-              className={`flex items-center gap-2 rounded-xl px-4 py-2 text-xs font-bold transition-all border ${permission === "granted"
+              onClick={handleToggleNotifications}
+              className={`flex items-center gap-2 rounded-xl px-4 py-2 text-xs font-bold transition-all border ${settings.notificationsEnabled && permission === "granted"
                 ? "bg-primary/10 border-primary/20 text-primary"
                 : "bg-secondary border-border text-muted-foreground hover:text-foreground active:scale-95"
                 }`}
             >
-              {permission === "granted" ? (
+              {settings.notificationsEnabled && permission === "granted" ? (
                 <>
                   <Bell className="h-3.5 w-3.5" />
-                  {t.confirm}
+                  {t.on || "On"}
                 </>
               ) : (
                 <>
                   <BellOff className="h-3.5 w-3.5" />
-                  {t.allowNotifications}
+                  {permission === "granted" ? (t.off || "Off") : (t.allowNotifications || "Enable")}
                 </>
               )}
             </button>

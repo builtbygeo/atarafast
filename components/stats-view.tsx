@@ -11,12 +11,12 @@ import {
   subWeeks,
   differenceInDays,
 } from "date-fns"
-import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip, Rectangle, Cell } from "recharts"
-import { Flame, Target, Clock, TrendingUp, Lock, Sparkles, Settings } from "lucide-react"
+import { AreaChart, Area, CartesianGrid, XAxis, YAxis, ResponsiveContainer, Tooltip } from "recharts"
+import { ChevronRight, Lock, Sparkles, Settings } from "lucide-react"
 import type { FastingRecord } from "@/lib/storage"
 import { useLang } from "@/lib/language-context"
 import { useSubscription, startCheckout } from "@/lib/subscription"
-import { getAiUsage, checkAiQuota, incrementAiUsage } from "@/lib/storage"
+import { getAiUsage, checkAiQuota, incrementAiUsage, saveAiReport } from "@/lib/storage"
 
 interface StatsViewProps {
   history: FastingRecord[]
@@ -28,38 +28,15 @@ const ChartTooltip = ({ active, payload, label }: any) => {
   const { t } = useLang()
   if (active && payload && payload.length) {
     return (
-      <div className="bg-card/95 backdrop-blur-md border border-border/50 p-3 rounded-2xl shadow-2xl">
-        <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-1">{label}</p>
+      <div className="bg-card/95 backdrop-blur-md border border-border/50 p-2.5 rounded-xl shadow-2xl">
+        <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-0.5">{label}</p>
         <p className="text-sm font-black text-foreground">
-          {payload[0].value} <span className="text-[10px] text-muted-foreground">{t.hours}</span>
+          {payload[0].value} <span className="text-[10px] text-muted-foreground">{t.hours || "h"}</span>
         </p>
       </div>
     )
   }
   return null
-}
-
-function StatCard({
-  icon: Icon,
-  label,
-  value,
-  sub,
-}: {
-  icon: React.ElementType
-  label: string
-  value: string | number
-  sub?: string
-}) {
-  return (
-    <div className="flex flex-col gap-2 rounded-xl border border-border bg-card p-4">
-      <div className="flex items-center gap-2">
-        <Icon className="h-4 w-4 text-primary" />
-        <span className="text-xs font-medium text-muted-foreground">{label}</span>
-      </div>
-      <p className="text-2xl font-bold text-foreground tabular-nums">{value}</p>
-      {sub && <p className="text-xs text-muted-foreground">{sub}</p>}
-    </div>
-  )
 }
 
 export function StatsView({ history, onOpenSettings, onOpenUpgrade }: StatsViewProps) {
@@ -70,9 +47,21 @@ export function StatsView({ history, onOpenSettings, onOpenUpgrade }: StatsViewP
 
   const { user, isLoaded: isUserLoaded } = useUser()
 
-  // Load last report from metadata
+  const displayHistory = useMemo(() => {
+    if (isPremium) return history
+    const thirtyDaysAgo = new Date()
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
+    return history.filter(r => new Date(r.startTime) >= thirtyDaysAgo)
+  }, [history, isPremium])
+
+  // Load last report from localStorage (and fallback to clerk metadata)
   useEffect(() => {
-    if (isUserLoaded && user?.publicMetadata?.lastAiReport) {
+    // 1. Try local storage first for speed
+    const localUsage = getAiUsage()
+    if (localUsage?.lastAiReport) {
+      setAiAnalysis(localUsage.lastAiReport)
+    } else if (isUserLoaded && user?.publicMetadata?.lastAiReport) {
+      // 2. Fallback to clerk metadata if local empty (e.g., cleared cache)
       setAiAnalysis(user.publicMetadata.lastAiReport as string)
     }
   }, [isUserLoaded, user])
@@ -109,8 +98,9 @@ export function StatsView({ history, onOpenSettings, onOpenUpgrade }: StatsViewP
       if (data.analysis) {
         setAiAnalysis(data.analysis)
         incrementAiUsage()
+        saveAiReport(data.analysis)
 
-        // Persist to clerk metadata
+        // Persist to clerk metadata as backup
         fetch("/api/ai/save-report", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -198,220 +188,253 @@ export function StatsView({ history, onOpenSettings, onOpenUpgrade }: StatsViewP
     }
   }, [history])
 
-  // Weekly chart data (last 8 weeks)
+  // Weekly chart data (Last 7 days)
   const weeklyData = useMemo(() => {
-    const weeks = []
+    const daysData = []
     const now = new Date()
-    for (let i = 7; i >= 0; i--) {
-      const weekStartDate = startOfWeek(subWeeks(now, i), { weekStartsOn: 1 })
-      const weekEndDate = endOfWeek(weekStartDate, { weekStartsOn: 1 })
-      const days = eachDayOfInterval({ start: weekStartDate, end: weekEndDate })
 
-      let weekHours = 0
-      history.forEach((r) => {
+    const dayLabelsGlobal = [t.sun, t.mon, t.tue, t.wed, t.thu, t.fri, t.sat]
+
+    for (let i = 0; i < 7; i++) {
+      const currentDate = new Date(now)
+      currentDate.setDate(currentDate.getDate() - (6 - i))
+
+      let dayHours = 0
+      history.forEach((r: FastingRecord) => {
         if (!r.endTime) return
         const rStart = new Date(r.startTime)
-        if (days.some(day => isSameDay(rStart, day))) {
-          weekHours += (new Date(r.endTime).getTime() - rStart.getTime()) / (1000 * 60 * 60)
+        if (isSameDay(rStart, currentDate)) {
+          dayHours += (new Date(r.endTime).getTime() - rStart.getTime()) / (1000 * 60 * 60)
         }
       })
 
-      const hours = Math.round(weekHours * 10) / 10
+      const hours = Math.round(dayHours * 10) / 10
 
-      let color = "var(--primary)"
-      if (hours < 56) color = "oklch(0.6 0.2 30)"
-      else if (hours < 84) color = "oklch(0.7 0.18 55)"
-      else if (hours < 112) color = "var(--primary)"
-      else color = "oklch(0.85 0.22 85)"
-
-      weeks.push({
-        label: format(weekStartDate, "MMM d"),
+      daysData.push({
+        label: dayLabelsGlobal[currentDate.getDay()] || format(currentDate, "EE").charAt(0),
         hours,
-        color
       })
     }
-    return weeks
-  }, [history])
+    return daysData
+  }, [history, t])
+
+  const circumference = 2 * Math.PI * 110
+  const streakPct = Math.min(100, (stats.currentStreak / Math.max(1, stats.longestStreak)) * 100) || 50
+  const strokeDashoffset = circumference - (streakPct / 100) * circumference
 
   return (
-    <div className="relative flex-1 overflow-y-auto px-5 py-6">
-      <div className="absolute top-6 right-5 flex gap-2 z-10">
-        <div className="flex rounded-full bg-secondary/40 p-1 border border-border/50 text-[10px] font-black tracking-widest">
+    <div className="relative flex-1 overflow-y-auto px-4 sm:px-5 py-6 no-scrollbar pb-32">
+      <header className="flex items-start justify-between mb-8 mt-2 px-1 relative z-10">
+        <div>
+          <h2 className="text-3xl font-black text-foreground tracking-tighter leading-none mb-1">{t.statsTitle || "Dashboard"}</h2>
+          <p className="text-xs font-bold text-muted-foreground uppercase tracking-[0.2em]">{format(new Date(), "EEE, MMM d")}</p>
+        </div>
+        <div className="flex gap-2">
+          <div className="flex rounded-full bg-secondary/40 p-1 border border-border/50 text-[10px] font-black tracking-widest shadow-sm backdrop-blur-md">
+            <button
+              onClick={() => setLang("bg")}
+              className={`px-3 py-1.5 rounded-full transition-all ${lang === "bg" ? "bg-primary text-primary-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
+            >
+              БГ
+            </button>
+            <button
+              onClick={() => setLang("en")}
+              className={`px-3 py-1.5 rounded-full transition-all ${lang === "en" ? "bg-primary text-primary-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
+            >
+              EN
+            </button>
+          </div>
           <button
-            onClick={() => setLang("bg")}
-            className={`px-3 py-1.5 rounded-full transition-colors ${lang === "bg" ? "bg-primary text-primary-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
+            onClick={onOpenSettings}
+            className="flex h-[32px] w-[32px] items-center justify-center rounded-full bg-secondary/40 text-muted-foreground transition-all hover:text-foreground hover:bg-secondary/60 border border-border/50 mt-0.5 shadow-sm backdrop-blur-md"
           >
-            БГ
-          </button>
-          <button
-            onClick={() => setLang("en")}
-            className={`px-3 py-1.5 rounded-full transition-colors ${lang === "en" ? "bg-primary text-primary-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
-          >
-            EN
+            <Settings className="h-4 w-4" />
           </button>
         </div>
-        <button
-          onClick={onOpenSettings}
-          className="flex h-8 w-8 items-center justify-center rounded-full bg-secondary/40 text-muted-foreground transition-colors hover:text-foreground hover:bg-secondary/60 border border-border/50 mt-0.5"
-        >
-          <Settings className="h-4 w-4" />
-        </button>
-      </div>
-
-      <h2 className="text-lg font-semibold text-foreground mb-1 mt-2">{t.statsTitle}</h2>
-      <p className="text-sm text-muted-foreground mb-6 pr-20">{t.statsSubtitle}</p>
-
-      <div className="grid grid-cols-2 gap-3 mb-8">
-        <StatCard icon={Target} label={t.totalFasts} value={stats.totalFasts} />
-        <StatCard icon={Clock} label={t.totalHours} value={stats.totalHours} sub={t.hoursFastedLabel} />
-      </div>
+      </header>
 
       <div className="relative">
-        {/* If not premium, add a blur overlay over advanced stats */}
+        {/* Blur overlay over advanced stats for free users */}
         {!isPremium && (
-          <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-background/60 backdrop-blur-md rounded-2xl border border-border mt-[-10px] pb-4">
-            <div className="bg-card border border-border/50 p-6 rounded-[2rem] shadow-2xl flex flex-col items-center text-center max-w-[280px]">
-              <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center mb-4 text-primary">
+          <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-background/60 backdrop-blur-sm rounded-3xl border border-white/5 mt-[-10px] pb-4">
+            <div className="bg-card/90 backdrop-blur-2xl border border-border/50 p-6 rounded-[2.5rem] shadow-2xl flex flex-col items-center text-center max-w-[280px]">
+              <div className="h-14 w-14 rounded-2xl bg-primary/10 flex items-center justify-center mb-5 text-primary shadow-[0_0_20px_rgba(34,197,94,0.15)] ring-1 ring-primary/20">
                 <Lock className="h-6 w-6" />
               </div>
-              <h3 className="text-lg font-black tracking-tight mb-2">Unlock Advanced Stats</h3>
+              <h3 className="text-lg font-black tracking-tighter mb-2">Unlock Dashboard</h3>
               <p className="text-xs text-muted-foreground mb-6 font-medium leading-relaxed">
-                Get full access to your metabolic trends, streaks, and completion rates with Atara+.
+                Get full access to your streaks, metabolic trends, and daily AI performance coaching with Atara+.
               </p>
               <button
                 onClick={onOpenUpgrade}
-                className="w-full relative flex items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 text-sm font-bold text-primary-foreground shadow-lg shadow-primary/20 active:scale-[0.98] transition-all"
+                className="w-full relative flex items-center justify-center gap-2 rounded-2xl bg-primary px-4 py-3.5 text-sm font-black tracking-wide text-primary-foreground shadow-lg shadow-primary/20 active:scale-95 transition-all outline-none"
               >
                 <Sparkles className="w-4 h-4" />
-                Upgrade Now
+                UPGRADE NOW
               </button>
             </div>
           </div>
         )}
 
-        <div className={`grid grid-cols-2 gap-3 mb-8 ${!isPremium ? "opacity-30 pointer-events-none" : ""}`}>
-          <StatCard icon={Flame} label={t.currentStreak} value={stats.currentStreak} sub={t.days} />
-          <StatCard icon={TrendingUp} label={t.longestStreak} value={stats.longestStreak} sub={t.days} />
-        </div>
-
-        <div className={`grid grid-cols-2 gap-3 mb-8 ${!isPremium ? "opacity-20 pointer-events-none" : ""}`}>
-          <StatCard icon={Clock} label={t.avgDuration} value={`${stats.avgDuration}h`} />
-          <StatCard icon={Target} label={t.completionRate} value={`${stats.completionRate}%`} sub={t.hitTarget} />
-        </div>
-
-        {/* AI Analysis Section */}
-        {isPremium && (
-          <div className="rounded-[2rem] border border-primary/30 bg-primary/5 p-6 mb-8 mt-2 relative overflow-hidden">
-            <div className="absolute top-0 right-0 p-4 opacity-10 blur-xl">
-              <Sparkles className="w-32 h-32 text-primary" />
-            </div>
-            <h3 className="text-xl font-black tracking-tighter text-foreground mb-4 flex items-center gap-3">
-              <span className="h-10 w-10 flex items-center justify-center bg-primary/20 rounded-xl text-primary border border-primary/20">
-                <Sparkles className="h-5 w-5" />
-              </span>
-              Atara AI Coach
-            </h3>
-
-            {aiAnalysis ? (
-              <div className="text-sm text-foreground/90 leading-relaxed relative z-10 font-medium">
-                {formatAiText(aiAnalysis)}
+        {/* 1. Glowing Streak Circle */}
+        <div className={`relative flex justify-center py-4 mb-4 ${!isPremium ? "opacity-30 pointer-events-none" : ""}`}>
+          <div className="relative flex items-center justify-center w-64 h-64">
+            <svg width="256" height="256" viewBox="0 0 256 256" className="transform -rotate-90">
+              <defs>
+                <filter id="green-glow" x="-50%" y="-50%" width="200%" height="200%">
+                  <feGaussianBlur stdDeviation="15" result="blur" />
+                  <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                </filter>
+              </defs>
+              {/* Background ring */}
+              <circle cx="128" cy="128" r="110" stroke="rgba(255,255,255,0.05)" strokeWidth="12" fill="none" />
+              {/* Colored glow ring */}
+              <circle cx="128" cy="128" r="110" stroke="oklch(var(--primary))" strokeWidth="12" fill="none"
+                strokeDasharray={circumference} strokeDashoffset={strokeDashoffset} strokeLinecap="round" filter="url(#green-glow)" />
+              {/* Inner white indicator ring */}
+              <circle cx="128" cy="128" r="110" stroke="#ffffff" strokeWidth="6" fill="none"
+                strokeDasharray={circumference} strokeDashoffset={strokeDashoffset} strokeLinecap="round" />
+            </svg>
+            <div className="absolute flex flex-col items-center justify-center text-center inset-0">
+              <div className="flex gap-1.5 mb-2 mt-4 text-xl">🔥🌿</div>
+              <div className="text-6xl font-black text-foreground tracking-tighter mb-0 tabular-nums leading-none flex items-baseline">
+                {stats.currentStreak}
               </div>
-            ) : (
-              <div className="flex flex-col gap-3">
+              <div className="text-[12px] uppercase tracking-[0.2em] text-foreground font-black mb-1 mt-1 z-10">{t.days || "DAYS"}</div>
+              <div className="text-[11px] font-bold text-foreground/80 lowercase mt-1 tracking-wide">{t.currentStreak || "Current Streak"}</div>
+              <div className="text-[10px] font-medium text-muted-foreground mt-0.5 tracking-wide bg-secondary/30 px-2 py-0.5 rounded-full border border-border/30">On a Roll! 🌿</div>
+            </div>
+          </div>
+        </div>
+
+        {/* 2. Weekly Activity Chart (Glowing Area) */}
+        <div className={`rounded-3xl border border-white/5 bg-secondary/30 p-5 shadow-sm mb-4 transition-opacity ${!isPremium ? "opacity-30 pointer-events-none" : ""}`}>
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h3 className="text-[17px] font-bold text-foreground tracking-tight mb-1">{t.weeklyActivity || "Weekly Activity"}</h3>
+              <p className="text-[13px] font-medium text-muted-foreground">
+                Active Time: <span className="text-foreground/90">{stats.avgDuration} hrs/avg</span>
+              </p>
+            </div>
+          </div>
+
+          <div className="h-44 pr-2 -ml-2">
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart data={weeklyData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                <defs>
+                  <linearGradient id="colorHours" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#4ADE80" stopOpacity={0.3} />
+                    <stop offset="95%" stopColor="#4ADE80" stopOpacity={0} />
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" vertical={true} horizontal={true} stroke="rgba(255,255,255,0.06)" />
+                <XAxis dataKey="label" tick={{ fontSize: 11, fill: "rgba(255,255,255,0.5)" }} axisLine={false} tickLine={false} tickMargin={12} />
+                <YAxis tickCount={5} tick={{ fontSize: 11, fill: "rgba(255,255,255,0.5)" }} axisLine={false} tickLine={false} tickFormatter={(v) => `${v}h`} tickMargin={12} />
+                <Tooltip content={<ChartTooltip />} cursor={{ stroke: "rgba(255,255,255,0.1)", strokeWidth: 1, strokeDasharray: "4 4" }} />
+                <Area
+                  type="monotone"
+                  dataKey="hours"
+                  stroke="#4ADE80"
+                  strokeWidth={3}
+                  fillOpacity={1}
+                  fill="url(#colorHours)"
+                  dot={{ r: 4, fill: "#fff", stroke: "#4ADE80", strokeWidth: 2 }}
+                  activeDot={{ r: 7, fill: "#fff", stroke: "#4ADE80", strokeWidth: 2, className: "drop-shadow-[0_0_8px_rgba(74,222,128,1)]" }}
+                  className="drop-shadow-[0_0_6px_rgba(74,222,128,0.4)]"
+                />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
+        {/* 3. Weekly Stats Counters */}
+        <div className={`rounded-[2rem] border border-border/80 bg-secondary/20 p-5 shadow-sm backdrop-blur-sm mb-6 transition-opacity ${!isPremium ? "opacity-30 pointer-events-none" : ""}`}>
+          <div className="flex items-center justify-between mb-5 px-1">
+            <h3 className="text-sm font-black text-foreground tracking-tight">{t.weeklyStats || "Weekly Stats"}</h3>
+          </div>
+
+          <div className="grid grid-cols-3 gap-2 divide-x divide-border/50 px-1">
+            <div className="flex justify-center flex-col">
+              <span className="text-[9px] font-black uppercase text-muted-foreground tracking-widest mb-1">{t.totalHours || "Total Hours"}</span>
+              <span className="text-xl sm:text-2xl font-black text-foreground mb-1 tabular-nums tracking-tighter leading-none">{stats.totalHours}<span className="text-sm">h</span></span>
+              <span className="text-[8px] font-bold text-primary flex items-center gap-0.5 tracking-wide">▲ +12%</span>
+            </div>
+            <div className="flex justify-center flex-col pl-4">
+              <span className="text-[9px] font-black uppercase text-muted-foreground tracking-widest mb-1">{t.completionRate || "Avg Focus"}</span>
+              <span className="text-xl sm:text-2xl font-black text-foreground mb-1 tabular-nums tracking-tighter leading-none">{stats.completionRate}<span className="text-sm">%</span></span>
+              <span className="text-[8px] font-bold text-primary flex items-center gap-0.5 tracking-wide">▲ +5%</span>
+            </div>
+            <div className="flex justify-center flex-col pl-4">
+              <span className="text-[9px] font-black uppercase text-muted-foreground tracking-widest mb-1">{t.longestStreak || "Peak Perf."}</span>
+              <span className="text-xl sm:text-2xl font-black text-foreground mb-1 tabular-nums tracking-tighter leading-none">{stats.longestStreak}<span className="text-sm">d</span></span>
+              <span className="text-[8px] font-bold text-transparent select-none flex items-center gap-0.5 tracking-wide">▲</span>
+            </div>
+          </div>
+        </div>
+
+        {/* 4. AI Coach Dashboard Card */}
+        {isPremium && (
+          <div className="rounded-[2rem] border border-primary/20 bg-[#0B1510] p-6 mb-8 relative overflow-hidden group shadow-[0_4px_30px_rgba(34,197,94,0.05)]">
+            <div className="absolute top-0 right-0 p-4 opacity-30 blur-[40px] group-hover:opacity-50 transition-opacity duration-1000">
+              <Sparkles className="w-40 h-40 text-primary" />
+            </div>
+
+            <div className="flex items-start justify-between mb-4 relative z-10">
+              <div>
+                <h3 className="text-lg font-black tracking-tight text-foreground mb-1">AI Coach</h3>
+                <p className="text-[11px] font-bold text-primary/80">
+                  {isUserLoaded && user?.firstName ? `Hi ${user.firstName}!` : "Ready to optimize?"}
+                </p>
+              </div>
+              <div className="h-10 w-10 flex items-center justify-center bg-primary/10 rounded-xl text-primary border border-primary/20 flex-shrink-0 relative">
+                <div className="absolute inset-0 rounded-xl bg-primary/20 blur-sm"></div>
+                <span className="text-lg font-black italic relative z-10">A</span>
+              </div>
+            </div>
+
+            <div className="relative z-10 min-h-[60px]">
+              {aiAnalysis ? (
+                <div className="text-[13px] text-foreground/80 leading-relaxed font-medium mb-2">
+                  {formatAiText(aiAnalysis)}
+                </div>
+              ) : (
+                <div className="text-[13px] text-foreground/80 leading-relaxed font-medium mb-6 max-w-[90%]">
+                  Based on your activity, let's optimize your focus.<br /><br />
+                  Ready for a new challenge? Generate your latest insights below.
+                </div>
+              )}
+            </div>
+
+            {!aiAnalysis && (
+              <div className="flex items-center gap-3 relative z-10 w-full mb-4">
                 <button
                   onClick={handleAnalyze}
                   disabled={isAnalyzing || history.length === 0 || !quota.canUse}
-                  className="w-full flex items-center justify-center gap-2 rounded-2xl bg-primary px-4 py-3.5 text-sm font-bold text-primary-foreground shadow-lg shadow-primary/20 active:scale-[0.98] transition-all disabled:opacity-50 relative z-10 uppercase tracking-widest mt-2"
+                  className="flex-1 py-3.5 rounded-2xl bg-white text-black font-black text-xs tracking-wide shadow-lg shadow-white/10 hover:shadow-white/20 active:scale-95 transition-all outline-none disabled:opacity-50 whitespace-nowrap"
                 >
-                  {isAnalyzing ? "Analyzing metabolism..." : "Generate AI Insights"}
+                  {isAnalyzing ? "Analyzing..." : "Generate Insights"}
                 </button>
-
-                {!quota.canUse && (
-                  <div className="rounded-2xl border border-destructive/20 bg-destructive/5 p-5 text-center relative overflow-hidden group">
-                    <div className="flex items-center justify-center gap-2 text-destructive font-black uppercase tracking-widest text-[10px] mb-3">
-                      <Lock className="h-3 w-3" />
-                      {lang === 'bg' ? 'Лимитът е достигнат' : 'Limit reached'}
-                    </div>
-
-                    <p className="text-xs font-medium text-muted-foreground/80 leading-relaxed mb-4">
-                      {isPremium
-                        ? (lang === 'bg'
-                          ? 'Atara+ включва 1 анализ на ден (5 на седмица). Вашата квота е изчерпана за днес.'
-                          : 'Atara+ includes 1 analysis per day (5 per week). Your quota is exhausted for today.')
-                        : (lang === 'bg'
-                          ? 'Безплатният план включва 1 анализ на месец. Atara+ предлага ежедневен коучинг.'
-                          : 'Free plan includes 1 analysis per month. Atara+ offers daily coaching.')
-                      }
-                    </p>
-
-                    {!isPremium && (
-                      <button
-                        onClick={onOpenUpgrade}
-                        className="text-[10px] font-black text-primary uppercase tracking-[0.2em] hover:opacity-80 transition-opacity flex items-center gap-2 mx-auto"
-                      >
-                        {lang === 'bg' ? 'Ъпгрейд за повече достъп' : 'Upgrade for more access'}
-                        <span className="text-sm">→</span>
-                      </button>
-                    )}
-                  </div>
-                )}
-                {quota.canUse && (
-                  <p className="text-[10px] text-muted-foreground text-center font-bold tracking-widest opacity-60 uppercase">
-                    {isPremium
-                      ? `${quota.remaining} Weekly Credits Left`
-                      : "1 Monthly Credit Remaining"}
-                  </p>
-                )}
               </div>
             )}
-            {history.length === 0 && !aiAnalysis && (
-              <p className="text-[10px] text-muted-foreground uppercase tracking-widest mt-3 text-center opacity-70">Complete your first fast to use AI</p>
+
+            {!quota.canUse && (
+              <div className="mt-4 rounded-xl border border-destructive/20 bg-destructive/10 p-3 flex items-center justify-between relative z-10">
+                <div className="flex items-center gap-2 text-destructive font-bold text-[10px] uppercase tracking-widest">
+                  <Lock className="h-3 w-3" />
+                  Limit reached
+                </div>
+                <span className="text-[10px] text-muted-foreground">Try again tomorrow</span>
+              </div>
+            )}
+            {quota.canUse && (
+              <p className="text-[9px] text-muted-foreground font-bold tracking-widest uppercase mt-4 text-center opacity-60 relative z-10">
+                {isPremium
+                  ? `${quota.remaining} Weekly Credits Left`
+                  : "1 Monthly Credit Remaining"}
+              </p>
             )}
           </div>
         )}
-
-        {/* Weekly chart */}
-        <div className={`rounded-xl border border-border bg-card p-4 ${!isPremium ? "opacity-10 pointer-events-none" : ""}`}>
-          <h3 className="text-sm font-semibold text-foreground mb-4">{t.weeklyFastingHours}</h3>
-          {history.length === 0 ? (
-            <div className="flex items-center justify-center py-8">
-              <p className="text-sm text-muted-foreground">Complete your first fast to see trends</p>
-            </div>
-          ) : (
-            <ResponsiveContainer width="100%" height={180}>
-              <BarChart data={weeklyData}>
-                <XAxis
-                  dataKey="label"
-                  tick={{ fontSize: 10 }}
-                  tickLine={false}
-                  axisLine={false}
-                  className="fill-muted-foreground"
-                />
-                <YAxis
-                  tick={{ fontSize: 10 }}
-                  tickLine={false}
-                  axisLine={false}
-                  width={30}
-                  className="fill-muted-foreground"
-                />
-                <Tooltip
-                  cursor={{ fill: 'transparent' }}
-                  content={<ChartTooltip />}
-                />
-                <Bar
-                  dataKey="hours"
-                  radius={[6, 6, 6, 6]}
-                  barSize={32}
-                  className="transition-all"
-                >
-                  {weeklyData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
-                  ))}
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
-          )}
-        </div>
       </div>
     </div>
   )

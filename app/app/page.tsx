@@ -1,7 +1,7 @@
 "use client"
 
-import { useState, useEffect, useCallback } from "react"
-import { Timer, CalendarDays, BarChart3, Settings, BookOpen } from "lucide-react"
+import { useState, useEffect, useCallback, useMemo } from "react"
+import { Timer, History, BarChart3, Settings, BookOpen, Info } from "lucide-react"
 import { Logo } from "@/components/logo"
 import { TimerView } from "@/components/timer-view"
 import { HistoryView } from "@/components/history-view"
@@ -12,11 +12,13 @@ import { SettingsSheet } from "@/components/settings-sheet"
 import { UpgradeDialog } from "@/components/upgrade-dialog"
 import { getHistory, type FastingRecord } from "@/lib/storage"
 import { useLang } from "@/lib/language-context"
+import { useSubscription } from "@/lib/subscription"
 
 type Tab = "timer" | "history" | "stats" | "plan"
 
 export default function Home() {
   const { t, lang, setLang } = useLang()
+  const { isPremium } = useSubscription()
   const [activeTab, setActiveTab] = useState<Tab>("timer")
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [upgradeOpen, setUpgradeOpen] = useState(false)
@@ -25,7 +27,8 @@ export default function Home() {
 
   useEffect(() => {
     setMounted(true)
-    setHistory(getHistory())
+    const rawHistory = getHistory()
+    setHistory(rawHistory)
 
     // Register Service Worker for Notifications
     if ("serviceWorker" in navigator) {
@@ -37,9 +40,21 @@ export default function Home() {
     setHistory(getHistory())
   }, [])
 
+  const displayHistory = useMemo(() => {
+    if (isPremium) return history
+    const thirtyDaysAgo = new Date()
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
+    return history.filter(r => new Date(r.startTime) >= thirtyDaysAgo)
+  }, [history, isPremium])
+
+  const hasHiddenRecords = useMemo(() => {
+    if (isPremium) return false
+    return displayHistory.length < history.length
+  }, [history, displayHistory, isPremium])
+
   const tabs = [
-    { id: "history" as Tab, label: t.history, icon: CalendarDays },
-    { id: "stats" as Tab, label: t.stats, icon: BarChart3 },
+    { id: "history" as Tab, label: t.history, icon: History },
+    { id: "stats" as Tab, label: t.stats, icon: Info },
     { id: "timer" as Tab, label: t.timer, icon: Timer },
     { id: "plan" as Tab, label: t.plan, icon: BookOpen },
   ]
@@ -53,7 +68,7 @@ export default function Home() {
   }
 
   return (
-    <main className="flex min-h-svh flex-col bg-background mx-auto max-w-md px-2">
+    <main className="flex min-h-svh flex-col bg-background mx-auto max-w-md px-2 pb-32">
       <header className="flex items-center justify-center px-5 pt-6 pb-4">
         <Logo className="h-6 w-auto text-foreground" />
       </header>
@@ -63,17 +78,21 @@ export default function Home() {
         {activeTab === "timer" && (
           <TimerView
             onFastEnd={refreshHistory}
-            history={history}
+            history={displayHistory}
             onNavigateToHistory={() => setActiveTab("history")}
           />
         )}
         {activeTab === "history" && (
-          <HistoryView history={history} onHistoryChange={refreshHistory} />
+          <HistoryView
+            history={displayHistory}
+            hasHiddenRecords={hasHiddenRecords}
+            onHistoryChange={refreshHistory}
+          />
         )}
         {activeTab === "stats" && (
-          <PremiumGate featureName="Statistics" blur>
+          <PremiumGate featureName={t.statsTitle} blur>
             <StatsView
-              history={history}
+              history={displayHistory}
               onOpenSettings={() => setSettingsOpen(true)}
               onOpenUpgrade={() => setUpgradeOpen(true)}
             />
@@ -83,7 +102,7 @@ export default function Home() {
       </div>
 
       {/* Bottom Tab Bar */}
-      <nav className="sticky bottom-0 flex items-center justify-around border-t border-border bg-background/80 backdrop-blur-lg px-2 pb-[env(safe-area-inset-bottom)] pt-1">
+      <nav className="fixed bottom-0 inset-x-0 mx-auto max-w-md flex items-center justify-around border-t border-border bg-background/80 backdrop-blur-lg px-2 pb-[env(safe-area-inset-bottom)] pt-2 z-50">
         {tabs.map(({ id, label, icon: Icon }) => (
           <button
             key={id}
@@ -91,7 +110,7 @@ export default function Home() {
               setActiveTab(id)
               if (id === "history" || id === "stats") refreshHistory()
             }}
-            className={`flex flex-col items-center gap-0.5 px-4 py-2 text-xs font-medium transition-colors ${activeTab === id
+            className={`flex flex-col items-center gap-1 px-4 py-2 text-[10px] font-black uppercase tracking-widest transition-colors ${activeTab === id
               ? "text-primary"
               : "text-muted-foreground hover:text-foreground"
               }`}

@@ -5,6 +5,7 @@ import { FASTING_PRESETS, CUSTOM_PRESET, type FastingPreset } from "@/lib/preset
 import { useLang } from "@/lib/language-context"
 import { motion, AnimatePresence } from "framer-motion"
 import { ChevronLeft, Info, Sparkles, Settings } from "lucide-react"
+import { PresetGrid } from "@/components/preset-grid"
 
 export function PlanView() {
   const { t, lang, setLang } = useLang()
@@ -54,45 +55,9 @@ export function PlanView() {
 
       </div>
 
-      <motion.div
-        variants={container}
-        initial="hidden"
-        animate="show"
-        className="grid grid-cols-2 gap-3"
-      >
-        {allPresets.map((preset) => {
-          const content = (t.planContent as any)?.[preset.id] || { name: preset.name }
-          return (
-            <motion.button
-              key={preset.id}
-              variants={item}
-              whileTap={{ scale: 0.96 }}
-              onClick={() => setSelectedPlan(preset)}
-              className="group relative flex flex-col items-center justify-center gap-4 rounded-[2.5rem] border border-border/50 bg-card p-6 text-center transition-all hover:border-primary/30 shadow-lg active:bg-secondary/20 overflow-hidden"
-            >
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-
-              <div
-                className="flex h-14 w-14 items-center justify-center rounded-2xl text-xl font-black shadow-xl relative z-10"
-                style={{
-                  backgroundColor: preset.color,
-                  color: "white",
-                  boxShadow: `0 8px 16px -4px ${preset.color}60`
-                }}
-              >
-                {preset.fastHours > 0 ? preset.fastHours : "?"}
-              </div>
-
-              <div className="relative z-10 w-full">
-                <p className="text-xs sm:text-sm font-black text-foreground leading-tight tracking-tight truncate px-1">{content.name}</p>
-                <p className="text-[9px] font-black text-muted-foreground uppercase tracking-[0.2em] mt-1.5 opacity-50">
-                  {preset.fastHours > 0 ? `${preset.fastHours}:${preset.eatHours}` : t.customFast}
-                </p>
-              </div>
-            </motion.button>
-          )
-        })}
-      </motion.div>
+      <div className="mt-2">
+        <PresetGrid onSelect={(preset) => setSelectedPlan(preset)} showHeader={false} />
+      </div>
 
       {/* Educational Section */}
       <div className="mt-12 mb-6 px-1">
@@ -105,23 +70,27 @@ export function PlanView() {
         animate="show"
         className="space-y-3"
       >
+        {/* Educational Cards */}
         {(t.educationalCards as any[])?.map((card) => (
           <motion.button
             key={card.id}
             variants={item}
             whileTap={{ scale: 0.98 }}
             onClick={() => setSelectedCard(card)}
-            className="w-full group relative flex flex-col items-start gap-2 rounded-[2rem] border border-border/40 bg-card/40 p-5 text-left transition-all hover:border-primary/20 hover:bg-card/60"
+            className="w-full group relative flex flex-col items-start gap-3 rounded-[1.5rem] border border-white/5 bg-secondary/20 p-5 text-left transition-all hover:bg-secondary/30 active:scale-[0.99] overflow-hidden"
           >
-            <div className="flex w-full items-start justify-between gap-4">
+            {/* Subtle Accent Glow */}
+            <div className="absolute -right-4 -bottom-4 w-12 h-12 rounded-full bg-primary/10 blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
+
+            <div className="flex w-full items-start justify-between gap-4 relative z-10">
               <h4 className="text-sm font-black text-foreground tracking-tight leading-snug flex-1">
                 {card.title}
               </h4>
-              <div className="h-6 w-6 rounded-full bg-secondary/50 flex items-center justify-center shrink-0">
-                <Info className="h-3 w-3 text-primary/60" />
+              <div className="h-8 w-8 rounded-xl bg-background/50 border border-white/5 flex items-center justify-center shrink-0">
+                <Info className="h-4 w-4 text-primary/60" />
               </div>
             </div>
-            <p className="text-xs text-muted-foreground leading-relaxed opacity-70">
+            <p className="text-xs font-medium text-muted-foreground leading-relaxed opacity-70 relative z-10">
               {card.short}
             </p>
           </motion.button>
@@ -232,7 +201,7 @@ export function PlanView() {
           </button>
           <div className="flex flex-col">
             <h3 className="font-black text-xl text-foreground tracking-tight leading-tight flex-1 line-clamp-1">{card.title}</h3>
-            <p className="text-[10px] font-black text-primary/60 uppercase tracking-widest mt-1">Основи на гладуването</p>
+            <p className="text-[10px] font-black text-primary/60 uppercase tracking-widest mt-1">{t.fastingBasics}</p>
           </div>
         </header>
 
@@ -253,7 +222,7 @@ export function PlanView() {
               onClick={() => setSelectedCard(null)}
               className="w-full py-4 rounded-2xl bg-primary text-primary-foreground font-black text-sm tracking-wide shadow-lg shadow-primary/20 active:scale-95 transition-all"
             >
-              Разбрах
+              {t.understood}
             </button>
           </div>
         </div>

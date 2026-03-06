@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect, useCallback } from "react"
+import { getSettings } from "@/lib/storage"
 
 export function useNotifications() {
     const [permission, setPermission] = useState<NotificationPermission>("default")
@@ -20,6 +21,7 @@ export function useNotifications() {
 
     const sendNotification = useCallback(async (title: string, options?: NotificationOptions) => {
         if (typeof window === "undefined" || !("Notification" in window) || Notification.permission !== "granted") return
+        if (!getSettings().notificationsEnabled) return
 
         // Prefer SW postMessage — works reliably on iOS PWA
         if ("serviceWorker" in navigator) {

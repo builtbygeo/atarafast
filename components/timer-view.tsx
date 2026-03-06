@@ -64,7 +64,7 @@ const haptic = (vibration = [50]) => {
 }
 
 export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerViewProps) {
-  const { t } = useLang()
+  const { t, lang } = useLang()
   const { sendNotification } = useNotifications()
   const [activeFast, setActiveFast] = useState<FastingRecord | null>(null)
   const [viewState, setViewState] = useState<ViewState>("presets")
@@ -222,7 +222,9 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
     const targetMs = activeFast.targetHours * 3600000
     const remainingMs = Math.max(0, targetMs - elapsedMs)
     const isComplete = elapsedMs >= targetMs
-    const percentage = Math.min(100, Math.floor((elapsedMs / targetMs) * 100))
+    const percentage = settings.timerDirection === "down" && !isComplete
+      ? Math.max(0, Math.floor((remainingMs / targetMs) * 100))
+      : Math.min(100, Math.floor((elapsedMs / targetMs) * 100))
 
     const formatTime = (ms: number) => {
       const totalSeconds = Math.floor(ms / 1000)
@@ -310,7 +312,9 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
               <span className="block text-2xl font-black text-foreground mb-0.5 tracking-tighter leading-none">
                 {activeFast.targetHours}:00
               </span>
-              <span className="block text-xs font-semibold text-muted-foreground opacity-80 mt-1">{t.fastComplete || "Fast Complete"}</span>
+              <span className="block text-xs font-semibold text-muted-foreground opacity-80 mt-1">
+                {isComplete ? (t.fastComplete || "Fast Complete") : (lang === 'bg' ? 'В прогрес' : 'In Progress')}
+              </span>
             </button>
           </div>
 
@@ -339,10 +343,10 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
           {/* Share */}
           <button
             onClick={() => setShowShare(true)}
-            className="flex items-center justify-center gap-2 py-2 text-[11px] font-black text-muted-foreground/60 uppercase tracking-widest hover:text-primary/60 transition-colors active:scale-95"
+            className="mt-6 flex items-center justify-center gap-2 rounded-2xl bg-secondary/80 px-8 py-3.5 text-sm font-black text-foreground shadow-sm backdrop-blur-md transition-all hover:bg-secondary active:scale-95 border border-border/50 uppercase tracking-widest"
           >
-            <Share2 className="h-3.5 w-3.5" />
-            Сподели в Stories
+            <Share2 className="h-4 w-4" />
+            {t.shareStories || "Сподели в Stories"}
           </button>
         </div>
 
@@ -400,11 +404,13 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
 
         {/* New user onboarding nudge */}
         {isNewUser && (
-          <div className="mt-4 mb-2 bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20 rounded-2xl p-4 flex items-start gap-3">
-            <Flame className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+          <div className="mt-4 mb-2 bg-primary/5 border border-primary/20 rounded-2xl p-4 flex items-start gap-4 shadow-[0_0_20px_-10px_rgba(34,197,94,0.2)]">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 border border-primary/20">
+              <Flame className="h-5 w-5 text-primary" />
+            </div>
             <div>
-              <p className="text-sm font-black text-foreground">{t.welcomeTitle || "Добре дошли!"}</p>
-              <p className="text-xs text-muted-foreground font-medium mt-0.5 leading-relaxed">
+              <p className="text-[10px] font-black text-primary uppercase tracking-[0.2em] mb-1">{t.welcomeTitle || "Добре дошли!"}</p>
+              <p className="text-xs text-foreground/80 font-semibold leading-relaxed">
                 {t.welcomeHint || "Изберете план по-долу и прочетете за различните протоколи за гладуване."}
               </p>
             </div>
@@ -413,24 +419,30 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
 
         {/* Last fast summary card (only if has history and no active fast) */}
         {lastCompleted && !activeFast && !isNewUser && (
-          <div className="mt-4 mb-2 bg-secondary/20 border border-border/40 rounded-2xl p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-[9px] font-black uppercase tracking-[0.2em] text-muted-foreground opacity-60">{t.lastFast || "ПОСЛЕДЕН ФАСТ"}</p>
-                <p className="text-sm font-black text-foreground mt-0.5">
+          <div className="mt-4 mb-2 relative bg-secondary/20 border border-white/10 rounded-[1.5rem] p-5 pt-4 overflow-hidden group">
+            {/* Visual Indicator Line */}
+            <div
+              className="absolute left-0 top-4 bottom-4 w-1 rounded-r-full"
+              style={{ backgroundColor: getPresetById(lastCompleted.presetId)?.color || '#22c55e' }}
+            />
+
+            <div className="flex items-center justify-between pl-2">
+              <div className="flex flex-col gap-0.5">
+                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground opacity-60 mb-1">{t.lastFast || "LAST FAST"}</span>
+                <span className="text-lg font-black text-foreground">
                   {getPresetById(lastCompleted.presetId)?.name || lastCompleted.presetId}
-                </p>
+                </span>
               </div>
-              <div className="text-right">
-                <p className="text-[9px] font-black uppercase tracking-[0.2em] text-muted-foreground opacity-60">{t.duration || "ПРОДЪЛЖИТЕЛНОСТ"}</p>
-                <p className="text-sm font-black text-foreground mt-0.5 font-mono">
+              <div className="text-right flex flex-col gap-0.5">
+                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground opacity-60 mb-1">{t.duration || "DURATION"}</span>
+                <span className="text-lg font-black text-foreground font-mono tabular-nums tracking-tight">
                   {(() => {
                     const ms = new Date(lastCompleted.endTime!).getTime() - new Date(lastCompleted.startTime).getTime()
                     const h = Math.floor(ms / 3600000)
                     const m = Math.floor((ms % 3600000) / 60000)
                     return `${h}ч ${m}м`
                   })()}
-                </p>
+                </span>
               </div>
             </div>
           </div>

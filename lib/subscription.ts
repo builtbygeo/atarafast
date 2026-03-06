@@ -41,8 +41,14 @@ export function useSubscription() {
     const isClockTrial = daysSinceSignup < TRIAL_DAYS
     const trialDaysLeft = isClockTrial ? Math.ceil(TRIAL_DAYS - daysSinceSignup) : 0
 
-    const isPremium = hasStripePremium || isClockTrial
-    const isTrialing = isClockTrial && !hasStripePremium
+    // Free access list
+    const userEmail = user?.primaryEmailAddress?.emailAddress
+    const FREE_EMAILS = ["gag1000x@icloud.com", "atara.app.team@gmail.com"] // Hardcoded fallback or use env var
+    const envEmails = process.env.NEXT_PUBLIC_FREE_USERS?.split(",") || []
+    const isFreeAccessEmail = Boolean(userEmail && (FREE_EMAILS.includes(userEmail) || envEmails.includes(userEmail)))
+
+    const isPremium = hasStripePremium || isClockTrial || isFreeAccessEmail
+    const isTrialing = isClockTrial && !hasStripePremium && !isFreeAccessEmail
 
     const status: SubscriptionStatus = hasStripePremium
         ? (stripeStatus as SubscriptionStatus)

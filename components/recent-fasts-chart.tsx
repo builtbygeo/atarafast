@@ -121,23 +121,18 @@ export function RecentFastsChart({ history, activeFast, onAddClick, onSeeMoreCli
                         const label = isSameDay(date, new Date()) ? "TODAY" : format(date, "M/d")
 
                         return (
-                            <div key={fast.id} className="flex-1 flex flex-col items-center gap-2 group relative z-10 h-full justify-end">
+                            <div key={fast.id} className="flex-1 flex flex-col items-center gap-2 relative z-10 h-full justify-end">
                                 <div className="relative w-full flex flex-col items-center justify-end h-full">
-                                    <span className={`absolute -top-6 text-[9px] font-black transition-opacity opacity-0 group-hover:opacity-100 bg-background/80 px-1 rounded whitespace-nowrap z-50 ${fast.completed ? "text-primary" : "text-orange-500"}`}>
-                                        {Math.round(duration)}h
-                                    </span>
-                                    <div className="text-[7.5px] font-black text-muted-foreground/40 mb-1 opacity-100 group-hover:opacity-0 transition-opacity tabular-nums">
+                                    <div className="text-xs font-black text-foreground mb-1 tabular-nums transition-all">
                                         {Math.round(duration)}h
                                     </div>
                                     <motion.div
                                         initial={{ height: 0 }}
-                                        animate={{ height: `${Math.max(6, height)}%` }}
-                                        className={`w-full rounded-t-full transition-all group-hover:shadow-[0_0_20px_-3px_var(--chart-color)] ${fast.completed ? "bg-primary shadow-[0_0_10px_rgba(var(--primary-rgb),0.2)]" : "bg-orange-500/70"
-                                            }`}
-                                        style={{
-                                            "--chart-color": fast.completed ? "oklch(var(--primary))" : "oklch(0.6 0.15 35)"
-                                        } as any}
-                                    />
+                                        animate={{ height: `${Math.max(10, height)}%` }}
+                                        className="w-full max-w-[28px] rounded-t-full bg-border transition-all flex justify-center pt-2"
+                                    >
+                                        <div className={`w-2.5 h-2.5 rounded-full ${fast.completed ? "bg-primary shadow-[0_0_8px_var(--primary)]" : "bg-orange-500"}`} />
+                                    </motion.div>
                                 </div>
                                 <span className={`text-[8px] font-black uppercase tracking-tighter ${label === "TODAY" ? "text-primary" : "text-muted-foreground/50"}`}>
                                     {label}

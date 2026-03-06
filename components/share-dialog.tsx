@@ -77,13 +77,13 @@ function ActiveShareCard({ elapsedMs, targetHours, presetId, percentage }: Omit<
                 </div>
 
                 <p style={{ color: "#ffffff50", fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.2em", marginBottom: 10 }}>
-                    {isComplete ? "ПОСТИГНАТО" : "В МОМЕНТА"}
+                    {isComplete ? t.shareAchieved : t.shareCurrent}
                 </p>
                 <h1 style={{ color: "#ffffff", fontSize: 54, fontWeight: 900, lineHeight: 1, letterSpacing: "-0.03em", margin: 0 }}>
                     {formatHms(elapsedMs)}
                 </h1>
                 <p style={{ color: "#22c55e", fontSize: 16, fontWeight: 700, marginTop: 12, letterSpacing: "0.05em" }}>
-                    {preset?.name || presetId} · {targetHours}ч цел
+                    {preset?.name || presetId} · {targetHours} {t.hGoal || "h goal"}
                 </p>
             </div>
 
@@ -101,16 +101,16 @@ function ActiveShareCard({ elapsedMs, targetHours, presetId, percentage }: Omit<
                     }} />
                 </div>
                 <p style={{ color: "#ffffff40", fontSize: 12, fontWeight: 700, letterSpacing: "0.15em" }}>
-                    {Math.min(percentage, 100)}% {isComplete ? "ЗАВЪРШЕНО 🎉" : "ПРОГРЕС"}
+                    {Math.min(percentage, 100)}% {isComplete ? t.shareCompleted : t.shareProgress}
                 </p>
             </div>
 
             {/* Phases */}
             <div style={{ display: "flex", gap: 8 }}>
                 {[
-                    { label: "Захар", color: "#f59e0b", pct: Math.min(100, (Math.min(elapsedMs / 3600000, 8) / 8) * 100) },
-                    { label: "Преход", color: "#fbbf24", pct: elapsedMs / 3600000 > 8 ? Math.min(100, ((Math.min(elapsedMs / 3600000, 12) - 8) / 4) * 100) : 0 },
-                    { label: "Кетоза", color: "#22c55e", pct: elapsedMs / 3600000 > 12 ? Math.min(100, ((elapsedMs / 3600000 - 12) / Math.max(targetHours - 12, 1)) * 100) : 0 },
+                    { label: t.shareSugar, color: "#f59e0b", pct: Math.min(100, (Math.min(elapsedMs / 3600000, 8) / 8) * 100) },
+                    { label: t.shareTransition, color: "#fbbf24", pct: elapsedMs / 3600000 > 8 ? Math.min(100, ((Math.min(elapsedMs / 3600000, 12) - 8) / 4) * 100) : 0 },
+                    { label: t.shareKetosis, color: "#22c55e", pct: elapsedMs / 3600000 > 12 ? Math.min(100, ((elapsedMs / 3600000 - 12) / Math.max(targetHours - 12, 1)) * 100) : 0 },
                 ].map(({ label, color, pct }) => pct > 0 && (
                     <div key={label} style={{
                         flex: 1, padding: "10px 12px", borderRadius: 12,
@@ -134,6 +134,7 @@ function ActiveShareCard({ elapsedMs, targetHours, presetId, percentage }: Omit<
 }
 
 function StatsShareCard({ history }: Omit<StatsShareCardProps, "type">) {
+    const { t } = useLang()
     const completed = history.filter(h => h.completed)
     const totalFasts = completed.length
     const totalMs = completed.reduce((acc, r) => {
@@ -189,23 +190,23 @@ function StatsShareCard({ history }: Omit<StatsShareCardProps, "type">) {
                 </div>
 
                 <p style={{ color: "#ffffff50", fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.2em", marginBottom: 12 }}>
-                    МОИТЕ ПОСТИЖЕНИЯ
+                    {t.shareAchievements}
                 </p>
                 <h1 style={{ color: "#ffffff", fontSize: 48, fontWeight: 900, lineHeight: 1, letterSpacing: "-0.03em", margin: 0 }}>
-                    {totalFasts} фаста
+                    {totalFasts} {t.shareFastsNum}
                 </h1>
                 <p style={{ color: "#22c55e", fontSize: 15, fontWeight: 700, marginTop: 10 }}>
-                    {formatHms(totalMs)} общо
+                    {formatHms(totalMs)} {t.shareTotal}
                 </p>
             </div>
 
             {/* Stats grid */}
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
                 {[
-                    { icon: "🔥", label: "Серия", value: `${streak} дни` },
-                    { icon: "⚡", label: "Ср. продължителност", value: `${avgHours}ч` },
-                    { icon: "✅", label: "Завършени", value: totalFasts },
-                    { icon: "🕐", label: "Общо часове", value: `${Math.round(totalMs / 3600000)}ч` },
+                    { icon: "🔥", label: t.shareStreak, value: `${streak} ${t.days || "дни"}` },
+                    { icon: "⚡", label: t.shareAvgDuration, value: `${avgHours}ч` },
+                    { icon: "✅", label: t.shareCompletedFasts, value: totalFasts },
+                    { icon: "🕐", label: t.shareTotalHours, value: `${Math.round(totalMs / 3600000)}ч` },
                 ].map(({ icon, label, value }) => (
                     <div key={label} style={{
                         padding: "16px", borderRadius: 16,
@@ -229,6 +230,7 @@ function StatsShareCard({ history }: Omit<StatsShareCardProps, "type">) {
 }
 
 export function ShareDialog(props: ShareDialogProps) {
+    const { t } = useLang()
     const cardRef = useRef<HTMLDivElement>(null)
     const [loading, setLoading] = useState(false)
     const [shared, setShared] = useState(false)
@@ -310,7 +312,7 @@ export function ShareDialog(props: ShareDialogProps) {
                                 ) : (
                                     <Share2 className="h-5 w-5" />
                                 )}
-                                Сподели
+                                {t.shareButton || "Share"}
                             </button>
                         )}
                         <button
@@ -319,7 +321,7 @@ export function ShareDialog(props: ShareDialogProps) {
                             className="flex-1 flex items-center justify-center gap-2 h-14 rounded-2xl bg-secondary text-foreground font-black text-sm tracking-wide border border-border/50 active:scale-95 transition-all disabled:opacity-60"
                         >
                             <Download className="h-5 w-5" />
-                            Запази
+                            {t.saveButton || "Save"}
                         </button>
                     </div>
 
@@ -329,7 +331,7 @@ export function ShareDialog(props: ShareDialogProps) {
                             animate={{ opacity: 1 }}
                             className="text-xs font-black text-primary/80 uppercase tracking-widest"
                         >
-                            ✓ Готово!
+                            {t.shareDone || "✓ Done!"}
                         </motion.p>
                     )}
 
@@ -338,7 +340,7 @@ export function ShareDialog(props: ShareDialogProps) {
                         className="flex items-center gap-2 text-xs font-black text-muted-foreground uppercase tracking-widest opacity-60 py-2"
                     >
                         <X className="h-3 w-3" />
-                        Затвори
+                        {t.closeButton || "Close"}
                     </button>
                 </motion.div>
             </motion.div>

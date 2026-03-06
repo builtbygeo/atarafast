@@ -15,11 +15,13 @@ export interface AiUsage {
   monthlyCount: number
   weeklyCount: number
   lastUsedDate: string | null
+  lastAiReport: string | null
 }
 
 export interface AppSettings {
   timerDirection: "up" | "down"
   timerStyle: "circle" | "triangle"
+  notificationsEnabled: boolean
 }
 
 interface StoredData {
@@ -38,6 +40,7 @@ const DEFAULT_DATA: StoredData = {
   settings: {
     timerDirection: "down",
     timerStyle: "circle",
+    notificationsEnabled: true,
   },
   lastFastInfo: null,
   aiUsage: {
@@ -46,6 +49,7 @@ const DEFAULT_DATA: StoredData = {
     monthlyCount: 0,
     weeklyCount: 0,
     lastUsedDate: null,
+    lastAiReport: null,
   }
 }
 
@@ -149,10 +153,15 @@ export function getSettings(): AppSettings {
   return loadData().settings
 }
 
-export function updateSettings(settings: Partial<AppSettings>): void {
+export function updateSettings(updates: Partial<AppSettings>): AppSettings {
   const data = loadData()
-  data.settings = { ...data.settings, ...settings }
+  data.settings = { ...data.settings, ...updates }
+  // Ensure default added for older saves
+  if (data.settings.notificationsEnabled === undefined) {
+    data.settings.notificationsEnabled = true
+  }
   saveData(data)
+  return data.settings
 }
 
 export function exportData(): string {
@@ -224,13 +233,7 @@ export function markApath(): void {
 }
 
 export function getAiUsage(): AiUsage {
-  const data = loadData()
-  // Ensure backward compatibility
-  if (!data.aiUsage) {
-    data.aiUsage = DEFAULT_DATA.aiUsage
-    saveData(data)
-  }
-
+  const data = loadData() // Load data to get the latest state including potential resets
   const now = new Date()
   const currentMonth = now.getMonth()
   const currentWeek = Math.floor(now.getDate() / 7)
@@ -247,6 +250,12 @@ export function getAiUsage(): AiUsage {
 
   saveData(data)
   return data.aiUsage
+}
+
+export function saveAiReport(report: string): void {
+  const data = loadData()
+  data.aiUsage.lastAiReport = report
+  saveData(data)
 }
 
 export function incrementAiUsage(): void {

@@ -28,12 +28,12 @@ const features = [
   {
     icon: '🌙',
     title: 'Science-Backed Plans',
-    desc: 'From Circadian 12h to OMAD 23h — every plan is grounded in metabolic science and optimized for real results.',
+    desc: 'From Circadian 12h to Warrior 20:4 — every plan is grounded in metabolic science and optimized for real results.',
   },
   {
     icon: '📱',
     title: 'Install as an App',
-    desc: 'Add Atara directly to your home screen — no App Store, no downloads. One tap to install, feels like a native app on iOS and Android.',
+    desc: 'Tap "Share" then "Add to Home Screen" on iOS, or "Install App" from your browser menu on Android. Feels like a native app.',
   },
   {
     icon: '🌍',
@@ -71,17 +71,17 @@ export default function LandingPage() {
     <div className="min-h-screen bg-[#0f0f0f] text-white" style={{ fontFamily: 'var(--font-inter), Inter, system-ui, sans-serif' }}>
       {/* Nav */}
       <nav className="fixed top-0 inset-x-0 z-50 flex items-center justify-between px-6 py-4 backdrop-blur-xl border-b" style={{ backgroundColor: 'rgba(15,15,15,0.8)', borderColor: 'rgba(255,255,255,0.05)' }}>
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center">
           <Logo className="w-24 text-white" />
         </div>
-        <div className="hidden sm:flex items-center gap-6 text-sm" style={{ color: 'rgba(255,255,255,0.6)' }}>
-          <a href="#features" className="hover:text-white transition-colors">Features</a>
-          <a href="#pricing" className="hover:text-white transition-colors">Pricing</a>
-          <Link href="/terms" className="hover:text-white transition-colors">Terms</Link>
+        <div className="hidden md:flex items-center gap-6 text-sm" style={{ color: 'rgba(255,255,255,0.6)' }}>
+          <a href="#features" className="hover:text-white transition-colors text-xs font-black uppercase tracking-widest">Features</a>
+          <a href="#philosophy" className="hover:text-white transition-colors text-xs font-black uppercase tracking-widest">Philosophy</a>
+          <a href="#pricing" className="hover:text-white transition-colors text-xs font-black uppercase tracking-widest">Pricing</a>
         </div>
         <Link
           href="/app"
-          className="rounded-xl font-bold text-sm px-5 py-2.5 transition-colors"
+          className="rounded-xl font-bold text-xs px-5 py-2.5 transition-colors uppercase tracking-widest"
           style={{ backgroundColor: '#22c55e', color: '#0f0f0f' }}
         >
           Launch App
@@ -129,7 +129,7 @@ export default function LandingPage() {
         <div className="relative w-full max-w-[420px] mx-auto mt-8">
           <div className="absolute bottom-0 left-0 right-0 h-40 pointer-events-none z-10" style={{ background: 'linear-gradient(to top, #0f0f0f, transparent)' }} />
           <Image
-            src="/hero-mockup-v2.png"
+            src="/atarahero.webp"
             alt="Atara app showing active fast with metabolic phase ring"
             width={520}
             height={650}
@@ -141,7 +141,7 @@ export default function LandingPage() {
       </section>
 
       {/* Ataraxia Origin */}
-      <section className="py-24 px-6 overflow-hidden bg-white/[0.02]">
+      <section id="philosophy" className="py-24 px-6 overflow-hidden bg-white/[0.02]">
         <div className="max-w-4xl mx-auto flex flex-col items-center text-center">
           <div className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-black uppercase tracking-[0.2em] mb-8" style={{ border: '1px solid rgba(255,255,255,0.1)', backgroundColor: 'rgba(255,255,255,0.03)', color: 'rgba(255,255,255,0.5)' }}>
             The Philosophy
@@ -174,8 +174,8 @@ export default function LandingPage() {
             <div className="relative inline-block">
               <div className="absolute -inset-4 bg-[#22c55e]/10 blur-3xl rounded-full" />
               <Image
-                src="/atara_plans_mockup_1772736306139.png"
-                alt="Atara Plans Interface"
+                src="/atarasamsung.webp"
+                alt="Atara Presets Screen"
                 width={500}
                 height={500}
                 className="relative z-10 rounded-[2.5rem] shadow-2xl border border-white/5"
@@ -188,7 +188,7 @@ export default function LandingPage() {
               Whether you are a beginner starting with Circadian rhythms or an expert following the Warrior protocol, Atara provides the perfect structure for your goals.
             </p>
             <ul className="space-y-4">
-              {['Circadian 12:12', 'Gold Standard 16:8', 'Advanced 18:6', 'The Warrior 20:4'].map(p => (
+              {['Circadian 12:12', 'Starter 14:10', 'Gold Standard 16:8', 'Advanced 18:6', 'The Warrior 20:4'].map(p => (
                 <li key={p} className="flex items-center gap-3 font-bold text-white/80">
                   <span className="w-1.5 h-1.5 rounded-full bg-primary" /> {p}
                 </li>
@@ -198,7 +198,52 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Stats Mockup Section */}
+      {/* Science & Timeline mockup */}
+      <section className="py-32 px-6 overflow-hidden">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+          <div className="max-w-xl">
+            <div className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-black uppercase tracking-[0.2em] mb-8 bg-primary/10 text-primary border border-primary/20">
+              The Science
+            </div>
+            <h2 className="text-4xl sm:text-6xl font-black tracking-tighter mb-8 leading-[1.1]">
+              Know Your <span className="text-primary">Phases</span>
+            </h2>
+            <p className="text-lg sm:text-xl leading-relaxed mb-10 text-white/50">
+              Fasting isn&apos;t just about not eating. Your body goes through distinct shifts: Sugar Burning, Transition, Ketosis, and Autophagy. Atara visualizes these milestones as you reach them.
+            </p>
+            <div className="space-y-6">
+              {[
+                { title: 'Sugar Burning', time: '0-4h', desc: 'Body burns recent dietary glucose.' },
+                { title: 'Ketosis', time: '12-16h', desc: 'Liver begins producing ketones from fat.' },
+                { title: 'Autophagy', time: '16h+', desc: 'Cellular cleanup and repair kicks in.' }
+              ].map((m) => (
+                <div key={m.title} className="flex gap-4 p-5 rounded-2xl bg-white/[0.03] border border-white/[0.05] group hover:bg-white/[0.05] transition-colors">
+                  <div className="w-1.5 h-auto rounded-full bg-primary/30 group-hover:bg-primary transition-colors" />
+                  <div>
+                    <div className="flex items-center gap-3 mb-1">
+                      <span className="font-black text-white">{m.title}</span>
+                      <span className="text-[10px] font-black text-primary uppercase tracking-widest">{m.time}</span>
+                    </div>
+                    <p className="text-sm text-white/40">{m.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="relative">
+            <div className="absolute -inset-10 bg-primary/10 blur-[120px] rounded-full opacity-50" />
+            <Image
+              src="/atara_c2.png"
+              alt="Atara Metabolic Timeline Interface"
+              width={600}
+              height={800}
+              className="relative z-10 rounded-[3rem] shadow-2xl scale-110 lg:translate-x-12"
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* Analytics Mockup Section */}
       <section className="py-24 px-6 bg-white/[0.01]">
         <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <div>
@@ -221,12 +266,48 @@ export default function LandingPage() {
             <div className="relative inline-block">
               <div className="absolute -inset-4 bg-[#22c55e]/10 blur-3xl rounded-full" />
               <Image
-                src="/atara_stats_mockup_1772736320650.png"
-                alt="Atara Analytics Interface"
+                src="/ataraai.png"
+                alt="Atara Coach Card"
                 width={500}
                 height={500}
                 className="relative z-10 rounded-[2.5rem] shadow-2xl border border-white/5"
               />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Share Cards / Social mockup */}
+      <section className="py-32 px-6 overflow-hidden">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+          <div className="order-2 lg:order-1 flex justify-center">
+            <div className="relative rotate-[-2deg] hover:rotate-0 transition-transform duration-500">
+              <div className="absolute -inset-10 bg-primary/10 blur-[100px] opacity-40" />
+              <Image
+                src="/streak.webp"
+                alt="Atara Streak Stats"
+                width={400}
+                height={700}
+                className="relative z-10 rounded-[2.5rem] shadow-[0_30px_60px_-15px_rgba(34,197,94,0.3)] border border-white/10"
+              />
+            </div>
+          </div>
+          <div className="order-1 lg:order-2 max-w-xl">
+            <div className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-black uppercase tracking-[0.2em] mb-8 bg-white/5 text-white/60 border border-white/10">
+              Community
+            </div>
+            <h2 className="text-4xl sm:text-6xl font-black tracking-tighter mb-8">
+              Celebrate Your <span style={{ color: '#22c55e' }}>Streaks</span>
+            </h2>
+            <p className="text-lg sm:text-xl leading-relaxed text-white/50 mb-8">
+              Your discipline deserves recognition. Atara generates gorgeous, minimalist share cards for Instagram and beyond, so you can inspire others with your journey.
+            </p>
+            <div className="flex flex-wrap gap-4">
+              {['#MetabolicFlexibility', '#AtaraLife', '#StoicFasting'].map(tag => (
+                <span key={tag} className="px-5 py-2.5 rounded-full bg-white/5 border border-white/10 text-xs font-black tracking-widest uppercase text-white/40 italic">
+                  {tag}
+                </span>
+              ))}
             </div>
           </div>
         </div>
@@ -243,7 +324,7 @@ export default function LandingPage() {
           {features.map((f) => (
             <div
               key={f.title}
-              className="rounded-2xl p-6 transition-all"
+              className="rounded-2xl p-6 transition-all hover:border-primary/30"
               style={{ border: '1px solid rgba(255,255,255,0.07)', backgroundColor: 'rgba(255,255,255,0.03)' }}
             >
               <div className="text-3xl mb-4">{f.icon}</div>
@@ -295,10 +376,13 @@ export default function LandingPage() {
                 </li>
               ))}
             </ul>
+            <p className="text-[10px] mt-auto pt-6 text-center text-white/40 font-medium leading-relaxed italic">
+              "Thanks to your support we can invest back into building a better app for you."
+            </p>
             <CheckoutButton
               priceId={process.env.NEXT_PUBLIC_STRIPE_PRICE_ID!}
               label="Choose Monthly"
-              className="w-full text-center rounded-xl font-bold py-4 transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
+              className="w-full text-center rounded-xl font-bold py-4 transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer mt-4"
               style={{ backgroundColor: '#22c55e', color: '#0f0f0f', boxShadow: '0 8px 24px rgba(34,197,94,0.2)' }}
             />
           </div>
@@ -321,10 +405,13 @@ export default function LandingPage() {
                 </li>
               ))}
             </ul>
+            <p className="text-[10px] mt-auto pt-6 text-center text-white/40 font-medium leading-relaxed italic">
+              "Thanks to your support we can invest back into building a better app for you."
+            </p>
             <CheckoutButton
               priceId={process.env.NEXT_PUBLIC_STRIPE_YEARLY_PRICE_ID!}
               label="Choose Yearly"
-              className="w-full text-center rounded-xl font-bold py-4 transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
+              className="w-full text-center rounded-xl font-bold py-4 transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer mt-4"
               style={{ backgroundColor: '#22c55e', color: '#0f0f0f', boxShadow: '0 8px 32px rgba(34,197,94,0.4)' }}
             />
           </div>

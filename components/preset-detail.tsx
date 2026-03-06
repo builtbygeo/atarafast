@@ -5,6 +5,8 @@ import { ArrowLeft, Droplets, Salad, Leaf } from "lucide-react"
 import { CircularProgress } from "@/components/circular-progress"
 import type { FastingPreset } from "@/lib/presets"
 import { useLang } from "@/lib/language-context"
+import { useSubscription, startCheckout } from "@/lib/subscription"
+import { Lock } from "lucide-react"
 
 interface PresetDetailProps {
   preset: FastingPreset
@@ -18,111 +20,152 @@ interface PresetDetailProps {
 
 export function PresetDetail({ preset, isActive, isCurrentActivePreset, onBack, onStart, onChangePreset, onUpdateFast }: PresetDetailProps) {
   const { t } = useLang()
-  const [customHours, setCustomHours] = useState(16)
+  const { isPremium } = useSubscription()
+  const [customInput, setCustomInput] = useState("16")
   const isCustom = preset.id === "custom"
-  const displayHours = isCustom ? customHours : preset.fastHours
+
+  const parsedCustom = parseInt(customInput) || 16
+  const displayHours = isCustom ? Math.min(168, Math.max(8, parsedCustom)) : preset.fastHours
   const content = (t.planContent as any)?.[preset.id]
+
+  const isLocked = isCustom && !isPremium
 
   const tipIcons = [Droplets, Salad, Leaf, Droplets]
 
   return (
-    <div className="flex flex-col gap-6">
-      <div className="flex items-center gap-3">
+    <div className="flex flex-col gap-6 h-full">
+      <div className="flex items-center gap-4">
         <button
           onClick={onBack}
-          className="flex h-9 w-9 items-center justify-center rounded-full bg-secondary text-secondary-foreground transition-colors hover:bg-secondary/80"
+          className="flex h-10 w-10 items-center justify-center rounded-2xl bg-secondary/50 text-foreground transition-all hover:bg-secondary active:scale-90 border border-white/5"
           aria-label="Go back"
         >
-          <ArrowLeft className="h-4 w-4" />
+          <ArrowLeft className="h-5 w-5" />
         </button>
-        <h2 className="text-lg font-bold tracking-tight text-foreground">{content?.name || preset.name}</h2>
+        <div className="flex flex-col">
+          <span className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground opacity-60">
+            {t.planTitle || "PLAN"}
+          </span>
+          <h2 className="text-xl font-black tracking-tight text-foreground uppercase tracking-tight">{content?.name || preset.name}</h2>
+        </div>
       </div>
 
       <div className="flex flex-col gap-4 mt-2">
-        <h4 className="text-xs font-bold uppercase tracking-widest text-muted-foreground border-b border-border pb-2">{t.tipsTitle}</h4>
+        <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground opacity-60 border-b border-white/5 pb-2">
+          {t.tipsTitle}
+        </h4>
         <div className="grid grid-cols-1 gap-3">
           {content?.tips.slice(0, 2).map((tip: string, i: number) => {
             const Icon = tipIcons[i % tipIcons.length]
             return (
-              <div key={i} className="flex items-start gap-4 p-3 rounded-2xl bg-secondary/5 border border-transparent">
-                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-background border border-border">
-                  <Icon className="h-4 w-4 text-primary" />
+              <div key={i} className="flex items-start gap-4 p-4 rounded-[1.5rem] bg-secondary/20 border border-white/5 shadow-sm">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-background/50 border border-white/5">
+                  <Icon className="h-5 w-5 text-primary" />
                 </div>
-                <p className="text-sm text-foreground/80 leading-snug pt-0.5">{tip}</p>
+                <p className="text-sm font-medium text-foreground/80 leading-relaxed pt-0.5">{tip}</p>
               </div>
             )
           })}
         </div>
       </div>
 
-      <div className="flex flex-col items-center gap-6 mt-4">
-        <CircularProgress
-          progress={isCustom ? 0.6 : preset.fastHours / 24}
-          targetHours={displayHours}
-          size={140}
-          strokeWidth={10}
-          color={preset.color}
-        >
-          <span className="text-2xl font-bold text-foreground font-mono">
-            {isCustom ? `${customHours}${t.hours}` : preset.name}
-          </span>
-        </CircularProgress>
+      <div className="flex flex-col items-center gap-8 mt-4 pb-12">
+        <div className="relative">
+          <CircularProgress
+            progress={isCustom ? 0.6 : preset.fastHours / 24}
+            targetHours={displayHours}
+            size={160}
+            strokeWidth={12}
+            color={preset.color}
+          >
+            <div className="flex flex-col items-center justify-center">
+              <span className="text-3xl font-black text-foreground font-mono tabular-nums leading-none">
+                {displayHours}
+              </span>
+              <span className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mt-1 opacity-60">
+                {t.hours}
+              </span>
+            </div>
+          </CircularProgress>
+          {/* Subtle Glow behind progress */}
+          <div
+            className="absolute inset-0 rounded-full blur-[40px] opacity-10 pointer-events-none"
+            style={{ backgroundColor: preset.color }}
+          />
+        </div>
 
-        <p className="text-sm text-muted-foreground text-center leading-relaxed max-w-sm px-2">
+        <p className="text-sm font-medium text-muted-foreground text-center leading-relaxed max-w-sm px-4 opacity-80">
           {content?.desc}
         </p>
 
         {isCustom && (
-          <div className="flex flex-col items-center gap-2 w-full max-w-xs">
-            <label htmlFor="custom-hours" className="text-sm font-medium text-foreground">
+          <div className="flex flex-col items-center gap-3 w-full max-w-xs px-4">
+            <label htmlFor="custom-hours" className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground opacity-60">
               {t.targetHours}
             </label>
-            <input
-              id="custom-hours"
-              type="number"
-              min={8}
-              max={168}
-              value={customHours}
-              onChange={(e) => setCustomHours(Math.min(168, Math.max(8, Number(e.target.value))))}
-              className="w-full rounded-xl border border-input bg-card px-3 py-2 text-center text-xl font-mono text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20"
-            />
+            <div className="relative w-full">
+              <input
+                id="custom-hours"
+                type="number"
+                min={8}
+                max={168}
+                value={customInput}
+                onChange={(e) => setCustomInput(e.target.value)}
+                onBlur={() => {
+                  const val = parseInt(customInput) || 16
+                  setCustomInput(String(Math.min(168, Math.max(8, val))))
+                }}
+                disabled={isLocked}
+                className="w-full h-14 rounded-2xl border border-white/10 bg-secondary/20 px-3 py-2 text-center text-2xl font-black font-mono text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all disabled:opacity-50"
+              />
+            </div>
           </div>
         )}
 
-        {isActive ? (
-          isCurrentActivePreset ? (
+        <div className="w-full max-w-xs px-4 mt-2">
+          {isLocked ? (
             <button
-              onClick={onChangePreset}
-              className="w-full max-w-xs rounded-xl bg-secondary px-6 py-4 text-sm font-bold text-secondary-foreground transition-all hover:bg-secondary/80 active:scale-95"
+              onClick={() => startCheckout()}
+              className="w-full flex items-center justify-center gap-2 py-4 rounded-[2rem] text-sm font-black uppercase tracking-widest transition-all active:scale-[0.98] shadow-2xl bg-secondary text-primary border border-primary/20"
             >
-              {t.changePreset}
+              <Lock className="w-4 h-4" />
+              Upgrade to Atara+
             </button>
+          ) : isActive ? (
+            isCurrentActivePreset ? (
+              <button
+                onClick={onChangePreset}
+                className="w-full py-4 rounded-[2rem] bg-secondary/50 border border-white/10 text-sm font-black uppercase tracking-widest text-foreground transition-all hover:bg-secondary active:scale-95 shadow-lg"
+              >
+                {t.changePreset}
+              </button>
+            ) : (
+              <button
+                onClick={() => onUpdateFast?.(displayHours)}
+                className="w-full py-4 rounded-[2rem] text-sm font-black uppercase tracking-widest transition-all active:scale-[0.98] shadow-2xl"
+                style={{
+                  backgroundColor: preset.color,
+                  color: "#0f0f0f",
+                  boxShadow: `0 10px 30px -10px ${preset.color}80`
+                }}
+              >
+                {t.changePreset}
+              </button>
+            )
           ) : (
             <button
-              onClick={() => onUpdateFast?.(displayHours)}
-              className="w-full max-w-xs rounded-xl px-6 py-4 text-sm font-bold transition-all hover:opacity-90 active:scale-[0.98] shadow-lg"
+              onClick={() => onStart(displayHours)}
+              className="w-full py-4 rounded-[2rem] text-sm font-black uppercase tracking-widest transition-all active:scale-[0.98] shadow-2xl"
               style={{
                 backgroundColor: preset.color,
-                color: "white",
-                boxShadow: `0 8px 16px -4px ${preset.color}40`
+                color: "#0f0f0f",
+                boxShadow: `0 10px 30px -10px ${preset.color}80`
               }}
             >
-              {t.changePreset} ({displayHours}{t.hours})
+              {t.startFast}
             </button>
-          )
-        ) : (
-          <button
-            onClick={() => onStart(displayHours)}
-            className="w-full max-w-xs rounded-xl px-6 py-4 text-sm font-bold transition-all hover:opacity-90 active:scale-[0.98] shadow-lg"
-            style={{
-              backgroundColor: preset.color,
-              color: "white",
-              boxShadow: `0 10px 20px -5px ${preset.color}50`
-            }}
-          >
-            {t.startFast} ({displayHours}{t.hours})
-          </button>
-        )}
+          )}
+        </div>
       </div>
     </div>
   )

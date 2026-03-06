@@ -20,6 +20,8 @@ import { ManualFastDialog } from "@/components/manual-fast-dialog"
 import { RecentFastsChart } from "@/components/recent-fasts-chart"
 import { useLang } from "@/lib/language-context"
 import { ShareDialog } from "@/components/share-dialog"
+import { useSubscription, startCheckout } from "@/lib/subscription"
+import { Sparkles } from "lucide-react"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -33,10 +35,11 @@ import {
 
 interface HistoryViewProps {
   history: FastingRecord[]
+  hasHiddenRecords?: boolean
   onHistoryChange: () => void
 }
 
-export function HistoryView({ history, onHistoryChange }: HistoryViewProps) {
+export function HistoryView({ history, hasHiddenRecords, onHistoryChange }: HistoryViewProps) {
   const { t } = useLang()
   const [selectedYear] = useState(new Date().getFullYear())
   const [showManualFastDialog, setShowManualFastDialog] = useState(false)
@@ -114,13 +117,6 @@ export function HistoryView({ history, onHistoryChange }: HistoryViewProps) {
           >
             <Share2 className="h-3.5 w-3.5" />
             Share
-          </button>
-          <button
-            onClick={() => setShowManualFastDialog(true)}
-            className="flex items-center gap-1.5 rounded-lg bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground transition-colors hover:opacity-90"
-          >
-            <Plus className="h-3.5 w-3.5" />
-            {t.addFast}
           </button>
         </div>
       </div>
@@ -221,6 +217,26 @@ export function HistoryView({ history, onHistoryChange }: HistoryViewProps) {
               </div>
             )
           })}
+
+          {hasHiddenRecords && (
+            <div className="mt-4 p-5 rounded-[2rem] bg-primary/5 border border-primary/20 flex flex-col items-center text-center gap-3 shadow-xl shadow-primary/5">
+              <div className="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+                <Sparkles className="h-5 w-5" />
+              </div>
+              <div>
+                <h4 className="text-sm font-black text-foreground uppercase tracking-tight">{t.unlockFullHistory}</h4>
+                <p className="text-[11px] text-muted-foreground font-medium leading-relaxed mt-1">
+                  {t.historyLimitNote}
+                </p>
+              </div>
+              <button
+                onClick={() => startCheckout()}
+                className="w-full py-3 rounded-xl bg-primary text-primary-foreground text-xs font-black uppercase tracking-widest shadow-lg shadow-primary/20 active:scale-95 transition-all mt-1"
+              >
+                Upgrade to Atara+
+              </button>
+            </div>
+          )}
         </div>
       )}
 
