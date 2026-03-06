@@ -422,36 +422,6 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
           </div>
         )}
 
-        {/* Last fast summary card (only if has history and no active fast) */}
-        {lastCompleted && !activeFast && !isNewUser && (
-          <div className="mt-4 mb-2 relative bg-secondary/20 border border-white/10 rounded-[1.5rem] p-5 pt-4 overflow-hidden group">
-            {/* Visual Indicator Line */}
-            <div
-              className="absolute left-0 top-4 bottom-4 w-1 rounded-r-full"
-              style={{ backgroundColor: getPresetById(lastCompleted.presetId)?.color || '#22c55e' }}
-            />
-
-            <div className="flex items-center justify-between pl-2">
-              <div className="flex flex-col gap-0.5">
-                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground opacity-60 mb-1">{t.lastFast || "LAST FAST"}</span>
-                <span className="text-lg font-black text-foreground">
-                  {getPresetById(lastCompleted.presetId)?.name || lastCompleted.presetId}
-                </span>
-              </div>
-              <div className="text-right flex flex-col gap-0.5">
-                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground opacity-60 mb-1">{t.duration || "DURATION"}</span>
-                <span className="text-lg font-black text-foreground font-mono tabular-nums tracking-tight">
-                  {(() => {
-                    const ms = new Date(lastCompleted.endTime!).getTime() - new Date(lastCompleted.startTime).getTime()
-                    const h = Math.floor(ms / 3600000)
-                    const m = Math.floor((ms % 3600000) / 60000)
-                    return `${h}ч ${m}м`
-                  })()}
-                </span>
-              </div>
-            </div>
-          </div>
-        )}
 
         <div className="mt-6">
           <PresetGrid onSelect={handleSelectPreset} />

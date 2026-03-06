@@ -20,9 +20,9 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: '/atara_c1.png', sizes: 'any' },
+      { url: '/favicon.png', sizes: 'any' },
     ],
-    apple: '/atara_c1.png',
+    apple: '/apple-touch-icon.png',
   },
 }
 
@@ -45,8 +45,8 @@ export default function RootLayout({
   return (
     <html lang="bg" suppressHydrationWarning>
       <head>
-        <link rel="icon" href="/atara_c1.png" />
-        <link rel="apple-touch-icon" href="/atara_c1.png" />
+        <link rel="icon" href="/favicon.png" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
       </head>
       <body className={`${inter.variable} ${jetbrainsMono.variable} font-sans antialiased text-white bg-[#0f0f0f]`}>
         <ClerkProvider>
