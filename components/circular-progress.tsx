@@ -68,7 +68,7 @@ export function CircularProgress({
   const { t } = useLang()
 
   const outerRadius = size / 2
-  const padding = strokeWidth / 2 + 10 // Space for glow and outer thin ring
+  const padding = strokeWidth / 2 + 14 // Increased padding for glow breathing room
   const trackRadius = outerRadius - padding
   const center = size / 2
 

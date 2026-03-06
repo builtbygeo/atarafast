@@ -315,7 +315,7 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
                 <Edit2 className="h-3 w-3 text-muted-foreground opacity-50" />
               </div>
               <span className="block text-2xl font-black text-foreground mb-0.5 tracking-tighter leading-none">
-                {activeFast.targetHours}:00
+                {format(goalTime, "h:mm a")}
               </span>
               <span className="block text-xs font-semibold text-muted-foreground opacity-80 mt-1">
                 {isComplete ? (t.fastComplete || "Fast Complete") : (lang === 'bg' ? 'В прогрес' : 'In Progress')}
