@@ -302,7 +302,7 @@ export function StatsView({ history, settings, onOpenSettings, onOpenUpgrade }: 
       </div>
 
       <div className="relative">
-        {/* Blur overlay over advanced stats for free users */}
+        {/* 2. Weekly Activity Chart (Glowing Area) */}
         {!isPremium && (
           <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-background/60 backdrop-blur-sm rounded-[2rem] border border-white/5 mt-[-10px] pb-4">
             <div className="bg-card/90 backdrop-blur-2xl border border-border/50 p-6 rounded-[2.5rem] shadow-2xl flex flex-col items-center text-center max-w-[280px]">
@@ -324,7 +324,6 @@ export function StatsView({ history, settings, onOpenSettings, onOpenUpgrade }: 
           </div>
         )}
 
-        {/* 2. Weekly Activity Chart (Glowing Area) */}
         <div className={`rounded-3xl border border-white/5 bg-secondary/30 p-5 shadow-sm mb-4 transition-opacity ${!isPremium ? "opacity-30 pointer-events-none" : ""}`}>
           <div className="flex items-center justify-between mb-6">
             <div>

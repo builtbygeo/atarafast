@@ -133,13 +133,12 @@ export default function Home() {
           />
         )}
         {activeTab === "stats" && (
-          <PremiumGate featureName={t.statsTitle} blur>
-            <StatsView
-              history={displayHistory}
-              onOpenSettings={() => setSettingsOpen(true)}
-              onOpenUpgrade={() => setUpgradeOpen(true)}
-            />
-          </PremiumGate>
+          <StatsView
+            history={displayHistory}
+            settings={getSettings()}
+            onOpenSettings={() => setSettingsOpen(true)}
+            onOpenUpgrade={() => setUpgradeOpen(true)}
+          />
         )}
         {activeTab === "plan" && <PlanView />}
       </div>

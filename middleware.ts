@@ -25,6 +25,9 @@ export default clerkMiddleware(async (auth, req) => {
             // If auth protection fails during redirect loops, fall back to home
             // But if we are on the app domain, returning home will just loop. Redirect to sign-in or main landing.
             // Sending them to the main marketing domain is safest to avoid endless rewrite loops.
+            if (isAppDomain) {
+                return NextResponse.redirect(new URL('/sign-in', req.url));
+            }
             if (process.env.NODE_ENV === 'development') {
                 return NextResponse.redirect(new URL('/', req.url));
             }
