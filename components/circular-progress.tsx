@@ -68,13 +68,13 @@ export function CircularProgress({
   const { t } = useLang()
 
   const outerRadius = size / 2
-  const padding = strokeWidth / 2 + 14 // Increased padding for glow breathing room
+  const padding = strokeWidth / 2 + 22 // Massive padding to strictly prevent bottom arc clipping
   const trackRadius = outerRadius - padding
   const center = size / 2
 
   const data = getPhaseData(targetHours, elapsedHours)
 
-  const gapDeg = 4 // Smaller gap for better curvature continuity
+  const gapDeg = 4 // Smaller gap for premium curvature continuity
   const numPhases = (data.sugarPct > 0 ? 1 : 0) + (data.transitionPct > 0 ? 1 : 0) + (data.ketosisPct > 0 ? 1 : 0)
   const availableDeg = 360 - (numPhases > 0 ? numPhases * gapDeg : 0)
 
