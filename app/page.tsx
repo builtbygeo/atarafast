@@ -449,7 +449,7 @@ export default function LandingPage() {
         </div>
 
         <p className="text-center text-sm font-medium mt-6 text-white/50">
-          Join <span className="text-white">8,347</span> people who upgraded to Atara Pro this month.
+          Join others who <span className="text-white">upgraded</span> to Atara Pro this month.
         </p>
       </section>
 
