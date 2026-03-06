@@ -86,19 +86,21 @@ function ActiveShareCard({ elapsedMs, targetHours, presetId, percentage }: Omit<
                 </p>
             </div>
 
-            {/* Phases - Symmetric & Clean */}
-            <div style={{ display: "flex", gap: 10, width: "100%", marginTop: 35, position: "relative", zIndex: 10 }}>
-                {[
-                    { label: t.shareSugar, color: "#f59e0b", pct: Math.min(100, (Math.min(elapsedMs / 3600000, 8) / 8) * 100) },
-                    { label: t.shareTransition, color: "#fbbf24", pct: elapsedMs / 3600000 > 8 ? Math.min(100, ((Math.min(elapsedMs / 3600000, 12) - 8) / 4) * 100) : 0 },
-                    { label: t.shareKetosis, color: "#22c55e", pct: elapsedMs / 3600000 > 12 ? Math.min(100, ((elapsedMs / 3600000 - 12) / Math.max(targetHours - 12, 1)) * 100) : 0 },
-                ].map(({ label, color, pct }) => pct > 0 && (
-                    <div key={label} style={{ flex: 1, padding: "14px 10px", borderRadius: 16, background: "#ffffff04", border: `1px solid ${color}20`, textAlign: "center" }}>
-                        <div style={{ width: 4, height: 4, borderRadius: "50%", background: color, margin: "0 auto 8px" }} />
-                        <p style={{ color: "#ffffff30", fontSize: 8, fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.15em", margin: 0 }}>{label}</p>
-                        <p style={{ color, fontSize: 15, fontWeight: 900, margin: "4px 0 0", letterSpacing: "-0.02em" }}>{Math.round(pct)}%</p>
-                    </div>
-                ))}
+            {/* Phases - Symmetric & Clean - Centered in remaining space */}
+            <div style={{ flex: 1, display: "flex", alignItems: "center", width: "100%", position: "relative", zIndex: 10 }}>
+                <div style={{ display: "flex", gap: 10, width: "100%" }}>
+                    {[
+                        { label: t.shareSugar, color: "#f59e0b", pct: Math.min(100, (Math.min(elapsedMs / 3600000, 8) / 8) * 100) },
+                        { label: t.shareTransition, color: "#fbbf24", pct: elapsedMs / 3600000 > 8 ? Math.min(100, ((Math.min(elapsedMs / 3600000, 12) - 8) / 4) * 100) : 0 },
+                        { label: t.shareKetosis, color: "#22c55e", pct: elapsedMs / 3600000 > 12 ? Math.min(100, ((elapsedMs / 3600000 - 12) / Math.max(targetHours - 12, 1)) * 100) : 0 },
+                    ].map(({ label, color, pct }) => pct > 0 && (
+                        <div key={label} style={{ flex: 1, padding: "14px 10px", borderRadius: 16, background: "#ffffff04", border: `1px solid ${color}20`, textAlign: "center" }}>
+                            <div style={{ width: 4, height: 4, borderRadius: "50%", background: color, margin: "0 auto 8px" }} />
+                            <p style={{ color: "#ffffff30", fontSize: 8, fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.15em", margin: 0 }}>{label}</p>
+                            <p style={{ color, fontSize: 15, fontWeight: 900, margin: "4px 0 0", letterSpacing: "-0.02em" }}>{Math.round(pct)}%</p>
+                        </div>
+                    ))}
+                </div>
             </div>
 
             {/* Footer Group - Anchored & Professional */}
@@ -172,18 +174,20 @@ function StatsShareCard({ history }: Omit<StatsShareCardProps, "type">) {
                 </p>
             </div>
 
-            {/* Stats Grid - Balanced Spacing */}
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, width: "100%", marginTop: 45, position: "relative", zIndex: 10 }}>
-                {[
-                    { icon: "🔥", label: t.shareStreak, value: `${streak} ${t.days || "дни"}` },
-                    { icon: "⚡", label: t.shareAvgDuration, value: `${avgHours}ч` },
-                ].map(({ icon, label, value }) => (
-                    <div key={label} style={{ padding: "18px 12px", borderRadius: 20, background: "#ffffff04", border: "1px solid #ffffff08", textAlign: "center" }}>
-                        <p style={{ fontSize: 24, margin: "0 0 10px" }}>{icon}</p>
-                        <p style={{ color: "#ffffff30", fontSize: 8, fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.15em", margin: 0 }}>{label}</p>
-                        <p style={{ color: "#ffffff", fontSize: 20, fontWeight: 900, margin: "4px 0 0", letterSpacing: "-0.02em" }}>{value}</p>
-                    </div>
-                ))}
+            {/* Stats Grid - Centered in remaining space */}
+            <div style={{ flex: 1, display: "flex", alignItems: "center", width: "100%", position: "relative", zIndex: 10 }}>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, width: "100%" }}>
+                    {[
+                        { icon: "🔥", label: t.shareStreak, value: `${streak} ${t.days || "дни"}` },
+                        { icon: "⚡", label: t.shareAvgDuration, value: `${avgHours}ч` },
+                    ].map(({ icon, label, value }) => (
+                        <div key={label} style={{ padding: "18px 12px", borderRadius: 20, background: "#ffffff04", border: "1px solid #ffffff08", textAlign: "center" }}>
+                            <p style={{ fontSize: 24, margin: "0 0 10px" }}>{icon}</p>
+                            <p style={{ color: "#ffffff30", fontSize: 8, fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.15em", margin: 0 }}>{label}</p>
+                            <p style={{ color: "#ffffff", fontSize: 20, fontWeight: 900, margin: "4px 0 0", letterSpacing: "-0.02em" }}>{value}</p>
+                        </div>
+                    ))}
+                </div>
             </div>
 
             {/* Footer Group */}
