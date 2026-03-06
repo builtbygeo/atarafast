@@ -93,7 +93,10 @@ export default function LandingPage() {
 
       {/* Hero */}
       <section className="relative pt-40 pb-32 px-6 flex flex-col items-center text-center overflow-hidden">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-[1000px] h-[600px] bg-[#22c55e]/10 blur-[160px] rounded-full pointer-events-none -z-10" />
+        {/* Safe Background Glow - Using radial gradient instead of heavy blur filter to fix mobile Safari black box artifact */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-[1200px] h-[800px] pointer-events-none -z-10 opacity-40" 
+             style={{ background: 'radial-gradient(circle at center, rgba(34,197,94,0.15) 0%, transparent 70%)' }} 
+        />
 
         <div className="inline-flex items-center gap-2 rounded-full px-6 py-2.5 text-sm font-bold mb-8 w-fit mx-auto relative z-10" style={{ border: '1px solid rgba(34,197,94,0.3)', backgroundColor: 'rgba(34,197,94,0.08)', color: '#22c55e' }}>
           <span className="w-2 h-2 rounded-full bg-current shadow-[0_0_12px_currentColor]" style={{ animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite' }} />

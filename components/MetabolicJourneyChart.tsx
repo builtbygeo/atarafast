@@ -45,7 +45,7 @@ export default function MetabolicJourneyChart() {
   }
 
   return (
-    <div className="w-full flex flex-col rounded-[2.5rem] border border-white/5 bg-white/[0.01] p-6 sm:p-10 relative overflow-hidden group hover:border-white/10 transition-all duration-700">
+    <div className="w-full flex flex-col rounded-[2rem] sm:rounded-[2.5rem] border border-white/5 bg-white/[0.01] p-4 sm:p-10 relative overflow-hidden group hover:border-white/10 transition-all duration-700">
       {/* Background Decorative Elements */}
       <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-primary/10 blur-[120px] rounded-full -mr-48 -mt-48 transition-opacity group-hover:opacity-60" />
       <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-blue-500/5 blur-[100px] rounded-full -ml-32 -mb-32" />
@@ -69,17 +69,17 @@ export default function MetabolicJourneyChart() {
           </p>
         </div>
 
-        {/* Tab Selector - Glassmorphism */}
-        <div className="flex bg-white/[0.03] p-1.5 rounded-2xl border border-white/5 backdrop-blur-2xl ring-1 ring-white/5">
+        {/* Tab Selector - Responsive Glassmorphism */}
+        <div className="flex bg-white/[0.03] p-1 rounded-xl sm:p-1.5 sm:rounded-2xl border border-white/5 backdrop-blur-2xl ring-1 ring-white/5 w-fit">
           <button
             onClick={() => setActiveTab('wellbeing')}
-            className={`px-8 py-3 rounded-xl text-[11px] font-black uppercase tracking-[0.15em] transition-all duration-500 relative ${activeTab === 'wellbeing' ? 'bg-white text-black shadow-[0_10px_30px_rgba(255,255,255,0.2)] scale-[1.02]' : 'text-white/40 hover:text-white/80 hover:bg-white/5'}`}
+            className={`px-4 sm:px-8 py-2 sm:py-3 rounded-lg sm:rounded-xl text-[10px] sm:text-[11px] font-black uppercase tracking-[0.15em] transition-all duration-500 relative ${activeTab === 'wellbeing' ? 'bg-white text-black shadow-[0_10px_30px_rgba(255,255,255,0.2)] scale-[1.02]' : 'text-white/40 hover:text-white/80 hover:bg-white/5'}`}
           >
             Wellbeing
           </button>
           <button
             onClick={() => setActiveTab('weightLoss')}
-            className={`px-8 py-3 rounded-xl text-[11px] font-black uppercase tracking-[0.15em] transition-all duration-500 relative ${activeTab === 'weightLoss' ? 'bg-primary text-black shadow-[0_10px_30px_rgba(34,197,94,0.3)] scale-[1.02]' : 'text-white/40 hover:text-white/80 hover:bg-white/5'}`}
+            className={`px-4 sm:px-8 py-2 sm:py-3 rounded-lg sm:rounded-xl text-[10px] sm:text-[11px] font-black uppercase tracking-[0.15em] transition-all duration-500 relative ${activeTab === 'weightLoss' ? 'bg-primary text-black shadow-[0_10px_30px_rgba(34,197,94,0.3)] scale-[1.02]' : 'text-white/40 hover:text-white/80 hover:bg-white/5'}`}
           >
             Efficiency
           </button>
@@ -87,9 +87,9 @@ export default function MetabolicJourneyChart() {
       </div>
 
       {/* Main Chart Section */}
-      <div className="h-[400px] w-full relative z-10 cursor-crosshair bg-black/20 rounded-3xl p-4">
+      <div className="h-[280px] sm:h-[400px] w-full relative z-10 cursor-crosshair bg-black/20 rounded-2xl sm:rounded-3xl p-2 sm:p-4">
         <ResponsiveContainer width="100%" height="100%">
-          <AreaChart data={data} margin={{ top: 20, right: 30, left: 10, bottom: 20 }}>
+          <AreaChart data={data} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
             <defs>
               <linearGradient id="energyGrad" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="5%" stopColor="#22c55e" stopOpacity={0.6} />

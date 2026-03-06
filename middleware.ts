@@ -7,7 +7,14 @@ const isAppRoute = createRouteMatcher(['/app(.*)'])
 export default clerkMiddleware(async (auth, req) => {
     const url = new URL(req.url);
     const hostname = req.headers.get('host') || '';
+    const isWWW = hostname.startsWith('www.');
     const isAppDomain = hostname === 'app.atarafast.com' || hostname.startsWith('app.atarafast.com:');
+
+    // Handle WWW redirect
+    if (isWWW) {
+        const apexHost = hostname.replace('www.', '');
+        return NextResponse.redirect(`https://${apexHost}${url.pathname}${url.search}`);
+    }
 
     // Calculate effective path based on host
     let effectivePath = url.pathname;
