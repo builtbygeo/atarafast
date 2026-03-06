@@ -87,7 +87,7 @@ export function JournalDialog({ onSave, onSkip, initialData }: JournalDialogProp
                                 step="1"
                                 value={energy}
                                 onChange={(e) => setEnergy(Number(e.target.value))}
-                                className="w-full h-2 rounded-full appearance-none bg-zinc-800 cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:shadow-[0_0_10px_#22c55e]"
+                                className="w-full h-2 rounded-full appearance-none bg-zinc-800 cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-7 [&::-webkit-slider-thumb]:h-7 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:shadow-[0_0_15px_#22c55e]"
                                 style={{ background: `linear-gradient(to right, #ef4444, #eab308, #22c55e)` }}
                             />
                         </div>
@@ -105,7 +105,7 @@ export function JournalDialog({ onSave, onSkip, initialData }: JournalDialogProp
                                 step="1"
                                 value={mental}
                                 onChange={(e) => setMental(Number(e.target.value))}
-                                className="w-full h-2 rounded-full appearance-none bg-zinc-800 cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:shadow-[0_0_10px_#22c55e]"
+                                className="w-full h-2 rounded-full appearance-none bg-zinc-800 cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-7 [&::-webkit-slider-thumb]:h-7 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:shadow-[0_0_15px_#22c55e]"
                                 style={{ background: `linear-gradient(to right, #ef4444, #eab308, #22c55e)` }}
                             />
                         </div>
