@@ -503,11 +503,11 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
         <motion.div
           key={viewState}
           custom={direction}
-          initial={{ opacity: 0, x: direction > 0 ? 100 : -100 }}
+          initial={{ opacity: 0, x: direction > 0 ? 30 : -30 }}
           animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: direction > 0 ? -100 : 100 }}
-          transition={{ type: "spring", damping: 30, stiffness: 300, mass: 0.8 }}
-          className="absolute inset-0 flex flex-col pt-0"
+          exit={{ opacity: 0, x: direction > 0 ? -30 : 30 }}
+          transition={{ duration: 0.25, ease: "easeOut" }}
+          className="absolute inset-0 flex flex-col pt-0 will-change-transform"
         >
           {viewState === "timer" && renderTimerContent()}
           {viewState === "presets" && renderPresetsContent()}

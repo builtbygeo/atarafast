@@ -236,20 +236,22 @@ export function PlanView() {
         {selectedPlan ? (
           <motion.div
             key="detail"
-            initial={{ opacity: 0, x: 20 }}
+            initial={{ opacity: 0, x: 15 }}
             animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: 20 }}
-            className="absolute inset-0 z-20"
+            exit={{ opacity: 0, x: 15 }}
+            transition={{ duration: 0.25, ease: "easeOut" }}
+            className="absolute inset-0 z-20 will-change-transform"
           >
             {renderDetail(selectedPlan)}
           </motion.div>
         ) : selectedCard ? (
           <motion.div
             key="card-detail"
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 30 }}
-            className="absolute inset-0 z-20"
+            exit={{ opacity: 0, y: 15 }}
+            transition={{ duration: 0.25, ease: "easeOut" }}
+            className="absolute inset-0 z-20 will-change-transform"
           >
             {renderCardDetail(selectedCard)}
           </motion.div>
@@ -259,7 +261,8 @@ export function PlanView() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="flex flex-col h-full w-full"
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            className="flex flex-col h-full w-full will-change-[opacity]"
           >
             {renderGrid()}
           </motion.div>
