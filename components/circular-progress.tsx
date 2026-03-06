@@ -68,7 +68,7 @@ export function CircularProgress({
   const { t } = useLang()
 
   const outerRadius = size / 2
-  const padding = strokeWidth / 2 + 22 // Massive padding to strictly prevent bottom arc clipping
+  const padding = strokeWidth / 2 + 22 // Massive padding
   const trackRadius = outerRadius - padding
   const center = size / 2
 
@@ -130,7 +130,13 @@ export function CircularProgress({
 
   return (
     <div className="relative inline-flex items-center justify-center select-none" style={{ width: size, height: size }}>
-      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="absolute inset-0 block overflow-visible">
+      <svg 
+        width={size} 
+        height={size} 
+        viewBox={`-20 -20 ${size + 40} ${size + 40}`} 
+        className="absolute inset-0 block overflow-visible"
+        style={{ width: '120%', height: '120%', left: '-10%', top: '-10%' }}
+      >
         <defs>
           <filter id="arc-glow" x="-50%" y="-50%" width="200%" height="200%">
             <feGaussianBlur stdDeviation="6" result="coloredBlur" />
