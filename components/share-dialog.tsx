@@ -3,7 +3,7 @@
 import { useRef, useState, useCallback } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { toPng } from "html-to-image"
-import { Download, Share2, X, Flame, Trophy, Zap } from "lucide-react"
+import { Download, Share2, X } from "lucide-react"
 import { useLang } from "@/lib/language-context"
 import { type FastingRecord } from "@/lib/storage"
 import { getPresetById } from "@/lib/presets"
@@ -54,9 +54,13 @@ function ActiveShareCard({ elapsedMs, targetHours, presetId, percentage }: Omit<
             <div style={{ position: "absolute", top: -60, right: -60, width: 280, height: 280, borderRadius: "50%", background: "radial-gradient(circle, #22c55e30 0%, transparent 70%)", pointerEvents: "none" }} />
             <div style={{ position: "absolute", bottom: -80, left: -40, width: 260, height: 260, borderRadius: "50%", background: "radial-gradient(circle, #f59e0b20 0%, transparent 70%)", pointerEvents: "none" }} />
 
-            {/* Header - MASSIVE Centered Logo (220px) */}
+            {/* Header - MASSIVE Centered Logo (220px) - FIXED ASPECT RATIO */}
             <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginBottom: 0 }}>
-                <img src="/atara_c2.png" alt="Atara" style={{ height: 220, width: "auto" }} />
+                <img 
+                    src="/atara_c2.png" 
+                    alt="Atara" 
+                    style={{ height: 220, width: 220, objectFit: "contain" }} 
+                />
             </div>
 
             <div style={{ textAlign: "center", marginTop: -35 }}>
@@ -146,9 +150,13 @@ function StatsShareCard({ history }: Omit<StatsShareCardProps, "type">) {
         >
             <div style={{ position: "absolute", top: -80, left: "50%", transform: "translateX(-50%)", width: 320, height: 320, borderRadius: "50%", background: "radial-gradient(circle, #22c55e20 0%, transparent 70%)", pointerEvents: "none" }} />
 
-            {/* Header - MASSIVE Centered Logo (220px) */}
+            {/* Header - MASSIVE Centered Logo (220px) - FIXED ASPECT RATIO */}
             <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginBottom: 0 }}>
-                <img src="/atara_c2.png" alt="Atara" style={{ height: 220, width: "auto" }} />
+                <img 
+                    src="/atara_c2.png" 
+                    alt="Atara" 
+                    style={{ height: 220, width: 220, objectFit: "contain" }} 
+                />
             </div>
 
             <div style={{ textAlign: "center", marginTop: -40 }}>
@@ -179,7 +187,7 @@ function StatsShareCard({ history }: Omit<StatsShareCardProps, "type">) {
                 ))}
             </div>
 
-            {/* Footer with CENTERED ENLARGED QR */}
+            {/* Footer with CENTERED ENLARGED QR - FIXED Presence on Stats card */}
             <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 12, marginTop: 15 }}>
                 <div style={{ background: "#ffffff", padding: 8, borderRadius: 12, boxShadow: "0 8px 32px rgba(0,0,0,0.8)" }}>
                     <QRCodeSVG value={APP_URL} size={84} level="H" bgColor="#ffffff" fgColor="#000000" />
@@ -234,14 +242,14 @@ export function ShareDialog(props: ShareDialogProps) {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="fixed inset-0 z-[100] bg-black/90 backdrop-blur-xl flex flex-col items-center justify-start overflow-y-auto no-scrollbar pt-10 pb-20"
+                className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-2xl flex flex-col items-center justify-start overflow-y-auto no-scrollbar pt-10 pb-20"
                 onClick={props.onClose}
             >
                 <div
-                    className="flex flex-col items-center w-full max-w-md px-4"
+                    className="flex flex-col items-center w-full"
                     onClick={e => e.stopPropagation()}
                 >
-                    {/* Share Card Preview - Scaled for 9:16 Story format */}
+                    {/* Share Card Preview - 9:16 optimized */}
                     <div style={{ transform: "scale(0.72)", transformOrigin: "top center", marginBottom: -190 }}>
                         <div ref={cardRef} className="rounded-[32px] overflow-hidden shadow-2xl ring-1 ring-white/10">
                             {props.type === "active" ? (
@@ -252,32 +260,32 @@ export function ShareDialog(props: ShareDialogProps) {
                         </div>
                     </div>
 
-                    {/* Actions Row at Bottom - Standard Story UX */}
-                    <div className="flex flex-col gap-4 w-full mt-6">
-                        <div className="flex gap-3">
+                    {/* Actions Row - Compact and aligned strictly under the card width */}
+                    <div className="flex flex-col items-center gap-6 w-[280px] mt-6 px-2">
+                        <div className="flex gap-2 w-full">
                              {typeof navigator !== "undefined" && "share" in navigator && (
                                 <button
                                     onClick={() => captureAndShare(false)}
                                     disabled={loading}
-                                    className="flex-1 flex items-center justify-center gap-3 h-14 rounded-2xl bg-primary text-primary-foreground font-black text-sm tracking-widest active:scale-95 transition-all shadow-xl shadow-primary/20 disabled:opacity-50"
+                                    className="flex-1 flex items-center justify-center gap-2 h-11 rounded-2xl bg-primary text-primary-foreground font-black text-[10px] tracking-widest active:scale-95 transition-all shadow-xl shadow-primary/20 disabled:opacity-50"
                                 >
-                                    {loading ? <div className="h-5 w-5 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : <Share2 className="h-5 w-5" />}
+                                    {loading ? <div className="h-3 w-3 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : <Share2 className="h-3.5 w-3.5" />}
                                     SHARE
                                 </button>
                             )}
                             <button
                                 onClick={() => captureAndShare(true)}
                                 disabled={loading}
-                                className="flex-1 flex items-center justify-center gap-3 h-14 rounded-2xl bg-zinc-900 border border-white/5 text-white font-black text-sm tracking-widest active:scale-95 transition-all disabled:opacity-50"
+                                className="flex-1 flex items-center justify-center gap-2 h-11 rounded-2xl bg-zinc-900 border border-white/5 text-white font-black text-[10px] tracking-widest active:scale-95 transition-all disabled:opacity-50"
                             >
-                                <Download className="h-5 w-5" />
+                                <Download className="h-3.5 w-3.5" />
                                 SAVE
                             </button>
                         </div>
                         
                         <button
                             onClick={props.onClose}
-                            className="flex items-center justify-center gap-2 text-[10px] font-black text-white/30 uppercase tracking-[0.4em] py-4 hover:text-white transition-colors"
+                            className="flex items-center justify-center gap-2 text-[10px] font-black text-white/30 uppercase tracking-[0.4em] py-2 hover:text-white transition-colors"
                         >
                             <X className="h-3 w-3" />
                             CLOSE
@@ -285,7 +293,7 @@ export function ShareDialog(props: ShareDialogProps) {
                     </div>
 
                     {shared && (
-                        <motion.p initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} className="text-center text-[10px] font-black text-primary uppercase tracking-[0.2em] mt-2">
+                        <motion.p initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} className="text-center text-[9px] font-black text-primary uppercase tracking-[0.2em] mt-2">
                             {t.shareDone || "✓ Saved to gallery"}
                         </motion.p>
                     )}
