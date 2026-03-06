@@ -144,7 +144,7 @@ export default function MetabolicJourneyChart() {
               content={({ active, payload }: any) => {
                 if (active && payload && payload.length) {
                   return (
-                    <div className="rounded-[2rem] border border-white/10 bg-black/90 p-5 shadow-4xl backdrop-blur-3xl ring-1 ring-white/10 min-w-[220px]">
+                    <div className="rounded-[2rem] border border-white/10 bg-black/95 p-5 shadow-2xl ring-1 ring-white/10 min-w-[220px]">
                       <p className="text-[10px] font-black uppercase tracking-[0.3em] text-white/30 mb-5 pb-3 border-b border-white/5">
                         {payload[0].payload.month} Progress
                       </p>
@@ -152,7 +152,7 @@ export default function MetabolicJourneyChart() {
                         {payload.map((entry: any, index: number) => (
                           <div key={index} className="flex items-center justify-between gap-6">
                             <div className="flex items-center gap-3">
-                              <div className="w-2 h-2 rounded-full" style={{ backgroundColor: entry.stroke, boxShadow: `0 0 15px ${entry.stroke}` }} />
+                              <div className="w-2 h-2 rounded-full" style={{ backgroundColor: entry.stroke }} />
                               <span className="text-[11px] font-black text-white/70 uppercase tracking-widest">
                                 {entry.name}
                               </span>
@@ -171,7 +171,7 @@ export default function MetabolicJourneyChart() {
               cursor={{ stroke: 'rgba(255,255,255,0.05)', strokeWidth: 1 }}
             />
 
-            {/* Wellbeing Areas - Using 'hide' prop for tab switching */}
+            {/* Wellbeing Areas */}
             <Area 
               name="Energy" 
               type="monotone" 
@@ -181,8 +181,7 @@ export default function MetabolicJourneyChart() {
               fill="url(#energyGrad)" 
               hide={!isWellbeing}
               isAnimationActive={true} 
-              animationDuration={1500}
-              filter="url(#premiumGlow)"
+              animationDuration={1000}
             />
             <Area 
               name="Focus" 
@@ -193,8 +192,7 @@ export default function MetabolicJourneyChart() {
               fill="url(#focusGrad)" 
               hide={!isWellbeing}
               isAnimationActive={true} 
-              animationDuration={2000}
-              filter="url(#premiumGlow)"
+              animationDuration={1200}
             />
             <Area 
               name="Sleep" 
@@ -205,8 +203,7 @@ export default function MetabolicJourneyChart() {
               fill="url(#sleepGrad)" 
               hide={!isWellbeing}
               isAnimationActive={true} 
-              animationDuration={2500}
-              filter="url(#premiumGlow)"
+              animationDuration={1400}
             />
 
             {/* Efficiency Areas */}
@@ -219,8 +216,7 @@ export default function MetabolicJourneyChart() {
               fill="url(#weightGrad)" 
               hide={isWellbeing}
               isAnimationActive={true} 
-              animationDuration={1500}
-              filter="url(#premiumGlow)"
+              animationDuration={1000}
             />
             <Area 
               name="Cravings" 
@@ -231,8 +227,7 @@ export default function MetabolicJourneyChart() {
               fill="url(#cravingsGrad)" 
               hide={isWellbeing}
               isAnimationActive={true} 
-              animationDuration={2000}
-              filter="url(#premiumGlow)"
+              animationDuration={1200}
             />
             <Area 
               name="Body Fat" 
@@ -243,8 +238,7 @@ export default function MetabolicJourneyChart() {
               fill="url(#bodyFatGrad)" 
               hide={isWellbeing}
               isAnimationActive={true} 
-              animationDuration={2500}
-              filter="url(#premiumGlow)"
+              animationDuration={1400}
             />
           </AreaChart>
         </ResponsiveContainer>

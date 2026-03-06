@@ -17,6 +17,8 @@ export const metadata: Metadata = {
   },
 }
 
+export const dynamic = 'force-dynamic'
+
 const features = [
   {
     icon: <Timer className="w-8 h-8 text-primary" />,
@@ -111,7 +113,7 @@ export default function LandingPage() {
         <div className="flex flex-col sm:flex-row gap-6">
           <a
             href="https://app.atarafast.com"
-            className="bg-white text-black px-12 py-5 rounded-[2rem] font-bold text-xl hover:scale-105 transition-all shadow-[0_20px_40px_rgba(255,255,255,0.1)]"
+            className="bg-white text-black px-12 py-5 rounded-[2rem] font-bold text-xl hover:scale-105 transition-all shadow-2xl"
           >
             Launch App
           </a>
@@ -124,7 +126,7 @@ export default function LandingPage() {
         </div>
 
         {/* Hero image container - Strictly constrained */}
-        <div className="relative w-full max-w-[580px] mx-auto mt-12 bg-transparent h-auto aspect-[4/5] sm:aspect-auto">
+        <div className="relative w-full max-w-[580px] mx-auto mt-12 bg-transparent h-auto aspect-[4/5] sm:aspect-auto overflow-hidden rounded-[3rem]">
           {/* Solid gradient fade (no blurs) */}
           <div className="absolute bottom-0 left-0 right-0 h-40 pointer-events-none z-10" style={{ background: 'linear-gradient(to top, #0f0f0f 0%, transparent 100%)' }} />
           <Image
