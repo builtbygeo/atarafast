@@ -148,7 +148,7 @@ function StatsShareCard({ history }: Omit<StatsShareCardProps, "type">) {
                 height: 750,
                 background: "linear-gradient(160deg, #0a0a0a 0%, #0c180c 50%, #0a0a0a 100%)",
                 fontFamily: "'Inter', sans-serif",
-                padding: "0px 36px 40px",
+                padding: "0px 36px 20px",
             }}
         >
             <div style={{ position: "absolute", top: -140, left: "50%", transform: "translateX(-50%)", width: 440, height: 440, borderRadius: "50%", background: "radial-gradient(circle, #22c55e15 0%, transparent 70%)", pointerEvents: "none" }} />
