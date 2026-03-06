@@ -48,22 +48,22 @@ function ActiveShareCard({ elapsedMs, targetHours, presetId, percentage }: Omit<
                 height: 693,
                 background: "linear-gradient(160deg, #0a0a0a 0%, #0f1a0f 60%, #0a0a0a 100%)",
                 fontFamily: "'Inter', sans-serif",
-                padding: "40px 36px 40px",
+                padding: "20px 36px 40px",
             }}
         >
             <div style={{ position: "absolute", top: -60, right: -60, width: 280, height: 280, borderRadius: "50%", background: "radial-gradient(circle, #22c55e30 0%, transparent 70%)", pointerEvents: "none" }} />
             <div style={{ position: "absolute", bottom: -80, left: -40, width: 260, height: 260, borderRadius: "50%", background: "radial-gradient(circle, #f59e0b20 0%, transparent 70%)", pointerEvents: "none" }} />
 
-            {/* Header - MASSIVE Centered Logo (220px) - FIXED ASPECT RATIO */}
+            {/* Header - MASSIVE Centered Logo (360px) - FIXED ASPECT RATIO */}
             <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginBottom: 0 }}>
                 <img 
                     src="/atara_c2.png" 
                     alt="Atara" 
-                    style={{ height: 220, width: 220, objectFit: "contain" }} 
+                    style={{ height: 360, width: 360, objectFit: "contain" }} 
                 />
             </div>
 
-            <div style={{ textAlign: "center", marginTop: -35 }}>
+            <div style={{ textAlign: "center", marginTop: -80 }}>
                 <p style={{ color: "#ffffff60", fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.2em", marginBottom: 10 }}>
                     {isComplete ? t.shareAchieved : t.shareCurrent}
                 </p>
@@ -145,21 +145,21 @@ function StatsShareCard({ history }: Omit<StatsShareCardProps, "type">) {
                 height: 693,
                 background: "linear-gradient(160deg, #0a0a0a 0%, #0f1a0f 60%, #0a0a0a 100%)",
                 fontFamily: "'Inter', sans-serif",
-                padding: "40px 36px 40px",
+                padding: "20px 36px 40px",
             }}
         >
             <div style={{ position: "absolute", top: -80, left: "50%", transform: "translateX(-50%)", width: 320, height: 320, borderRadius: "50%", background: "radial-gradient(circle, #22c55e20 0%, transparent 70%)", pointerEvents: "none" }} />
 
-            {/* Header - MASSIVE Centered Logo (220px) - FIXED ASPECT RATIO */}
+            {/* Header - MASSIVE Centered Logo (360px) - FIXED ASPECT RATIO */}
             <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginBottom: 0 }}>
                 <img 
                     src="/atara_c2.png" 
                     alt="Atara" 
-                    style={{ height: 220, width: 220, objectFit: "contain" }} 
+                    style={{ height: 360, width: 360, objectFit: "contain" }} 
                 />
             </div>
 
-            <div style={{ textAlign: "center", marginTop: -40 }}>
+            <div style={{ textAlign: "center", marginTop: -80 }}>
                 <p style={{ color: "#ffffff60", fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.2em", marginBottom: 12 }}>
                     {t.shareAchievements}
                 </p>
@@ -242,7 +242,7 @@ export function ShareDialog(props: ShareDialogProps) {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-2xl flex flex-col items-center justify-start overflow-y-auto no-scrollbar pt-10 pb-20"
+                className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-2xl flex flex-col items-center justify-start overflow-y-auto no-scrollbar pt-6 pb-20"
                 onClick={props.onClose}
             >
                 <div
