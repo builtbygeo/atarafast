@@ -48,7 +48,7 @@ function ActiveShareCard({ elapsedMs, targetHours, presetId, percentage }: Omit<
                 height: 750,
                 background: "linear-gradient(160deg, #0a0a0a 0%, #0c180c 50%, #0a0a0a 100%)",
                 fontFamily: "'Inter', sans-serif",
-                padding: "0px 36px 40px",
+                padding: "0px 36px 20px",
             }}
         >
             <div style={{ position: "absolute", top: -100, right: -100, width: 400, height: 400, borderRadius: "50%", background: "radial-gradient(circle, #22c55e25 0%, transparent 70%)", pointerEvents: "none" }} />
