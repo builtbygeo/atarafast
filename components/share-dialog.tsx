@@ -48,18 +48,18 @@ function ActiveShareCard({ elapsedMs, targetHours, presetId, percentage }: Omit<
                 height: 693,
                 background: "linear-gradient(160deg, #0a0a0a 0%, #0f1a0f 60%, #0a0a0a 100%)",
                 fontFamily: "'Inter', sans-serif",
-                padding: "60px 36px 40px",
+                padding: "40px 36px 40px",
             }}
         >
             <div style={{ position: "absolute", top: -60, right: -60, width: 280, height: 280, borderRadius: "50%", background: "radial-gradient(circle, #22c55e30 0%, transparent 70%)", pointerEvents: "none" }} />
             <div style={{ position: "absolute", bottom: -80, left: -40, width: 260, height: 260, borderRadius: "50%", background: "radial-gradient(circle, #f59e0b20 0%, transparent 70%)", pointerEvents: "none" }} />
 
-            {/* Header - ENLARGED Centered Logo */}
-            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginBottom: 10 }}>
-                <img src="/atara_c2.png" alt="Atara" style={{ height: 160, width: "auto" }} />
+            {/* Header - MASSIVE Centered Logo (220px) */}
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginBottom: 0 }}>
+                <img src="/atara_c2.png" alt="Atara" style={{ height: 220, width: "auto" }} />
             </div>
 
-            <div style={{ textAlign: "center", marginTop: -15 }}>
+            <div style={{ textAlign: "center", marginTop: -35 }}>
                 <p style={{ color: "#ffffff60", fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.2em", marginBottom: 10 }}>
                     {isComplete ? t.shareAchieved : t.shareCurrent}
                 </p>
@@ -141,17 +141,17 @@ function StatsShareCard({ history }: Omit<StatsShareCardProps, "type">) {
                 height: 693,
                 background: "linear-gradient(160deg, #0a0a0a 0%, #0f1a0f 60%, #0a0a0a 100%)",
                 fontFamily: "'Inter', sans-serif",
-                padding: "60px 36px 40px",
+                padding: "40px 36px 40px",
             }}
         >
             <div style={{ position: "absolute", top: -80, left: "50%", transform: "translateX(-50%)", width: 320, height: 320, borderRadius: "50%", background: "radial-gradient(circle, #22c55e20 0%, transparent 70%)", pointerEvents: "none" }} />
 
-            {/* Header - ENLARGED Centered Logo */}
-            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginBottom: 20 }}>
-                <img src="/atara_c2.png" alt="Atara" style={{ height: 160, width: "auto" }} />
+            {/* Header - MASSIVE Centered Logo (220px) */}
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginBottom: 0 }}>
+                <img src="/atara_c2.png" alt="Atara" style={{ height: 220, width: "auto" }} />
             </div>
 
-            <div style={{ textAlign: "center", marginTop: -20 }}>
+            <div style={{ textAlign: "center", marginTop: -40 }}>
                 <p style={{ color: "#ffffff60", fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.2em", marginBottom: 12 }}>
                     {t.shareAchievements}
                 </p>
@@ -234,66 +234,61 @@ export function ShareDialog(props: ShareDialogProps) {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="fixed inset-0 z-[100] bg-black/90 backdrop-blur-xl flex flex-col items-center justify-start overflow-y-auto no-scrollbar pt-6 pb-20"
+                className="fixed inset-0 z-[100] bg-black/90 backdrop-blur-xl flex flex-col items-center justify-start overflow-y-auto no-scrollbar pt-10 pb-20"
                 onClick={props.onClose}
             >
                 <div
-                    className="flex flex-col items-center w-full max-w-md"
+                    className="flex flex-col items-center w-full max-w-md px-4"
                     onClick={e => e.stopPropagation()}
                 >
-                    {/* Actions Row at Top (Standard for mobile ergonomics) */}
-                    <div className="flex justify-between items-center w-full px-6 py-4 sticky top-0 bg-black/40 backdrop-blur-md z-10 mb-4 rounded-b-2xl">
-                        <button
-                            onClick={props.onClose}
-                            className="p-2 -ml-2 text-white/40 hover:text-white transition-colors"
-                        >
-                            <X className="h-6 w-6" />
-                        </button>
-                        <div className="flex gap-2">
+                    {/* Share Card Preview - Scaled for 9:16 Story format */}
+                    <div style={{ transform: "scale(0.72)", transformOrigin: "top center", marginBottom: -190 }}>
+                        <div ref={cardRef} className="rounded-[32px] overflow-hidden shadow-2xl ring-1 ring-white/10">
+                            {props.type === "active" ? (
+                                <ActiveShareCard {...props} />
+                            ) : (
+                                <StatsShareCard {...props} />
+                            )}
+                        </div>
+                    </div>
+
+                    {/* Actions Row at Bottom - Standard Story UX */}
+                    <div className="flex flex-col gap-4 w-full mt-6">
+                        <div className="flex gap-3">
                              {typeof navigator !== "undefined" && "share" in navigator && (
                                 <button
                                     onClick={() => captureAndShare(false)}
                                     disabled={loading}
-                                    className="flex items-center gap-2 px-4 py-2 rounded-full bg-primary text-primary-foreground font-black text-xs tracking-widest active:scale-95 transition-all disabled:opacity-50"
+                                    className="flex-1 flex items-center justify-center gap-3 h-14 rounded-2xl bg-primary text-primary-foreground font-black text-sm tracking-widest active:scale-95 transition-all shadow-xl shadow-primary/20 disabled:opacity-50"
                                 >
-                                    {loading ? <div className="h-3 w-3 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : <Share2 className="h-4 w-4" />}
+                                    {loading ? <div className="h-5 w-5 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : <Share2 className="h-5 w-5" />}
                                     SHARE
                                 </button>
                             )}
                             <button
                                 onClick={() => captureAndShare(true)}
                                 disabled={loading}
-                                className="flex items-center gap-2 px-4 py-2 rounded-full bg-zinc-800 text-white font-black text-xs tracking-widest active:scale-95 transition-all disabled:opacity-50"
+                                className="flex-1 flex items-center justify-center gap-3 h-14 rounded-2xl bg-zinc-900 border border-white/5 text-white font-black text-sm tracking-widest active:scale-95 transition-all disabled:opacity-50"
                             >
-                                <Download className="h-4 w-4" />
+                                <Download className="h-5 w-5" />
                                 SAVE
                             </button>
                         </div>
+                        
+                        <button
+                            onClick={props.onClose}
+                            className="flex items-center justify-center gap-2 text-[10px] font-black text-white/30 uppercase tracking-[0.4em] py-4 hover:text-white transition-colors"
+                        >
+                            <X className="h-3 w-3" />
+                            CLOSE
+                        </button>
                     </div>
 
-                    <motion.div
-                        initial={{ scale: 0.9, opacity: 0, y: 20 }}
-                        animate={{ scale: 1, opacity: 1, y: 0 }}
-                        exit={{ scale: 0.9, opacity: 0, y: 20 }}
-                        className="flex flex-col items-center gap-6 w-full"
-                    >
-                        {/* Share Card Preview - Optimized scale for centered layout */}
-                        <div style={{ transform: "scale(0.78)", transformOrigin: "top center", marginBottom: -130 }}>
-                            <div ref={cardRef} className="rounded-[32px] overflow-hidden shadow-2xl ring-1 ring-white/10">
-                                {props.type === "active" ? (
-                                    <ActiveShareCard {...props} />
-                                ) : (
-                                    <StatsShareCard {...props} />
-                                )}
-                            </div>
-                        </div>
-
-                        {shared && (
-                            <motion.p initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} className="text-center text-[10px] font-black text-primary uppercase tracking-[0.2em] mt-8">
-                                {t.shareDone || "✓ Saved to gallery"}
-                            </motion.p>
-                        )}
-                    </motion.div>
+                    {shared && (
+                        <motion.p initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} className="text-center text-[10px] font-black text-primary uppercase tracking-[0.2em] mt-2">
+                            {t.shareDone || "✓ Saved to gallery"}
+                        </motion.p>
+                    )}
                 </div>
             </motion.div>
         </AnimatePresence>
