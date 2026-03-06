@@ -123,15 +123,17 @@ export default function LandingPage() {
           </a>
         </div>
 
-        <div className="relative w-full max-w-[580px] mx-auto mt-12 bg-transparent">
+        {/* Hero image container - Strictly constrained */}
+        <div className="relative w-full max-w-[580px] mx-auto mt-12 bg-transparent h-auto aspect-[4/5] sm:aspect-auto">
+          {/* Solid gradient fade (no blurs) */}
           <div className="absolute bottom-0 left-0 right-0 h-40 pointer-events-none z-10" style={{ background: 'linear-gradient(to top, #0f0f0f 0%, transparent 100%)' }} />
           <Image
             src="/atarahero.webp"
             alt="Atara app showing active fast with metabolic phase ring"
-            width={800}
-            height={1000}
-            className="w-full rounded-[3rem] border border-white/5 relative z-0"
-            style={{ boxShadow: '0 30px 60px rgba(0,0,0,0.5)' }}
+            width={580}
+            height={725}
+            className="w-full h-auto rounded-[3rem] border border-white/5 relative z-0"
+            style={{ boxShadow: '0 30px 60px rgba(0,0,0,0.5)', objectFit: 'contain' }}
             priority
           />
         </div>
