@@ -109,7 +109,7 @@ export function HistoryView({ history, hasHiddenRecords, onHistoryChange }: Hist
   }
 
   return (
-    <div className="flex-1 overflow-y-auto px-5 py-6 pb-44 no-scrollbar">
+    <div className="absolute inset-0 overflow-y-auto px-5 py-6 pb-44 no-scrollbar [touch-action:pan-y]">
       <div className="flex items-center justify-between mb-1">
         <h2 className="text-lg font-semibold text-foreground">{t.historyTitle}</h2>
         <div className="flex items-center gap-2">

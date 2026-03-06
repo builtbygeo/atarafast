@@ -117,7 +117,7 @@ export default function Home() {
       </header>
 
       {/* Content */}
-      <div className="flex-1 relative w-full flex flex-col">
+      <div className="flex-1 relative w-full">
         {activeTab === "timer" && (
           <TimerView
             onFastEnd={handleFastEnd}

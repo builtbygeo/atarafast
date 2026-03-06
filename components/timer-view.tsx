@@ -245,7 +245,7 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
     const goalTime = addHours(startTime, activeFast.targetHours)
 
     return (
-      <div className="flex flex-col items-center h-full pt-2 pb-44 overflow-y-auto w-full px-4 no-scrollbar">
+      <div className="flex flex-col items-center h-full pt-2 pb-44 overflow-y-auto w-full px-4 no-scrollbar [touch-action:pan-y]">
         <WeekStatusStrip history={history} activeFast={activeFast} />
 
         <div className="flex flex-col items-center text-center mt-4 mb-6 w-full relative">
@@ -404,7 +404,7 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
     const isNewUser = history.length === 0
 
     return (
-      <div className="flex flex-col h-full overflow-y-auto px-4 py-4 pb-44 no-scrollbar">
+      <div className="flex flex-col h-full overflow-y-auto px-4 py-4 pb-44 no-scrollbar [touch-action:pan-y]">
         <WeekStatusStrip history={history} activeFast={null} />
 
         {/* New user onboarding nudge */}
@@ -453,7 +453,7 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
   }
 
   const renderDetailContent = () => (
-    <div className="flex flex-col h-full overflow-y-auto px-4 py-4 pb-44 no-scrollbar">
+    <div className="flex flex-col h-full overflow-y-auto px-4 py-4 pb-44 no-scrollbar [touch-action:pan-y]">
       {selectedPreset && (
         <PresetDetail
           preset={selectedPreset}
@@ -468,7 +468,7 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
   )
 
   return (
-    <div className="relative flex flex-col flex-1 overflow-hidden h-full">
+    <div className="absolute inset-0 flex flex-col overflow-hidden">
       <AnimatePresence initial={false} custom={direction} mode="wait">
         <motion.div
           key={viewState}

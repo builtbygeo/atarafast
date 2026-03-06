@@ -134,7 +134,7 @@ export function PlanView() {
           </div>
         </header>
 
-        <div className="flex-1 overflow-y-auto px-6 py-8 space-y-10 no-scrollbar pb-44">
+        <div className="flex-1 overflow-y-auto px-6 py-8 space-y-10 no-scrollbar pb-44 [touch-action:pan-y]">
           {/* Hero Icon */}
           <div className="flex justify-center">
             <motion.div
@@ -205,7 +205,7 @@ export function PlanView() {
           </div>
         </header>
 
-        <div className="flex-1 overflow-y-auto px-6 py-8 no-scrollbar pb-44">
+        <div className="flex-1 overflow-y-auto px-6 py-8 no-scrollbar pb-44 [touch-action:pan-y]">
           <div className="bg-secondary/10 p-5 sm:p-6 rounded-[2.5rem] mb-8 border border-border/50 shadow-sm flex items-start gap-4">
             <Info className="h-6 w-6 sm:h-8 sm:w-8 text-primary/40 shrink-0 mt-0.5" />
             <p className="text-base text-foreground font-black leading-snug">{card.short}</p>
@@ -231,7 +231,7 @@ export function PlanView() {
   }
 
   return (
-    <div className="flex-1 relative flex flex-col">
+    <div className="absolute inset-0 flex flex-col">
       <AnimatePresence initial={false} mode="wait">
         {selectedPlan ? (
           <motion.div
