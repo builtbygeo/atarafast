@@ -3,6 +3,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { CheckoutButton } from '@/components/checkout-button'
 import { Logo } from '@/components/logo'
+import { LifetimeOfferLink } from '@/components/lifetime-offer-link'
 
 export const metadata: Metadata = {
   title: 'Atara — Master Your Metabolism',
@@ -340,8 +341,7 @@ export default function LandingPage() {
       {/* Pricing & Comparison */}
       <section id="pricing" className="py-24 px-6 max-w-5xl mx-auto">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-black tracking-tight mb-4">Simple, Transparent Pricing</h2>
-          <p className="text-lg" style={{ color: 'rgba(255,255,255,0.45)' }}>Start free. Upgrade when you're ready.</p>
+          <h2 className="text-4xl font-black tracking-tight mb-4">Start free. Upgrade when you're ready.</h2>
         </div>
 
         {/* Comparison Table */}
@@ -391,11 +391,23 @@ export default function LandingPage() {
 
         {/* Pricing Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {/* Free */}
+          <div className="rounded-2xl p-8 relative overflow-hidden flex flex-col" style={{ border: '1px solid rgba(255,255,255,0.1)', backgroundColor: 'rgba(255,255,255,0.03)' }}>
+            <h3 className="font-black text-xl mb-1 text-white">Free</h3>
+            <p className="text-sm mb-4" style={{ color: 'rgba(255,255,255,0.45)' }}>Always</p>
+            <div className="text-4xl font-black text-white mb-2">€0<span className="text-base font-normal" style={{ color: 'rgba(255,255,255,0.35)' }}></span></div>
+            <p className="text-xs font-semibold mb-6 text-white/40">Free forever</p>
+
+            <a href={process.env.NODE_ENV === "development" ? "/app" : "https://app.atarafast.com"} className="mt-auto w-full text-center rounded-xl font-bold py-4 transition-all hover:bg-white/10 block" style={{ border: '1px solid rgba(255,255,255,0.15)', backgroundColor: 'transparent', color: 'white' }}>
+              Get Started
+            </a>
+          </div>
+
           {/* Atara Pro Monthly */}
           <div className="rounded-2xl p-8 relative overflow-hidden flex flex-col" style={{ border: '1px solid rgba(255,255,255,0.1)', backgroundColor: 'rgba(255,255,255,0.03)' }}>
             <h3 className="font-black text-xl mb-1 text-white">Monthly</h3>
             <p className="text-sm mb-4" style={{ color: 'rgba(255,255,255,0.45)' }}>Less than a Burrito</p>
-            <div className="text-4xl font-black text-white mb-2">€4.99<span className="text-base font-normal" style={{ color: 'rgba(255,255,255,0.35)' }}>/mo</span></div>
+            <div className="text-4xl font-black text-white mb-2">€4.99<span className="text-base font-normal" style={{ color: 'rgba(255,255,255,0.35)' }}>/month</span></div>
             <p className="text-xs font-semibold mb-6 text-white/40">Renews every month</p>
 
             <CheckoutButton
@@ -422,21 +434,12 @@ export default function LandingPage() {
               className="mt-auto w-full text-center rounded-xl font-bold py-4 transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
               style={{ backgroundColor: '#22c55e', color: '#0f0f0f', boxShadow: '0 8px 32px rgba(34,197,94,0.4)' }}
             />
-          </div>
-
-          {/* Atara Pro Lifetime */}
-          <div className="rounded-2xl p-8 relative overflow-hidden flex flex-col border border-primary/40 bg-primary/5">
-            <h3 className="font-black text-xl mb-1 text-white">Lifetime</h3>
-            <p className="text-sm mb-4" style={{ color: 'rgba(255,255,255,0.45)' }}>One-time payment — yours forever</p>
-            <div className="text-4xl font-black text-white mb-2">€49</div>
-            <p className="text-xs font-semibold mb-6 text-primary">Pay once, use forever</p>
-
-            <CheckoutButton
-              priceId={process.env.NEXT_PUBLIC_STRIPE_LIFETIME_PRICE_ID!}
-              label="Unlock Lifetime"
-              className="mt-auto w-full text-center rounded-xl font-bold py-4 transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
-              style={{ backgroundColor: 'white', color: '#0f0f0f' }}
-            />
+            <div className="mt-4 text-center">
+              <p className="text-[10px] text-white/40 uppercase tracking-widest leading-relaxed">
+                Want it forever? <br />
+                <LifetimeOfferLink />
+              </p>
+            </div>
           </div>
         </div>
 

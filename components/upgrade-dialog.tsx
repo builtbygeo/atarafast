@@ -49,6 +49,17 @@ export function UpgradeDialog({ open, onClose }: UpgradeDialogProps) {
 
                 <div className="px-6 pb-8 flex flex-col gap-4">
                     <div className="grid grid-cols-1 gap-3">
+                        <button
+                            onClick={onClose}
+                            className="relative flex flex-col p-4 rounded-2xl border border-border/50 bg-secondary/10 hover:bg-secondary/20 active:scale-[0.98] transition-all text-left"
+                        >
+                            <div className="flex justify-between items-center w-full mb-1">
+                                <span className="font-bold text-base text-muted-foreground">Free</span>
+                                <span className="font-black text-lg text-muted-foreground">€0</span>
+                            </div>
+                            <p className="text-xs font-medium text-muted-foreground/60">Standard fasting tracker, limited stats.</p>
+                        </button>
+
                         {monthlyId && (
                             <button
                                 onClick={() => handleSelect(monthlyId)}
