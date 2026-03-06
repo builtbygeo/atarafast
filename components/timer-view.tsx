@@ -71,7 +71,12 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
   const [direction, setDirection] = useState(0)
   const [selectedPreset, setSelectedPreset] = useState<FastingPreset | null>(null)
   const [now, setNow] = useState(new Date())
-  const [settings, setSettings] = useState<ReturnType<typeof getSettings>>({ timerDirection: "down", timerStyle: "circle" })
+  const [settings, setSettings] = useState<ReturnType<typeof getSettings>>({ 
+    timerDirection: "down", 
+    timerStyle: "circle",
+    notificationsEnabled: false,
+    journalEnabled: false
+  })
   const [mounted, setMounted] = useState(false)
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
   const [showEditStartTime, setShowEditStartTime] = useState(false)
@@ -240,7 +245,7 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
     const goalTime = addHours(startTime, activeFast.targetHours)
 
     return (
-      <div className="flex flex-col items-center h-full pt-2 pb-6 overflow-y-auto w-full px-4 no-scrollbar">
+      <div className="flex flex-col items-center h-full pt-2 pb-32 overflow-y-auto w-full px-4 no-scrollbar">
         <WeekStatusStrip history={history} activeFast={activeFast} />
 
         <div className="flex flex-col items-center text-center mt-4 mb-6 w-full relative">
@@ -399,7 +404,7 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
     const isNewUser = history.length === 0
 
     return (
-      <div className="flex flex-col h-full overflow-y-auto px-4 py-4 no-scrollbar">
+      <div className="flex flex-col h-full overflow-y-auto px-4 py-4 pb-32 no-scrollbar">
         <WeekStatusStrip history={history} activeFast={null} />
 
         {/* New user onboarding nudge */}
@@ -478,7 +483,7 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
   }
 
   const renderDetailContent = () => (
-    <div className="flex flex-col h-full overflow-y-auto px-4 py-4 no-scrollbar">
+    <div className="flex flex-col h-full overflow-y-auto px-4 py-4 pb-32 no-scrollbar">
       {selectedPreset && (
         <PresetDetail
           preset={selectedPreset}

@@ -36,7 +36,7 @@ export function PlanView() {
   }
 
   const renderGrid = () => (
-    <div className="relative flex-1 overflow-y-auto px-5 py-6 no-scrollbar pb-20">
+    <div className="relative flex-1 overflow-y-auto px-5 py-6 no-scrollbar pb-32">
       <div className="mb-4 px-1 flex items-start flex-col gap-4">
         <div>
           <p className="text-[10px] text-muted-foreground font-black uppercase tracking-[0.2em] mb-4 leading-tight opacity-60">
@@ -134,7 +134,7 @@ export function PlanView() {
           </div>
         </header>
 
-        <div className="flex-1 overflow-y-auto px-6 py-8 space-y-10 no-scrollbar pb-24">
+        <div className="flex-1 overflow-y-auto px-6 py-8 space-y-10 no-scrollbar pb-32">
           {/* Hero Icon */}
           <div className="flex justify-center">
             <motion.div
@@ -205,7 +205,7 @@ export function PlanView() {
           </div>
         </header>
 
-        <div className="flex-1 overflow-y-auto px-6 py-8 no-scrollbar pb-24">
+        <div className="flex-1 overflow-y-auto px-6 py-8 no-scrollbar pb-32">
           <div className="bg-secondary/10 p-5 sm:p-6 rounded-[2.5rem] mb-8 border border-border/50 shadow-sm flex items-start gap-4">
             <Info className="h-6 w-6 sm:h-8 sm:w-8 text-primary/40 shrink-0 mt-0.5" />
             <p className="text-base text-foreground font-black leading-snug">{card.short}</p>

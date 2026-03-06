@@ -111,13 +111,13 @@ export default function Home() {
   }
 
   return (
-    <main className="flex min-h-svh flex-col bg-background mx-auto max-w-md px-2 pb-32">
-      <header className="flex items-center justify-center px-5 pt-6 pb-4">
+    <main className="flex h-svh flex-col bg-background mx-auto max-w-md overflow-hidden relative">
+      <header className="flex items-center justify-center px-5 pt-6 pb-4 shrink-0">
         <Logo className="h-6 w-auto text-foreground" />
       </header>
 
       {/* Content */}
-      <div className="flex-1 flex flex-col relative overflow-hidden">
+      <div className="flex-1 relative w-full">
         {activeTab === "timer" && (
           <TimerView
             onFastEnd={handleFastEnd}
