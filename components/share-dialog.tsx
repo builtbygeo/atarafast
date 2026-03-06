@@ -9,7 +9,8 @@ import { type FastingRecord } from "@/lib/storage"
 import { getPresetById } from "@/lib/presets"
 import { QRCodeSVG } from "qrcode.react"
 
-const APP_URL = "https://app.atarafast.com"
+const APP_URL = "https://atarafast.com"
+const APP_DOMAIN = "atarafast.com"
 
 interface FastShareCardProps {
     type: "active"
@@ -47,18 +48,18 @@ function ActiveShareCard({ elapsedMs, targetHours, presetId, percentage }: Omit<
                 height: 693,
                 background: "linear-gradient(160deg, #0a0a0a 0%, #0f1a0f 60%, #0a0a0a 100%)",
                 fontFamily: "'Inter', sans-serif",
-                padding: "60px 36px 48px",
+                padding: "60px 36px 40px",
             }}
         >
             <div style={{ position: "absolute", top: -60, right: -60, width: 280, height: 280, borderRadius: "50%", background: "radial-gradient(circle, #22c55e30 0%, transparent 70%)", pointerEvents: "none" }} />
             <div style={{ position: "absolute", bottom: -80, left: -40, width: 260, height: 260, borderRadius: "50%", background: "radial-gradient(circle, #f59e0b20 0%, transparent 70%)", pointerEvents: "none" }} />
 
-            {/* Header - Centered Logo */}
-            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginBottom: 20 }}>
-                <img src="/atara_c2.png" alt="Atara" style={{ height: 90, width: "auto" }} />
+            {/* Header - ENLARGED Centered Logo */}
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginBottom: 10 }}>
+                <img src="/atara_c2.png" alt="Atara" style={{ height: 160, width: "auto" }} />
             </div>
 
-            <div style={{ marginTop: -10 }}>
+            <div style={{ textAlign: "center", marginTop: -15 }}>
                 <p style={{ color: "#ffffff60", fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.2em", marginBottom: 10 }}>
                     {isComplete ? t.shareAchieved : t.shareCurrent}
                 </p>
@@ -75,7 +76,7 @@ function ActiveShareCard({ elapsedMs, targetHours, presetId, percentage }: Omit<
                 <div style={{ width: "100%", height: 6, borderRadius: 3, background: "#ffffff15", marginBottom: 8, overflow: "hidden" }}>
                     <div style={{ height: "100%", borderRadius: 3, width: `${Math.min(percentage, 100)}%`, background: isComplete ? "linear-gradient(90deg, #22c55e, #4ade80)" : "linear-gradient(90deg, #f59e0b, #fbbf24)" }} />
                 </div>
-                <p style={{ color: "#ffffff60", fontSize: 12, fontWeight: 700, letterSpacing: "0.15em" }}>
+                <p style={{ textAlign: "center", color: "#ffffff60", fontSize: 12, fontWeight: 700, letterSpacing: "0.15em" }}>
                     {Math.min(percentage, 100)}% {isComplete ? t.shareCompleted : t.shareProgress}
                 </p>
             </div>
@@ -95,18 +96,18 @@ function ActiveShareCard({ elapsedMs, targetHours, presetId, percentage }: Omit<
                 ))}
             </div>
 
-            {/* Footer with ENLARGED QR */}
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginTop: 24 }}>
-                <div style={{ textAlign: "left" }}>
-                    <p style={{ color: "#ffffff70", fontSize: 10, fontWeight: 800, letterSpacing: "0.15em", marginBottom: 3 }}>
-                        ATARA · FASTING APP
-                    </p>
-                    <p style={{ color: "#ffffff30", fontSize: 10, fontWeight: 700, letterSpacing: "0.05em", margin: 0 }}>
-                        app.atarafast.com
-                    </p>
-                </div>
-                <div style={{ background: "#ffffff", padding: 8, borderRadius: 10, boxShadow: "0 8px 24px rgba(0,0,0,0.6)" }}>
+            {/* Footer with CENTERED ENLARGED QR */}
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 12, marginTop: 10 }}>
+                <div style={{ background: "#ffffff", padding: 8, borderRadius: 12, boxShadow: "0 8px 32px rgba(0,0,0,0.8)" }}>
                     <QRCodeSVG value={APP_URL} size={84} level="H" bgColor="#ffffff" fgColor="#000000" />
+                </div>
+                <div style={{ textAlign: "center" }}>
+                    <p style={{ color: "#ffffff", fontSize: 11, fontWeight: 900, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: 2 }}>
+                        Atara - Fasting App
+                    </p>
+                    <p style={{ color: "#ffffff40", fontSize: 10, fontWeight: 700, letterSpacing: "0.1em", margin: 0 }}>
+                        {APP_DOMAIN}
+                    </p>
                 </div>
             </div>
         </div>
@@ -140,17 +141,17 @@ function StatsShareCard({ history }: Omit<StatsShareCardProps, "type">) {
                 height: 693,
                 background: "linear-gradient(160deg, #0a0a0a 0%, #0f1a0f 60%, #0a0a0a 100%)",
                 fontFamily: "'Inter', sans-serif",
-                padding: "60px 36px 48px",
+                padding: "60px 36px 40px",
             }}
         >
             <div style={{ position: "absolute", top: -80, left: "50%", transform: "translateX(-50%)", width: 320, height: 320, borderRadius: "50%", background: "radial-gradient(circle, #22c55e20 0%, transparent 70%)", pointerEvents: "none" }} />
 
-            {/* Header - Centered Logo */}
-            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginBottom: 30 }}>
-                <img src="/atara_c2.png" alt="Atara" style={{ height: 90, width: "auto" }} />
+            {/* Header - ENLARGED Centered Logo */}
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginBottom: 20 }}>
+                <img src="/atara_c2.png" alt="Atara" style={{ height: 160, width: "auto" }} />
             </div>
 
-            <div style={{ marginTop: -10 }}>
+            <div style={{ textAlign: "center", marginTop: -20 }}>
                 <p style={{ color: "#ffffff60", fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.2em", marginBottom: 12 }}>
                     {t.shareAchievements}
                 </p>
@@ -171,25 +172,25 @@ function StatsShareCard({ history }: Omit<StatsShareCardProps, "type">) {
                     { icon: "🕐", label: t.shareTotalHours, value: `${Math.round(totalMs / 3600000)}ч` },
                 ].map(({ icon, label, value }) => (
                     <div key={label} style={{ padding: "16px", borderRadius: 16, background: "#ffffff06", border: "1px solid #ffffff10" }}>
-                        <p style={{ fontSize: 22, margin: "0 0 6px" }}>{icon}</p>
+                        <p style={{ fontSize: 22, margin: "0 0 4px" }}>{icon}</p>
                         <p style={{ color: "#ffffff60", fontSize: 9, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.15em", margin: 0 }}>{label}</p>
-                        <p style={{ color: "#ffffff", fontSize: 20, fontWeight: 900, margin: "4px 0 0", letterSpacing: "-0.02em" }}>{value}</p>
+                        <p style={{ color: "#ffffff", fontSize: 18, fontWeight: 900, margin: "2px 0 0", letterSpacing: "-0.02em" }}>{value}</p>
                     </div>
                 ))}
             </div>
 
-            {/* Footer with ENLARGED QR */}
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginTop: 24 }}>
-                <div style={{ textAlign: "left" }}>
-                    <p style={{ color: "#ffffff70", fontSize: 10, fontWeight: 800, letterSpacing: "0.15em", marginBottom: 3 }}>
-                        ATARA · FASTING APP
-                    </p>
-                    <p style={{ color: "#ffffff30", fontSize: 10, fontWeight: 700, letterSpacing: "0.05em", margin: 0 }}>
-                        app.atarafast.com
-                    </p>
-                </div>
-                <div style={{ background: "#ffffff", padding: 8, borderRadius: 10, boxShadow: "0 8px 24px rgba(0,0,0,0.6)" }}>
+            {/* Footer with CENTERED ENLARGED QR */}
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 12, marginTop: 15 }}>
+                <div style={{ background: "#ffffff", padding: 8, borderRadius: 12, boxShadow: "0 8px 32px rgba(0,0,0,0.8)" }}>
                     <QRCodeSVG value={APP_URL} size={84} level="H" bgColor="#ffffff" fgColor="#000000" />
+                </div>
+                <div style={{ textAlign: "center" }}>
+                    <p style={{ color: "#ffffff", fontSize: 11, fontWeight: 900, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: 2 }}>
+                        Atara - Fasting App
+                    </p>
+                    <p style={{ color: "#ffffff40", fontSize: 10, fontWeight: 700, letterSpacing: "0.1em", margin: 0 }}>
+                        {APP_DOMAIN}
+                    </p>
                 </div>
             </div>
         </div>
@@ -233,65 +234,67 @@ export function ShareDialog(props: ShareDialogProps) {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="fixed inset-0 z-[100] bg-black/90 backdrop-blur-xl flex flex-col items-center justify-start overflow-y-auto no-scrollbar pt-10 pb-20"
+                className="fixed inset-0 z-[100] bg-black/90 backdrop-blur-xl flex flex-col items-center justify-start overflow-y-auto no-scrollbar pt-6 pb-20"
                 onClick={props.onClose}
             >
-                <motion.div
-                    initial={{ scale: 0.9, opacity: 0, y: 20 }}
-                    animate={{ scale: 1, opacity: 1, y: 0 }}
-                    exit={{ scale: 0.9, opacity: 0, y: 20 }}
-                    className="flex flex-col items-center gap-6 w-full max-w-[360px] px-4"
+                <div
+                    className="flex flex-col items-center w-full max-w-md"
                     onClick={e => e.stopPropagation()}
                 >
-                    {/* Share Card Preview - Scaled slightly more to fit larger logo/QR room */}
-                    <div style={{ transform: "scale(0.7)", transformOrigin: "top center", marginBottom: -210 }}>
-                        <div ref={cardRef} className="rounded-[32px] overflow-hidden shadow-2xl ring-1 ring-white/10">
-                            {props.type === "active" ? (
-                                <ActiveShareCard {...props} />
-                            ) : (
-                                <StatsShareCard {...props} />
-                            )}
-                        </div>
-                    </div>
-
-                    {/* Actions */}
-                    <div className="flex flex-col gap-3 w-full mt-4">
-                        <div className="flex gap-3">
-                            {typeof navigator !== "undefined" && "share" in navigator && (
+                    {/* Actions Row at Top (Standard for mobile ergonomics) */}
+                    <div className="flex justify-between items-center w-full px-6 py-4 sticky top-0 bg-black/40 backdrop-blur-md z-10 mb-4 rounded-b-2xl">
+                        <button
+                            onClick={props.onClose}
+                            className="p-2 -ml-2 text-white/40 hover:text-white transition-colors"
+                        >
+                            <X className="h-6 w-6" />
+                        </button>
+                        <div className="flex gap-2">
+                             {typeof navigator !== "undefined" && "share" in navigator && (
                                 <button
                                     onClick={() => captureAndShare(false)}
                                     disabled={loading}
-                                    className="flex-1 flex items-center justify-center gap-3 h-14 rounded-[1.25rem] bg-primary text-primary-foreground font-black text-sm tracking-widest shadow-lg shadow-primary/20 active:scale-95 transition-all disabled:opacity-50"
+                                    className="flex items-center gap-2 px-4 py-2 rounded-full bg-primary text-primary-foreground font-black text-xs tracking-widest active:scale-95 transition-all disabled:opacity-50"
                                 >
-                                    {loading ? <div className="h-5 w-5 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : <Share2 className="h-5 w-5" />}
-                                    {t.shareButton || "SHARE"}
+                                    {loading ? <div className="h-3 w-3 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : <Share2 className="h-4 w-4" />}
+                                    SHARE
                                 </button>
                             )}
                             <button
                                 onClick={() => captureAndShare(true)}
                                 disabled={loading}
-                                className="flex-1 flex items-center justify-center gap-3 h-14 rounded-[1.25rem] bg-zinc-900 text-white font-black text-sm tracking-widest border border-white/5 active:scale-95 transition-all disabled:opacity-50"
+                                className="flex items-center gap-2 px-4 py-2 rounded-full bg-zinc-800 text-white font-black text-xs tracking-widest active:scale-95 transition-all disabled:opacity-50"
                             >
-                                <Download className="h-5 w-5" />
-                                {t.saveButton || "SAVE"}
+                                <Download className="h-4 w-4" />
+                                SAVE
                             </button>
+                        </div>
+                    </div>
+
+                    <motion.div
+                        initial={{ scale: 0.9, opacity: 0, y: 20 }}
+                        animate={{ scale: 1, opacity: 1, y: 0 }}
+                        exit={{ scale: 0.9, opacity: 0, y: 20 }}
+                        className="flex flex-col items-center gap-6 w-full"
+                    >
+                        {/* Share Card Preview - Optimized scale for centered layout */}
+                        <div style={{ transform: "scale(0.78)", transformOrigin: "top center", marginBottom: -130 }}>
+                            <div ref={cardRef} className="rounded-[32px] overflow-hidden shadow-2xl ring-1 ring-white/10">
+                                {props.type === "active" ? (
+                                    <ActiveShareCard {...props} />
+                                ) : (
+                                    <StatsShareCard {...props} />
+                                )}
+                            </div>
                         </div>
 
                         {shared && (
-                            <motion.p initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} className="text-center text-[10px] font-black text-primary uppercase tracking-[0.2em] mt-2">
+                            <motion.p initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} className="text-center text-[10px] font-black text-primary uppercase tracking-[0.2em] mt-8">
                                 {t.shareDone || "✓ Saved to gallery"}
                             </motion.p>
                         )}
-                    </div>
-
-                    <button
-                        onClick={props.onClose}
-                        className="flex items-center gap-2 text-[10px] font-black text-white/40 uppercase tracking-[0.3em] py-4 hover:text-white transition-colors"
-                    >
-                        <X className="h-3 w-3" />
-                        {t.closeButton || "CLOSE"}
-                    </button>
-                </motion.div>
+                    </motion.div>
+                </div>
             </motion.div>
         </AnimatePresence>
     )
