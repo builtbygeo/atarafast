@@ -63,11 +63,7 @@ export default async function RootLayout({
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
       </head>
       <body className={`${inter.variable} ${jetbrainsMono.variable} font-sans antialiased text-white bg-[#0f0f0f]`}>
-        <ClerkProvider 
-          isSatellite={isSatellite}
-          domain={domain}
-          proxyUrl={!isDev ? 'https://clerk.atarafast.com' : undefined}
-        >
+        <ClerkProvider>
           <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
             <LanguageProvider>
               {children}
