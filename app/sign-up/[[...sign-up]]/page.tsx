@@ -22,9 +22,9 @@ export default async function SignUpPage() {
 
             {/* Content Container */}
             <div className="relative z-10 flex min-h-screen flex-col items-center justify-center px-4 py-12">
-                {/* Ultra-Gigantic Pure Logo - No Background Field */}
-                <div className="mb-8 flex flex-col items-center gap-4">
-                    <div className="relative h-[800px] w-[800px] transition-transform duration-500 hover:scale-105">
+                {/* Compact Brand Block - Scaled for One-Page Harmony */}
+                <div className="mb-6 flex flex-col items-center gap-3">
+                    <div className="relative h-44 w-44 transition-transform duration-500 hover:scale-105">
                          <Image 
                             src="/atara_s2.png"
                             alt="Atara Logo"
@@ -33,7 +33,7 @@ export default async function SignUpPage() {
                             priority
                          />
                     </div>
-                    <h1 className="text-5xl font-black tracking-[-0.05em] text-white">ATARA</h1>
+                    <h1 className="text-4xl font-black tracking-[-0.05em] text-white">ATARA</h1>
                 </div>
 
                 {/* Elegant Glassmorphic Card Wrapper */}
@@ -79,16 +79,17 @@ export default async function SignUpPage() {
                 </div>
 
                 {/* Refined Navigation */}
-                <div className="mt-12 flex flex-col items-center gap-6">
+                {/* Compact Navigation */}
+                <div className="mt-8 flex flex-col items-center gap-4">
                     <Link
                         href={landingUrl}
-                        className="group flex items-center gap-2 text-sm font-bold tracking-widest text-zinc-500 uppercase transition-all hover:text-white"
+                        className="group flex items-center gap-2 text-[10px] font-bold tracking-widest text-zinc-500 uppercase transition-all hover:text-white"
                     >
                         <span className="transition-transform group-hover:-translate-x-1">←</span>
                         <span>Back to Website</span>
                     </Link>
                     
-                    <div className="flex items-center gap-4 text-[11px] font-bold tracking-[0.2em] text-zinc-600 uppercase">
+                    <div className="flex items-center gap-4 text-[9px] font-bold tracking-[0.2em] text-zinc-600 uppercase">
                         <Link href={`${landingUrl}/privacy`} className="hover:text-zinc-400">Privacy</Link>
                         <span className="h-1 w-1 rounded-full bg-zinc-800" />
                         <Link href={`${landingUrl}/terms`} className="hover:text-zinc-400">Terms</Link>
