@@ -1,6 +1,7 @@
 import { SignUp } from '@clerk/nextjs'
 import { headers } from 'next/headers'
 import Link from 'next/link'
+import Image from 'next/image'
 
 export default async function SignUpPage() {
     const headerList = await headers()
@@ -21,15 +22,18 @@ export default async function SignUpPage() {
 
             {/* Content Container */}
             <div className="relative z-10 flex min-h-screen flex-col items-center justify-center px-4 py-12">
-                {/* Logo / Branding Placeholder */}
-                <div className="mb-12 flex flex-col items-center gap-4">
-                    <div className="flex h-20 w-20 items-center justify-center rounded-[2rem] bg-white/5 p-4 shadow-2xl backdrop-blur-xl ring-1 ring-white/10">
-                         <svg viewBox="0 0 40 40" className="h-full w-full fill-primary">
-                            <circle cx="20" cy="20" r="18" fill="none" stroke="currentColor" strokeWidth="2" className="opacity-20" />
-                            <path d="M20 2C10.0589 2 2 10.0589 2 20C2 29.9411 10.0589 38 20 38C29.9411 38 38 29.9411 38 20C38 10.0589 29.9411 2 20 2ZM20 6C27.732 6 34 12.268 34 20C34 27.732 27.732 34 20 34C12.268 34 6 27.732 6 20C6 12.268 12.268 6 20 6Z" className="fill-primary" />
-                         </svg>
+                {/* Real Brand Logo */}
+                <div className="mb-10 flex flex-col items-center gap-5">
+                    <div className="relative h-24 w-24 overflow-hidden rounded-[2.5rem] bg-white/5 p-1 shadow-2xl ring-1 ring-white/10 backdrop-blur-2xl transition-transform duration-500 hover:scale-105">
+                         <Image 
+                            src="https://img.clerk.com/eyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvdXBsb2FkZWQvaW1nXzNBY2NrSzJDS09wcGdUOTlUTzBVckh2eG42bCJ9?width=400"
+                            alt="Atara Logo"
+                            fill
+                            className="object-contain p-4"
+                            priority
+                         />
                     </div>
-                    <h1 className="text-3xl font-black tracking-tighter text-white">ATARA</h1>
+                    <h1 className="text-4xl font-black tracking-[-0.05em] text-white">ATARA</h1>
                 </div>
 
                 {/* Elegant Glassmorphic Card Wrapper */}

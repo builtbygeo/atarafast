@@ -6,6 +6,7 @@ import { Logo } from '@/components/logo'
 import { LifetimeOfferLink } from '@/components/lifetime-offer-link'
 import MetabolicJourneyChart from '@/components/MetabolicJourneyChart'
 import { Timer, BarChart3, Moon, Smartphone, Globe2, Sparkles } from 'lucide-react'
+import { headers } from 'next/headers'
 
 export const metadata: Metadata = {
   title: 'Atara — Master Your Metabolism',
@@ -71,7 +72,12 @@ const premiumFeatures = [
   'Fasting journal (coming soon)',
 ]
 
-export default function LandingPage() {
+export default async function LandingPage() {
+  const headerList = await headers()
+  const host = headerList.get('host') || ''
+  const isDev = host.includes('localhost') || host.includes('127.0.0.1')
+  const appUrl = isDev ? '/app' : 'https://app.atarafast.com'
+
   return (
     <div className="min-h-screen bg-[#0f0f0f] text-white dark" style={{ fontFamily: 'var(--font-inter), Inter, system-ui, sans-serif' }}>
       {/* Nav */}
@@ -85,7 +91,7 @@ export default function LandingPage() {
           <a href="#pricing" className="hover:text-white transition-colors text-xs font-black uppercase tracking-widest">Pricing</a>
         </div>
         <a
-          href="/app"
+          href={appUrl}
           className="rounded-xl font-bold text-xs px-5 py-2.5 transition-colors uppercase tracking-widest"
           style={{ backgroundColor: '#22c55e', color: '#0f0f0f' }}
         >
@@ -113,7 +119,7 @@ export default function LandingPage() {
         <div className="flex flex-col items-center gap-8">
           <div className="flex flex-col sm:flex-row gap-6">
             <Link
-              href="/app"
+              href={appUrl}
               className="bg-white text-black px-12 py-5 rounded-[2rem] font-bold text-xl hover:scale-105 transition-all shadow-2xl"
             >
               Try Atara Free
@@ -427,7 +433,7 @@ export default function LandingPage() {
             <div className="text-4xl font-black text-white mb-2">€0<span className="text-base font-normal" style={{ color: 'rgba(255,255,255,0.35)' }}></span></div>
             <p className="text-xs font-semibold mb-6 text-white/40">Free forever</p>
 
-            <Link href="/app" className="mt-auto w-full text-center rounded-xl font-bold py-4 transition-all hover:bg-white/10 block" style={{ border: '1px solid rgba(255,255,255,0.15)', backgroundColor: 'transparent', color: 'white' }}>
+            <Link href={appUrl} className="mt-auto w-full text-center rounded-xl font-bold py-4 transition-all hover:bg-white/10 block" style={{ border: '1px solid rgba(255,255,255,0.15)', backgroundColor: 'transparent', color: 'white' }}>
               Get Started
             </Link>
           </div>
@@ -490,7 +496,7 @@ export default function LandingPage() {
           <div className="flex-1 relative z-10">
             <h2 className="text-3xl sm:text-4xl font-black tracking-tight mb-4">Install Atara in 3 seconds <br /><span className="text-white/40 text-2xl font-bold">(no App Store required)</span></h2>
             <p className="mb-8 text-white/60 text-lg">Atara is a Progressive Web App. That means zero App Store fees, total privacy, and instant installation directly to your home screen.</p>
-            <Link href="/app" className="inline-block rounded-2xl font-bold px-8 py-4 bg-white text-black transition-transform hover:scale-105 shadow-2xl cursor-pointer">
+            <Link href={appUrl} className="inline-block rounded-2xl font-bold px-8 py-4 bg-white text-black transition-transform hover:scale-105 shadow-2xl cursor-pointer">
               Open App to Install
             </Link>
           </div>
@@ -504,7 +510,7 @@ export default function LandingPage() {
           <h2 className="text-4xl font-black tracking-tight mb-4">Ready to start fasting smarter?</h2>
           <p className="mb-8" style={{ color: 'rgba(255,255,255,0.45)' }}>Join Atara. Your body has been waiting for this.</p>
           <Link
-            href="/app"
+            href={appUrl}
             className="inline-block rounded-2xl font-bold px-10 py-4 transition-all hover:scale-105 shadow-2xl shadow-primary/20 animate-pulse"
             style={{ backgroundColor: '#22c55e', color: '#0f0f0f' }}
           >
