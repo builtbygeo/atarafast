@@ -85,9 +85,9 @@ export default function MetabolicJourneyChart() {
         </div>
       </div>
 
-      <div className="h-[280px] sm:h-[400px] w-full relative z-10 cursor-crosshair bg-black/40 rounded-2xl sm:rounded-3xl p-2 sm:p-4 border border-white/5">
+      <div className="h-[320px] sm:h-[450px] w-full relative z-10 cursor-crosshair bg-black/40 rounded-2xl sm:rounded-3xl p-4 sm:p-6 border border-white/5 ring-1 ring-white/5">
         <ResponsiveContainer width="100%" height="100%">
-          <AreaChart data={data} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+          <AreaChart data={data} margin={{ top: 40, right: 40, left: 20, bottom: 40 }}>
             <defs>
               <linearGradient id="energyGrad" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="5%" stopColor="#22c55e" stopOpacity={0.6} />
@@ -117,23 +117,24 @@ export default function MetabolicJourneyChart() {
 
             </defs>
 
-            <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.02)" vertical={false} />
+            <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false} />
             
             <XAxis 
               dataKey="month" 
-              axisLine={false}
+              axisLine={{ stroke: 'rgba(255,255,255,0.1)', strokeWidth: 1 }}
               tickLine={false}
-              tick={{ fill: "rgba(255,255,255,0.4)", fontSize: 10, fontWeight: 900, letterSpacing: '0.15em' }}
-              dy={20}
+              tick={{ fill: "rgba(255,255,255,0.6)", fontSize: 10, fontWeight: 900, letterSpacing: '0.15em' }}
+              dy={15}
             />
             
             <YAxis 
               domain={[0, 100]}
-              axisLine={false}
+              axisLine={{ stroke: 'rgba(255,255,255,0.1)', strokeWidth: 1 }}
               tickLine={false}
-              tick={{ fill: "rgba(255,255,255,0.2)", fontSize: 10, fontWeight: 700 }}
-              width={40}
-              hide={true}
+              tick={{ fill: "rgba(255,255,255,0.4)", fontSize: 10, fontWeight: 700 }}
+              width={60}
+              tickFormatter={(val) => `${val}%`}
+              hide={false}
             />
 
             <Tooltip

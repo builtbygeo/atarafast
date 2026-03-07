@@ -10,8 +10,8 @@
 - **Reliability Fix**: Resolved "Application error" crash in the Info tab (StatsView).
 - **Feature Accessibility**: Ungated the Post-Fast Journal feature for all users.
 - **Safety First**: Added optional chaining and safety checks to translation and history data.
-- Fixed Middleware redirect using `NextResponse` for reliable auth protection.
-- Optimized Landing Page Navbar and App Bottom Navigation.
+- **Final Blog & Landing Polish**: Complete "God-Tier" formatting, full Bulgarian translations, fixed 404 links, and restored brand logo across the blog.
+- **Visual Excellence**: Fixed landing page FAQ layout and "Metabolic Success" chart axes visibility.
 
 ## Infrastructure Roadmap (Future Phases)
 1. **Cloud Sync (PostgreSQL/Supabase)**: Replace local storage with a database backend for cross-device persistence.

@@ -1,9 +1,11 @@
 import { notFound } from "next/navigation"
 import { articles, commonTags } from "@/lib/blog-data"
 import { Metadata, ResolvingMetadata } from "next"
+import { Logo } from "@/components/logo"
 
 // Simple React-based Markdown renderer since we just installed standard react-markdown
 import ReactMarkdown from "react-markdown"
+import remarkGfm from "remark-gfm"
 
 interface Props {
     params: Promise<{ slug: string }>
@@ -50,7 +52,7 @@ export default async function BlogPostPage(props: Props) {
     const faqSchema = {
         "@context": "https://schema.org",
         "@type": "FAQPage",
-        "mainEntity": article.faq.map((item) => ({
+        "mainEntity": article.faq.map((item: { q: string, a: string }) => ({
             "@type": "Question",
             "name": item.q,
             "acceptedAnswer": {
@@ -96,11 +98,27 @@ export default async function BlogPostPage(props: Props) {
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
             />
 
-            {/* Header / Nav could go here if needed, keeping it simple for now */}
-            <header className="sticky top-0 z-50 w-full border-b border-border/50 bg-background/80 backdrop-blur-md">
-                <div className="container mx-auto px-6 h-16 flex items-center justify-between">
-                    <a href="/" className="font-black text-xl text-primary tracking-tighter">Atara</a>
-                    <a href="/bg" className="text-sm font-medium text-muted-foreground hover:text-foreground">BG</a>
+            {/* Header / Nav */}
+            <header className="sticky top-0 z-50 w-full border-b border-white/[0.05] bg-black/80 backdrop-blur-xl">
+                <div className="container mx-auto px-6 h-24 flex items-center justify-between">
+                    <div className="flex items-center gap-12">
+                        <a href="/" className="hover:opacity-80 transition-opacity">
+                            <Logo className="w-24 text-white" />
+                        </a>
+                        <nav className="hidden md:flex items-center gap-8 text-[11px] font-black uppercase tracking-[0.2em] text-white/30">
+                            <a href="/" className="hover:text-white transition-colors">Home</a>
+                            <a href="/#pricing" className="hover:text-white transition-colors">Pricing</a>
+                            <a href="/#faq" className="hover:text-white transition-colors">FAQ</a>
+                        </nav>
+                    </div>
+                    <div className="flex items-center gap-6">
+                        <a 
+                            href="/app" 
+                            className="text-[11px] font-black uppercase tracking-[0.3em] bg-white text-black px-8 py-3.5 rounded-full hover:bg-primary transition-all duration-300 hover:scale-105 active:scale-95 shadow-xl shadow-white/5"
+                        >
+                            Open App
+                        </a>
+                    </div>
                 </div>
             </header>
 
@@ -109,17 +127,23 @@ export default async function BlogPostPage(props: Props) {
                     {article.title}
                 </h1>
 
-                <div className="prose prose-invert prose-p:text-muted-foreground prose-headings:text-foreground prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-img:rounded-3xl max-w-none">
-                    <ReactMarkdown>{article.contentMarkdown}</ReactMarkdown>
+                <div className="prose prose-invert prose-zinc max-w-none 
+                    prose-p:text-zinc-400 prose-p:leading-relaxed prose-p:mb-6 
+                    prose-headings:text-white prose-headings:font-black prose-headings:tracking-tight prose-headings:mt-12 prose-headings:mb-6
+                    prose-a:text-primary prose-a:font-bold prose-a:no-underline hover:prose-a:underline 
+                    prose-img:rounded-[2.5rem] prose-img:mt-12 prose-img:mb-12
+                    prose-table:w-full prose-table:my-8 prose-th:text-primary prose-th:text-left prose-th:p-4 prose-th:border-b prose-th:border-white/10
+                    prose-td:p-4 prose-td:border-b prose-td:border-white/5 prose-td:text-zinc-400">
+                    <ReactMarkdown remarkPlugins={[remarkGfm]}>{article.contentMarkdown}</ReactMarkdown>
                 </div>
 
                 <div className="mt-16 pt-16 border-t border-border/50">
                     <h2 className="text-3xl font-black tracking-tight mb-8">Frequently Asked Questions</h2>
                     <div className="space-y-6">
-                        {article.faq.map((item, idx) => (
-                            <div key={idx} className="bg-secondary/20 p-6 rounded-2xl border border-border/50">
-                                <h3 className="text-lg font-bold mb-2 text-foreground">{item.q}</h3>
-                                <p className="text-muted-foreground">{item.a}</p>
+                        {article.faq.map((item: { q: string, a: string }, idx: number) => (
+                            <div key={idx} className="bg-white/[0.02] p-8 rounded-[2rem] border border-white/5 hover:border-white/10 transition-colors">
+                                <h3 className="text-xl font-bold mb-3 text-white">{item.q}</h3>
+                                <p className="text-zinc-400 leading-relaxed">{item.a}</p>
                             </div>
                         ))}
                     </div>

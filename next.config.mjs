@@ -6,6 +6,7 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  transpilePackages: ['remark-gfm', 'react-markdown', 'micromark-extension-gfm'],
 }
 
 export default nextConfig

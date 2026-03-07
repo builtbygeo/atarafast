@@ -251,7 +251,7 @@ export default function LandingPage() {
               alt="Atara Metabolic Timeline Interface"
               width={600}
               height={800}
-              className="relative z-10 rounded-[3rem] shadow-2xl scale-110 lg:translate-x-12"
+              className="relative z-10 rounded-[3rem] shadow-2xl"
             />
           </div>
         </div>
@@ -392,12 +392,12 @@ export default function LandingPage() {
               <tr className="border-b" style={{ borderColor: 'rgba(255,255,255,0.05)' }}>
                 <td className="py-5 px-6 font-medium text-white/80">AI Analysis</td>
                 <td className="py-5 px-6 text-white/60">Limited (1/mo)</td>
-                <td className="py-5 px-6 font-bold text-white">1 per day (5 per week)</td>
+                <td className="py-5 px-6 font-bold text-white">Unlimited AI Coach</td>
               </tr>
               <tr className="border-b" style={{ borderColor: 'rgba(255,255,255,0.05)' }}>
                 <td className="py-5 px-6 font-medium text-white/80">History & Stats</td>
                 <td className="py-5 px-6 text-white/60">Last 30 days</td>
-                <td className="py-5 px-6 font-bold text-white">1 per day (5 per week) + Advanced Stats</td>
+                <td className="py-5 px-6 font-bold text-white">Unlimited History & Analytics</td>
               </tr>
               <tr className="border-b" style={{ borderColor: 'rgba(255,255,255,0.05)' }}>
                 <td className="py-5 px-6 font-medium text-white/80">Ketosis prediction</td>
@@ -505,11 +505,45 @@ export default function LandingPage() {
           <p className="mb-8" style={{ color: 'rgba(255,255,255,0.45)' }}>Join Atara. Your body has been waiting for this.</p>
           <Link
             href="/app"
-            className="inline-block rounded-2xl font-bold px-10 py-4 transition-all hover:scale-105"
-            style={{ backgroundColor: '#22c55e', color: '#0f0f0f', boxShadow: '0 16px 40px rgba(34,197,94,0.35)' }}
+            className="inline-block rounded-2xl font-bold px-10 py-4 transition-all hover:scale-105 shadow-2xl shadow-primary/20 animate-pulse"
+            style={{ backgroundColor: '#22c55e', color: '#0f0f0f' }}
           >
             Start Your Free Trial →
           </Link>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section id="faq" className="py-32 px-6 max-w-4xl mx-auto border-t" style={{ borderColor: 'rgba(255,255,255,0.05)' }}>
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-black uppercase tracking-[0.2em] mb-4 bg-primary/10 text-primary border border-primary/20">
+            FAQ
+          </div>
+          <h2 className="text-4xl sm:text-5xl font-black tracking-tighter">
+            Common <span className="text-primary">Questions</span>
+          </h2>
+        </div>
+
+        <div className="space-y-6">
+          {[
+            {
+              q: "Atara vs Zero vs Simple: Why choose Atara?",
+              a: "Atara is built by fasters, for fasters. Unlike Zero or Simple, we prioritize aesthetics and privacy above all else. Atara is a PWA that stores data locally, avoiding the cloud-sync tracking inherent in native apps. Plus, our 'Triangle' metabolic progress bar is objectively cooler."
+            },
+            {
+              q: "What is a PWA and why do you use it?",
+              a: "A Progressive Web App (PWA) looks and feels like a native app but runs in your browser and on your home screen. We use it to bypass the 30% App Store 'tax' and because it keeps your data 100% private, without Apple or Google tracking your fasting habits."
+            },
+            {
+              q: "Can I suggest new features?",
+              a: "Yes! Atara is in active development. You can reach out directly to the creator on X (Twitter) @builtbygeo or via email. We love hearing from our metabolic practitioners."
+            }
+          ].map((item, idx) => (
+            <div key={idx} className="p-8 rounded-[2rem] bg-white/[0.02] border border-white/[0.05] hover:border-white/10 transition-colors">
+              <h3 className="text-xl font-bold mb-4 text-white">{item.q}</h3>
+              <p className="text-zinc-400 leading-relaxed">{item.a}</p>
+            </div>
+          ))}
         </div>
       </section>
 
