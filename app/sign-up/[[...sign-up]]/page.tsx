@@ -1,16 +1,6 @@
 import { SignUp } from '@clerk/nextjs'
-import { headers } from 'next/headers'
 
-export default async function SignUpPage() {
-    const headerList = await headers()
-    const host = headerList.get('host') || ''
-    
-    const clerkPubKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || ''
-    const isProdKey = clerkPubKey.startsWith('pk_live_')
-    
-    // If using production keys, we always go back to the main marketing site
-    const landingUrl = isProdKey ? "https://atarafast.com" : "/"
-
+export default function SignUpPage() {
     return (
         <div className="min-h-screen flex items-center justify-center bg-[#0f0f0f]">
             <div className="flex flex-col items-center gap-6">
@@ -38,7 +28,7 @@ export default async function SignUpPage() {
                     }}
                 />
                 <a
-                    href={landingUrl}
+                    href="/"
                     className="text-xs font-bold text-zinc-500 hover:text-primary transition-colors tracking-widest uppercase"
                 >
                     ← Back to Website
