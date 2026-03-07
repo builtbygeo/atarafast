@@ -1,5 +1,6 @@
 import { SignIn } from '@clerk/nextjs'
 import { headers } from 'next/headers'
+import Link from 'next/link'
 
 export default async function SignInPage() {
     const headerList = await headers()
@@ -10,32 +11,82 @@ export default async function SignInPage() {
     const landingUrl = isDev ? "/" : "https://atarafast.com"
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-[#0f0f0f]">
-            <div className="flex flex-col items-center gap-6">
-                <SignIn
-                    appearance={{
-                        variables: {
-                            colorPrimary: '#22c55e',
-                            colorBackground: '#1a1a1a',
-                            colorText: '#ffffff',
-                            colorTextSecondary: 'rgba(255,255,255,0.6)',
-                            colorInputBackground: '#252525',
-                            colorInputText: '#ffffff',
-                            borderRadius: '0.75rem',
-                        },
-                        elements: {
-                            card: 'shadow-2xl border border-white/10',
-                            headerTitle: 'text-white font-black',
-                            formButtonPrimary: 'bg-[#22c55e] text-[#0f0f0f] hover:bg-[#16a34a]',
-                        },
-                    }}
-                />
-                <a
-                    href={landingUrl}
-                    className="text-xs font-bold text-zinc-500 hover:text-primary transition-colors tracking-widest uppercase"
-                >
-                    ← Back to Website
-                </a>
+        <div className="relative min-h-screen overflow-hidden bg-[#0a0a0a] selection:bg-primary/30">
+            {/* God-Tier Mesh Gradient Background */}
+            <div className="absolute inset-0 z-0">
+                <div className="absolute top-[-10%] left-[-10%] h-[600px] w-[600px] rounded-full bg-primary/10 blur-[120px]" />
+                <div className="absolute bottom-[10%] right-[-5%] h-[500px] w-[500px] rounded-full bg-emerald-900/10 blur-[100px]" />
+                <div className="absolute top-[20%] right-[10%] h-[300px] w-[300px] rounded-full bg-blue-900/5 blur-[80px]" />
+            </div>
+
+            {/* Content Container */}
+            <div className="relative z-10 flex min-h-screen flex-col items-center justify-center px-4 py-12">
+                {/* Logo / Branding Placeholder */}
+                <div className="mb-12 flex flex-col items-center gap-3">
+                    <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/5 p-3 shadow-2xl backdrop-blur-xl ring-1 ring-white/10">
+                         <svg viewBox="0 0 40 40" className="h-full w-full fill-primary">
+                            <circle cx="20" cy="20" r="18" fill="none" stroke="currentColor" strokeWidth="2.5" className="opacity-20" />
+                            <path d="M20 2C10.0589 2 2 10.0589 2 20C2 29.9411 10.0589 38 20 38C29.9411 38 38 29.9411 38 20C38 10.0589 29.9411 2 20 2ZM20 6C27.732 6 34 12.268 34 20C34 27.732 27.732 34 20 34C12.268 34 6 27.732 6 20C6 12.268 12.268 6 20 6Z" className="fill-primary" />
+                         </svg>
+                    </div>
+                    <h1 className="text-2xl font-black tracking-tighter text-white">ATARA</h1>
+                </div>
+
+                {/* Elegant Glassmorphic Card Wrapper */}
+                <div className="group relative w-full max-w-[440px]">
+                    <div className="absolute -inset-1 rounded-[2rem] bg-gradient-to-b from-white/10 to-transparent opacity-0 blur transition duration-500 group-hover:opacity-100" />
+                    <div className="relative overflow-hidden rounded-[1.75rem] border border-white/10 bg-[#161616]/40 p-1 shadow-2xl backdrop-blur-3xl">
+                        <SignIn
+                            appearance={{
+                                variables: {
+                                    colorPrimary: '#22c55e',
+                                    colorBackground: 'transparent',
+                                    colorText: '#ffffff',
+                                    colorTextSecondary: 'rgba(255,255,255,0.5)',
+                                    colorInputBackground: 'rgba(255,255,255,0.03)',
+                                    colorInputText: '#ffffff',
+                                    borderRadius: '1rem',
+                                    fontFamily: 'var(--font-inter)',
+                                },
+                                elements: {
+                                    rootBox: 'w-full',
+                                    card: 'bg-transparent shadow-none border-none p-6 sm:p-8',
+                                    headerTitle: 'text-2xl font-bold tracking-tight text-white mb-2',
+                                    headerSubtitle: 'text-zinc-400 font-medium',
+                                    formButtonPrimary: 'h-11 bg-primary text-black font-bold hover:bg-primary/90 transition-all shadow-[0_0_20px_rgba(34,197,94,0.3)] active:scale-[0.98]',
+                                    socialButtonsBlockButton: 'bg-white/5 border-white/5 hover:bg-white/10 text-white transition-all h-11',
+                                    socialButtonsBlockButtonText: 'font-semibold',
+                                    formFieldInput: 'h-11 bg-white/5 border-white/10 focus:border-primary/50 focus:ring-primary/20 transition-all text-white',
+                                    footer: 'bg-transparent mt-4',
+                                    footerActionText: 'text-zinc-500',
+                                    footerActionLink: 'text-primary hover:text-primary/80 font-bold',
+                                    identityPreviewText: 'text-white',
+                                    identityPreviewEditButtonIcon: 'text-primary',
+                                    formFieldLabel: 'text-zinc-400 font-bold text-[11px] uppercase tracking-wider mb-1.5',
+                                    dividerLine: 'bg-white/5',
+                                    dividerText: 'text-zinc-600 font-bold text-[10px] uppercase tracking-widest',
+                                },
+                            }}
+                        />
+                    </div>
+                </div>
+
+                {/* Refined Navigation */}
+                <div className="mt-12 flex flex-col items-center gap-6">
+                    <Link
+                        href={landingUrl}
+                        className="group flex items-center gap-2 text-sm font-bold tracking-widest text-zinc-500 uppercase transition-all hover:text-white"
+                    >
+                        <span className="transition-transform group-hover:-translate-x-1">←</span>
+                        <span>Back to Website</span>
+                    </Link>
+                    
+                    <div className="flex items-center gap-4 text-[11px] font-bold tracking-[0.2em] text-zinc-600 uppercase">
+                        <Link href={`${landingUrl}/privacy`} className="hover:text-zinc-400">Privacy</Link>
+                        <span className="h-1 w-1 rounded-full bg-zinc-800" />
+                        <Link href={`${landingUrl}/terms`} className="hover:text-zinc-400">Terms</Link>
+                    </div>
+                </div>
             </div>
         </div>
     )
