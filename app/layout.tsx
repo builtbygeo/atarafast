@@ -8,6 +8,8 @@ import './globals.css'
 
 import { headers } from 'next/headers'
 
+import { headers } from 'next/headers'
+
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
 const jetbrainsMono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-jetbrains" })
 
@@ -30,11 +32,38 @@ export const metadata: Metadata = {
   },
 }
 
-export default function RootLayout({
+export const viewport: Viewport = {
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#f5f5f5' },
+    { media: '(prefers-color-scheme: dark)', color: '#1a1a1a' },
+  ],
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  viewportFit: 'cover',
+}
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const headerList = await headers()
+  const host = headerList.get('host') || ''
+  
+  // Dynamic Environment Detection based on Clerk Key
+  const clerkPubKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || ''
+  const isProdKey = clerkPubKey.startsWith('pk_live_')
+  
+  const isDev = host.includes('localhost') || host.includes('127.0.0.1')
+  const isAppSubdomain = host.startsWith('app.') || host.includes('.app.') || host.includes('atara-app')
+  
+  // Configuration for Multi-Domain / Satellite
+  // On production, atarafast.com is the primary, app.atarafast.com is satellite.
+  const isSatellite = isProdKey && (isAppSubdomain || isDev)
+  const domain = isProdKey ? 'atarafast.com' : undefined
+
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -42,7 +71,10 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
       </head>
       <body className={`${inter.variable} ${jetbrainsMono.variable} font-sans antialiased text-white bg-[#0f0f0f]`}>
-        <ClerkProvider>
+        <ClerkProvider 
+          isSatellite={isSatellite}
+          domain={domain}
+        >
           <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
             <LanguageProvider>
               {children}

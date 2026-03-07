@@ -1,4 +1,15 @@
-export default function SignInPage() {
+import { SignIn } from '@clerk/nextjs'
+import { headers } from 'next/headers'
+
+export default async function SignInPage() {
+    const headerList = await headers()
+    const host = headerList.get('host') || ''
+    
+    // Dynamic link for "Back to Website"
+    const clerkPubKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || ''
+    const isProdKey = clerkPubKey.startsWith('pk_live_')
+    const landingUrl = isProdKey ? "https://atarafast.com" : "/"
+
     return (
         <div className="min-h-screen flex items-center justify-center bg-[#0f0f0f]">
             <div className="flex flex-col items-center gap-6">
@@ -21,7 +32,7 @@ export default function SignInPage() {
                     }}
                 />
                 <a
-                    href="/"
+                    href={landingUrl}
                     className="text-xs font-bold text-zinc-500 hover:text-primary transition-colors tracking-widest uppercase"
                 >
                     ← Back to Website
