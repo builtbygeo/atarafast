@@ -22,18 +22,18 @@ export default async function SignUpPage() {
 
             {/* Content Container */}
             <div className="relative z-10 flex min-h-screen flex-col items-center justify-center px-4 py-12">
-                {/* Real Brand Logo */}
-                <div className="mb-10 flex flex-col items-center gap-5">
-                    <div className="relative h-24 w-24 overflow-hidden rounded-[2.5rem] bg-white/5 p-1 shadow-2xl ring-1 ring-white/10 backdrop-blur-2xl transition-transform duration-500 hover:scale-105">
+                {/* Massive Brand Logo */}
+                <div className="mb-10 flex flex-col items-center gap-6">
+                    <div className="relative h-32 w-32 overflow-hidden rounded-[3rem] bg-white/5 p-1 shadow-2xl ring-1 ring-white/10 backdrop-blur-2xl transition-transform duration-500 hover:scale-105">
                          <Image 
                             src="https://img.clerk.com/eyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvdXBsb2FkZWQvaW1nXzNBY2NrSzJDS09wcGdUOTlUTzBVckh2eG42bCJ9?width=400"
                             alt="Atara Logo"
                             fill
-                            className="object-contain p-4"
+                            className="object-contain p-5"
                             priority
                          />
                     </div>
-                    <h1 className="text-4xl font-black tracking-[-0.05em] text-white">ATARA</h1>
+                    <h1 className="text-5xl font-black tracking-[-0.05em] text-white">ATARA</h1>
                 </div>
 
                 {/* Elegant Glassmorphic Card Wrapper */}
@@ -54,11 +54,12 @@ export default async function SignUpPage() {
                                 },
                                 elements: {
                                     rootBox: 'w-full',
-                                    card: 'bg-transparent shadow-none border-none p-6 sm:p-8',
-                                    headerTitle: 'text-2xl font-bold tracking-tight text-white mb-2',
-                                    headerSubtitle: 'text-zinc-300 font-semibold leading-relaxed',
-                                    formButtonPrimary: 'h-11 bg-primary text-black font-bold hover:bg-primary/90 transition-all shadow-[0_0_25px_rgba(34,197,94,0.4)] active:scale-[0.98]',
-                                    socialButtonsBlockButton: 'bg-white/5 border-white/5 hover:bg-white/10 text-white transition-all h-11',
+                                    card: 'bg-transparent shadow-none border-none p-8',
+                                    headerTitle: 'hidden',
+                                    headerSubtitle: 'hidden',
+                                    logoBox: 'hidden',
+                                    formButtonPrimary: 'bg-[#22c55e] hover:bg-[#1eb054] text-black font-bold text-base py-3 rounded-2xl transition-all h-14',
+                                    socialButtonsBlockButton: 'bg-white/5 border-white/10 hover:bg-white/10 text-white transition-all h-14 mb-2',
                                     socialButtonsBlockButtonText: 'font-semibold text-white',
                                     formFieldInput: 'h-11 bg-white/5 border-white/10 focus:border-primary/50 focus:ring-primary/20 transition-all text-white placeholder:text-zinc-500',
                                     footer: 'bg-transparent mt-4',
