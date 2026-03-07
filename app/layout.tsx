@@ -6,6 +6,8 @@ import { LanguageProvider } from '@/lib/language-context'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 
+import { headers } from 'next/headers'
+
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
 const jetbrainsMono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-jetbrains" })
 
@@ -40,11 +42,20 @@ export const viewport: Viewport = {
   viewportFit: 'cover',
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const headerList = await headers()
+  const host = headerList.get('host') || ''
+  const isDev = host.includes('localhost') || host.includes('127.0.0.1')
+  const isApp = host.startsWith('app.') || host.includes('.app.') || host.includes('atara-app')
+  
+  // On production, if we are on the app subdomain, we are a satellite
+  const isSatellite = !isDev && isApp
+  const domain = !isDev ? 'atarafast.com' : undefined
+
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -52,7 +63,10 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
       </head>
       <body className={`${inter.variable} ${jetbrainsMono.variable} font-sans antialiased text-white bg-[#0f0f0f]`}>
-        <ClerkProvider>
+        <ClerkProvider 
+          isSatellite={isSatellite}
+          domain={domain}
+        >
           <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
             <LanguageProvider>
               {children}

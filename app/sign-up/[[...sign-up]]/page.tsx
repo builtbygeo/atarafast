@@ -1,6 +1,14 @@
 import { SignUp } from '@clerk/nextjs'
+import { headers } from 'next/headers'
 
-export default function SignUpPage() {
+export default async function SignUpPage() {
+    const headerList = await headers()
+    const host = headerList.get('host') || ''
+    const isDev = host.includes('localhost') || host.includes('127.0.0.1')
+    
+    // On production app project, we go back to the main domain
+    const landingUrl = isDev ? "/" : "https://atarafast.com"
+
     return (
         <div className="min-h-screen flex items-center justify-center bg-[#0f0f0f]">
             <div className="flex flex-col items-center gap-6">
@@ -28,7 +36,7 @@ export default function SignUpPage() {
                     }}
                 />
                 <a
-                    href="/"
+                    href={landingUrl}
                     className="text-xs font-bold text-zinc-500 hover:text-primary transition-colors tracking-widest uppercase"
                 >
                     ← Back to Website
