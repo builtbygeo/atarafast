@@ -333,8 +333,8 @@ export function StatsView({ history, settings, onOpenSettings, onOpenUpgrade }: 
             {/* Colored glow ring */}
             <circle cx="128" cy="128" r="110" stroke="oklch(var(--primary))" strokeWidth="12" fill="none"
               strokeDasharray={circumference} strokeDashoffset={strokeDashoffset} strokeLinecap="round" filter="url(#green-glow)" />
-            {/* Inner white indicator ring */}
-            <circle cx="128" cy="128" r="110" stroke="#ffffff" strokeWidth="6" fill="none"
+            {/* Inner primary indicator ring */}
+            <circle cx="128" cy="128" r="110" stroke="oklch(var(--primary))" strokeWidth="6" fill="none"
               strokeDasharray={circumference} strokeDashoffset={strokeDashoffset} strokeLinecap="round" />
           </svg>
           <div className="absolute flex flex-col items-center justify-center text-center inset-0">
@@ -391,10 +391,10 @@ export function StatsView({ history, settings, onOpenSettings, onOpenUpgrade }: 
                     <stop offset="95%" stopColor="#4ADE80" stopOpacity={0} />
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" vertical={true} horizontal={true} stroke="rgba(255,255,255,0.06)" />
-                <XAxis dataKey="label" tick={{ fontSize: 11, fill: "rgba(255,255,255,0.5)" }} axisLine={false} tickLine={false} tickMargin={12} />
-                <YAxis tickCount={5} tick={{ fontSize: 11, fill: "rgba(255,255,255,0.5)" }} axisLine={false} tickLine={false} tickFormatter={(v) => `${v}h`} tickMargin={12} />
-                <Tooltip content={<ChartTooltip />} cursor={{ stroke: "rgba(255,255,255,0.1)", strokeWidth: 1, strokeDasharray: "4 4" }} />
+                <CartesianGrid strokeDasharray="3 3" vertical={true} horizontal={true} stroke="currentColor" className="opacity-[0.06]" />
+395:                 <XAxis dataKey="label" tick={{ fontSize: 11, fill: "currentColor" }} axisLine={false} tickLine={false} tickMargin={12} className="opacity-50" />
+396:                 <YAxis tickCount={5} tick={{ fontSize: 11, fill: "currentColor" }} axisLine={false} tickLine={false} tickFormatter={(v) => `${v}h`} tickMargin={12} className="opacity-50" />
+                <Tooltip content={<ChartTooltip />} cursor={{ stroke: "currentColor", strokeWidth: 1, strokeDasharray: "4 4", opacity: 0.1 }} />
                 <Area
                   type="monotone"
                   dataKey="hours"
@@ -438,7 +438,7 @@ export function StatsView({ history, settings, onOpenSettings, onOpenUpgrade }: 
 
         {/* 4. AI Coach Dashboard Card */}
         {isPremium && (
-          <div className="rounded-[2rem] border border-primary/20 bg-[#0B1510] p-6 mb-8 relative overflow-hidden group shadow-[0_4px_30px_rgba(34,197,94,0.05)]">
+          <div className="rounded-[2.5rem] border border-primary/20 bg-card p-6 mb-8 relative overflow-hidden group shadow-[0_8px_40px_-12px_rgba(34,197,94,0.15)] transition-all">
             <div className="absolute top-0 right-0 p-4 opacity-30 blur-[40px] group-hover:opacity-50 transition-opacity duration-1000">
               <Sparkles className="w-40 h-40 text-primary" />
             </div>
@@ -501,7 +501,7 @@ export function StatsView({ history, settings, onOpenSettings, onOpenUpgrade }: 
                 <button
                   onClick={handleAnalyze}
                   disabled={isAnalyzing}
-                  className="w-full py-3.5 rounded-2xl bg-white text-black font-black text-xs tracking-wide shadow-lg shadow-white/10 hover:shadow-white/20 active:scale-95 transition-all outline-none disabled:opacity-50 whitespace-nowrap"
+                  className="w-full py-3.5 rounded-2xl bg-primary text-primary-foreground font-black text-xs tracking-wide shadow-lg shadow-primary/20 hover:shadow-primary/30 active:scale-95 transition-all outline-none disabled:opacity-50 whitespace-nowrap"
                 >
                   {isAnalyzing ? "Analyzing..." : "Generate Insights"}
                 </button>

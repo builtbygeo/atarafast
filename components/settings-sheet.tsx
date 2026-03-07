@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { X, Download, Upload, Trash2, Sun, Moon, Monitor, ChevronUp, ChevronDown, Circle, Triangle, Bell, BellOff, Sparkles, LogOut, User as UserIcon, Lock } from "lucide-react"
+import { X, Download, Upload, Trash2, Sun, Moon, Monitor, ChevronUp, ChevronDown, Circle, Triangle, Bell, BellOff, Sparkles, LogOut, User as UserIcon, Lock, Mail } from "lucide-react"
 import { useTheme } from "next-themes"
 import { getSettings, updateSettings, exportData, importData, clearAllData, type AppSettings } from "@/lib/storage"
 import { useLang } from "@/lib/language-context"
@@ -18,7 +18,7 @@ interface SettingsSheetProps {
 }
 
 export function SettingsSheet({ open, onClose, onDataCleared, onOpenUpgrade }: SettingsSheetProps) {
-  const { t } = useLang()
+  const { t, lang, setLang } = useLang()
   const { theme, setTheme } = useTheme()
   const { permission, requestPermission } = useNotifications()
   const { isPremium, isTrialing, trialDaysLeft, isSignedIn, isLoaded: subLoaded, status, stripeCustomerId } = useSubscription()
@@ -326,45 +326,27 @@ export function SettingsSheet({ open, onClose, onDataCleared, onOpenUpgrade }: S
 
           <div className="h-px bg-border" />
 
-          {/* Feedback */}
-          <div className="flex items-center justify-between pb-2">
-            <div>
-              <p className="text-sm font-bold text-foreground">Feedback</p>
-              <p className="text-[10px] text-muted-foreground font-medium uppercase tracking-wider">Help us improve</p>
-            </div>
-            <a
-              href="mailto:support@atarafast.com"
-              className="px-4 py-2 text-[10px] font-black uppercase tracking-widest rounded-xl bg-secondary text-secondary-foreground transition-all hover:bg-secondary/80 border border-border/50 text-center"
-            >
-              Send Feedback
-            </a>
-          </div>
-
-          <div className="h-px bg-border" />
-
-          {/* Social Presence */}
-          <div className="flex flex-col gap-3">
-            <h3 className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-1 ml-1">Social</h3>
-            <div className="grid grid-cols-2 gap-3">
-              <a
-                href="https://x.com/builtbygeo"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex flex-col items-center justify-center gap-2 rounded-2xl bg-secondary/30 p-4 transition-all hover:bg-secondary/50 active:scale-95 border border-border/50 group"
-              >
-                <svg className="w-5 h-5 text-foreground/50 group-hover:text-foreground transition-colors" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-                </svg>
-                <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground group-hover:text-foreground">Follow on X</span>
-              </a>
+          {/* Language */}
+          <div className="flex items-center justify-between">
+            <p className="text-sm font-medium text-foreground">{t.language || "Language"}</p>
+            <div className="flex rounded-lg border border-border overflow-hidden">
               <button
-                disabled
-                className="flex flex-col items-center justify-center gap-2 rounded-2xl bg-secondary/10 p-4 border border-border/30 opacity-50 cursor-not-allowed group"
+                onClick={() => setLang("en")}
+                className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium transition-colors ${lang === "en"
+                  ? "bg-primary text-primary-foreground"
+                  : "bg-card text-muted-foreground hover:text-foreground"
+                  }`}
               >
-                <svg className="w-5 h-5 text-muted-foreground" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M20.64 11H17V7h3.64c.2 0 .36.16.36.36v3.28c0 .2-.16.36-.36.36zM8 11h3V7H8c-.55 0-1 .45-1 1v2c0 .55.45 1 1 1zM22 6.5A2.5 2.5 0 0 0 19.5 4H4.5A2.5 2.5 0 0 0 2 6.5v11A2.5 2.5 0 0 0 4.5 20h15a2.5 2.5 0 0 0 2.5-2.5v-11z" />
-                </svg>
-                <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Product Hunt</span>
+                EN
+              </button>
+              <button
+                onClick={() => setLang("bg")}
+                className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium transition-colors ${lang === "bg"
+                  ? "bg-primary text-primary-foreground"
+                  : "bg-card text-muted-foreground hover:text-foreground"
+                  }`}
+              >
+                БГ
               </button>
             </div>
           </div>
@@ -413,7 +395,7 @@ export function SettingsSheet({ open, onClose, onDataCleared, onOpenUpgrade }: S
                     const newVal = !settings.devForcePremium;
                     updateSettings({ devForcePremium: newVal });
                     setSettingsState((prev) => ({ ...prev, devForcePremium: newVal }));
-                    window.location.reload(); // Reload to apply across the app immediately
+                    window.location.reload(); 
                   }}
                   className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ${settings.devForcePremium ? 'bg-[#22c55e]' : 'bg-secondary'
                     }`}
@@ -441,7 +423,7 @@ export function SettingsSheet({ open, onClose, onDataCleared, onOpenUpgrade }: S
               >
                 {!isPremium && <div className="absolute top-2 right-2"><Lock className="w-3 h-3 text-primary/50" /></div>}
                 <Download className={`h-5 w-5 ${isPremium ? 'text-primary' : 'text-muted-foreground'}`} />
-                <span className={`text-[10px] font-black uppercase tracking-widest ${!isPremium ? 'text-muted-foreground' : ''}`}>{t.exportData}</span>
+                <span className={`text-[10px] font-black uppercase tracking-widest ${isPremium ? 'text-foreground/80' : 'text-muted-foreground'}`}>{t.exportData}</span>
               </button>
               <button
                 onClick={isPremium ? handleImport : onOpenUpgrade}
@@ -449,12 +431,12 @@ export function SettingsSheet({ open, onClose, onDataCleared, onOpenUpgrade }: S
               >
                 {!isPremium && <div className="absolute top-2 right-2"><Lock className="w-3 h-3 text-primary/50" /></div>}
                 <Upload className={`h-5 w-5 ${isPremium ? 'text-primary' : 'text-muted-foreground'}`} />
-                <span className={`text-[10px] font-black uppercase tracking-widest ${!isPremium ? 'text-muted-foreground' : ''}`}>{t.importData}</span>
+                <span className={`text-[10px] font-black uppercase tracking-widest ${isPremium ? 'text-foreground/80' : 'text-muted-foreground'}`}>{t.importData}</span>
               </button>
             </div>
           </div>
 
-          <div className="h-px bg-border text-transparent select-none">-</div>
+          <div className="h-px bg-border" />
 
           {/* Onboarding */}
           <button
@@ -473,12 +455,48 @@ export function SettingsSheet({ open, onClose, onDataCleared, onOpenUpgrade }: S
             onClick={handleClear}
             className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-colors ${confirmClear
               ? "bg-destructive text-destructive-foreground"
-              : "bg-secondary text-destructive hover:bg-destructive/10"
+              : "bg-secondary/50 text-destructive hover:bg-destructive/10"
               }`}
           >
             <Trash2 className="h-4 w-4" />
             {confirmClear ? "Tap again to confirm" : "Clear all data"}
           </button>
+
+          <div className="h-px bg-border" />
+
+          {/* Contact & Links Section */}
+          <div className="flex flex-col gap-3 pb-2 pt-1">
+            <h3 className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-1 ml-1">Contact & Social</h3>
+            <div className="grid grid-cols-2 gap-3">
+              <a
+                href="https://atarafast.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex flex-col items-center justify-center gap-2 rounded-2xl bg-secondary/30 p-4 transition-all hover:bg-secondary/50 border border-border/50 group"
+              >
+                <Monitor className="w-5 h-5 text-foreground/50 group-hover:text-foreground transition-colors" />
+                <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground group-hover:text-foreground">Official Site</span>
+              </a>
+              <a
+                href="https://x.com/builtbygeo"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex flex-col items-center justify-center gap-2 rounded-2xl bg-secondary/30 p-4 transition-all hover:bg-secondary/50 border border-border/50 group"
+              >
+                <svg className="w-5 h-5 text-foreground/50 group-hover:text-foreground transition-colors" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                </svg>
+                <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground group-hover:text-foreground">Twitter (X)</span>
+              </a>
+            </div>
+            <a
+              href="mailto:support@atarafast.com"
+              className="w-full flex items-center justify-center gap-3 rounded-2xl bg-secondary/30 p-4 transition-all hover:bg-secondary/50 border border-border/50 group"
+            >
+              <Mail className="w-4 h-4 text-foreground/50 group-hover:text-foreground transition-colors" />
+              <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground group-hover:text-foreground">Send Email Feedback</span>
+            </a>
+          </div>
         </div>
       </div>
     </div>

@@ -116,8 +116,8 @@ export function ManualFastDialog({ onConfirm, onCancel, editingRecord }: ManualF
             </div>
           </div>
 
-          <div className="bg-secondary/20 p-4 rounded-2xl space-y-4">
-            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/60 mb-1">{t.startTime}</p>
+          <div className="bg-secondary/40 p-4 rounded-2xl space-y-4">
+            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/80 mb-1">{t.startTime}</p>
             <div className="grid grid-cols-2 gap-3">
               <input
                 type="date"
@@ -134,8 +134,8 @@ export function ManualFastDialog({ onConfirm, onCancel, editingRecord }: ManualF
             </div>
           </div>
 
-          <div className="bg-secondary/20 p-4 rounded-2xl space-y-4">
-            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/60 mb-1">{t.endTime}</p>
+          <div className="bg-secondary/40 p-4 rounded-2xl space-y-4">
+            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/80 mb-1">{t.endTime}</p>
             <div className="grid grid-cols-2 gap-3">
               <input
                 type="date"

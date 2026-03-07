@@ -10,19 +10,27 @@ interface LanguageContextType {
 }
 
 const LanguageContext = createContext<LanguageContextType>({
-  lang: "bg",
+  lang: "en",
   setLang: () => {},
-  t: translations.bg,
+  t: translations.en,
 })
 
 const LANG_KEY = "atara-language"
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [lang, setLangState] = useState<Language>("bg")
+  const [lang, setLangState] = useState<Language>("en")
 
   useEffect(() => {
     const saved = localStorage.getItem(LANG_KEY) as Language | null
-    if (saved === "en" || saved === "bg") setLangState(saved)
+    if (saved === "en" || saved === "bg") {
+      setLangState(saved)
+    } else {
+      // Auto-detection for Bulgarian
+      const browserLang = navigator.language.toLowerCase()
+      if (browserLang.startsWith("bg")) {
+        setLangState("bg")
+      }
+    }
   }, [])
 
   function setLang(l: Language) {

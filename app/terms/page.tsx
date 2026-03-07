@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 export default function TermsPage() {
     const lastUpdated = 'March 5, 2025'
     return (
-        <div className="min-h-screen bg-[#0f0f0f] text-white" style={{ fontFamily: 'var(--font-inter), Inter, system-ui, sans-serif' }}>
+        <div className="min-h-screen bg-[#0f0f0f] text-white dark" style={{ fontFamily: 'var(--font-inter), Inter, system-ui, sans-serif' }}>
             <nav className="flex items-center justify-between px-6 py-4 border-b" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
                 <Link href="/" className="flex items-center gap-2">
                     <div className="w-7 h-7 rounded-full flex items-center justify-center" style={{ backgroundColor: 'rgba(34,197,94,0.15)', border: '1px solid rgba(34,197,94,0.4)' }}>

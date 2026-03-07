@@ -73,7 +73,7 @@ const premiumFeatures = [
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-[#0f0f0f] text-white" style={{ fontFamily: 'var(--font-inter), Inter, system-ui, sans-serif' }}>
+    <div className="min-h-screen bg-[#0f0f0f] text-white dark" style={{ fontFamily: 'var(--font-inter), Inter, system-ui, sans-serif' }}>
       {/* Nav */}
       <nav className="fixed top-0 inset-x-0 z-50 flex items-center justify-between px-6 py-4 border-b" style={{ backgroundColor: '#0f0f0f', borderColor: 'rgba(255,255,255,0.05)' }}>
         <div className="flex items-center">

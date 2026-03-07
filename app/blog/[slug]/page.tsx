@@ -88,7 +88,7 @@ export default async function BlogPostPage(props: Props) {
     }
 
     return (
-        <article className="min-h-screen bg-background">
+        <article className="min-h-screen bg-[#0f0f0f] text-white dark">
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}

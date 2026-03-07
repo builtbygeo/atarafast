@@ -59,7 +59,7 @@ export function PresetGrid({ onSelect, showHeader = true }: PresetGridProps) {
             <motion.div key={preset.id} variants={item}>
               <button
                 onClick={() => { if (!isLocked) onSelect(preset) }}
-                className={`w-full relative flex flex-col rounded-[1.5rem] p-5 pt-4 text-left transition-all active:scale-[0.96] border border-white/10 bg-secondary/20 hover:bg-secondary/30 group overflow-hidden ${isLocked ? 'opacity-70 grayscale-[0.5]' : ''}`}
+                className={`w-full relative flex flex-col rounded-[1.5rem] p-5 pt-4 text-left transition-all active:scale-[0.96] border border-border bg-secondary/20 hover:bg-secondary/30 group overflow-hidden ${isLocked ? 'opacity-70 grayscale-[0.5]' : ''}`}
               >
                 {/* Visual Indicator Line */}
                 <div
@@ -68,7 +68,7 @@ export function PresetGrid({ onSelect, showHeader = true }: PresetGridProps) {
                 />
 
                 {isLocked && (
-                  <div className="absolute top-4 right-4 text-primary/40 bg-primary/5 p-1.5 rounded-full border border-primary/10">
+                  <div className="absolute top-4 right-4 text-primary/40 bg-primary/5 p-1.5 rounded-full border border-border">
                     <Lock className="w-3.5 h-3.5 text-muted-foreground" />
                   </div>
                 )}

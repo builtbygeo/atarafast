@@ -10,8 +10,8 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
 const jetbrainsMono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-jetbrains" })
 
 export const metadata: Metadata = {
-  title: 'Atara — Фастинг Таймер',
-  description: 'От Атараксия — стоичното състояние на неразклатимо вътрешно спокойствие. Проследявайте постите си с яснота и спокойствие.',
+  title: 'Atara — The Beautiful Fasting Timer',
+  description: 'From Ataraxia — the Stoic state of unshakeable inner calm. Track your fasts with clarity and peace.',
   manifest: '/manifest.json',
   appleWebApp: {
     capable: true,
@@ -46,14 +46,14 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="bg" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="icon" href="/favicon.png" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
       </head>
       <body className={`${inter.variable} ${jetbrainsMono.variable} font-sans antialiased text-white bg-[#0f0f0f]`}>
         <ClerkProvider>
-          <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+          <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
             <LanguageProvider>
               {children}
             </LanguageProvider>

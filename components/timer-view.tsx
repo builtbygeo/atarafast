@@ -293,7 +293,7 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
             {/* STARTS CARD */}
             <button
               onClick={() => setShowEditStartTime(true)}
-              className="flex-1 rounded-[1.25rem] p-4 pb-3.5 border border-primary bg-primary/5 flex flex-col pt-3 shadow-[0_0_20px_-10px_rgba(34,197,94,0.3)] cursor-pointer hover:bg-primary/10 transition-colors text-left"
+              className="flex-1 rounded-[1.25rem] p-4 pb-3.5 border border-primary/40 bg-primary/5 dark:bg-primary/10 flex flex-col pt-3 shadow-[0_4px_20px_-10px_rgba(34,197,94,0.2)] cursor-pointer hover:bg-primary/10 transition-colors text-left"
             >
               <div className="flex justify-between items-center mb-1 w-full">
                 <span className="block text-[10px] font-black text-primary uppercase tracking-widest">{t.startTime || "STARTS"}</span>
@@ -302,22 +302,22 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
               <span className="block text-2xl font-black text-foreground mb-0.5 tracking-tighter leading-none">
                 {format(startTime, "h:mm a")}
               </span>
-              <span className="block text-xs font-semibold text-muted-foreground opacity-80 mt-1">{dayText}</span>
+              <span className="block text-xs font-semibold text-muted-foreground mt-1">{dayText}</span>
             </button>
 
             {/* GOAL CARD */}
             <button
               onClick={() => navigateTo("presets")}
-              className="flex-1 rounded-[1.25rem] p-4 pb-3.5 border border-border/60 bg-secondary/30 flex flex-col pt-3 cursor-pointer hover:bg-secondary/40 transition-colors text-left"
+              className="flex-1 rounded-[1.25rem] p-4 pb-3.5 border border-border bg-secondary/20 dark:bg-secondary/30 flex flex-col pt-3 cursor-pointer hover:bg-secondary/40 transition-colors text-left shadow-sm"
             >
               <div className="flex justify-between items-center mb-1 w-full">
-                <span className="block text-[10px] font-black text-muted-foreground uppercase tracking-widest opacity-80">{t.goal || "GOAL"}</span>
+                <span className="block text-[10px] font-black text-muted-foreground uppercase tracking-widest">{t.goal || "GOAL"}</span>
                 <Edit2 className="h-3 w-3 text-muted-foreground opacity-50" />
               </div>
               <span className="block text-2xl font-black text-foreground mb-0.5 tracking-tighter leading-none">
                 {format(goalTime, "h:mm a")}
               </span>
-              <span className="block text-xs font-semibold text-muted-foreground opacity-80 mt-1">
+              <span className="block text-xs font-semibold text-muted-foreground mt-1">
                 {isComplete ? (t.fastComplete || "Fast Complete") : (lang === 'bg' ? 'В прогрес' : 'In Progress')}
               </span>
             </button>

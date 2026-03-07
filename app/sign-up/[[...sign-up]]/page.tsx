@@ -28,7 +28,7 @@ export default function SignUpPage() {
                     }}
                 />
                 <a
-                    href="https://atarafast.com"
+                    href="/"
                     className="text-xs font-bold text-zinc-500 hover:text-primary transition-colors tracking-widest uppercase"
                 >
                     ← Back to Website

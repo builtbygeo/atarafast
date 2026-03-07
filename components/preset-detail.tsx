@@ -37,7 +37,7 @@ export function PresetDetail({ preset, isActive, isCurrentActivePreset, onBack, 
       <div className="flex items-center gap-4">
         <button
           onClick={onBack}
-          className="flex h-10 w-10 items-center justify-center rounded-2xl bg-secondary/50 text-foreground transition-all hover:bg-secondary active:scale-90 border border-white/5"
+          className="flex h-10 w-10 items-center justify-center rounded-2xl bg-secondary/50 text-foreground transition-all hover:bg-secondary active:scale-90 border border-border"
           aria-label="Go back"
         >
           <ArrowLeft className="h-5 w-5" />
@@ -51,15 +51,15 @@ export function PresetDetail({ preset, isActive, isCurrentActivePreset, onBack, 
       </div>
 
       <div className="flex flex-col gap-4 mt-2">
-        <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground opacity-60 border-b border-white/5 pb-2">
+        <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground opacity-60 border-b border-border pb-2">
           {t.tipsTitle}
         </h4>
         <div className="grid grid-cols-1 gap-3">
           {content?.tips.slice(0, 2).map((tip: string, i: number) => {
             const Icon = tipIcons[i % tipIcons.length]
             return (
-              <div key={i} className="flex items-start gap-4 p-4 rounded-[1.5rem] bg-secondary/20 border border-white/5 shadow-sm">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-background/50 border border-white/5">
+              <div key={i} className="flex items-start gap-4 p-4 rounded-[1.5rem] bg-secondary/20 border border-border shadow-sm">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-background/50 border border-border">
                   <Icon className="h-5 w-5 text-primary" />
                 </div>
                 <p className="text-sm font-medium text-foreground/80 leading-relaxed pt-0.5">{tip}</p>
@@ -116,7 +116,7 @@ export function PresetDetail({ preset, isActive, isCurrentActivePreset, onBack, 
                   setCustomInput(String(Math.min(168, Math.max(8, val))))
                 }}
                 disabled={isLocked}
-                className="w-full h-14 rounded-2xl border border-white/10 bg-secondary/20 px-3 py-2 text-center text-2xl font-black font-mono text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all disabled:opacity-50"
+                className="w-full h-14 rounded-2xl border border-border bg-secondary/20 px-3 py-2 text-center text-2xl font-black font-mono text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all disabled:opacity-50"
               />
             </div>
           </div>
@@ -135,7 +135,7 @@ export function PresetDetail({ preset, isActive, isCurrentActivePreset, onBack, 
             isCurrentActivePreset ? (
               <button
                 onClick={onChangePreset}
-                className="w-full py-4 rounded-[2rem] bg-secondary/50 border border-white/10 text-sm font-black uppercase tracking-widest text-foreground transition-all hover:bg-secondary active:scale-95 shadow-lg"
+                className="w-full py-4 rounded-[2rem] bg-secondary/50 border border-border text-sm font-black uppercase tracking-widest text-foreground transition-all hover:bg-secondary active:scale-95 shadow-lg"
               >
                 {t.changePreset}
               </button>
