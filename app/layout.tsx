@@ -66,6 +66,7 @@ export default async function RootLayout({
         <ClerkProvider 
           isSatellite={isSatellite}
           domain={domain}
+          proxyUrl={!isDev ? 'https://clerk.atarafast.com' : undefined}
         >
           <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
             <LanguageProvider>
