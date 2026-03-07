@@ -49,18 +49,12 @@ export default async function RootLayout({
 }>) {
   const headerList = await headers()
   const host = headerList.get('host') || ''
-  
-  // Dynamic Environment Detection based on Clerk Key
-  const clerkPubKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || ''
-  const isProdKey = clerkPubKey.startsWith('pk_live_')
-  
   const isDev = host.includes('localhost') || host.includes('127.0.0.1')
-  const isAppSubdomain = host.startsWith('app.') || host.includes('.app.') || host.includes('atara-app')
+  const isApp = host.startsWith('app.') || host.includes('.app.') || host.includes('atara-app')
   
-  // Configuration for Multi-Domain / Satellite
-  // Mandatory for custom domain (clerk.atarafast.com) to work on app.atarafast.com
-  const isSatellite = isProdKey && (isAppSubdomain || isDev)
-  const domain = isProdKey ? 'atarafast.com' : undefined
+  // On production, if we are on the app subdomain, we are a satellite
+  const isSatellite = !isDev && isApp
+  const domain = !isDev ? 'atarafast.com' : undefined
 
   return (
     <html lang="en" suppressHydrationWarning>

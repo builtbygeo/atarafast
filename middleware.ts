@@ -15,7 +15,7 @@ export default clerkMiddleware(async (auth, req) => {
     const { pathname } = req.nextUrl;
     const isDev = host.includes('localhost') || host.includes('127.0.0.1');
 
-    // Role detection
+    // REDUNDANT ROLE DETECTION
     const isApp = 
         process.env.NEXT_PUBLIC_APP_PROJECT === 'true' || 
         host.startsWith('app.') || 
@@ -33,7 +33,8 @@ export default clerkMiddleware(async (auth, req) => {
     }
 
     // 2. App Project Logic (app.atarafast.com)
-    // Redirect app.atarafast.com/app -> app.atarafast.com/
+    // EXTERNAL REDIRECT: app.atarafast.com/app -> app.atarafast.com/
+    // Skip this redirect in dev mode to allow testing the app at /app
     if (!isDev && (pathname === '/app' || pathname === '/app/')) {
         return NextResponse.redirect(new URL('/', req.url));
     }

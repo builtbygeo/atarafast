@@ -4,11 +4,10 @@ import { headers } from 'next/headers'
 export default async function SignInPage() {
     const headerList = await headers()
     const host = headerList.get('host') || ''
+    const isDev = host.includes('localhost') || host.includes('127.0.0.1')
     
-    // Dynamic link for "Back to Website"
-    const clerkPubKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || ''
-    const isProdKey = clerkPubKey.startsWith('pk_live_')
-    const landingUrl = isProdKey ? "https://atarafast.com" : "/"
+    // On production app project, we go back to the main domain
+    const landingUrl = isDev ? "/" : "https://atarafast.com"
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-[#0f0f0f]">
