@@ -20,21 +20,13 @@ export const metadata: Metadata = {
     statusBarStyle: 'black-translucent',
     title: 'Atara',
   },
-  icons: {
-    icon: [
-      { url: '/favicon.png', sizes: 'any' },
-    ],
-    apple: [
-      { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
-    ],
+  formatDetection: {
+    telephone: false,
   },
 }
 
 export const viewport: Viewport = {
-  themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#f5f5f5' },
-    { media: '(prefers-color-scheme: dark)', color: '#1a1a1a' },
-  ],
+  themeColor: '#000000',
   width: 'device-width',
   initialScale: 1,
   maximumScale: 1,

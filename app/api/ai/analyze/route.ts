@@ -22,8 +22,8 @@ Be direct, authoritative, and helpful.`
     And my current stats: ${JSON.stringify(stats)}
     Latest journal reflections: ${JSON.stringify(journals)}`
 
-        const primaryModel = "x-ai/grok-4.1-fast"
-        const fallbackModel = "qwen/qwen3-32b"
+        const primaryModel = "google/gemini-2.0-flash-001"
+        const fallbackModel = "openai/gpt-4o-mini"
 
         let res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
             method: "POST",

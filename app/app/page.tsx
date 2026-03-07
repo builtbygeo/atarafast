@@ -111,7 +111,7 @@ export default function Home() {
   }
 
   return (
-    <main className="flex h-svh flex-col bg-background mx-auto max-w-md overflow-hidden relative overscroll-none">
+    <main className="flex h-dvh flex-col bg-background mx-auto max-w-md overflow-hidden relative overscroll-none">
       <header className="flex items-center justify-center px-5 pt-6 pb-4 shrink-0">
         <Logo className="h-6 w-auto text-foreground" />
       </header>
