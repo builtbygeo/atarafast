@@ -4,10 +4,12 @@ import { headers } from 'next/headers'
 export default async function SignUpPage() {
     const headerList = await headers()
     const host = headerList.get('host') || ''
-    const isDev = host.includes('localhost') || host.includes('127.0.0.1')
     
-    // On production app project, we go back to the main domain
-    const landingUrl = isDev ? "/" : "https://atarafast.com"
+    const clerkPubKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || ''
+    const isProdKey = clerkPubKey.startsWith('pk_live_')
+    
+    // If using production keys, we always go back to the main marketing site
+    const landingUrl = isProdKey ? "https://atarafast.com" : "/"
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-[#0f0f0f]">
