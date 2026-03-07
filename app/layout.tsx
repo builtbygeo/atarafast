@@ -55,10 +55,12 @@ export default async function RootLayout({
   const isProdKey = clerkPubKey.startsWith('pk_live_')
   
   const isDev = host.includes('localhost') || host.includes('127.0.0.1')
+  const isAppSubdomain = host.startsWith('app.') || host.includes('.app.') || host.includes('atara-app')
   
-  // Note: For Clerk Free Plan, we do NOT use isSatellite/domain for subdomains 
-  // of the same primary domain (atarafast.com). Clerk handles this automatically.
-  // isSatellite is only for separate TLDs (e.g. atara.com and atara.bg).
+  // Configuration for Multi-Domain / Satellite
+  // Mandatory for custom domain (clerk.atarafast.com) to work on app.atarafast.com
+  const isSatellite = isProdKey && (isAppSubdomain || isDev)
+  const domain = isProdKey ? 'atarafast.com' : undefined
 
   return (
     <html lang="en" suppressHydrationWarning>
@@ -67,7 +69,10 @@ export default async function RootLayout({
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
       </head>
       <body className={`${inter.variable} ${jetbrainsMono.variable} font-sans antialiased text-white bg-[#0f0f0f]`}>
-        <ClerkProvider>
+        <ClerkProvider 
+          isSatellite={isSatellite}
+          domain={domain}
+        >
           <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
             <LanguageProvider>
               {children}
