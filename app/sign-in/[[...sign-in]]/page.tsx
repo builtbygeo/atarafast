@@ -22,14 +22,14 @@ export default async function SignInPage() {
             {/* Content Container */}
             <div className="relative z-10 flex min-h-screen flex-col items-center justify-center px-4 py-12">
                 {/* Logo / Branding Placeholder */}
-                <div className="mb-12 flex flex-col items-center gap-3">
-                    <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/5 p-3 shadow-2xl backdrop-blur-xl ring-1 ring-white/10">
+                <div className="mb-12 flex flex-col items-center gap-4">
+                    <div className="flex h-20 w-20 items-center justify-center rounded-[2rem] bg-white/5 p-4 shadow-2xl backdrop-blur-xl ring-1 ring-white/10">
                          <svg viewBox="0 0 40 40" className="h-full w-full fill-primary">
-                            <circle cx="20" cy="20" r="18" fill="none" stroke="currentColor" strokeWidth="2.5" className="opacity-20" />
+                            <circle cx="20" cy="20" r="18" fill="none" stroke="currentColor" strokeWidth="2" className="opacity-20" />
                             <path d="M20 2C10.0589 2 2 10.0589 2 20C2 29.9411 10.0589 38 20 38C29.9411 38 38 29.9411 38 20C38 10.0589 29.9411 2 20 2ZM20 6C27.732 6 34 12.268 34 20C34 27.732 27.732 34 20 34C12.268 34 6 27.732 6 20C6 12.268 12.268 6 20 6Z" className="fill-primary" />
                          </svg>
                     </div>
-                    <h1 className="text-2xl font-black tracking-tighter text-white">ATARA</h1>
+                    <h1 className="text-3xl font-black tracking-tighter text-white">ATARA</h1>
                 </div>
 
                 {/* Elegant Glassmorphic Card Wrapper */}
@@ -42,8 +42,8 @@ export default async function SignInPage() {
                                     colorPrimary: '#22c55e',
                                     colorBackground: 'transparent',
                                     colorText: '#ffffff',
-                                    colorTextSecondary: 'rgba(255,255,255,0.5)',
-                                    colorInputBackground: 'rgba(255,255,255,0.03)',
+                                    colorTextSecondary: 'rgba(255,255,255,0.7)',
+                                    colorInputBackground: 'rgba(255,255,255,0.05)',
                                     colorInputText: '#ffffff',
                                     borderRadius: '1rem',
                                     fontFamily: 'var(--font-inter)',
@@ -52,19 +52,19 @@ export default async function SignInPage() {
                                     rootBox: 'w-full',
                                     card: 'bg-transparent shadow-none border-none p-6 sm:p-8',
                                     headerTitle: 'text-2xl font-bold tracking-tight text-white mb-2',
-                                    headerSubtitle: 'text-zinc-400 font-medium',
-                                    formButtonPrimary: 'h-11 bg-primary text-black font-bold hover:bg-primary/90 transition-all shadow-[0_0_20px_rgba(34,197,94,0.3)] active:scale-[0.98]',
+                                    headerSubtitle: 'text-zinc-300 font-semibold leading-relaxed',
+                                    formButtonPrimary: 'h-11 bg-primary text-black font-bold hover:bg-primary/90 transition-all shadow-[0_0_25px_rgba(34,197,94,0.4)] active:scale-[0.98]',
                                     socialButtonsBlockButton: 'bg-white/5 border-white/5 hover:bg-white/10 text-white transition-all h-11',
-                                    socialButtonsBlockButtonText: 'font-semibold',
-                                    formFieldInput: 'h-11 bg-white/5 border-white/10 focus:border-primary/50 focus:ring-primary/20 transition-all text-white',
+                                    socialButtonsBlockButtonText: 'font-semibold text-white',
+                                    formFieldInput: 'h-11 bg-white/5 border-white/10 focus:border-primary/50 focus:ring-primary/20 transition-all text-white placeholder:text-zinc-500',
                                     footer: 'bg-transparent mt-4',
-                                    footerActionText: 'text-zinc-500',
-                                    footerActionLink: 'text-primary hover:text-primary/80 font-bold',
-                                    identityPreviewText: 'text-white',
+                                    footerActionText: 'text-zinc-400 font-medium',
+                                    footerActionLink: 'text-primary hover:text-primary/80 font-black',
+                                    identityPreviewText: 'text-white font-semibold',
                                     identityPreviewEditButtonIcon: 'text-primary',
-                                    formFieldLabel: 'text-zinc-400 font-bold text-[11px] uppercase tracking-wider mb-1.5',
-                                    dividerLine: 'bg-white/5',
-                                    dividerText: 'text-zinc-600 font-bold text-[10px] uppercase tracking-widest',
+                                    formFieldLabel: 'text-zinc-200 font-bold text-[12px] uppercase tracking-wider mb-2',
+                                    dividerLine: 'bg-white/10',
+                                    dividerText: 'text-zinc-500 font-black text-[10px] uppercase tracking-[0.2em]',
                                 },
                             }}
                         />
