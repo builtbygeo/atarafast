@@ -22,11 +22,11 @@ export default async function SignUpPage() {
 
             {/* Content Container */}
             <div className="relative z-10 flex min-h-screen flex-col items-center justify-center px-4 py-12">
-                {/* Precise Brand Logo - Scaled to match ATARA text width */}
+                {/* Precise Brand Logo - Scaled to match ATARA text width exactly (1:1 visual ratio) */}
                 <div className="mb-10 flex flex-col items-center gap-6">
-                    <div className="relative h-48 w-48 overflow-hidden rounded-[4rem] bg-white/5 p-1 shadow-2xl ring-1 ring-white/10 backdrop-blur-2xl transition-transform duration-500 hover:scale-105">
+                    <div className="relative h-64 w-64 overflow-hidden rounded-[4rem] bg-white/5 p-1 shadow-2xl ring-1 ring-white/10 backdrop-blur-2xl transition-transform duration-500 hover:scale-105">
                          <Image 
-                            src="https://img.clerk.com/eyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvdXBsb2FkZWQvaW1nXzNBY2NrSzJDS09wcGdUOTlUTzBVckh2eG42bCJ9?width=400"
+                            src="/atara_s2.png"
                             alt="Atara Logo"
                             fill
                             className="object-contain p-8"
@@ -56,6 +56,7 @@ export default async function SignUpPage() {
                                 elements: {
                                     rootBox: "w-full",
                                     card: "bg-transparent shadow-none border-none p-6 sm:p-8",
+                                    header: "hidden", // Completely hide the clerk header block
                                     headerTitle: "hidden",
                                     headerSubtitle: "hidden",
                                     logoBox: "hidden",
@@ -63,7 +64,7 @@ export default async function SignUpPage() {
                                     socialButtonsBlockButton: "bg-white/5 border-white/5 hover:bg-white/10 text-white transition-all h-11",
                                     socialButtonsBlockButtonText: 'font-semibold text-white',
                                     formFieldInput: 'h-11 bg-white/5 border-white/10 focus:border-primary/50 focus:ring-primary/20 transition-all text-white placeholder:text-zinc-500',
-                                    footer: 'bg-transparent mt-4',
+                                    footer: 'bg-transparent mt-4 border-t border-white/5 pt-4',
                                     footerActionText: 'text-zinc-300 font-medium',
                                     footerActionLink: 'text-primary hover:text-primary/80 font-black',
                                     identityPreviewText: 'text-white font-semibold',
