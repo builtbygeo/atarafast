@@ -342,6 +342,35 @@ export function SettingsSheet({ open, onClose, onDataCleared, onOpenUpgrade }: S
 
           <div className="h-px bg-border" />
 
+          {/* Social Presence */}
+          <div className="flex flex-col gap-3">
+            <h3 className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-1 ml-1">Social</h3>
+            <div className="grid grid-cols-2 gap-3">
+              <a
+                href="https://x.com/builtbygeo"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex flex-col items-center justify-center gap-2 rounded-2xl bg-secondary/30 p-4 transition-all hover:bg-secondary/50 active:scale-95 border border-border/50 group"
+              >
+                <svg className="w-5 h-5 text-foreground/50 group-hover:text-foreground transition-colors" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                </svg>
+                <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground group-hover:text-foreground">Follow on X</span>
+              </a>
+              <button
+                disabled
+                className="flex flex-col items-center justify-center gap-2 rounded-2xl bg-secondary/10 p-4 border border-border/30 opacity-50 cursor-not-allowed group"
+              >
+                <svg className="w-5 h-5 text-muted-foreground" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M20.64 11H17V7h3.64c.2 0 .36.16.36.36v3.28c0 .2-.16.36-.36.36zM8 11h3V7H8c-.55 0-1 .45-1 1v2c0 .55.45 1 1 1zM22 6.5A2.5 2.5 0 0 0 19.5 4H4.5A2.5 2.5 0 0 0 2 6.5v11A2.5 2.5 0 0 0 4.5 20h15a2.5 2.5 0 0 0 2.5-2.5v-11z" />
+                </svg>
+                <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Product Hunt</span>
+              </button>
+            </div>
+          </div>
+
+          <div className="h-px bg-border" />
+
           {/* Notifications */}
           <div className="flex items-center justify-between pb-2">
             <div>
