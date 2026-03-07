@@ -22,18 +22,18 @@ export default async function SignInPage() {
 
             {/* Content Container */}
             <div className="relative z-10 flex min-h-screen flex-col items-center justify-center px-4 py-12">
-                {/* Precise Brand Logo - Scaled to match ATARA text width exactly (1:1 visual ratio) */}
-                <div className="mb-10 flex flex-col items-center gap-6">
-                    <div className="relative h-64 w-64 overflow-hidden rounded-[4rem] bg-white/5 p-1 shadow-2xl ring-1 ring-white/10 backdrop-blur-2xl transition-transform duration-500 hover:scale-105">
+                {/* Gigantic Brand Logo - 3x Larger to fill the field */}
+                <div className="mb-12 flex flex-col items-center gap-8">
+                    <div className="relative h-[400px] w-[400px] overflow-hidden rounded-[6rem] bg-white/5 p-1 shadow-2xl ring-1 ring-white/10 backdrop-blur-2xl transition-transform duration-500 hover:scale-105">
                          <Image 
                             src="/atara_s2.png"
                             alt="Atara Logo"
                             fill
-                            className="object-contain p-8"
+                            className="object-contain p-2"
                             priority
                          />
                     </div>
-                    <h1 className="text-5xl font-black tracking-[-0.05em] text-white">ATARA</h1>
+                    <h1 className="text-7xl font-black tracking-[-0.05em] text-white">ATARA</h1>
                 </div>
 
                 {/* Elegant Glassmorphic Card Wrapper */}
