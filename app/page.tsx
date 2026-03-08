@@ -69,7 +69,7 @@ const premiumFeatures = [
   'Social share cards',
   'Cloud sync across devices (coming soon)',
   'Smart phase notifications (coming soon)',
-  'Fasting journal (coming soon)',
+  'Fasting journal',
 ]
 
 export default async function LandingPage() {
@@ -99,61 +99,55 @@ export default async function LandingPage() {
         </a>
       </nav>
 
-      <section id="hero" className="relative pt-32 pb-24 px-6 flex flex-col items-center text-center">
-        <div className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-black uppercase tracking-[0.2em] animate-fade-in" style={{ border: '1px solid rgba(255,255,255,0.1)', backgroundColor: 'rgba(255,255,255,0.03)', color: 'rgba(255,255,255,0.5)' }}>
+      <section id="hero" className="relative pt-32 pb-20 px-6 flex flex-col items-center text-center">
+        <div className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-black uppercase tracking-[0.2em]" style={{ border: '1px solid rgba(34,197,94,0.2)', backgroundColor: 'rgba(34,197,94,0.08)', color: '#22c55e' }}>
           Next-Gen Metabolic Fasting
         </div>
 
-        <h1 className="text-6xl md:text-8xl lg:text-9xl font-black tracking-tighter mt-8 mb-8 leading-[0.9] max-w-5xl">
+        <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tighter mt-8 mb-6 leading-[0.95] max-w-4xl">
           Tired of ugly<br />
           fasting{' '}
-          <span className="text-[#22c55e]">
+          <span className="text-primary">
             apps?
           </span>
         </h1>
 
-        <p className="text-xl md:text-2xl text-zinc-400 max-w-3xl mb-12 font-medium leading-relaxed font-sans">
-          Atara gives you beautiful, science-backed tracking, electrolyte intelligence, and stoic mindset tools — so fasting finally feels effortless and powerful.
+        <p className="text-lg sm:text-xl md:text-2xl text-white/50 max-w-2xl mb-10 font-medium leading-relaxed">
+          Beautiful, science-backed tracking with metabolic phases, AI insights, and stoic mindset tools.
         </p>
 
-        <div className="flex flex-col items-center gap-8">
-          <div className="flex flex-col sm:flex-row gap-6">
+        <div className="flex flex-col items-center gap-6">
+          <div className="flex flex-col sm:flex-row gap-4">
             <Link
               href={appUrl}
-              className="bg-white text-black px-12 py-5 rounded-[2rem] font-bold text-xl hover:scale-105 transition-all shadow-2xl"
+              className="bg-primary text-black px-10 py-4 rounded-2xl font-bold text-lg hover:scale-[1.02] active:scale-[0.98] transition-all"
             >
               Try Atara Free
             </Link>
             <a
               href="#features"
-              className="border border-zinc-700 hover:bg-zinc-900 px-12 py-5 rounded-[2rem] font-bold text-xl transition-all text-white hover:border-zinc-500"
+              className="border border-white/20 hover:border-white/40 hover:bg-white/5 px-10 py-4 rounded-2xl font-bold text-lg transition-all text-white"
             >
               See How It Works
             </a>
           </div>
 
-          <div className="flex flex-col items-center gap-4">
-            <p className="text-sm font-bold text-zinc-500 uppercase tracking-widest">
-              Built for serious fasters who want to master their metabolism.
-            </p>
-            <div className="flex flex-wrap justify-center gap-x-8 gap-y-2 text-sm font-bold text-[#22c55e]/90">
-              <span className="flex items-center gap-2">✓ Metabolic flexibility</span>
-              <span className="flex items-center gap-2">✓ Real-time metabolic phases</span>
-              <span className="flex items-center gap-2">✓ Progress you can feel</span>
-            </div>
+          <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm font-medium text-white/40">
+            <span className="flex items-center gap-2">✓ No credit card</span>
+            <span className="flex items-center gap-2">✓ Works offline</span>
+            <span className="flex items-center gap-2">✓ 100% private</span>
           </div>
         </div>
 
-        {/* Hero image container - Locked Aspect Ratio & Clean UI */}
-        <div className="relative w-full max-w-[580px] mx-auto mt-12 overflow-hidden rounded-[3rem]">
-          {/* Sharp gradient fade */}
-          <div className="absolute bottom-0 left-0 right-0 h-40 pointer-events-none z-10" style={{ background: 'linear-gradient(to top, #0f0f0f 0%, transparent 100%)' }} />
+        {/* Hero image container */}
+        <div className="relative w-full max-w-[480px] mx-auto mt-14 overflow-hidden rounded-[2rem] group">
+          <div className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none z-10" style={{ background: 'linear-gradient(to top, #0f0f0f 0%, transparent 100%)' }} />
           <Image
             src="/atarahero.webp"
             alt="Atara app showing active fast with metabolic phase ring"
-            width={580}
-            height={725}
-            className="w-full h-auto relative z-0"
+            width={480}
+            height={600}
+            className="w-full h-auto relative z-0 transition-transform duration-300 ease-out group-hover:scale-[1.02]"
             style={{ objectFit: 'contain' }}
             priority
           />
@@ -190,15 +184,14 @@ export default async function LandingPage() {
       {/* Plans Mockup Section */}
       <section className="py-24 px-6 bg-[#0f0f0f]">
         <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          <div className="order-2 lg:order-1">
-            <div className="relative inline-block">
-              <div className="absolute -inset-4 bg-[#22c55e]/5 rounded-full" />
+          <div className="order-2 lg:order-1 flex justify-center lg:justify-start">
+            <div className="relative w-full max-w-[400px] overflow-hidden rounded-[2rem] group">
               <Image
                 src="/atarasamsung.webp"
                 alt="Atara Presets Screen"
-                width={500}
-                height={500}
-                className="relative z-10 rounded-[2.5rem] shadow-2xl border border-white/5"
+                width={400}
+                height={400}
+                className="w-full h-auto transition-transform duration-300 ease-out group-hover:scale-[1.02]"
               />
             </div>
           </div>
@@ -250,15 +243,16 @@ export default async function LandingPage() {
               ))}
             </div>
           </div>
-          <div className="relative">
-            <div className="absolute -inset-10 bg-primary/5 rounded-full opacity-50" />
-            <Image
-              src="/atara_c2.png"
-              alt="Atara Metabolic Timeline Interface"
-              width={600}
-              height={800}
-              className="relative z-10 rounded-[3rem] shadow-2xl"
-            />
+          <div className="flex justify-center lg:justify-end">
+            <div className="relative w-full max-w-[320px] sm:max-w-[420px] lg:max-w-[520px] overflow-hidden rounded-[2rem] group">
+              <Image
+                src="/atara_c2.png"
+                alt="Atara Metabolic Timeline Interface"
+                width={520}
+                height={720}
+                className="w-full h-auto transition-transform duration-300 ease-out group-hover:scale-[1.02]"
+              />
+            </div>
           </div>
         </div>
       </section>
@@ -282,15 +276,14 @@ export default async function LandingPage() {
               </div>
             </div>
           </div>
-          <div className="flex justify-center">
-            <div className="relative inline-block">
-              <div className="absolute -inset-4 bg-[#22c55e]/5 rounded-full" />
+          <div className="flex justify-center lg:justify-end">
+            <div className="relative w-full max-w-[380px] overflow-hidden rounded-[2rem] group">
               <Image
                 src="/ataraai.png"
                 alt="Atara Coach Card"
-                width={500}
-                height={500}
-                className="relative z-10 rounded-[2.5rem] shadow-2xl border border-white/5"
+                width={380}
+                height={380}
+                className="w-full h-auto transition-transform duration-300 ease-out group-hover:scale-[1.02]"
               />
             </div>
           </div>
@@ -300,15 +293,14 @@ export default async function LandingPage() {
       {/* Share Cards / Social mockup */}
       <section className="py-32 px-6 overflow-hidden">
         <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
-          <div className="order-2 lg:order-1 flex justify-center">
-            <div className="relative rotate-[-2deg] hover:rotate-0 transition-transform duration-500">
-              <div className="absolute -inset-10 bg-primary/5 opacity-40" />
+          <div className="order-2 lg:order-1 flex justify-center lg:justify-start">
+            <div className="relative w-full max-w-[320px] overflow-hidden rounded-[2rem] group -rotate-1 hover:rotate-0 transition-transform duration-500">
               <Image
                 src="/streak.webp"
                 alt="Atara Streak Stats"
-                width={400}
-                height={700}
-                className="relative z-10 rounded-[2.5rem] shadow-[0_30px_60px_-15px_rgba(34,197,94,0.3)] border border-white/10"
+                width={320}
+                height={560}
+                className="w-full h-auto transition-transform duration-300 ease-out group-hover:scale-[1.02]"
               />
             </div>
           </div>
@@ -351,6 +343,44 @@ export default async function LandingPage() {
         </div>
       </section>
 
+      {/* Journal Section */}
+      <section className="py-24 px-6 bg-white/[0.01]">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <div className="order-2 lg:order-1 flex justify-center lg:justify-start">
+            <div className="relative w-full max-w-[400px] overflow-hidden rounded-[2rem] group">
+              <Image
+                src="/atarajournal.jpg"
+                alt="Atara Fasting Journal"
+                width={400}
+                height={500}
+                className="w-full h-auto transition-transform duration-300 ease-out group-hover:scale-[1.02]"
+              />
+            </div>
+          </div>
+          <div className="order-1 lg:order-2">
+            <div className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-black uppercase tracking-[0.2em] mb-6 bg-primary/10 text-primary border border-primary/20">
+              After Your Fast
+            </div>
+            <h2 className="text-4xl sm:text-5xl font-black tracking-tighter mb-6">Your <span className="text-primary">fasting journal</span>, reimagined</h2>
+            <p className="text-lg text-white/50 leading-relaxed mb-8">
+              Track not just hours, but how you feel. Note your energy levels, mood, cravings, and breakthroughs. Build a personal record of your metabolic journey.
+            </p>
+            <ul className="space-y-4">
+              {[
+                'Quick mood & energy check-ins',
+                'Track cravings and how you overcame them',
+                'Celebrate wins with personal notes',
+                'AI-powered insights from your patterns'
+              ].map((item, i) => (
+                <li key={i} className="flex items-center gap-3 font-medium text-white/70">
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary" /> {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
       {/* Features */}
       <section id="features" className="py-24 px-6 max-w-5xl mx-auto">
         <div className="text-center mb-16">
@@ -374,134 +404,122 @@ export default async function LandingPage() {
       </section>
 
       {/* Pricing & Comparison */}
-      <section id="pricing" className="py-24 px-6 max-w-5xl mx-auto">
+      <section id="pricing" className="py-32 px-6 max-w-5xl mx-auto">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-black tracking-tight mb-4">Start free. Upgrade when you're ready.</h2>
-        </div>
-
-        {/* Comparison Table */}
-        <div className="mb-20 overflow-x-auto">
-          <table className="w-full text-left border-collapse min-w-[600px]">
-            <thead>
-              <tr className="border-b" style={{ borderColor: 'rgba(255,255,255,0.1)' }}>
-                <th className="py-4 px-6 text-lg font-bold text-white/50 w-1/3">Feature</th>
-                <th className="py-4 px-6 text-lg font-bold text-white w-1/3">Free</th>
-                <th className="py-4 px-6 text-lg font-black text-primary w-1/3">Atara Pro</th>
-              </tr>
-            </thead>
-            <tbody className="text-sm">
-              <tr className="border-b" style={{ borderColor: 'rgba(255,255,255,0.05)' }}>
-                <td className="py-5 px-6 font-medium text-white/80">Triangle + Circle visual</td>
-                <td className="py-5 px-6 text-white/60">Yes</td>
-                <td className="py-5 px-6 font-bold text-white">Yes</td>
-              </tr>
-              <tr className="border-b" style={{ borderColor: 'rgba(255,255,255,0.05)' }}>
-                <td className="py-5 px-6 font-medium text-white/80">AI Analysis</td>
-                <td className="py-5 px-6 text-white/60">Limited (1/mo)</td>
-                <td className="py-5 px-6 font-bold text-white">Unlimited AI Coach</td>
-              </tr>
-              <tr className="border-b" style={{ borderColor: 'rgba(255,255,255,0.05)' }}>
-                <td className="py-5 px-6 font-medium text-white/80">History & Stats</td>
-                <td className="py-5 px-6 text-white/60">Last 30 days</td>
-                <td className="py-5 px-6 font-bold text-white">Unlimited History & Analytics</td>
-              </tr>
-              <tr className="border-b" style={{ borderColor: 'rgba(255,255,255,0.05)' }}>
-                <td className="py-5 px-6 font-medium text-white/80">Ketosis prediction</td>
-                <td className="py-5 px-6 text-white/60">No</td>
-                <td className="py-5 px-6 font-bold text-white">Yes</td>
-              </tr>
-              <tr className="border-b" style={{ borderColor: 'rgba(255,255,255,0.05)' }}>
-                <td className="py-5 px-6 font-medium text-white/80">Data export</td>
-                <td className="py-5 px-6 text-white/60">No</td>
-                <td className="py-5 px-6 font-bold text-white">JSON (PDF/CSV ready)</td>
-              </tr>
-              <tr className="border-b" style={{ borderColor: 'rgba(255,255,255,0.05)' }}>
-                <td className="py-5 px-6 font-medium text-white/80">Data Privacy</td>
-                <td className="py-5 px-6 text-white/60">Local/Private</td>
-                <td className="py-5 px-6 font-bold text-white">Local/Private</td>
-              </tr>
-            </tbody>
-          </table>
+          <div className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-black uppercase tracking-[0.2em] mb-6 bg-primary/10 text-primary border border-primary/20">
+            Pricing
+          </div>
+          <h2 className="text-4xl sm:text-5xl font-black tracking-tighter mb-4">Start free. Upgrade when you're ready.</h2>
+          <p className="text-lg text-white/50 max-w-xl mx-auto">No hidden fees. Cancel anytime. Your data stays yours.</p>
         </div>
 
         {/* Pricing Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
           {/* Free */}
-          <div className="rounded-2xl p-8 relative overflow-hidden flex flex-col" style={{ border: '1px solid rgba(255,255,255,0.1)', backgroundColor: 'rgba(255,255,255,0.03)' }}>
-            <h3 className="font-black text-xl mb-1 text-white">Free</h3>
-            <p className="text-sm mb-4" style={{ color: 'rgba(255,255,255,0.45)' }}>Always</p>
-            <div className="text-4xl font-black text-white mb-2">€0<span className="text-base font-normal" style={{ color: 'rgba(255,255,255,0.35)' }}></span></div>
-            <p className="text-xs font-semibold mb-6 text-white/40">Free forever</p>
+          <div className="rounded-[2rem] p-8 relative overflow-hidden flex flex-col group transition-all duration-300 hover:border-white/20" style={{ border: '1px solid rgba(255,255,255,0.08)', backgroundColor: 'rgba(255,255,255,0.02)' }}>
+            <h3 className="font-black text-lg mb-1 text-white/60 uppercase tracking-widest">Free</h3>
+            <div className="text-5xl font-black text-white mb-1 mt-2">€0</div>
+            <p className="text-sm text-white/40 mb-8">Free forever</p>
+            
+            <ul className="space-y-3 mb-8 flex-1">
+              {['Core fasting timer', '2 preset plans', 'Last 30 days history', 'Basic metabolic phases'].map(f => (
+                <li key={f} className="flex items-center gap-2 text-sm text-white/60">
+                  <span className="w-1 h-1 rounded-full bg-white/30" /> {f}
+                </li>
+              ))}
+            </ul>
 
-            <Link href={appUrl} className="mt-auto w-full text-center rounded-xl font-bold py-4 transition-all hover:bg-white/10 block" style={{ border: '1px solid rgba(255,255,255,0.15)', backgroundColor: 'transparent', color: 'white' }}>
+            <Link href={appUrl} className="w-full text-center rounded-xl font-bold py-3.5 transition-all border border-white/10 hover:border-white/30 hover:bg-white/5 text-white/80 hover:text-white">
               Get Started
             </Link>
           </div>
 
           {/* Atara Pro Monthly */}
-          <div className="rounded-2xl p-8 relative overflow-hidden flex flex-col" style={{ border: '1px solid rgba(255,255,255,0.1)', backgroundColor: 'rgba(255,255,255,0.03)' }}>
-            <h3 className="font-black text-xl mb-1 text-white">Monthly</h3>
-            <p className="text-sm mb-4" style={{ color: 'rgba(255,255,255,0.45)' }}>Less than a Burrito</p>
-            <div className="text-4xl font-black text-white mb-2">€4.99<span className="text-base font-normal" style={{ color: 'rgba(255,255,255,0.35)' }}>/month</span></div>
-            <p className="text-xs font-semibold mb-6 text-white/40">Renews every month</p>
+          <div className="rounded-[2rem] p-8 relative overflow-hidden flex flex-col group transition-all duration-300 hover:border-white/20" style={{ border: '1px solid rgba(255,255,255,0.08)', backgroundColor: 'rgba(255,255,255,0.02)' }}>
+            <h3 className="font-black text-lg mb-1 text-white/60 uppercase tracking-widest">Monthly</h3>
+            <div className="flex items-baseline gap-1 mt-2">
+              <span className="text-5xl font-black text-white">€4.99</span>
+              <span className="text-white/40 text-sm">/month</span>
+            </div>
+            <p className="text-sm text-white/40 mb-8 mt-1">Less than a coffee</p>
+            
+            <ul className="space-y-3 mb-8 flex-1">
+              {['Everything in Free', 'All 6+ fasting plans', 'Unlimited history', 'AI Metabolic Coach', 'Share cards', 'Ketosis prediction'].map(f => (
+                <li key={f} className="flex items-center gap-2 text-sm text-white/60">
+                  <span className="w-1 h-1 rounded-full bg-white/30" /> {f}
+                </li>
+              ))}
+            </ul>
 
             <CheckoutButton
               priceId={process.env.NEXT_PUBLIC_STRIPE_PRICE_ID!}
               label="Choose Monthly"
-              className="mt-auto w-full text-center rounded-xl font-bold py-4 transition-all hover:bg-white/10"
-              style={{ border: '1px solid rgba(255,255,255,0.15)', backgroundColor: 'rgba(255,255,255,0.07)', color: 'white' }}
+              className="w-full text-center rounded-xl font-bold py-3.5 transition-all border border-white/15 hover:border-white/40 hover:bg-white/5 text-white"
             />
           </div>
 
           {/* Atara Pro Yearly */}
-          <div className="rounded-2xl p-8 relative overflow-hidden flex flex-col" style={{ border: '1px solid #22c55e', background: 'linear-gradient(135deg, rgba(34,197,94,0.15) 0%, transparent 60%)' }}>
-            <div className="absolute top-0 right-0 text-[10px] font-black px-4 py-1.5 rounded-bl-xl uppercase tracking-wider" style={{ backgroundColor: '#f97316', color: '#fff' }}>
-              Most Popular
+          <div className="rounded-[2rem] p-8 relative overflow-hidden flex flex-col group transition-all duration-300" style={{ border: '1px solid rgba(34,197,94,0.4)', background: 'linear-gradient(145deg, rgba(34,197,94,0.12) 0%, rgba(34,197,94,0.02) 100%)' }}>
+            <div className="absolute top-0 right-0 text-[10px] font-black px-5 py-2 rounded-bl-2xl uppercase tracking-widest bg-primary text-black">
+              Best Value
             </div>
-            <h3 className="font-black text-xl mb-1 text-white">Yearly</h3>
-            <p className="text-sm mb-4" style={{ color: 'rgba(255,255,255,0.45)' }}>Skip just one dinner and this is yours</p>
-            <div className="text-4xl font-black text-white mb-2">€29<span className="text-base font-normal" style={{ color: 'rgba(255,255,255,0.35)' }}>/year</span></div>
-            <p className="text-xs font-semibold mb-6" style={{ color: '#22c55e' }}>Only €2.42/mo (Save 51%)</p>
+            <h3 className="font-black text-lg mb-1 text-primary uppercase tracking-widest">Yearly</h3>
+            <div className="flex items-baseline gap-1 mt-2">
+              <span className="text-5xl font-black text-white">€29</span>
+              <span className="text-white/40 text-sm">/year</span>
+            </div>
+            <p className="text-sm text-primary mb-8 mt-1 font-bold">Only €2.42/mo (Save 51%)</p>
+            
+            <ul className="space-y-3 mb-8 flex-1">
+              {['Everything in Monthly', 'Priority support', 'Early access features', 'Lifetime offer eligible'].map(f => (
+                <li key={f} className="flex items-center gap-2 text-sm text-white/70">
+                  <span className="w-1 h-1 rounded-full bg-primary" /> {f}
+                </li>
+              ))}
+            </ul>
 
             <CheckoutButton
               priceId={process.env.NEXT_PUBLIC_STRIPE_YEARLY_PRICE_ID!}
               label="Choose Yearly"
-              className="mt-auto w-full text-center rounded-xl font-bold py-4 transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
-              style={{ backgroundColor: '#22c55e', color: '#0f0f0f', boxShadow: '0 8px 32px rgba(34,197,94,0.4)' }}
+              className="w-full text-center rounded-xl font-bold py-3.5 transition-all hover:scale-[1.02] active:scale-[0.98] bg-primary text-black"
+              style={{ boxShadow: '0 4px 24px rgba(34,197,94,0.3)' }}
             />
             <div className="mt-4 text-center">
-              <p className="text-[10px] text-white/40 uppercase tracking-widest leading-relaxed">
-                Want it forever? <br />
-                <LifetimeOfferLink />
+              <p className="text-[10px] text-white/40 uppercase tracking-widest">
+                Want it forever? <LifetimeOfferLink />
               </p>
             </div>
           </div>
         </div>
 
-        <div className="text-center mt-6 text-xs text-white/40 flex items-center justify-center gap-2">
-          <svg className="w-4 h-4 opacity-70" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /><path d="m9 12 2 2 4-4" /></svg>
-          Payments are securely processed by Stripe. We never see or store your credit card details.
+        <div className="text-center text-xs text-white/30 flex items-center justify-center gap-2">
+          <svg className="w-4 h-4 opacity-50" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /><path d="m9 12 2 2 4-4" /></svg>
+          Payments securely processed by Stripe. We never see your card.
         </div>
-
-        <p className="text-center text-sm font-medium mt-6 text-white/50">
-          Join others who <span className="text-white">upgraded</span> to Atara Pro this month.
-        </p>
       </section>
 
       {/* CTA Banner & PWA Teaser */}
-      <section className="py-24 px-6 text-center max-w-4xl mx-auto flex flex-col gap-12">
+      <section id="how" className="py-24 px-6 text-center max-w-4xl mx-auto flex flex-col gap-12">
         {/* PWA Banner */}
         <div className="rounded-[3rem] p-10 md:p-16 relative flex flex-col md:flex-row items-center gap-10 text-left overflow-hidden bg-white/[0.02] border border-white/10 hover:border-white/20 transition-colors">
           <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 pointer-events-none" />
           <div className="flex-1 relative z-10">
             <h2 className="text-3xl sm:text-4xl font-black tracking-tight mb-4">Install Atara in 3 seconds <br /><span className="text-white/40 text-2xl font-bold">(no App Store required)</span></h2>
             <p className="mb-8 text-white/60 text-lg">Atara is a Progressive Web App. That means zero App Store fees, total privacy, and instant installation directly to your home screen.</p>
-            <Link href={appUrl} className="inline-block rounded-2xl font-bold px-8 py-4 bg-white text-black transition-transform hover:scale-105 shadow-2xl cursor-pointer">
-              Open App to Install
+            <Link href="/install" className="inline-block rounded-2xl font-bold px-8 py-4 bg-white text-black transition-transform hover:scale-105 shadow-2xl cursor-pointer">
+              How to Install →
             </Link>
           </div>
-          <div className="w-48 sm:w-64 relative z-10 shrink-0 hidden sm:block">
-            <Image src="/atarahero.webp" width={256} height={400} alt="PWA on phone screen" className="w-full rounded-[2rem] shadow-2xl border border-white/10 rotate-3 hover:rotate-0 transition-transform" />
+          <div className="w-40 sm:w-52 relative z-10 shrink-0 hidden sm:block">
+            <div className="overflow-hidden rounded-[1.5rem] group">
+              <Image 
+                src="/atarahero.webp" 
+                width={208} 
+                height={325} 
+                alt="PWA on phone screen" 
+                className="w-full h-auto transition-transform duration-300 ease-out group-hover:scale-[1.02]" 
+              />
+            </div>
           </div>
         </div>
 

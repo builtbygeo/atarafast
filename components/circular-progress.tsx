@@ -36,7 +36,10 @@ function describeTextArc(x: number, y: number, radius: number, startAngle: numbe
   const midAngle = (startAngle + endAngle) / 2
   const normalizedMid = ((midAngle % 360) + 360) % 360
 
-  if (normalizedMid > 90 && normalizedMid < 270) {
+  // Avoid exact 180° case which can cause rendering issues
+  const adjustedMid = normalizedMid === 180 ? 179.99 : normalizedMid
+
+  if (adjustedMid > 90 && adjustedMid < 270) {
     // Bottom half: counter-clockwise
     const start = polarToCartesian(x, y, radius, endAngle)
     const end = polarToCartesian(x, y, radius, startAngle)
@@ -132,13 +135,6 @@ export function CircularProgress({
     <div className="relative inline-flex items-center justify-center select-none overflow-visible" style={{ width: size, height: size }}>
       <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="absolute inset-0 block overflow-visible">
         <defs>
-          <filter id="arc-glow" x="-50%" y="-50%" width="200%" height="200%">
-            <feGaussianBlur stdDeviation="6" result="coloredBlur" />
-            <feMerge>
-              <feMergeNode in="coloredBlur" />
-              <feMergeNode in="SourceGraphic" />
-            </feMerge>
-          </filter>
           {arcs.map(arc => (
             <path
               key={`tp-${arc.id}`}
@@ -156,6 +152,39 @@ export function CircularProgress({
         {/* Outer progress rail (Thin Ring) */}
         <circle cx={center} cy={center} r={trackRadius + padding - 4} fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="1" />
 
+        {/* Arc Glow Layers - multiple layers for smooth glow without SVG filter artifacts */}
+        {arcs.map(arc => (
+          <g key={`${arc.id}-glow-group`}>
+            <path
+              d={describeArc(center, center, trackRadius, arc.start, arc.end)}
+              fill="none"
+              stroke={arc.color}
+              strokeWidth={strokeWidth + 20}
+              strokeOpacity="0.08"
+              strokeLinecap="round"
+              className="transition-all duration-1000 ease-out"
+            />
+            <path
+              d={describeArc(center, center, trackRadius, arc.start, arc.end)}
+              fill="none"
+              stroke={arc.color}
+              strokeWidth={strokeWidth + 12}
+              strokeOpacity="0.12"
+              strokeLinecap="round"
+              className="transition-all duration-1000 ease-out"
+            />
+            <path
+              d={describeArc(center, center, trackRadius, arc.start, arc.end)}
+              fill="none"
+              stroke={arc.color}
+              strokeWidth={strokeWidth + 6}
+              strokeOpacity="0.18"
+              strokeLinecap="round"
+              className="transition-all duration-1000 ease-out"
+            />
+          </g>
+        ))}
+
         {/* Arc Segments */}
         {arcs.map(arc => (
           <path
@@ -165,7 +194,6 @@ export function CircularProgress({
             stroke={arc.color}
             strokeWidth={strokeWidth}
             strokeLinecap="round"
-            filter="url(#arc-glow)"
             className="transition-all duration-1000 ease-out"
           />
         ))}
