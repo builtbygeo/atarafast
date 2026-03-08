@@ -12,6 +12,7 @@
 - **Safety First**: Added optional chaining and safety checks to translation and history data.
 - **Final Blog & Landing Polish**: Complete "God-Tier" formatting, full Bulgarian translations, fixed 404 links, and restored brand logo across the blog.
 - **Visual Excellence**: Fixed landing page FAQ layout and "Metabolic Success" chart axes visibility.
+- **GitHub Sync**: Committed and pushed latest God-Tier UI polish, assets, and arc glow optimizations to `main` and tagged branch `v1.1`.
 
 ## Infrastructure Roadmap (Future Phases)
 1. **Cloud Sync (PostgreSQL/Supabase)**: Replace local storage with a database backend for cross-device persistence.
