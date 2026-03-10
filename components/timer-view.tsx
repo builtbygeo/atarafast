@@ -159,8 +159,8 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
     if (!confirmEnd) {
       setConfirmEnd(true)
       haptic([30])
-      // Reset after 2 seconds if not confirmed
-      setTimeout(() => setConfirmEnd(false), 2000)
+      // Reset after 3 seconds if not confirmed
+      setTimeout(() => setConfirmEnd(false), 3000)
       return
     }
 
@@ -172,18 +172,16 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
     if (isSuccess) {
       setJustCompleted(true)
       haptic([50, 50, 100])
-      // Immediate transition - no delay
-      const record = endFast()
-      if (record) {
-        setActiveFast(null)
-        setConfirmEnd(false)
-        // Keep celebration visible briefly then transition
-        setTimeout(() => {
-          setJustCompleted(false)
+      setTimeout(() => {
+        setJustCompleted(false)
+        const record = endFast()
+        if (record) {
+          setActiveFast(null)
+          setConfirmEnd(false)
           navigateTo("presets")
           onFastEnd?.(record)
-        }, 1500) // Brief celebration to show user something happened
-      }
+        }
+      }, 3500) // 3.5s celebration delay
     } else {
       const record = endFast()
       if (record) {
