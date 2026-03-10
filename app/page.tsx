@@ -149,22 +149,26 @@ export default async function LandingPage() {
             {/* Protocol Grid */}
             <div className="grid grid-cols-2 gap-3">
               {[
-                { name: 'Circadian', hours: '12:12', desc: 'Beginner friendly' },
-                { name: 'Starter', hours: '14:10', desc: 'Easy start' },
-                { name: 'Gold Standard', hours: '16:8', desc: 'Most popular' },
-                { name: 'Advanced', hours: '18:6', desc: 'Experienced' },
-                { name: 'Warrior', hours: '20:4', desc: 'Expert level' },
-                { name: 'Custom', hours: 'Any', desc: 'Your own plan', highlight: true },
+                { name: 'Circadian', hours: '12:12', desc: 'Beginner friendly', color: "oklch(0.45 0.05 240)" },
+                { name: 'Starter', hours: '14:10', desc: 'Easy start', color: "oklch(0.5 0.07 180)" },
+                { name: 'Gold Standard', hours: '16:8', desc: 'Most popular', color: "oklch(0.55 0.09 145)" },
+                { name: 'Advanced', hours: '18:6', desc: 'Experienced', color: "oklch(0.6 0.12 75)" },
+                { name: 'Warrior', hours: '20:4', desc: 'Expert level', color: "oklch(0.5 0.15 35)" },
+                { name: 'Custom', hours: 'Any', desc: 'Your own plan', highlight: true, color: "oklch(0.4 0.03 260)" },
               ].map((p) => (
                 <div 
                   key={p.name}
-                  className={`p-4 rounded-xl transition-all hover:-translate-y-1 cursor-pointer ${p.highlight ? 'bg-primary/10 border border-primary/30' : 'bg-white/[0.03] border border-white/[0.07]'}`}
+                  className="p-4 rounded-xl transition-all hover:-translate-y-1 cursor-pointer border group"
+                  style={{ 
+                    backgroundColor: `color-mix(in oklch, ${p.color}, transparent 92%)`,
+                    borderColor: `color-mix(in oklch, ${p.color}, transparent 70%)`
+                  }}
                 >
                   <div className="flex items-center justify-between mb-2">
-                    <span className="font-bold text-white text-sm">{p.name}</span>
-                    <span className={`text-xs font-black ${p.highlight ? 'text-primary' : 'text-white/40'}`}>{p.hours}</span>
+                    <span className="font-bold text-white text-sm group-hover:text-white transition-colors">{p.name}</span>
+                    <span className="text-xs font-black" style={{ color: p.color }}>{p.hours}</span>
                   </div>
-                  <p className="text-xs text-white/40">{p.desc}</p>
+                  <p className="text-xs text-white/40 group-hover:text-white/60 transition-colors">{p.desc}</p>
                 </div>
               ))}
             </div>
@@ -172,51 +176,6 @@ export default async function LandingPage() {
         </div>
       </section>
 
-      {/* Science & Timeline mockup */}
-      <section className="py-32 px-6 overflow-hidden">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
-          <div className="max-w-xl">
-            <div className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-black uppercase tracking-[0.2em] mb-8 bg-primary/10 text-primary border border-primary/20">
-              The Science
-            </div>
-            <h2 className="text-4xl sm:text-6xl font-black tracking-tighter mb-8 leading-[1.1]">
-              Know Your <span className="text-primary">Phases</span>
-            </h2>
-            <p className="text-lg sm:text-xl leading-relaxed mb-10 text-white/50">
-              Fasting isn&apos;t just about not eating. Your body goes through distinct shifts: Sugar Burning, Transition, Ketosis, and Autophagy. Atara visualizes these milestones as you reach them.
-            </p>
-            <div className="space-y-6">
-              {[
-                { title: 'Sugar Burning', time: '0-4h', desc: 'Body burns recent dietary glucose.' },
-                { title: 'Ketosis', time: '12-16h', desc: 'Liver begins producing ketones from fat.' },
-                { title: 'Autophagy', time: '16h+', desc: 'Cellular cleanup and repair kicks in.' }
-              ].map((m) => (
-                <div key={m.title} className="flex gap-4 p-5 rounded-2xl bg-white/[0.03] border border-white/[0.05] group hover:bg-white/[0.05] transition-colors">
-                  <div className="w-1.5 h-auto rounded-full bg-primary/30 group-hover:bg-primary transition-colors" />
-                  <div>
-                    <div className="flex items-center gap-3 mb-1">
-                      <span className="font-black text-white">{m.title}</span>
-                      <span className="text-[10px] font-black text-primary uppercase tracking-widest">{m.time}</span>
-                    </div>
-                    <p className="text-sm text-white/40">{m.desc}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="flex justify-center lg:justify-end">
-            <div className="relative w-full max-w-[320px] sm:max-w-[420px] lg:max-w-[520px] overflow-hidden rounded-[2rem] group">
-              <Image
-                src="/atara_c2.png"
-                alt="Atara Metabolic Timeline Interface"
-                width={520}
-                height={720}
-                className="w-full h-auto transition-transform duration-300 ease-out group-hover:scale-[1.02]"
-              />
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* Analytics Mockup Section */}
       <section className="py-24 px-6 bg-white/[0.01]">

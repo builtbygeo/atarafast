@@ -291,19 +291,23 @@ export function StatsView({ history, settings, onOpenSettings, onOpenUpgrade }: 
       {/* 1. Glowing Streak Circle - ALWAYS VISIBLE */}
       <div className="relative flex justify-center py-4 mb-4">
         <div className="relative flex items-center justify-center w-64 h-64">
-          <svg width="256" height="256" viewBox="0 0 256 256" className="transform -rotate-90">
-            <defs>
-              <filter id="green-glow" x="-50%" y="-50%" width="200%" height="200%">
-                <feGaussianBlur stdDeviation="15" result="blur" />
-                <feComposite in="SourceGraphic" in2="blur" operator="over" />
-              </filter>
-            </defs>
+          <svg width="256" height="256" viewBox="0 0 256 256" className="transform -rotate-90 overflow-visible">
             {/* Background ring */}
             <circle cx="128" cy="128" r="110" stroke="rgba(255,255,255,0.05)" strokeWidth="12" fill="none" />
-            {/* Colored glow ring */}
-            <circle cx="128" cy="128" r="110" stroke="oklch(var(--primary))" strokeWidth="12" fill="none"
-              strokeDasharray={circumference} strokeDashoffset={strokeDashoffset} strokeLinecap="round" filter="url(#green-glow)" />
-            {/* Inner primary indicator ring */}
+            
+            {/* Indicator Ring with layered strokes for performant glow */}
+            <circle 
+                cx="128" cy="128" r="110" 
+                stroke="oklch(var(--primary))" 
+                strokeWidth="14" 
+                fill="none"
+                strokeDasharray={circumference} 
+                strokeDashoffset={strokeDashoffset} 
+                strokeLinecap="round" 
+                strokeOpacity="0.15"
+                style={{ filter: 'blur(8px)' }}
+            />
+            
             <circle cx="128" cy="128" r="110" stroke="oklch(var(--primary))" strokeWidth="6" fill="none"
               strokeDasharray={circumference} strokeDashoffset={strokeDashoffset} strokeLinecap="round" />
           </svg>

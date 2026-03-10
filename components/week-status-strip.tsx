@@ -1,6 +1,6 @@
 "use client"
 
-import { useMemo } from "react"
+import { useMemo, memo } from "react"
 import { format, subDays, isSameDay } from "date-fns"
 import { type FastingRecord } from "@/lib/storage"
 
@@ -9,7 +9,7 @@ interface WeekStatusStripProps {
     activeFast?: FastingRecord | null
 }
 
-export function WeekStatusStrip({ history, activeFast }: WeekStatusStripProps) {
+export const WeekStatusStrip = memo(function WeekStatusStrip({ history, activeFast }: WeekStatusStripProps) {
     const weekData = useMemo(() => {
         const days = []
         const now = new Date()
@@ -78,4 +78,4 @@ export function WeekStatusStrip({ history, activeFast }: WeekStatusStripProps) {
             ))}
         </div>
     )
-}
+})

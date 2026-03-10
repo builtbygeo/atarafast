@@ -64,26 +64,7 @@ export function TriangularProgress({
             {/* SVG Canvas */}
             <div className="relative" style={{ width: size, height: size }}>
                 <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="absolute inset-0" overflow="visible">
-                    {/* Glow filters */}
-                    <defs>
-                        <filter id="tri-glow-orange" x="-20%" y="-20%" width="140%" height="140%" filterUnits="userSpaceOnUse">
-                            <feGaussianBlur stdDeviation="3" result="blur" />
-                            <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
-                        </filter>
-                        <filter id="tri-glow-amber" x="-20%" y="-20%" width="140%" height="140%" filterUnits="userSpaceOnUse">
-                            <feGaussianBlur stdDeviation="3" result="blur" />
-                            <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
-                        </filter>
-                        <filter id="tri-glow-green" x="-20%" y="-20%" width="140%" height="140%" filterUnits="userSpaceOnUse">
-                            <feGaussianBlur stdDeviation="3" result="blur" />
-                            <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
-                        </filter>
-                        <filter id="tri-glow-white" x="-20%" y="-20%" width="140%" height="140%" filterUnits="userSpaceOnUse">
-                            <feGaussianBlur stdDeviation="2" result="blur" />
-                            <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
-                        </filter>
-                    </defs>
-
+                    {/* Glow filters removed for performance - using layered paths instead */}
                     {/* Background Triangle Track (Faint) */}
                     <path
                         d={continuousPath}
@@ -94,38 +75,27 @@ export function TriangularProgress({
                         strokeLinejoin="round"
                     />
 
-                    {/* Side 2 — Transition base (Bottom: Right → Left) — drawn first */}
-                    <path
-                        d={`M ${right.x} ${right.y} L ${left.x} ${left.y}`}
-                        fill="none"
-                        stroke={data.transitionHours > 0 ? "#fbbf24" : "rgba(255,255,255,0.02)"}
-                        strokeWidth={strokeWidth}
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        filter={data.transitionHours > 0 ? "url(#tri-glow-amber)" : undefined}
-                    />
+                    {/* Side 2 — Transition base (Bottom: Right → Left) */}
+                    {data.transitionHours > 0 && (
+                        <g>
+                            <path d={`M ${right.x} ${right.y} L ${left.x} ${left.y}`} fill="none" stroke="#fbbf24" strokeWidth={strokeWidth + 12} strokeOpacity="0.08" strokeLinecap="round" strokeLinejoin="round" />
+                            <path d={`M ${right.x} ${right.y} L ${left.x} ${left.y}`} fill="none" stroke="#fbbf24" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" />
+                        </g>
+                    )}
 
                     {/* Side 1 — Ketosis (Right side: Top → Right) */}
-                    <path
-                        d={`M ${top.x} ${top.y} L ${right.x} ${right.y}`}
-                        fill="none"
-                        stroke={data.ketosisHours > 0 ? "#22c55e" : "rgba(255,255,255,0.1)"}
-                        strokeWidth={strokeWidth}
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        filter={data.ketosisHours > 0 ? "url(#tri-glow-green)" : undefined}
-                    />
+                    {data.ketosisHours > 0 && (
+                        <g>
+                            <path d={`M ${top.x} ${top.y} L ${right.x} ${right.y}`} fill="none" stroke="#22c55e" strokeWidth={strokeWidth + 12} strokeOpacity="0.08" strokeLinecap="round" strokeLinejoin="round" />
+                            <path d={`M ${top.x} ${top.y} L ${right.x} ${right.y}`} fill="none" stroke="#22c55e" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" />
+                        </g>
+                    )}
 
-                    {/* Side 3 — Sugar (Left side: Left → Top) — drawn LAST so it appears on top */}
-                    <path
-                        d={`M ${left.x} ${left.y} L ${top.x} ${top.y}`}
-                        fill="none"
-                        stroke="#f59e0b"
-                        strokeWidth={strokeWidth}
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        filter="url(#tri-glow-orange)"
-                    />
+                    {/* Side 3 — Sugar (Left side: Left → Top) */}
+                    <g>
+                        <path d={`M ${left.x} ${left.y} L ${top.x} ${top.y}`} fill="none" stroke="#f59e0b" strokeWidth={strokeWidth + 12} strokeOpacity="0.08" strokeLinecap="round" strokeLinejoin="round" />
+                        <path d={`M ${left.x} ${left.y} L ${top.x} ${top.y}`} fill="none" stroke="#f59e0b" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" />
+                    </g>
 
                     {/* Progress Overlay (Thin WHITE Line) */}
                     <motion.path
@@ -139,7 +109,6 @@ export function TriangularProgress({
                         initial={{ strokeDashoffset: totalLength }}
                         animate={{ strokeDashoffset: totalLength * (1 - visualProgress) }}
                         transition={{ duration: 1, ease: "easeOut" }}
-                        filter="url(#tri-glow-white)"
                     />
                 </svg>
 

@@ -103,55 +103,75 @@ export function LandingHero() {
 }
 
 const phases = [
-  { hour: "0–4h", name: "Sugar Burning", desc: "Body runs on glucose from your last meal." },
-  { hour: "4–12h", name: "Transition", desc: "Glucose depletes. Body hunts for alternate fuel." },
-  { hour: "12–16h", name: "Ketosis", desc: "Fat becomes fuel. Mental clarity sharpens.", active: true },
-  { hour: "16h+", name: "Autophagy", desc: "Cellular repair begins. Damaged proteins cleared." },
+  { hour: "0–4h", name: "Sugar Burning", desc: "Body burns recent dietary glucose.", color: "#22c55e" },
+  { hour: "4–12h", name: "Transition", desc: "Liver starts hunting for alternate fuel.", color: "#f59e0b" },
+  { hour: "12–16h", name: "Ketosis", desc: "Body switches to burning stored fat.", color: "#ea580c", active: true },
+  { hour: "16h+", name: "Autophagy", desc: "Cellular cleanup and repair kick in.", color: "#06b6d4" },
 ]
 
 export function LandingScience() {
   return (
-    <section id="science" className="py-20 px-6">
-      <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-12">
+    <section id="science" className="py-24 px-6 overflow-hidden">
+      <div className="max-w-6xl mx-auto">
+        <div className="text-center mb-20">
           <div className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-black uppercase tracking-[0.2em] mb-6" style={{ backgroundColor: "rgba(34,197,94,0.1)", border: "1px solid rgba(34,197,94,0.2)", color: ACCENT }}>
             The Science
           </div>
-          <h2 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tighter mb-4">
+          <h2 className="text-4xl sm:text-6xl font-black tracking-tighter mb-4">
             Not a diet.<br />
             <span style={{ color: ACCENT }}>A biological window.</span>
           </h2>
-          <p className="text-lg text-white/50 max-w-md mx-auto leading-relaxed">
-            Every hour you fast, your body moves through distinct metabolic phases. Atara tracks them in real time.
+          <p className="text-lg text-white/50 max-w-xl mx-auto leading-relaxed">
+            Every hour you fast, your body moves through distinct metabolic phases. Atara visualizes these milestones as you reach them.
           </p>
         </div>
 
-        {/* Phase grid */}
-        <div className="phase-grid">
-          {phases.map((p) => (
-            <div
-              key={p.hour}
-              className="rounded-2xl p-6 transition-all duration-300 hover:-translate-y-1 cursor-default"
-              style={{
-                backgroundColor: p.active ? "rgba(34,197,94,0.06)" : "rgba(255,255,255,0.03)",
-                border: `1px solid ${p.active ? "rgba(34,197,94,0.35)" : "rgba(255,255,255,0.07)"}`,
-              }}
-            >
-              {p.active && (
-                <div className="text-[10px] font-bold uppercase tracking-widest mb-3" style={{ color: ACCENT }}>
-                  Goal zone
+        {/* Horizontal Timeline Container */}
+        <div className="relative">
+          {/* Horizontal Line Connector (Desktop) */}
+          <div className="absolute top-[26px] left-[10%] right-[10%] h-[2px] bg-gradient-to-r from-transparent via-white/10 to-transparent hidden md:block" />
+
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 relative">
+            {phases.map((p, i) => (
+              <div key={p.name} className="flex flex-col items-center text-center group">
+                {/* Timeline Dot & Hour */}
+                <div className="flex flex-col items-center mb-6 relative z-10">
+                  <div 
+                    className="w-12 h-12 rounded-full border-4 border-[#0f0f0f] flex items-center justify-center transition-all duration-500 group-hover:scale-110 shadow-lg"
+                    style={{ backgroundColor: p.color }}
+                  >
+                    <div className="w-2 h-2 rounded-full bg-[#0f0f0f]" />
+                  </div>
+                  <span 
+                    className="mt-3 text-[10px] font-black uppercase tracking-[0.2em]"
+                    style={{ color: p.color }}
+                  >
+                    {p.hour}
+                  </span>
                 </div>
-              )}
-              <div className="text-xs font-semibold uppercase tracking-widest mb-2" style={{ color: p.active ? ACCENT : "rgba(255,255,255,0.4)" }}>
-                {p.hour}
+
+                {/* Content Card */}
+                <div 
+                  className="w-full p-6 rounded-[2rem] transition-all duration-500 hover:-translate-y-2 border"
+                  style={{ 
+                    backgroundColor: "rgba(255,255,255,0.02)",
+                    borderColor: i === 2 ? "rgba(34,197,94,0.2)" : "rgba(255,255,255,0.05)"
+                  }}
+                >
+                  {p.active && (
+                    <div className="text-[10px] font-black uppercase tracking-[0.2em] mb-2 text-primary">
+                      Goal zone
+                    </div>
+                  )}
+                  <h3 className="text-xl font-bold text-white mb-2">{p.name}</h3>
+                  <p className="text-sm text-white/40 leading-relaxed">{p.desc}</p>
+                </div>
               </div>
-              <div className="text-lg font-bold text-white mb-2">{p.name}</div>
-              <div className="text-sm text-white/40 leading-relaxed">{p.desc}</div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
 
-        <p className="text-center text-xs text-white/30 mt-6">
+        <p className="text-center text-[10px] font-bold text-white/20 uppercase tracking-[0.2em] mt-16 italic">
           A 16:8 window reaches both ketosis and autophagy — every day, no supplements.
         </p>
       </div>
@@ -392,25 +412,50 @@ export function LandingLevelUp() {
           })}
         </div>
 
-        {/* CTA */}
+        {/* Premium PDF Giveaway Panel */}
         <div className="text-center">
           <div 
-            className="inline-flex flex-col items-center gap-4 p-8 rounded-[2rem]"
-            style={{ backgroundColor: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.08)" }}
+            className="inline-flex flex-col items-center gap-6 p-8 sm:p-12 rounded-[3rem] relative overflow-hidden group w-full"
+            style={{ 
+              background: "linear-gradient(145deg, rgba(34,197,94,0.08) 0%, rgba(34,197,94,0.02) 100%)",
+              border: "1px solid rgba(34,197,94,0.15)",
+              boxShadow: "0 20px 40px rgba(0,0,0,0.2)"
+            }}
           >
-            <p className="text-sm text-white/60">
-              Want the exact protocols, weekly schedule, safety notes + all the March 2026 studies?
-            </p>
-            <a
-              href="/The 4 Free Biohacks.pdf"
-              download
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-xl font-bold text-sm transition-all hover:scale-105"
-              style={{ backgroundColor: ACCENT, color: "#000" }}
-            >
-              <Download className="w-4 h-4" />
-              Download Free: "The 4 Free Biohacks Blueprint – Updated March 2026"
-              <ArrowRight className="w-4 h-4" />
-            </a>
+            {/* Background Decorative Element */}
+            <div className="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 bg-primary/5 rounded-full blur-3xl group-hover:scale-110 transition-transform duration-700" />
+            
+            <div className="relative z-10 flex flex-col items-center gap-4">
+              <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center border border-primary/20 mb-2">
+                <Download className="w-8 h-8 text-primary group-hover:bounce transition-all" />
+              </div>
+              
+              <h3 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
+                Unlock the <span className="text-primary">Blueprint</span>
+              </h3>
+              
+              <p className="text-sm sm:text-base text-white/50 max-w-lg mb-4 leading-relaxed">
+                Want the exact protocols, weekly schedule, safety notes + all the March 2026 studies? Get our definitive guide for free.
+              </p>
+              
+              <a
+                href="/The 4 Free Biohacks.pdf"
+                download
+                className="group/btn relative inline-flex items-center gap-3 px-10 py-5 rounded-2xl font-black text-sm uppercase tracking-widest transition-all hover:scale-[1.03] active:scale-[0.98]"
+                style={{ backgroundColor: ACCENT, color: "#000" }}
+              >
+                <Download className="w-5 h-5 transition-transform group-hover/btn:-translate-y-1" />
+                <span>Download Free Blueprint</span>
+                <ArrowRight className="w-5 h-5 transition-transform group-hover/btn:translate-x-1" />
+                
+                {/* Button Glow */}
+                <div className="absolute inset-0 rounded-2xl bg-white/20 opacity-0 group-hover/btn:opacity-100 transition-opacity" />
+              </a>
+              
+              <p className="text-[10px] font-bold text-white/20 uppercase tracking-[0.2em] mt-2">
+                No Email Required • Instant Access • PDF Guide
+              </p>
+            </div>
           </div>
         </div>
       </div>
