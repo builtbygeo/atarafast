@@ -10,14 +10,17 @@ import {
   isSameDay,
   subWeeks,
   differenceInDays,
+  subDays,
+  startOfDay,
 } from "date-fns"
 import { AreaChart, Area, CartesianGrid, XAxis, YAxis, ResponsiveContainer, Tooltip } from "recharts"
-import { ChevronRight, Lock, Sparkles, Settings } from "lucide-react"
+import { ChevronRight, Lock, Sparkles, Settings, Flame, Trophy, Zap } from "lucide-react"
 import type { FastingRecord } from "@/lib/storage"
 import { useLang } from "@/lib/language-context"
 import { useSubscription, startCheckout } from "@/lib/subscription"
 import { getAiUsage, checkAiQuota, incrementAiUsage, saveAiReport } from "@/lib/storage"
 import type { AppSettings } from "@/lib/storage"
+import { calculateStreaks } from "@/lib/stats"
 
 const safeFormat = (date: Date | number | string, formatStr: string, fallback: string = "") => {
   try {
@@ -88,7 +91,7 @@ export function StatsView({ history, settings, onOpenSettings, onOpenUpgrade }: 
       return (
         <div key={i} className={line.trim().startsWith('-') ? "mb-5 pl-5 -indent-5" : "mb-4"}>
           {parts.map((part, j) => (
-            j % 2 === 1 ? <strong key={j} className="text-primary font-black uppercase tracking-tight">{part}</strong> : part
+            j % 2 === 1 ? <strong key={j} className="text-primary font-bold tracking-tight">{part}</strong> : part
           ))}
         </div>
       )
@@ -138,56 +141,15 @@ export function StatsView({ history, settings, onOpenSettings, onOpenUpgrade }: 
     const avgMs = totalMs / validHistory.length
     const avgHours = Math.round(avgMs / (1000 * 60 * 60) * 10) / 10
 
-    // Streak calculation: consecutive days with a completed fast
-    const fastDates = [...new Set(
-      validHistory
-        .filter((r) => r.completed)
-        .map((r) => safeFormat(r.startTime, "yyyy-MM-dd"))
-        .filter(Boolean)
-    )].sort()
-
-    let currentStreak = 0
-    let longestStreak = 0
-    let streak = 0
-    const today = safeFormat(new Date(), "yyyy-MM-dd")
-
-    for (let i = fastDates.length - 1; i >= 0; i--) {
-      const dateStr = fastDates[i]
-      if (!dateStr) continue
-      const date = new Date(dateStr)
-      const prevDateStr = i > 0 ? fastDates[i - 1] : null
-      const prevDate = prevDateStr ? new Date(prevDateStr) : null
-
-      if (i === fastDates.length - 1) {
-        const daysDiff = differenceInDays(new Date(today), date)
-        if (daysDiff <= 1) {
-          streak = 1
-          currentStreak = 1
-        } else {
-          streak = 0
-        }
-      }
-
-      if (prevDate) {
-        const daysDiff = differenceInDays(date, prevDate)
-        if (daysDiff === 1) {
-          streak++
-          if (i === fastDates.length - 1 || currentStreak > 0) currentStreak = streak
-        } else {
-          longestStreak = Math.max(longestStreak, streak)
-          streak = 1
-          if (currentStreak === 0) currentStreak = 0
-        }
-      }
-    }
-    longestStreak = Math.max(longestStreak, streak)
+    // Use the robust calculateStreaks utility
+    const streakStats = calculateStreaks(validHistory)
 
     return {
       totalFasts: validHistory.length,
       totalHours,
       avgDuration: avgHours,
-      currentStreak,
-      longestStreak,
+      currentStreak: streakStats.currentStreak,
+      longestStreak: streakStats.longestStreak,
       completionRate: Math.round((completedCount / validHistory.length) * 100),
     }
   }, [history])
@@ -237,7 +199,7 @@ export function StatsView({ history, settings, onOpenSettings, onOpenUpgrade }: 
     }
   }
 
-  // Weekly chart data (Last 30 days)
+  // Weekly chart data (Rolling 7 days)
   const weeklyData = useMemo(() => {
     const daysData = []
     const now = new Date()
@@ -252,13 +214,14 @@ export function StatsView({ history, settings, onOpenSettings, onOpenUpgrade }: 
       t?.sat || "S"
     ]
 
+    let totalRollingHours = 0
+    let daysWithFasts = 0
+
     for (let i = 0; i < 7; i++) {
-      const currentDate = new Date(now)
-      currentDate.setDate(currentDate.getDate() - (6 - i))
+      const currentDate = subDays(now, 6 - i)
 
       let dayHours = 0
-      const dayStart = new Date(currentDate.setHours(0,0,0,0)).getTime()
-      const dayEnd = new Date(currentDate.setHours(23,59,59,999)).getTime()
+      const dayStart = startOfDay(currentDate).getTime()
 
       history.forEach((r: FastingRecord) => {
         if (!r || !r.startTime || !r.endTime) return
@@ -267,20 +230,27 @@ export function StatsView({ history, settings, onOpenSettings, onOpenUpgrade }: 
         
         if (isNaN(rStart) || isNaN(rEnd)) return
 
-        // Check if the fast overlaps with this day
+        // Only count if it started on this day
         if (isSameDay(new Date(rStart), new Date(dayStart))) {
           dayHours += (rEnd - rStart) / (1000 * 60 * 60)
         }
       })
 
       const hours = Math.round(dayHours * 10) / 10
+      if (hours > 0) {
+        totalRollingHours += hours
+        daysWithFasts++
+      }
 
       daysData.push({
-        label: dayLabelsGlobal[new Date(dayStart).getDay()] || safeFormat(new Date(dayStart), "EE").charAt(0),
+        label: dayLabelsGlobal[new Date(dayStart).getDay()],
         hours,
       })
     }
-    return daysData
+
+    const weeklyAvg = daysWithFasts > 0 ? Math.round((totalRollingHours / daysWithFasts) * 10) / 10 : 0
+
+    return { daysData, weeklyAvg }
   }, [history, t])
 
   const circumference = 2 * Math.PI * 110
@@ -338,13 +308,14 @@ export function StatsView({ history, settings, onOpenSettings, onOpenUpgrade }: 
               strokeDasharray={circumference} strokeDashoffset={strokeDashoffset} strokeLinecap="round" />
           </svg>
           <div className="absolute flex flex-col items-center justify-center text-center inset-0">
-            <div className="flex gap-1.5 mb-2 mt-4 text-xl">🔥🌿</div>
+            <div className={`mt-4 p-2.5 rounded-2xl bg-primary/10 border border-primary/20 shadow-[0_0_20px_rgba(34,197,94,0.1)] mb-2 ${stats.currentStreak > 0 ? "animate-pulse" : "opacity-30"}`}>
+              <Flame className={`h-6 w-6 ${stats.currentStreak > 0 ? "text-primary fill-primary/20" : "text-muted-foreground"}`} />
+            </div>
             <div className="text-6xl font-black text-foreground tracking-tighter mb-0 tabular-nums leading-none flex items-baseline">
               {stats.currentStreak}
             </div>
             <div className="text-[12px] uppercase tracking-[0.2em] text-foreground font-black mb-1 mt-1 z-10">{t?.days || "DAYS"}</div>
             <div className="text-[11px] font-bold text-foreground/80 lowercase mt-1 tracking-wide">{t?.currentStreak || "Current Streak"}</div>
-            <div className="text-[10px] font-medium text-muted-foreground mt-0.5 tracking-wide bg-secondary/30 px-2 py-0.5 rounded-full border border-border/30">On a Roll! 🌿</div>
           </div>
         </div>
       </div>
@@ -377,14 +348,14 @@ export function StatsView({ history, settings, onOpenSettings, onOpenUpgrade }: 
             <div>
               <h3 className="text-[17px] font-bold text-foreground tracking-tight mb-1">{t?.weeklyActivity || "Weekly Activity"}</h3>
               <p className="text-[13px] font-medium text-muted-foreground">
-                {t?.avgDuration || "Active Time"}: <span className="text-foreground/90">{stats.avgDuration} {t?.hours || "hrs"}/avg</span>
+                {t?.activeTime || "Active Time"}: <span className="text-foreground/90">{weeklyData.weeklyAvg} {t?.hours || "h"} ({t?.dailyAvg || "avg"})</span>
               </p>
             </div>
           </div>
 
           <div className="h-44 pr-2 -ml-2">
             <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={weeklyData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+              <AreaChart data={weeklyData.daysData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                 <defs>
                   <linearGradient id="colorHours" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="5%" stopColor="#4ADE80" stopOpacity={0.3} />
@@ -512,16 +483,16 @@ export function StatsView({ history, settings, onOpenSettings, onOpenUpgrade }: 
               <div className="mt-4 rounded-xl border border-destructive/20 bg-destructive/10 p-3 flex items-center justify-between relative z-10">
                 <div className="flex items-center gap-2 text-destructive font-bold text-[10px] uppercase tracking-widest">
                   <Lock className="h-3 w-3" />
-                  Limit reached
+                  {t?.limitReached}
                 </div>
-                <span className="text-[10px] text-muted-foreground">Try again tomorrow</span>
+                <span className="text-[10px] text-muted-foreground">{t?.tryAgainTomorrow}</span>
               </div>
             )}
             {quota.canUse && (
               <p className="text-[9px] text-muted-foreground font-bold tracking-widest uppercase mt-4 text-center opacity-60 relative z-10">
                 {isPremium
-                  ? (t?.dailyCredit || "Daily Credit Available")
-                  : "1 Monthly Credit Remaining"}
+                  ? (t?.dailyCreditAvailable || "Daily Credit Available")
+                  : t?.monthlyCreditRemaining?.replace("{{count}}", quota.remaining?.toString() || "0") || "1 Monthly Credit Remaining"}
               </p>
             )}
           </div>

@@ -29,10 +29,10 @@ type ShareDialogProps = {
     onClose: () => void
 } & (FastShareCardProps | StatsShareCardProps)
 
-function formatHms(ms: number) {
+function formatHms(ms: number, t: any) {
     const h = Math.floor(ms / 3600000)
     const m = Math.floor((ms % 3600000) / 60000)
-    return `${h}h ${m}m`
+    return `${h}${t.h || "h"} ${m}${t.min || "m"}`
 }
 
 function ActiveShareCard({ elapsedMs, targetHours, presetId, percentage }: Omit<FastShareCardProps, "type">) {
@@ -69,7 +69,7 @@ function ActiveShareCard({ elapsedMs, targetHours, presetId, percentage }: Omit<
                     {isComplete ? t.shareAchieved : t.shareCurrent}
                 </p>
                 <h1 style={{ color: "#ffffff", fontSize: 58, fontWeight: 900, lineHeight: 1, letterSpacing: "-0.04em", margin: 0 }}>
-                    {formatHms(elapsedMs)}
+                    {formatHms(elapsedMs, t)}
                 </h1>
                 <p style={{ color: "#22c55e", fontSize: 13, fontWeight: 800, marginTop: 18, letterSpacing: "0.2em", textTransform: "uppercase" }}>
                     {preset?.name || presetId} · {targetHours} {t.hGoal || "h goal"}
@@ -170,7 +170,7 @@ function StatsShareCard({ history }: Omit<StatsShareCardProps, "type">) {
                     {totalFasts} {t.shareFastsNum}
                 </h1>
                 <p style={{ color: "#22c55e", fontSize: 12, fontWeight: 800, marginTop: 18, letterSpacing: "0.2em", textTransform: "uppercase" }}>
-                    {formatHms(totalMs)} {t.shareTotal}
+                    {formatHms(totalMs, t)} {t.shareTotal}
                 </p>
             </div>
 
@@ -179,7 +179,7 @@ function StatsShareCard({ history }: Omit<StatsShareCardProps, "type">) {
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, width: "100%" }}>
                     {[
                         { icon: "🔥", label: t.shareStreak, value: `${streak} ${t.days || "дни"}` },
-                        { icon: "⚡", label: t.shareAvgDuration, value: `${avgHours}ч` },
+                        { icon: "⚡", label: t.shareAvgDuration, value: `${avgHours}${t.h || "h"}` },
                     ].map(({ icon, label, value }) => (
                         <div key={label} style={{ padding: "18px 12px", borderRadius: 20, background: "#ffffff04", border: "1px solid #ffffff08", textAlign: "center" }}>
                             <p style={{ fontSize: 24, margin: "0 0 10px" }}>{icon}</p>
