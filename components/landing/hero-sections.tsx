@@ -79,6 +79,24 @@ export function LandingHero() {
             </a>
           </div>
         </div>
+
+        {/* Right: Phone image - BIGGER */}
+        <div className="relative flex justify-center lg:justify-end">
+          <div className="relative">
+            {/* Phone frame glow */}
+            <div className="absolute inset-0 bg-primary/30 blur-[80px] rounded-[3rem] scale-90" />
+            <div className="relative w-[320px] sm:w-[400px] lg:w-[550px] rounded-[3rem] overflow-hidden border-4 border-white/10 shadow-2xl">
+              <Image
+                src="/atarahero.webp"
+                alt="Atara App Interface"
+                width={550}
+                height={1100}
+                className="w-full h-auto"
+                priority
+              />
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   )
