@@ -107,9 +107,9 @@ export function SettingsSheet({ open, onClose, onDataCleared, onOpenUpgrade }: S
   }
 
   const themeOptions = [
-    { value: "light", icon: Sun, label: "Light" },
-    { value: "dark", icon: Moon, label: "Dark" },
-    { value: "system", icon: Monitor, label: "System" },
+    { value: "light", icon: Sun, label: t.light || "Light" },
+    { value: "dark", icon: Moon, label: t.dark || "Dark" },
+    { value: "system", icon: Monitor, label: t.system || "System" },
   ] as const
 
   return (
@@ -138,13 +138,13 @@ export function SettingsSheet({ open, onClose, onDataCleared, onOpenUpgrade }: S
                   className="w-full relative flex items-center justify-center gap-3 rounded-xl bg-primary px-4 py-3.5 text-sm font-bold text-primary-foreground shadow-lg shadow-primary/10 active:scale-[0.98] transition-all overflow-hidden group"
                 >
                   <div className="absolute inset-0 bg-white/10 group-hover:bg-white/20 transition-colors" />
-                  <span className="relative">Create Free Account</span>
+                  <span className="relative">{t.createFreeAccount}</span>
                 </Link>
                 <Link
                   href="/sign-in"
                   className="w-full text-center py-2 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors"
                 >
-                  Already have an account? Sign In
+                  {t.alreadyHaveAccount}
                 </Link>
               </div>
             ) : (
@@ -160,9 +160,9 @@ export function SettingsSheet({ open, onClose, onDataCleared, onOpenUpgrade }: S
 
                 <div className="flex flex-col gap-2 p-3 bg-card rounded-xl border border-border/50">
                   <div className="flex justify-between items-center">
-                    <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Plan</span>
+                    <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground">{t.planType}</span>
                     <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full ${isPremium ? 'bg-primary/20 text-primary border border-primary/30' : 'bg-muted text-muted-foreground border border-border'}`}>
-                      {isPremium ? (isTrialing ? '14-Day Free Trial' : 'Atara Pro') : 'Free Plan'}
+                      {isPremium ? (isTrialing ? '14-Day Free Trial' : t.ataraPro) : t.freePlan}
                     </span>
                   </div>
 
@@ -174,13 +174,13 @@ export function SettingsSheet({ open, onClose, onDataCleared, onOpenUpgrade }: S
 
                   {!isTrialing && isPremium && (
                     <p className="text-xs text-muted-foreground font-medium">
-                      You have full access to all metabolic tracking features.
+                      {t.fullAccessToFeatures}
                     </p>
                   )}
 
                   {!isPremium && !isTrialing && (
                     <p className="text-xs text-muted-foreground font-medium">
-                      Your free trial has expired. Upgrade to Atara+ for full access.
+                      {t.upgradeToAtaraPlus}
                     </p>
                   )}
 
@@ -189,14 +189,14 @@ export function SettingsSheet({ open, onClose, onDataCleared, onOpenUpgrade }: S
                     className="w-full mt-1 flex items-center justify-center gap-2 rounded-lg bg-primary/10 border border-primary/20 px-4 py-2 text-xs font-bold text-primary hover:bg-primary/20 transition-all"
                   >
                     <Sparkles className="w-3.5 h-3.5" />
-                    {stripeCustomerId ? 'Manage Subscription' : 'View Upgrade Plans'}
+                    {stripeCustomerId ? t.manageSubscription : t.viewUpgradePlans}
                   </button>
                 </div>
 
                 <SignOutButton>
                   <button className="flex items-center justify-center gap-2 py-2 text-xs font-medium text-destructive/70 hover:text-destructive transition-colors">
                     <LogOut className="w-3.5 h-3.5" />
-                    Sign Out
+                    {t.signOut}
                   </button>
                 </SignOutButton>
               </div>
@@ -208,9 +208,9 @@ export function SettingsSheet({ open, onClose, onDataCleared, onOpenUpgrade }: S
           {/* Timer Style */}
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-foreground">Visual Style</p>
+              <p className="text-sm font-medium text-foreground">{t.visualStyle}</p>
               <p className="text-xs text-muted-foreground uppercase tracking-tight opacity-60">
-                {settings.timerStyle === "circle" ? "Classic Circle" : "New Triangle"}
+                {settings.timerStyle === "circle" ? t.classicCircle : t.triangle}
               </p>
             </div>
             <div className="flex rounded-lg border border-border overflow-hidden">
@@ -222,7 +222,7 @@ export function SettingsSheet({ open, onClose, onDataCleared, onOpenUpgrade }: S
                   }`}
               >
                 <Circle className="h-3 w-3" />
-                Circle
+                {t.classicCircle}
               </button>
               <button
                 onClick={() => handleTimerStyle("triangle")}
@@ -232,7 +232,7 @@ export function SettingsSheet({ open, onClose, onDataCleared, onOpenUpgrade }: S
                   }`}
               >
                 <Triangle className="h-3 w-3" />
-                Triangle
+                {t.triangle}
               </button>
             </div>
           </div>
@@ -242,9 +242,9 @@ export function SettingsSheet({ open, onClose, onDataCleared, onOpenUpgrade }: S
           {/* Timer Direction */}
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-foreground">Timer direction</p>
+              <p className="text-sm font-medium text-foreground">{t.timerDirection}</p>
               <p className="text-xs text-muted-foreground">
-                {settings.timerDirection === "down" ? "Counting down to goal" : "Counting up from start"}
+                {settings.timerDirection === "down" ? t.countDown : t.countUp}
               </p>
             </div>
             <div className="flex rounded-lg border border-border overflow-hidden">
@@ -256,7 +256,7 @@ export function SettingsSheet({ open, onClose, onDataCleared, onOpenUpgrade }: S
                   }`}
               >
                 <ChevronUp className="h-3 w-3" />
-                Up
+                {t.countUp}
               </button>
               <button
                 onClick={() => handleTimerDirection("down")}
@@ -266,7 +266,7 @@ export function SettingsSheet({ open, onClose, onDataCleared, onOpenUpgrade }: S
                   }`}
               >
                 <ChevronDown className="h-3 w-3" />
-                Down
+                {t.countDown}
               </button>
             </div>
           </div>
@@ -277,10 +277,10 @@ export function SettingsSheet({ open, onClose, onDataCleared, onOpenUpgrade }: S
           <div className="flex items-center justify-between pb-2 pt-1">
             <div>
               <p className="text-sm font-bold text-foreground flex items-center gap-1.5">
-                Post-Fast Journal
+                {t.postFastJournal}
               </p>
               <p className="text-[10px] text-muted-foreground font-medium uppercase tracking-wider">
-                Log reflection after fasts
+                {t.logReflection}
               </p>
             </div>
             <button
@@ -306,7 +306,7 @@ export function SettingsSheet({ open, onClose, onDataCleared, onOpenUpgrade }: S
 
           {/* Theme */}
           <div className="flex items-center justify-between">
-            <p className="text-sm font-medium text-foreground">Theme</p>
+            <p className="text-sm font-medium text-foreground">{t.theme || "Theme"}</p>
             <div className="flex rounded-lg border border-border overflow-hidden">
               {themeOptions.map(({ value, icon: Icon, label }) => (
                 <button
@@ -447,7 +447,7 @@ export function SettingsSheet({ open, onClose, onDataCleared, onOpenUpgrade }: S
             className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium bg-secondary text-foreground hover:bg-secondary/80 border border-border/50 transition-colors"
           >
             <Sparkles className="h-4 w-4 text-primary" />
-            Retake Onboarding Quiz
+            {t.retakeOnboarding}
           </button>
 
           {/* Clear */}
@@ -459,14 +459,14 @@ export function SettingsSheet({ open, onClose, onDataCleared, onOpenUpgrade }: S
               }`}
           >
             <Trash2 className="h-4 w-4" />
-            {confirmClear ? "Tap again to confirm" : "Clear all data"}
+            {confirmClear ? t.tapAgainToConfirm : t.clearAllData}
           </button>
 
           <div className="h-px bg-border" />
 
           {/* Contact & Links Section */}
           <div className="flex flex-col gap-3 pb-2 pt-1">
-            <h3 className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-1 ml-1">Contact & Social</h3>
+            <h3 className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-1 ml-1">{t.contactSocial}</h3>
             <div className="grid grid-cols-2 gap-3">
               <a
                 href="https://atarafast.com"
@@ -475,7 +475,7 @@ export function SettingsSheet({ open, onClose, onDataCleared, onOpenUpgrade }: S
                 className="flex flex-col items-center justify-center gap-2 rounded-2xl bg-secondary/30 p-4 transition-all hover:bg-secondary/50 border border-border/50 group"
               >
                 <Monitor className="w-5 h-5 text-foreground/50 group-hover:text-foreground transition-colors" />
-                <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground group-hover:text-foreground">Official Site</span>
+                <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground group-hover:text-foreground">{t.officialSite}</span>
               </a>
               <a
                 href="https://x.com/builtbygeo"
@@ -489,12 +489,37 @@ export function SettingsSheet({ open, onClose, onDataCleared, onOpenUpgrade }: S
                 <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground group-hover:text-foreground">Twitter (X)</span>
               </a>
             </div>
+            
+            {/* GitHub Star Button */}
+            <a
+              href="https://github.com/builtbygeo/atarafast"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex items-center justify-center gap-2 rounded-xl px-4 py-3 bg-gradient-to-r from-gray-800 to-gray-900 hover:from-gray-700 hover:to-gray-800 text-white font-semibold text-xs transition-all duration-300 hover:scale-[1.02]"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="group-hover:fill-yellow-400 transition-colors"
+              >
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+              </svg>
+              Star on GitHub
+            </a>
+            
             <a
               href="mailto:support@atarafast.com"
               className="w-full flex items-center justify-center gap-3 rounded-2xl bg-secondary/30 p-4 transition-all hover:bg-secondary/50 border border-border/50 group"
             >
               <Mail className="w-4 h-4 text-foreground/50 group-hover:text-foreground transition-colors" />
-              <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground group-hover:text-foreground">Send Email Feedback</span>
+              <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground group-hover:text-foreground">{t.sendEmailFeedback}</span>
             </a>
           </div>
         </div>

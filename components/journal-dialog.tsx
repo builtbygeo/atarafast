@@ -51,14 +51,14 @@ export function JournalDialog({ onSave, onSkip, initialData }: JournalDialogProp
     return (
         <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center">
             <div className="fixed inset-0 bg-background/80 backdrop-blur-md" onClick={onSkip} />
-            <div className="relative z-50 w-full max-w-md max-h-[90vh] flex flex-col rounded-t-3xl sm:rounded-3xl bg-card border border-border shadow-2xl overflow-hidden animate-in slide-in-from-bottom duration-300">
+            <div className="relative z-50 w-full max-w-md max-h-[90vh] flex flex-col rounded-t-3xl sm:rounded-3xl bg-card border border-border shadow-2xl overflow-hidden animate-in slide-in-from-bottom duration-150">
 
                 {/* Header */}
                 <div className="flex items-center justify-between px-6 pt-6 pb-4 shrink-0 bg-card/95 backdrop-blur-md sticky top-0 z-10 border-b border-border">
                     <div>
-                        <h1 className="text-2xl font-bold tracking-tight text-foreground mb-1">Journal</h1>
+                        <h1 className="text-2xl font-bold tracking-tight text-foreground mb-1">{t.journalTitle}</h1>
                         <p className="text-primary text-xs font-bold uppercase tracking-widest">
-                            Fast Completed
+                            {t.fastCompleted}
                         </p>
                     </div>
                     <button
@@ -72,12 +72,12 @@ export function JournalDialog({ onSave, onSkip, initialData }: JournalDialogProp
                 <div className="flex-1 overflow-y-auto px-6 py-4 space-y-8 no-scrollbar text-foreground">
                     {/* HOW DID YOU FEEL? */}
                     <div>
-                        <p className="text-sm font-bold uppercase tracking-widest text-muted-foreground mb-5">How did you feel?</p>
+                        <p className="text-sm font-bold uppercase tracking-widest text-muted-foreground mb-5">{t.howDidYouFeel}</p>
 
                         {/* Energy Level Slider */}
                         <div className="mb-6">
                             <div className="flex justify-between text-xs font-medium mb-2">
-                                <span className="text-muted-foreground">Energy Level (1-5)</span>
+                                <span className="text-muted-foreground">{t.energyLevel}</span>
                                 <span className="font-mono text-primary">{energy}</span>
                             </div>
                             <input
@@ -95,7 +95,7 @@ export function JournalDialog({ onSave, onSkip, initialData }: JournalDialogProp
                         {/* Mental Slider */}
                         <div>
                             <div className="flex justify-between text-xs font-medium mb-2">
-                                <span className="text-muted-foreground">Mental Clarity (1-5)</span>
+                                <span className="text-muted-foreground">{t.mentalClarity}</span>
                                 <span className="font-mono text-primary">{mental}</span>
                             </div>
                             <input
@@ -113,9 +113,11 @@ export function JournalDialog({ onSave, onSkip, initialData }: JournalDialogProp
 
                     {/* SLEEP - 3 WORD OPTIONS */}
                     <div>
-                        <p className="text-sm font-bold uppercase tracking-widest text-muted-foreground mb-3">Sleep quality</p>
+                        <p className="text-sm font-bold uppercase tracking-widest text-muted-foreground mb-3">{t.sleepQuality}</p>
                         <div className="grid grid-cols-3 gap-2">
-                            {(['Poor', 'Good', 'Excellent'] as const).map((option) => (
+                            {(['Poor', 'Good', 'Excellent'] as const).map((option) => {
+                                const labels: Record<string, string> = { Poor: t.sleepPoor, Good: t.sleepGood, Excellent: t.sleepExcellent }
+                                return (
                                 <button
                                     key={option}
                                     onClick={() => setSleep(option)}
@@ -124,15 +126,15 @@ export function JournalDialog({ onSave, onSkip, initialData }: JournalDialogProp
                                             : 'bg-secondary/50 text-muted-foreground border-border hover:bg-secondary hover:text-foreground'
                                         }`}
                                 >
-                                    {option}
+                                    {labels[option]}
                                 </button>
-                            ))}
+                            )})}
                         </div>
                     </div>
 
                     {/* HYDRATION - BUTTONS */}
                     <div>
-                        <p className="text-sm font-bold uppercase tracking-widest text-muted-foreground mb-3">Hydration</p>
+                        <p className="text-sm font-bold uppercase tracking-widest text-muted-foreground mb-3">{t.hydration}</p>
                         <div className="grid grid-cols-4 gap-2">
                             {(['1L', '2L', '3L', '4L+'] as const).map((l) => (
                                 <button
@@ -153,7 +155,7 @@ export function JournalDialog({ onSave, onSkip, initialData }: JournalDialogProp
                     <div className="grid grid-cols-2 gap-4">
                         {/* Difficult moments */}
                         <div>
-                            <p className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground mb-3">Difficult Moments</p>
+                            <p className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground mb-3">{t.difficultMoments}</p>
                             <div className="flex gap-1.5">
                                 {[0, 1, 2, 3].map((n) => (
                                     <button
@@ -172,7 +174,7 @@ export function JournalDialog({ onSave, onSkip, initialData }: JournalDialogProp
 
                         {/* Hungry (times?) */}
                         <div>
-                            <p className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground mb-3">Hunger Pangs (times)</p>
+                            <p className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground mb-3">{t.hungerPangs}</p>
                             <div className="flex gap-1.5">
                                 {[0, 1, 2, 3].map((n) => (
                                     <button
@@ -192,7 +194,7 @@ export function JournalDialog({ onSave, onSkip, initialData }: JournalDialogProp
 
                     {/* TAGS - 2 EVEN ROWS (8 tags) */}
                     <div className="pb-4">
-                        <p className="text-sm font-bold uppercase tracking-widest text-muted-foreground mb-3">Tags (optional)</p>
+                        <p className="text-sm font-bold uppercase tracking-widest text-muted-foreground mb-3">{t.tagsOptional}</p>
                         <div className="grid grid-cols-4 gap-2">
                             {availableTags.map((tag) => (
                                 <button
@@ -216,14 +218,14 @@ export function JournalDialog({ onSave, onSkip, initialData }: JournalDialogProp
                         onClick={handleRecord}
                         className="w-full py-4 bg-primary text-primary-foreground font-black uppercase tracking-widest text-sm rounded-2xl shadow-[0_0_30px_rgba(var(--primary-rgb),0.2)] hover:shadow-[0_0_40px_rgba(var(--primary-rgb),0.4)] hover:bg-primary/90 active:scale-[0.98] transition-all"
                     >
-                        Save Journal
+                        {t.saveJournal}
                     </button>
                     {!initialData && (
                         <button
                             onClick={onSkip}
                             className="w-full mt-3 py-3 text-xs font-bold uppercase tracking-wider text-muted-foreground hover:text-foreground transition-colors"
                         >
-                            Skip for now
+                            {t.skipForNow}
                         </button>
                     )}
                 </div>

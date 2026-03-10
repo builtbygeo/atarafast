@@ -16,6 +16,8 @@ export const bg = {
   yesterday: "Вчера",
   today: "Днес",
   fastComplete: "Постът е завършен!",
+  completeFast: "Приключи",
+  dailyCredit: "Дневен кредит",
   fastingPlans: "Планове",
   plansSubtitle: "Научете за различните протоколи за периодично гладуване.",
   planNote: "Винаги се консултирайте с медицинско лице преди започване на фастване, особено ако имате заболявания, бременна сте или приемате лекарства.",
@@ -163,6 +165,9 @@ export const bg = {
   // Settings
   settings: "Настройки",
   preferences: "Предпочитания",
+  visualStyle: "Визуален стил",
+  classicCircle: "Кръг",
+  triangle: "Триъгълник",
   timerDirection: "Посока на таймера",
   countDown: "Надолу",
   countUp: "Нагоре",
@@ -202,6 +207,33 @@ export const bg = {
   skipForNow: "Пропусни за сега",
   postFastJournal: "Дневник след пост",
   logReflection: "Запиши рефлексия след поста",
+  
+  // Settings - Account
+  createFreeAccount: "Създай безплатен профил",
+  alreadyHaveAccount: "Вече имате профил? Вход",
+  planType: "План",
+  ataraPro: "Atara Pro",
+  ataraPlus: "Atara+",
+  freePlan: "Безплатен план",
+  fullAccessToFeatures: "Имате пълен достъп до всички функции за проследяване на метаболизма.",
+  upgradeToAtaraPlus: "Обновете до Atara+ за пълен достъп.",
+  trialEnded: "Вашият безплатен пробен период изтече.",
+  viewUpgradePlans: "Виж планове за ъпгрейд",
+  manageSubscription: "Управление на абонамент",
+  signOut: "Изход",
+  
+  // Settings - Other
+  retakeOnboarding: "Повтори onboarding",
+  clearAllData: "Изтрий всички данни",
+  tapAgainToConfirm: "Натисни пак за потвърждение",
+  contactSocial: "Контакти",
+  officialSite: "Официален сайт",
+  sendEmailFeedback: "Изпрати имейл",
+  sendEmail: "Изпрати имейл",
+
+  // Months
+  jan: "Яну", feb: "Фев", mar: "Мар", apr: "Апр", may: "Май", jun: "Юни",
+  jul: "Юли", aug: "Авг", sep: "Сеп", oct: "Окт", nov: "Ное", dec: "Дек",
 
   // Manual Fast Dialog
   addManualFast: "Добави пост",
@@ -319,6 +351,8 @@ export const en: typeof bg = {
   yesterday: "Yesterday",
   today: "Today",
   fastComplete: "Fast Complete",
+  completeFast: "Complete Fast",
+  dailyCredit: "Daily Credit Available",
   fastingPlans: "Fasting Plans",
   plansSubtitle: "Learn about different intermittent fasting protocols.",
   planNote: "Always consult with a healthcare provider before starting any fasting protocol, especially if you have existing health conditions, are pregnant, or take medication.",
@@ -462,6 +496,9 @@ export const en: typeof bg = {
   // Settings
   settings: "Settings",
   preferences: "Preferences",
+  visualStyle: "Visual Style",
+  classicCircle: "Circle",
+  triangle: "Triangle",
   timerDirection: "Timer direction",
   countDown: "Down",
   countUp: "Up",
@@ -502,6 +539,33 @@ export const en: typeof bg = {
   skipForNow: "Skip for now",
   postFastJournal: "Post-Fast Journal",
   logReflection: "Log reflection after fasts",
+
+  // Settings - Account
+  createFreeAccount: "Create Free Account",
+  alreadyHaveAccount: "Already have an account? Sign In",
+  planType: "Plan",
+  ataraPro: "Atara Pro",
+  ataraPlus: "Atara+",
+  freePlan: "Free Plan",
+  fullAccessToFeatures: "You have full access to all metabolic tracking features.",
+  upgradeToAtaraPlus: "Upgrade to Atara+ for full access.",
+  trialEnded: "Your free trial has expired.",
+  viewUpgradePlans: "View Upgrade Plans",
+  manageSubscription: "Manage Subscription",
+  signOut: "Sign Out",
+  
+  // Settings - Other
+  retakeOnboarding: "Retake Onboarding Quiz",
+  clearAllData: "Clear all data",
+  tapAgainToConfirm: "Tap again to confirm",
+  contactSocial: "Contact & Social",
+  officialSite: "Official Site",
+  sendEmailFeedback: "Send Email Feedback",
+  sendEmail: "Send Email",
+
+  // Months
+  jan: "Jan", feb: "Feb", mar: "Mar", apr: "Apr", may: "May", jun: "Jun",
+  jul: "Jul", aug: "Aug", sep: "Sep", oct: "Oct", nov: "Nov", dec: "Dec",
 
   addManualFast: "Add Past Fast",
   preset: "Preset",

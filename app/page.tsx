@@ -5,6 +5,15 @@ import { CheckoutButton } from '@/components/checkout-button'
 import { Logo } from '@/components/logo'
 import { LifetimeOfferLink } from '@/components/lifetime-offer-link'
 import MetabolicJourneyChart from '@/components/MetabolicJourneyChart'
+import { PhilosophyDrawer } from '@/components/landing/PhilosophyDrawer'
+import {
+  LandingHero,
+  LandingScience,
+  LandingAudience,
+  LandingWhyTrack,
+  LandingLevelUp,
+  LandingSocialProof,
+} from '@/components/landing/hero-sections'
 import { Timer, BarChart3, Moon, Smartphone, Globe2, Sparkles } from 'lucide-react'
 import { headers } from 'next/headers'
 
@@ -87,7 +96,7 @@ export default async function LandingPage() {
         </div>
         <div className="hidden md:flex items-center gap-6 text-sm" style={{ color: 'rgba(255,255,255,0.6)' }}>
           <a href="#features" className="hover:text-white transition-colors text-xs font-black uppercase tracking-widest">Features</a>
-          <a href="#philosophy" className="hover:text-white transition-colors text-xs font-black uppercase tracking-widest">Philosophy</a>
+          <PhilosophyDrawer />
           <a href="#pricing" className="hover:text-white transition-colors text-xs font-black uppercase tracking-widest">Pricing</a>
         </div>
         <a
@@ -99,87 +108,23 @@ export default async function LandingPage() {
         </a>
       </nav>
 
-      <section id="hero" className="relative pt-32 pb-20 px-6 flex flex-col items-center text-center">
-        <div className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-black uppercase tracking-[0.2em]" style={{ border: '1px solid rgba(34,197,94,0.2)', backgroundColor: 'rgba(34,197,94,0.08)', color: '#22c55e' }}>
-          Next-Gen Metabolic Fasting
-        </div>
+      {/* NEW: Hero Section */}
+      <LandingHero />
 
-        <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tighter mt-8 mb-6 leading-[0.95] max-w-4xl">
-          Tired of ugly<br />
-          fasting{' '}
-          <span className="text-primary">
-            apps?
-          </span>
-        </h1>
+      {/* NEW: Science Section */}
+      <LandingScience />
 
-        <p className="text-lg sm:text-xl md:text-2xl text-white/50 max-w-2xl mb-10 font-medium leading-relaxed">
-          Beautiful, science-backed tracking with metabolic phases, AI insights, and stoic mindset tools.
-        </p>
+      {/* NEW: Audience Section */}
+      <LandingAudience />
 
-        <div className="flex flex-col items-center gap-6">
-          <div className="flex flex-col sm:flex-row gap-4">
-            <Link
-              href={appUrl}
-              className="bg-primary text-black px-10 py-4 rounded-2xl font-bold text-lg hover:scale-[1.02] active:scale-[0.98] transition-all"
-            >
-              Try Atara Free
-            </Link>
-            <a
-              href="#features"
-              className="border border-white/20 hover:border-white/40 hover:bg-white/5 px-10 py-4 rounded-2xl font-bold text-lg transition-all text-white"
-            >
-              See How It Works
-            </a>
-          </div>
+      {/* NEW: Why Track Section */}
+      <LandingWhyTrack />
 
-          <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm font-medium text-white/40">
-            <span className="flex items-center gap-2">✓ No credit card</span>
-            <span className="flex items-center gap-2">✓ Works offline</span>
-            <span className="flex items-center gap-2">✓ 100% private</span>
-          </div>
-        </div>
+      {/* NEW: Level Up Section */}
+      <LandingLevelUp />
 
-        {/* Hero image container */}
-        <div className="relative w-full max-w-[480px] mx-auto mt-14 overflow-hidden rounded-[2rem] group">
-          <div className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none z-10" style={{ background: 'linear-gradient(to top, #0f0f0f 0%, transparent 100%)' }} />
-          <Image
-            src="/atarahero.webp"
-            alt="Atara app showing active fast with metabolic phase ring"
-            width={480}
-            height={600}
-            className="w-full h-auto relative z-0 transition-transform duration-300 ease-out group-hover:scale-[1.02]"
-            style={{ objectFit: 'contain' }}
-            priority
-          />
-        </div>
-      </section>
-
-      {/* Ataraxia Origin */}
-      <section id="philosophy" className="py-24 px-6 overflow-hidden bg-white/[0.02]">
-        <div className="max-w-4xl mx-auto flex flex-col items-center text-center">
-          <div className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-black uppercase tracking-[0.2em] mb-8" style={{ border: '1px solid rgba(255,255,255,0.1)', backgroundColor: 'rgba(255,255,255,0.03)', color: 'rgba(255,255,255,0.5)' }}>
-            The Philosophy
-          </div>
-
-          <h2 className="text-4xl sm:text-5xl font-black tracking-tighter mb-8 leading-tight">
-            Inspired by <span style={{ color: '#22c55e' }}>Ataraxia</span>
-          </h2>
-
-          <div className="relative p-10 rounded-[3rem] overflow-hidden group" style={{ border: '1px solid rgba(255,255,255,0.08)', backgroundColor: 'rgba(255,255,255,0.02)' }}>
-            <div className="absolute top-0 right-0 w-64 h-64 bg-[#22c55e] opacity-[0.03] -mr-32 -mt-32" />
-            <div className="absolute bottom-0 left-0 w-64 h-64 bg-[#22c55e] opacity-[0.03] -ml-32 -mb-32" />
-
-            <p className="text-xl sm:text-2xl font-medium leading-relaxed italic mb-8" style={{ color: 'rgba(255,255,255,0.8)' }}>
-              &ldquo;Ataraxia is the Stoic state of unshakeable inner calm and freedom from emotional disturbance.&rdquo;
-            </p>
-
-            <p className="text-base sm:text-lg leading-relaxed max-w-2xl mx-auto" style={{ color: 'rgba(255,255,255,0.45)' }}>
-              Fasting is more than just a biological process. It is a mental practice in discipline and stillness.
-              We built Atara to help you navigate your metabolic shifting with the same clarity and peace that the ancient Stoics practiced.
-            </p>
-          </div>
-        </div>
-      </section>
+      {/* NEW: Social Proof Section */}
+      <LandingSocialProof />
 
       {/* Plans Mockup Section */}
       <section className="py-24 px-6 bg-[#0f0f0f]">
@@ -200,13 +145,29 @@ export default async function LandingPage() {
             <p className="text-lg text-white/50 leading-relaxed mb-8">
               Whether you are a beginner starting with Circadian rhythms or an expert following the Warrior protocol, Atara provides the perfect structure for your goals.
             </p>
-            <ul className="space-y-4">
-              {['Circadian 12:12', 'Starter 14:10', 'Gold Standard 16:8', 'Advanced 18:6', 'The Warrior 20:4'].map(p => (
-                <li key={p} className="flex items-center gap-3 font-bold text-white/80">
-                  <span className="w-1.5 h-1.5 rounded-full bg-primary" /> {p}
-                </li>
+            
+            {/* Protocol Grid */}
+            <div className="grid grid-cols-2 gap-3">
+              {[
+                { name: 'Circadian', hours: '12:12', desc: 'Beginner friendly' },
+                { name: 'Starter', hours: '14:10', desc: 'Easy start' },
+                { name: 'Gold Standard', hours: '16:8', desc: 'Most popular' },
+                { name: 'Advanced', hours: '18:6', desc: 'Experienced' },
+                { name: 'Warrior', hours: '20:4', desc: 'Expert level' },
+                { name: 'Custom', hours: 'Any', desc: 'Your own plan', highlight: true },
+              ].map((p) => (
+                <div 
+                  key={p.name}
+                  className={`p-4 rounded-xl transition-all hover:-translate-y-1 cursor-pointer ${p.highlight ? 'bg-primary/10 border border-primary/30' : 'bg-white/[0.03] border border-white/[0.07]'}`}
+                >
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="font-bold text-white text-sm">{p.name}</span>
+                    <span className={`text-xs font-black ${p.highlight ? 'text-primary' : 'text-white/40'}`}>{p.hours}</span>
+                  </div>
+                  <p className="text-xs text-white/40">{p.desc}</p>
+                </div>
               ))}
-            </ul>
+            </div>
           </div>
         </div>
       </section>
@@ -395,9 +356,13 @@ export default async function LandingPage() {
               className="rounded-2xl p-6 transition-all hover:border-primary/30 group cursor-default"
               style={{ border: '1px solid rgba(255,255,255,0.07)', backgroundColor: 'rgba(255,255,255,0.03)' }}
             >
-              <div className="text-3xl mb-4 transition-transform duration-300 group-hover:scale-110 group-hover:-translate-y-1">{f.icon}</div>
-              <h3 className="font-bold text-white mb-2 transition-colors duration-300 group-hover:text-primary">{f.title}</h3>
-              <p className="text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.45)' }}>{f.desc}</p>
+              <div className="flex items-start gap-4">
+                <div className="text-2xl shrink-0 transition-transform duration-300 group-hover:scale-110">{f.icon}</div>
+                <div>
+                  <h3 className="font-bold text-white mb-2 transition-colors duration-300 group-hover:text-primary">{f.title}</h3>
+                  <p className="text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.45)' }}>{f.desc}</p>
+                </div>
+              </div>
             </div>
           ))}
         </div>
@@ -420,7 +385,7 @@ export default async function LandingPage() {
             <h3 className="font-black text-lg mb-1 text-white/60 uppercase tracking-widest">Free</h3>
             <div className="text-5xl font-black text-white mb-1 mt-2">€0</div>
             <p className="text-sm text-white/40 mb-8">Free forever</p>
-            
+
             <ul className="space-y-3 mb-8 flex-1">
               {['Core fasting timer', '2 preset plans', 'Last 30 days history', 'Basic metabolic phases'].map(f => (
                 <li key={f} className="flex items-center gap-2 text-sm text-white/60">
@@ -442,7 +407,7 @@ export default async function LandingPage() {
               <span className="text-white/40 text-sm">/month</span>
             </div>
             <p className="text-sm text-white/40 mb-8 mt-1">Less than a coffee</p>
-            
+
             <ul className="space-y-3 mb-8 flex-1">
               {['Everything in Free', 'All 6+ fasting plans', 'Unlimited history', 'AI Metabolic Coach', 'Share cards', 'Ketosis prediction'].map(f => (
                 <li key={f} className="flex items-center gap-2 text-sm text-white/60">
@@ -469,7 +434,7 @@ export default async function LandingPage() {
               <span className="text-white/40 text-sm">/year</span>
             </div>
             <p className="text-sm text-primary mb-8 mt-1 font-bold">Only €2.42/mo (Save 51%)</p>
-            
+
             <ul className="space-y-3 mb-8 flex-1">
               {['Everything in Monthly', 'Priority support', 'Early access features', 'Lifetime offer eligible'].map(f => (
                 <li key={f} className="flex items-center gap-2 text-sm text-white/70">
