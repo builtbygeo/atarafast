@@ -5,7 +5,7 @@ AI-powered fasting timer, progress tracker and electrolyte insights.
 
 This is the **open-source core** (AGPL-3.0) of the AtaraFast app.
 
-The full Pro version with advanced AI features lives at → **[https://app.atarafast.com](https://app.atarafast.com)**
+The full Pro version with advanced AI features lives at → [https://app.atarafast.com](https://app.atarafast.com)
 
 ## ✨ What's included
 
@@ -33,3 +33,14 @@ cd atarafast
 npm install
 cp .env.example .env.local   # add your own keys
 npm run dev
+
+Open http://localhost:3000
+
+**Contributing**
+
+Feedback, bug reports and pull requests are very welcome!
+
+Feel free to open an issue or PR.
+
+**License**
+AGPL-3.0 (LICENSE) — If you run a modified version publicly, you must also open-source your changes.
