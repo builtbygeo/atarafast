@@ -94,8 +94,8 @@ export function RecentFastsChart({ history, activeFast, onAddClick, onSeeMoreCli
                     <div>
                         <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground opacity-60 mb-1">{t.average}</p>
                         <div className="flex items-baseline gap-1">
-                            <span className="text-3xl font-black text-foreground tracking-tighter">{avg.h}h</span>
-                            <span className="text-xl font-bold text-foreground/70 tracking-tight">{avg.m}m</span>
+                            <span className="text-3xl font-black text-foreground tracking-tighter">{avg.h}{t.h}</span>
+                            <span className="text-xl font-bold text-foreground/70 tracking-tight">{avg.m}{t.min}</span>
                         </div>
                     </div>
                     <p className="text-[8px] font-bold text-muted-foreground uppercase tracking-widest mb-1 opacity-70">
@@ -103,8 +103,8 @@ export function RecentFastsChart({ history, activeFast, onAddClick, onSeeMoreCli
                     </p>
                 </div>
 
-                {/* Main Last 7 Fasts Chart */}
-                <div className="h-44 flex items-end justify-between gap-2 relative px-1">
+                {/* Main Last 7 Days Chart (Rolling) */}
+                <div className="h-44 flex items-end justify-between gap-1 relative px-1">
                     {/* Horizontal Guide Lines */}
                     {[0, 0.25, 0.5, 0.75, 1].map((p, i) => (
                         <div
@@ -114,28 +114,32 @@ export function RecentFastsChart({ history, activeFast, onAddClick, onSeeMoreCli
                         />
                     ))}
 
-                    {last7Fasts.slice().reverse().map((fast, i) => {
-                        const duration = (new Date(fast.endTime!).getTime() - new Date(fast.startTime).getTime()) / (1000 * 3600)
-                        const height = Math.min(100, (duration / 24) * 100)
-                        const date = new Date(fast.startTime)
-                        const label = isSameDay(date, new Date()) ? "TODAY" : format(date, "M/d")
+                    {last7DaysData.map((day, i) => {
+                        const height = Math.min(100, (day.hours / 24) * 100)
+                        const isToday = i === 6
+                        const dayKey = format(day.date, "eee").toLowerCase() as keyof typeof t
+                        const dayName = isToday ? (t.todayLowercase || "today") : (t[dayKey] || format(day.date, "M/d"))
 
                         return (
-                            <div key={fast.id} className="flex-1 flex flex-col items-center gap-2 relative z-10 h-full justify-end">
+                            <div key={i} className="flex-1 flex flex-col items-center gap-2 relative z-10 h-full justify-end">
                                 <div className="relative w-full flex flex-col items-center justify-end h-full">
-                                    <div className="text-xs font-black text-foreground mb-1 tabular-nums transition-all">
-                                        {Math.round(duration)}h
-                                    </div>
+                                    {day.hours > 0 && (
+                                        <div className="text-[10px] font-black text-foreground mb-1 tabular-nums transition-all">
+                                            {Math.round(day.hours)}{t.h}
+                                        </div>
+                                    )}
                                     <motion.div
                                         initial={{ height: 0 }}
-                                        animate={{ height: `${Math.max(10, height)}%` }}
-                                        className="w-full max-w-[28px] rounded-t-full bg-border transition-all flex justify-center pt-2"
+                                        animate={{ height: `${Math.max(day.hours > 0 ? 10 : 0, height)}%` }}
+                                        className={`w-full max-w-[32px] rounded-t-xl transition-all flex justify-center pt-2 ${day.hours > 0 ? "bg-primary/20 border-t-2 border-primary/50" : "bg-border/5"}`}
                                     >
-                                        <div className={`w-2.5 h-2.5 rounded-full ${fast.completed ? "bg-primary shadow-[0_0_8px_var(--primary)]" : "bg-orange-500"}`} />
+                                        {day.hours > 0 && (
+                                            <div className={`w-2.5 h-2.5 rounded-full ${day.goalMet ? "bg-primary shadow-[0_0_8px_var(--primary)]" : "bg-orange-500"}`} />
+                                        )}
                                     </motion.div>
                                 </div>
-                                <span className={`text-[8px] font-black uppercase tracking-tighter ${label === "TODAY" ? "text-primary" : "text-muted-foreground/50"}`}>
-                                    {label}
+                                <span className={`text-[9px] font-black uppercase tracking-tighter ${isToday ? "text-primary" : "text-muted-foreground/50"}`}>
+                                    {dayName as string}
                                 </span>
                             </div>
                         )

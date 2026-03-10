@@ -3,7 +3,7 @@
 import { useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { Scale, Brain, Heart, Moon, XCircle, Play, Flame, Snowflake, Wind, Download, ArrowRight } from "lucide-react"
+import { Scale, Brain, Heart, Moon, XCircle, Play, Flame, Snowflake, Wind, Download, ArrowRight, Github, Star } from "lucide-react"
 
 const ACCENT = "#22c55e" // Using Atara's green instead of amber
 
@@ -57,6 +57,26 @@ export function LandingHero() {
             <span>✓ No credit card</span>
             <span>✓ Works offline</span>
             <span>✓ 100% private</span>
+          </div>
+          {/* GitHub Social Proof - Refined "Built in Public" style */}
+          <div className="flex justify-center lg:justify-start mt-10">
+            <a 
+              href="https://github.com/builtbygeo/atarafast" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="group flex items-center gap-4 p-4 rounded-2xl bg-white/[0.03] border border-white/[0.08] hover:bg-white/[0.05] hover:border-white/[0.15] transition-all duration-300"
+            >
+              <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-white/5 group-hover:bg-white/10 transition-colors">
+                <Github className="w-5 h-5 text-white/70 group-hover:text-white" />
+              </div>
+              <div className="flex flex-col pr-4">
+                <span className="text-[10px] uppercase tracking-widest text-white/40 font-bold mb-1">Built in Public</span>
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-bold text-white/80 group-hover:text-white transition-colors">Give us a Star</span>
+                  <Star className="w-3 h-3 text-yellow-500/50 group-hover:text-yellow-400 group-hover:fill-yellow-400 transition-all" />
+                </div>
+              </div>
+            </a>
           </div>
         </div>
 

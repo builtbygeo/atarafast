@@ -77,8 +77,8 @@ export const bg = {
   noHistory: "Все още няма история",
   startFirstFast: "Започнете вашия първи пост",
   average: "Средно",
-  goalMet: "Целта е постигната",
-  goalNotMet: "Целта не е постигната",
+  goalMet: "Успешно",
+  goalNotMet: "Неуспешно",
   seeMore: "Виж още",
   showingLast30Days: "Показване на последните 30 дни",
   unlockFullHistory: "Отключи пълната история",
@@ -153,7 +153,7 @@ export const bg = {
   off: "Изкл.",
   aiCoachLocked: "AI ТРЕНЬОРЪТ Е ЗАКЛЮЧЕН",
   aiCoachRequired: "Нужни са поне 5 завършени поста, за да започне анализът.",
-  aiCoachJournalNote: "AI вече анализира и вашия дневник за по-прецизни съвети.",
+  aiCoachJournalNote: "AI вече анализира и дневника ви за по-прецизни съвети.",
 
   // Plan View
   planTitle: "План",
@@ -207,7 +207,7 @@ export const bg = {
   skipForNow: "Пропусни за сега",
   postFastJournal: "Дневник след пост",
   logReflection: "Запиши рефлексия след поста",
-  
+
   // Settings - Account
   createFreeAccount: "Създай безплатен профил",
   alreadyHaveAccount: "Вече имате профил? Вход",
@@ -221,7 +221,7 @@ export const bg = {
   viewUpgradePlans: "Виж планове за ъпгрейд",
   manageSubscription: "Управление на абонамент",
   signOut: "Изход",
-  
+
   // Settings - Other
   retakeOnboarding: "Повтори onboarding",
   clearAllData: "Изтрий всички данни",
@@ -553,7 +553,7 @@ export const en: typeof bg = {
   viewUpgradePlans: "View Upgrade Plans",
   manageSubscription: "Manage Subscription",
   signOut: "Sign Out",
-  
+
   // Settings - Other
   retakeOnboarding: "Retake Onboarding Quiz",
   clearAllData: "Clear all data",

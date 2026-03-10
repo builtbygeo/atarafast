@@ -500,6 +500,7 @@ export default async function LandingPage() {
             Start Your Free Trial →
           </Link>
         </div>
+
       </section>
 
       {/* FAQ Section */}
