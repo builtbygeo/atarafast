@@ -118,7 +118,7 @@ export function HistoryView({ history, hasHiddenRecords, onHistoryChange }: Hist
             className="flex items-center gap-1.5 rounded-lg bg-secondary/50 border border-border/50 px-3 py-1.5 text-xs font-black text-muted-foreground transition-colors hover:text-foreground active:scale-95"
           >
             <Share2 className="h-3.5 w-3.5" />
-            {t.share}
+            {t.share || t.shareButton || "Share"}
           </button>
         </div>
       </div>

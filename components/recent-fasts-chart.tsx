@@ -21,26 +21,48 @@ export function RecentFastsChart({ history, activeFast, onAddClick, onSeeMoreCli
         const days = []
         const now = new Date()
 
+        // Create last 7 calendar days: oldest (left) -> newest/Today (right)
         for (let i = 6; i >= 0; i--) {
             const date = subDays(now, i)
 
-            // Find history records for this day
-            // A record can span multiple days, but we attribute it to the start day for this chart
-            const dayFasts = history.filter(f => isSameDay(new Date(f.startTime), date))
+            // Find history records that ended on this day or span this day
+            const dayFasts = history.filter(f => {
+                if (!f.endTime) return false
+                const start = new Date(f.startTime)
+                const end = new Date(f.endTime)
+                const dayStart = startOfDay(date)
+                const dayEnd = startOfDay(date)
+                dayEnd.setHours(23, 59, 59, 999)
+                
+                // Fast started on or before this day AND ended on or after this day
+                return start <= dayEnd && end >= dayStart
+            })
 
             let totalHours = 0
             let maxTarget = 0
 
             dayFasts.forEach(f => {
                 if (f.endTime) {
-                    const ms = new Date(f.endTime).getTime() - new Date(f.startTime).getTime()
-                    totalHours += ms / (1000 * 60 * 60)
+                    const start = new Date(f.startTime)
+                    const end = new Date(f.endTime)
+                    const dayStart = startOfDay(date)
+                    const dayEnd = new Date(date)
+                    dayEnd.setHours(23, 59, 59, 999)
+                    
+                    // Calculate hours within this day only
+                    const effectiveStart = start < dayStart ? dayStart : start
+                    const effectiveEnd = end > dayEnd ? dayEnd : end
+                    
+                    if (effectiveEnd > effectiveStart) {
+                        const ms = effectiveEnd.getTime() - effectiveStart.getTime()
+                        totalHours += ms / (1000 * 60 * 60)
+                    }
                     maxTarget = Math.max(maxTarget, f.targetHours)
                 }
             })
 
-            // Include active fast if it started on this day
-            if (activeFast && isSameDay(new Date(activeFast.startTime), date)) {
+            // Include active fast if it started on this day and hasn't ended
+            if (activeFast && isSameDay(new Date(activeFast.startTime), date) && !activeFast.endTime) {
                 const ms = now.getTime() - new Date(activeFast.startTime).getTime()
                 totalHours += ms / (1000 * 60 * 60)
                 maxTarget = Math.max(maxTarget, activeFast.targetHours)
@@ -48,10 +70,11 @@ export function RecentFastsChart({ history, activeFast, onAddClick, onSeeMoreCli
 
             days.push({
                 date,
-                label: i === 0 ? "Today" : format(date, "M/d"),
+                label: i === 0 ? "TODAY" : format(date, "M/d"),
                 hours: totalHours,
                 target: maxTarget || 16,
-                goalMet: totalHours >= (maxTarget || 16) && totalHours > 0
+                goalMet: totalHours >= (maxTarget || 16) && totalHours > 0,
+                isToday: i === 0
             })
         }
         return days
@@ -67,13 +90,6 @@ export function RecentFastsChart({ history, activeFast, onAddClick, onSeeMoreCli
             return acc + (new Date(f.endTime!).getTime() - new Date(f.startTime).getTime())
         }, 0)
         return totalMs / completedFasts.length / (1000 * 60 * 60)
-    }, [history])
-
-    const last7Fasts = useMemo(() => {
-        return [...history]
-            .filter(h => h.endTime)
-            .sort((a, b) => new Date(b.startTime).getTime() - new Date(a.startTime).getTime())
-            .slice(0, 7)
     }, [history])
 
     const formatDurationRaw = (hours: number) => {
@@ -119,22 +135,21 @@ export function RecentFastsChart({ history, activeFast, onAddClick, onSeeMoreCli
                         const isToday = i === 6
                         const dayKey = format(day.date, "eee").toLowerCase() as keyof typeof t
                         const dayName = isToday ? (t.todayLowercase || "today") : (t[dayKey] || format(day.date, "M/d"))
+                        const hasData = day.hours > 0
 
                         return (
                             <div key={i} className="flex-1 flex flex-col items-center gap-2 relative z-10 h-full justify-end">
                                 <div className="relative w-full flex flex-col items-center justify-end h-full">
-                                    {day.hours > 0 && (
-                                        <div className="text-[10px] font-black text-foreground mb-1 tabular-nums transition-all">
-                                            {Math.round(day.hours)}{t.h}
-                                        </div>
-                                    )}
+                                    <div className="text-[10px] font-black text-foreground mb-1 tabular-nums transition-all">
+                                        {hasData ? Math.round(day.hours) + (t.h || "h") : ""}
+                                    </div>
                                     <motion.div
                                         initial={{ height: 0 }}
-                                        animate={{ height: `${Math.max(day.hours > 0 ? 10 : 0, height)}%` }}
-                                        className={`w-full max-w-[32px] rounded-t-xl transition-all flex justify-center pt-2 ${day.hours > 0 ? "bg-primary/20 border-t-2 border-primary/50" : "bg-border/5"}`}
+                                        animate={{ height: `${hasData ? Math.max(10, height) : 0}%` }}
+                                        className={`w-full max-w-[32px] rounded-t-xl transition-all flex justify-center pt-2 ${hasData ? "bg-primary/20 border-t-2 border-primary/50" : "bg-border/5"}`}
                                     >
-                                        {day.hours > 0 && (
-                                            <div className={`w-2.5 h-2.5 rounded-full ${day.goalMet ? "bg-primary shadow-[0_0_8px_var(--primary)]" : "bg-orange-500"}`} />
+                                        {hasData && (
+                                            <div className={`w-2.5 h-2.5 rounded-full ${day.goalMet ? "bg-primary shadow-[0_0_8px_var(--primary)]" : "bg-orange-500/80"}`} />
                                         )}
                                     </motion.div>
                                 </div>

@@ -79,24 +79,6 @@ export function LandingHero() {
             </a>
           </div>
         </div>
-
-        {/* Right: Phone image - BIGGER */}
-        <div className="relative flex justify-center lg:justify-end">
-          <div className="relative">
-            {/* Phone frame glow */}
-            <div className="absolute inset-0 bg-primary/30 blur-[80px] rounded-[3rem] scale-90" />
-            <div className="relative w-[320px] sm:w-[400px] lg:w-[550px] rounded-[3rem] overflow-hidden border-4 border-white/10 shadow-2xl">
-              <Image
-                src="/atarahero.webp"
-                alt="Atara App Interface"
-                width={550}
-                height={1100}
-                className="w-full h-auto"
-                priority
-              />
-            </div>
-          </div>
-        </div>
       </div>
     </section>
   )
@@ -111,9 +93,9 @@ const phases = [
 
 export function LandingScience() {
   return (
-    <section id="science" className="py-20 px-6 overflow-hidden">
-      <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-16">
+    <section id="science" className="py-20 px-6">
+      <div className="max-w-4xl mx-auto">
+        <div className="text-center mb-12">
           <div className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-black uppercase tracking-[0.2em] mb-6" style={{ backgroundColor: "rgba(34,197,94,0.1)", border: "1px solid rgba(34,197,94,0.2)", color: ACCENT }}>
             The Science
           </div>
@@ -126,56 +108,39 @@ export function LandingScience() {
           </p>
         </div>
 
-        {/* Horizontal Timeline */}
-        <div className="relative">
-          {/* Timeline line */}
-          <div className="absolute top-8 left-0 right-0 h-0.5 bg-white/10 hidden md:block" />
-          
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            {phases.map((p, i) => (
-              <div key={p.hour} className="relative flex flex-col items-center text-center">
-                {/* Timeline dot */}
-                <div 
-                  className="w-16 h-16 rounded-full flex items-center justify-center mb-4 relative z-10 transition-all duration-300"
-                  style={{
-                    backgroundColor: p.active ? ACCENT : "rgba(255,255,255,0.1)",
-                    border: `2px solid ${p.active ? ACCENT : "rgba(255,255,255,0.2)"}`,
-                    boxShadow: p.active ? `0 0 20px ${ACCENT}40` : "none"
-                  }}
-                >
-                  <span className="text-xs font-black" style={{ color: p.active ? "#000" : "rgba(255,255,255,0.5)" }}>
-                    {p.hour}
-                  </span>
+        {/* Phase grid */}
+        <div className="phase-grid">
+          {phases.map((p) => (
+            <div
+              key={p.hour}
+              className="rounded-2xl p-6 transition-all duration-300 hover:-translate-y-1 cursor-default"
+              style={{
+                backgroundColor: p.active ? "rgba(34,197,94,0.06)" : "rgba(255,255,255,0.03)",
+                border: `1px solid ${p.active ? "rgba(34,197,94,0.35)" : "rgba(255,255,255,0.07)"}`,
+              }}
+            >
+              {p.active && (
+                <div className="text-[10px] font-bold uppercase tracking-widest mb-3" style={{ color: ACCENT }}>
+                  Goal zone
                 </div>
-
-                {/* Card */}
-                <div
-                  className="rounded-2xl p-5 w-full transition-all duration-300 hover:-translate-y-1"
-                  style={{
-                    backgroundColor: p.active ? "rgba(34,197,94,0.08)" : "rgba(255,255,255,0.03)",
-                    border: `1px solid ${p.active ? "rgba(34,197,94,0.35)" : "rgba(255,255,255,0.07)"}`,
-                  }}
-                >
-                  {p.active && (
-                    <div className="text-[10px] font-bold uppercase tracking-widest mb-2" style={{ color: ACCENT }}>
-                      Goal zone
-                    </div>
-                  )}
-                  <div className="text-base font-bold text-white mb-2">{p.name}</div>
-                  <div className="text-xs text-white/40 leading-relaxed">{p.desc}</div>
-                </div>
+              )}
+              <div className="text-xs font-semibold uppercase tracking-widest mb-2" style={{ color: p.active ? ACCENT : "rgba(255,255,255,0.4)" }}>
+                {p.hour}
               </div>
-            ))}
-          </div>
+              <div className="text-lg font-bold text-white mb-2">{p.name}</div>
+              <div className="text-sm text-white/40 leading-relaxed">{p.desc}</div>
+            </div>
+          ))}
         </div>
 
-        <p className="text-center text-xs text-white/30 mt-12">
+        <p className="text-center text-xs text-white/30 mt-6">
           A 16:8 window reaches both ketosis and autophagy — every day, no supplements.
         </p>
       </div>
     </section>
   )
 }
+
 const audiences = [
   { id: "weight", icon: Scale, label: "Lose Weight", hook: "No diet. No calorie counting.", headline: "Lose weight without changing what you eat.", body: "You don't have to eat less. You have to eat in a smaller window. Same meals, same portions — but when your body isn't processing food for 14–16 hours, it burns stored fat instead.", stat: "3–8% body weight loss in 3–24 weeks" },
   { id: "clarity", icon: Brain, label: "Mental Clarity", hook: "Fewer meals = fewer decisions.", headline: "One less thing to think about. Every day.", body: "Every meal is a decision — what, when, how much. Fasting collapses that to a window. No breakfast debate, no 11am snack guilt.", stat: "Decision fatigue drops. Ketone-fueled focus follows." },
