@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next'
-import { Inter, JetBrains_Mono, DM_Sans, Syne } from 'next/font/google'
+import { Inter, JetBrains_Mono } from 'next/font/google'
 import { ThemeProvider } from 'next-themes'
 import { ClerkProvider } from '@clerk/nextjs'
 import { LanguageProvider } from '@/lib/language-context'
@@ -10,8 +10,6 @@ import { headers } from 'next/headers'
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
 const jetbrainsMono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-jetbrains" })
-const dmSans = DM_Sans({ subsets: ["latin"], variable: "--font-dm" })
-const syne = Syne({ subsets: ["latin"], variable: "--font-syne" })
 
 export const metadata: Metadata = {
   title: 'Atara — The Beautiful Fasting Timer',
@@ -56,7 +54,7 @@ export default async function RootLayout({
         <link rel="icon" href="/favicon.png" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
       </head>
-      <body className={`${inter.variable} ${jetbrainsMono.variable} ${dmSans.variable} ${syne.variable} font-sans antialiased text-white bg-[#0f0f0f]`}>
+      <body className={`${inter.variable} ${jetbrainsMono.variable} font-sans antialiased text-white bg-[#0f0f0f]`}>
         <ClerkProvider 
           domain={!isDev ? 'atarafast.com' : undefined}
         >
