@@ -433,12 +433,16 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
           {lastFastInfo && !activeFast && (
             <button
               onClick={handleQuickStart}
-              className="w-full flex items-center justify-center gap-4 rounded-[2rem] bg-primary p-6 font-black text-primary-foreground shadow-2xl shadow-primary/40 active:scale-[0.97] transition-all text-xl"
+              className="w-full flex items-center justify-center gap-3 sm:gap-4 rounded-[2rem] bg-primary p-5 sm:p-7 font-black text-primary-foreground shadow-2xl shadow-primary/40 active:scale-[0.97] transition-all"
             >
-              <Clock className="h-7 w-7" />
-              <div className="text-left">
-                <span className="block text-[10px] uppercase tracking-[0.2em] opacity-70 mb-0.5">{t.quickStart}</span>
-                <span className="block font-black">{getPresetById(lastFastInfo.presetId)?.name || lastFastInfo.presetId}</span>
+              <Clock className="h-6 w-6 sm:h-8 sm:w-8 shrink-0" />
+              <div className="flex items-center gap-2 sm:gap-3">
+                <span className="text-[10px] sm:text-xs uppercase tracking-[0.2em] opacity-80 whitespace-nowrap pt-0.5">
+                  {t.quickStart}
+                </span>
+                <span className="text-xl sm:text-3xl font-black tabular-nums tracking-tighter">
+                  {getPresetById(lastFastInfo.presetId)?.name || lastFastInfo.presetId}
+                </span>
               </div>
             </button>
           )}

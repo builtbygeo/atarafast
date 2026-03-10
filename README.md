@@ -1,9 +1,9 @@
-# AtaraFast – Open Source Core
+# Atara — Elite Fasting Protocol
 
 **Master Your Metabolism**  
-AI-powered fasting timer, progress tracker and electrolyte insights.
+AI-powered fasting timer, progress tracker, and biological insights.
 
-This is the **open-source core** (AGPL-3.0) of the AtaraFast app.
+This is the private codebase for the Atara application.
 
 The full Pro version with advanced AI features lives at → [https://app.atarafast.com](https://app.atarafast.com)
 
@@ -25,11 +25,11 @@ The full Pro version with advanced AI features lives at → [https://app.atarafa
 - Premium electrolyte recommendations
 - Stripe subscriptions & user accounts
 
-## How to self-host
+## Setup
 
 ```bash
-git clone https://github.com/builtbygeo/atarafast.git
-cd atarafast
+git clone https://github.com/builtbygeo/Atara.git
+cd Atara
 npm install
 cp .env.example .env.local   # add your own keys
 npm run dev
@@ -43,4 +43,4 @@ Feedback, bug reports and pull requests are very welcome!
 Feel free to open an issue or PR.
 
 **License**
-AGPL-3.0 (LICENSE) — If you run a modified version publicly, you must also open-source your changes.
+Proprietary — All rights reserved.

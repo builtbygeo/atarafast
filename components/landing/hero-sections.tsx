@@ -61,7 +61,7 @@ export function LandingHero() {
           {/* GitHub Social Proof - Refined "Built in Public" style */}
           <div className="flex justify-center lg:justify-start mt-10">
             <a 
-              href="https://github.com/builtbygeo/atarafast" 
+              href="https://github.com/builtbygeo/Atara" 
               target="_blank" 
               rel="noopener noreferrer"
               className="group flex items-center gap-4 p-4 rounded-2xl bg-white/[0.03] border border-white/[0.08] hover:bg-white/[0.05] hover:border-white/[0.15] transition-all duration-300"

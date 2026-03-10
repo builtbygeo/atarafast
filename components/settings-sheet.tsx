@@ -492,7 +492,7 @@ export function SettingsSheet({ open, onClose, onDataCleared, onOpenUpgrade }: S
             
             {/* GitHub Star Button */}
             <a
-              href="https://github.com/builtbygeo/atarafast"
+              href="https://github.com/builtbygeo/Atara"
               target="_blank"
               rel="noopener noreferrer"
               className="group flex items-center justify-center gap-2 rounded-xl px-4 py-3 bg-gradient-to-r from-gray-800 to-gray-900 hover:from-gray-700 hover:to-gray-800 text-white font-semibold text-xs transition-all duration-300 hover:scale-[1.02]"

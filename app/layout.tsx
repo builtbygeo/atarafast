@@ -8,8 +8,16 @@ import './globals.css'
 
 import { headers } from 'next/headers'
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
-const jetbrainsMono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-jetbrains" })
+const inter = Inter({ 
+  subsets: ["latin"], 
+  variable: "--font-inter",
+  display: 'swap',
+})
+const jetbrainsMono = JetBrains_Mono({ 
+  subsets: ["latin"], 
+  variable: "--font-jetbrains",
+  display: 'swap',
+})
 
 export const metadata: Metadata = {
   title: 'Atara — The Beautiful Fasting Timer',
