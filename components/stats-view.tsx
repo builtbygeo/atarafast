@@ -377,7 +377,7 @@ export function StatsView({ history, settings, onOpenSettings, onOpenUpgrade }: 
             <div>
               <h3 className="text-[17px] font-bold text-foreground tracking-tight mb-1">{t?.weeklyActivity || "Weekly Activity"}</h3>
               <p className="text-[13px] font-medium text-muted-foreground">
-                Active Time: <span className="text-foreground/90">{stats.avgDuration} hrs/avg</span>
+                {t?.avgDuration || "Active Time"}: <span className="text-foreground/90">{stats.avgDuration} {t?.hours || "hrs"}/avg</span>
               </p>
             </div>
           </div>
@@ -520,7 +520,7 @@ export function StatsView({ history, settings, onOpenSettings, onOpenUpgrade }: 
             {quota.canUse && (
               <p className="text-[9px] text-muted-foreground font-bold tracking-widest uppercase mt-4 text-center opacity-60 relative z-10">
                 {isPremium
-                  ? `Daily Credit Available`
+                  ? (t?.dailyCredit || "Daily Credit Available")
                   : "1 Monthly Credit Remaining"}
               </p>
             )}

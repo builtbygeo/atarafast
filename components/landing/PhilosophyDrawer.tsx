@@ -30,7 +30,7 @@ export function PhilosophyDrawer() {
               className="fixed inset-0 z-[100] bg-black/80 backdrop-blur-sm"
               onClick={() => setIsOpen(false)}
             />
-
+            
             {/* Drawer Panel - Right side */}
             <motion.div
               initial={{ x: "100%" }}
@@ -67,7 +67,7 @@ export function PhilosophyDrawer() {
                   >
                     From Ataraxia
                   </div>
-
+                  
                   <h3 className="text-3xl sm:text-4xl font-black tracking-tighter mb-6 leading-tight">
                     Inspired by <span style={{ color: '#22c55e' }}>Ataraxia</span>
                   </h3>

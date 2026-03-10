@@ -255,8 +255,8 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
               <TriangularProgress
                 elapsedHours={elapsedMs / 3600000}
                 targetHours={activeFast.targetHours}
-                size={340}
-                strokeWidth={28}
+                size={380}
+                strokeWidth={32}
               >
                 <div className="flex flex-col items-center justify-center -mt-4">
                   <Logo className="w-24 text-foreground mb-4 opacity-70" />
@@ -342,7 +342,7 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
               : "bg-primary/20 border-primary/50 text-primary uppercase shadow-[0_0_30px_-5px_rgba(34,197,94,0.4)] hover:bg-primary/30"
               }`}
           >
-            {confirmEnd ? t.confirmEndFast : "COMPLETE FAST"}
+            {confirmEnd ? t.confirmEndFast : (t.completeFast || "COMPLETE FAST")}
             {confirmEnd && <span className="block text-[10px] mt-1 opacity-70 normal-case tracking-normal font-medium">{t.tapToConfirm}</span>}
           </button>
           {/* Share */}

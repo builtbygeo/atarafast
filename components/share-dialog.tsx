@@ -271,7 +271,7 @@ export function ShareDialog(props: ShareDialogProps) {
                             className="flex-1 flex items-center justify-center gap-2 h-12 rounded-[1.25rem] bg-secondary/80 border border-white/5 text-foreground font-black text-[11px] tracking-[0.2em] active:scale-95 transition-all disabled:opacity-50"
                         >
                             <Download className="h-3.5 w-3.5" />
-                            SAVE
+                            {t.saveButton || "SAVE"}
                         </button>
                         
                         {typeof navigator !== "undefined" && "share" in navigator && (
@@ -281,7 +281,7 @@ export function ShareDialog(props: ShareDialogProps) {
                                 className="flex-[1.5] flex items-center justify-center gap-2 h-12 rounded-[1.25rem] bg-primary text-primary-foreground font-black text-[11px] tracking-[0.2em] active:scale-95 transition-all shadow-2xl shadow-primary/30 disabled:opacity-50"
                             >
                                 {loading ? <div className="h-4 w-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : <Share2 className="h-3.5 w-3.5" />}
-                                SHARE
+                                {t.shareButton || "SHARE"}
                             </button>
                         )}
                         

@@ -73,17 +73,14 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
                             </p>
                         </div>
                         <div className="w-full space-y-2.5">
-                            {['Never tried it before', 'Just starting out', 'I’ve tried it a few times', "I fast regularly"].map((opt, i) => (
-                                <motion.button
+                            {['Never tried it before', 'Just starting out', 'Ive tried it a few times', "I fast regularly"].map((opt, i) => (
+                                <button
                                     key={opt}
-                                    initial={{ opacity: 0, x: -10 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    transition={{ delay: i * 0.05, duration: 0.2 }}
                                     onClick={() => setExperience(opt)}
                                     className={`w-full p-4 rounded-[1.25rem] border text-left font-bold transition-all duration-200 ${experience === opt ? 'bg-primary/20 border-primary shadow-[0_0_20px_rgba(34,197,94,0.2)] text-primary' : 'bg-white/[0.03] border-white/5 text-white/50 hover:bg-white/[0.06] hover:text-white'}`}
                                 >
                                     {opt}
-                                </motion.button>
+                                </button>
                             ))}
                         </div>
                         <motion.button
@@ -112,17 +109,14 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
                             <p className="text-white/40 text-base sm:text-lg font-medium tracking-wide">Why do you fast?</p>
                         </div>
                         <div className="w-full space-y-2.5">
-                            {['Better sleep', 'Weight loss', 'Mental clarity', 'Discipline', 'Longevity', 'Digestion', 'General health & longevity'].map((opt, i) => (
-                                <motion.button
+                            {['Better sleep', 'Weight loss', 'Mental clarity', 'Discipline', 'Longevity', 'Digestion', 'General health'].map((opt) => (
+                                <button
                                     key={opt}
-                                    initial={{ opacity: 0, x: -10 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    transition={{ delay: i * 0.05, duration: 0.2 }}
                                     onClick={() => setGoal(opt)}
                                     className={`w-full p-4 rounded-[1.25rem] border text-left font-bold tracking-wide transition-all duration-200 ${goal === opt ? 'bg-primary/20 border-primary shadow-[0_0_20px_rgba(34,197,94,0.2)] text-primary' : 'bg-white/[0.03] border-white/5 text-white/50 hover:bg-white/[0.06] hover:text-white'}`}
                                 >
                                     {opt}
-                                </motion.button>
+                                </button>
                             ))}
                         </div>
                         <motion.button
