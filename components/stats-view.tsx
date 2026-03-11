@@ -127,7 +127,7 @@ export function StatsView({ history, settings, onOpenSettings, onOpenUpgrade }: 
     validHistory.forEach((r) => {
       const start = new Date(r.startTime).getTime()
       const end = r.endTime ? new Date(r.endTime).getTime() : null
-      
+
       if (end && !isNaN(end)) {
         totalMs += end - start
       }
@@ -264,7 +264,7 @@ export function StatsView({ history, settings, onOpenSettings, onOpenUpgrade }: 
         if (!r || !r.startTime || !r.endTime) return
         const rStart = new Date(r.startTime).getTime()
         const rEnd = new Date(r.endTime).getTime()
-        
+
         if (isNaN(rStart) || isNaN(rEnd)) return
 
         // Check if the fast overlaps with this day
@@ -359,7 +359,7 @@ export function StatsView({ history, settings, onOpenSettings, onOpenUpgrade }: 
               </div>
               <h3 className="text-lg font-black tracking-tighter mb-2">Unlock Dashboard</h3>
               <p className="text-xs text-muted-foreground mb-6 font-medium leading-relaxed">
-                Get full access to detailed metabolic trends and daily AI performance coaching with Atara+.
+                Get full access to detailed metabolic trends and daily AI performance coaching with Atara Pro.
               </p>
               <button
                 onClick={onOpenUpgrade}
@@ -392,8 +392,8 @@ export function StatsView({ history, settings, onOpenSettings, onOpenUpgrade }: 
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" vertical={true} horizontal={true} stroke="currentColor" className="opacity-[0.06]" />
-395:                 <XAxis dataKey="label" tick={{ fontSize: 11, fill: "currentColor" }} axisLine={false} tickLine={false} tickMargin={12} className="opacity-50" />
-396:                 <YAxis tickCount={5} tick={{ fontSize: 11, fill: "currentColor" }} axisLine={false} tickLine={false} tickFormatter={(v) => `${v}h`} tickMargin={12} className="opacity-50" />
+                395:                 <XAxis dataKey="label" tick={{ fontSize: 11, fill: "currentColor" }} axisLine={false} tickLine={false} tickMargin={12} className="opacity-50" />
+                396:                 <YAxis tickCount={5} tick={{ fontSize: 11, fill: "currentColor" }} axisLine={false} tickLine={false} tickFormatter={(v) => `${v}h`} tickMargin={12} className="opacity-50" />
                 <Tooltip content={<ChartTooltip />} cursor={{ stroke: "currentColor", strokeWidth: 1, strokeDasharray: "4 4", opacity: 0.1 }} />
                 <Area
                   type="monotone"

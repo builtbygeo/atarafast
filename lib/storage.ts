@@ -318,7 +318,7 @@ export function checkAiQuota(isPremium: boolean): { canUse: boolean; reason?: st
         last.getFullYear() === now.getFullYear()
 
       if (isToday) {
-        return { canUse: false, reason: "Daily limit reached (Atara+)", remaining: 0 }
+        return { canUse: false, reason: "Daily limit reached (Atara Pro)", remaining: 0 }
       }
     }
 

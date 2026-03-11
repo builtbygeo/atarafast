@@ -53,7 +53,7 @@ function UpgradeCard({ featureName }: { featureName?: string }) {
                 <Lock className="w-5 h-5" style={{ color: '#22c55e' }} />
             </div>
             <h3 className="font-bold text-white text-sm mb-1">
-                {featureName ? `${featureName} requires Atara+` : 'Atara+ Feature'}
+                {featureName ? `${featureName} requires Atara Pro` : 'Atara Pro Feature'}
             </h3>
             <p className="text-xs mb-4" style={{ color: 'rgba(255,255,255,0.5)' }}>
                 Start your 14-day free trial to unlock this and all premium features.
