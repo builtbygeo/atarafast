@@ -24,8 +24,8 @@
 
 ## Infrastructure Roadmap (Future Phases)
 1. **Cloud Sync (PostgreSQL/Supabase)**: Replace local storage with a database backend for cross-device persistence.
-2. **Monetization (Stripe)**: Finalize subscription management and advanced metabolic coaching credits.
+2. **Monetization (Stripe)**: Subscription management and advanced metabolic coaching credits (Production integration completed).
 
 ## Next Steps
-- Finalize Stripe production environment variables.
 - Implement persistent AI reports in Supabase.
+- Begin Cloud Sync (PostgreSQL/Supabase) to replace local storage for cross-device persistence.
