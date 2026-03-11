@@ -33,6 +33,7 @@ export async function POST(req: NextRequest) {
         mode: isLifetime ? 'payment' : 'subscription',
         payment_method_types: ['card'],
         line_items: [{ price: requestedPriceId, quantity: 1 }],
+        allow_promotion_codes: true,
         ...(isLifetime ? {} : {
             subscription_data: {
                 metadata: { clerkUserId: userId },
