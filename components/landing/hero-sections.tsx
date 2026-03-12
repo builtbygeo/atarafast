@@ -39,6 +39,7 @@ export function LandingHero() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-8">
             <Link
               href="/app"
+              prefetch={false}
               className="inline-flex items-center gap-2 px-8 py-4 rounded-xl font-bold text-base transition-all hover:opacity-90"
               style={{ backgroundColor: ACCENT, color: "#000" }}
             >
@@ -297,6 +298,7 @@ export function LandingWhyTrack() {
             </p>
             <Link
               href="/app"
+              prefetch={false}
               className="inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold text-sm transition-all hover:opacity-90"
               style={{ backgroundColor: ACCENT, color: "#000" }}
             >
