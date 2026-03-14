@@ -17,10 +17,10 @@ export const WeekStatusStrip = memo(function WeekStatusStrip({ history, activeFa
         // Last 30 days including today (like Zero)
         for (let i = 6; i >= 0; i--) {
             const date = subDays(now, i)
-            const dayFasts = history.filter(f => isSameDay(new Date(f.startTime), date))
+            const dayFasts = history.filter(f => f.endTime && isSameDay(new Date(f.endTime), date))
 
             const isToday = i === 0
-            const isActive = activeFast && isSameDay(new Date(activeFast.startTime), date)
+            const isActive = activeFast && isToday
 
             let totalHours = 0
             let hasCompleted = false

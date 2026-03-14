@@ -230,8 +230,8 @@ export function StatsView({ history, settings, onOpenSettings, onOpenUpgrade }: 
 
         if (isNaN(rStart) || isNaN(rEnd)) return
 
-        // Only count if it started on this day
-        if (isSameDay(new Date(rStart), new Date(dayStart))) {
+        // Only count if it ended on this day
+        if (isSameDay(new Date(rEnd), new Date(dayStart))) {
           dayHours += (rEnd - rStart) / (1000 * 60 * 60)
         }
       })

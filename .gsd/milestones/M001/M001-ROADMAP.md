@@ -13,7 +13,7 @@
 
 ## Slices
 
-- [ ] **S01: Fast Attribution Fixes** `risk:medium` `depends:[]`
+- [x] **S01: Fast Attribution Fixes** `risk:medium` `depends:[]`
   > After this: Fasts spanning midnight (e.g., 20:00 to 12:00) will accurately show 16 hours for the end day instead of splitting the time, fixing the "failed" markers.
 
 - [ ] **S02: Notification UX (Anti-Spam)** `risk:high` `depends:[]`

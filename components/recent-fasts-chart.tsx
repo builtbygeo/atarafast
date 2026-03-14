@@ -24,18 +24,12 @@ export function RecentFastsChart({ history, activeFast, onAddClick, onSeeMoreCli
         // Create last 7 calendar days: oldest (left) -> newest/Today (right)
         for (let i = 6; i >= 0; i--) {
             const date = subDays(now, i)
+            const isToday = i === 0
 
-            // Find history records that ended on this day or span this day
+            // Find history records that ended on this day
             const dayFasts = history.filter(f => {
                 if (!f.endTime) return false
-                const start = new Date(f.startTime)
-                const end = new Date(f.endTime)
-                const dayStart = startOfDay(date)
-                const dayEnd = startOfDay(date)
-                dayEnd.setHours(23, 59, 59, 999)
-                
-                // Fast started on or before this day AND ended on or after this day
-                return start <= dayEnd && end >= dayStart
+                return isSameDay(new Date(f.endTime), date)
             })
 
             let totalHours = 0
@@ -43,26 +37,14 @@ export function RecentFastsChart({ history, activeFast, onAddClick, onSeeMoreCli
 
             dayFasts.forEach(f => {
                 if (f.endTime) {
-                    const start = new Date(f.startTime)
-                    const end = new Date(f.endTime)
-                    const dayStart = startOfDay(date)
-                    const dayEnd = new Date(date)
-                    dayEnd.setHours(23, 59, 59, 999)
-                    
-                    // Calculate hours within this day only
-                    const effectiveStart = start < dayStart ? dayStart : start
-                    const effectiveEnd = end > dayEnd ? dayEnd : end
-                    
-                    if (effectiveEnd > effectiveStart) {
-                        const ms = effectiveEnd.getTime() - effectiveStart.getTime()
-                        totalHours += ms / (1000 * 60 * 60)
-                    }
+                    const ms = new Date(f.endTime).getTime() - new Date(f.startTime).getTime()
+                    totalHours += ms / (1000 * 60 * 60)
                     maxTarget = Math.max(maxTarget, f.targetHours)
                 }
             })
 
-            // Include active fast if it started on this day and hasn't ended
-            if (activeFast && isSameDay(new Date(activeFast.startTime), date) && !activeFast.endTime) {
+            // Include active fast if it's today
+            if (activeFast && isToday && !activeFast.endTime) {
                 const ms = now.getTime() - new Date(activeFast.startTime).getTime()
                 totalHours += ms / (1000 * 60 * 60)
                 maxTarget = Math.max(maxTarget, activeFast.targetHours)
@@ -70,11 +52,11 @@ export function RecentFastsChart({ history, activeFast, onAddClick, onSeeMoreCli
 
             days.push({
                 date,
-                label: i === 0 ? "TODAY" : format(date, "M/d"),
+                label: isToday ? "TODAY" : format(date, "M/d"),
                 hours: totalHours,
                 target: maxTarget || 16,
                 goalMet: totalHours >= (maxTarget || 16) && totalHours > 0,
-                isToday: i === 0
+                isToday
             })
         }
         return days

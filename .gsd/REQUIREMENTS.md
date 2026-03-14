@@ -3,12 +3,17 @@
 **Project:** Atara (Open Source Transition)
 **Scope:** Tracker, notifications, AI analysis, premium feature gating.
 
+## Validated
+
+| ID | Title | Class | Status | Owner | Source |
+|---|---|---|---|---|---|
+| **R001** | Fix: Fasting Duration Calculation | Core | Validated | M001/S01 | User |
+
 ## Active
 
 | ID | Title | Class | Status | Owner | Source |
 |---|---|---|---|---|---|
-| **R001** | Fix: Fasting Duration Calculation | Core | Active | M001/S01 | User |
-| **R002** | Fix: Notification Logic | Core | Active | M001/S01 | User |
+| **R002** | Fix: Notification Logic | Core | Active | M001/S02 | User |
 | **R003** | Integration: Free AI Model | Value-Add | Active | M001/S02 | User |
 | **R004** | Architecture: Feature Flags (Stripe) | Platform | Active | M001/S02 | User |
 | **R005** | Security: Open Source Preparation | Platform | Active | M001/S02 | User |

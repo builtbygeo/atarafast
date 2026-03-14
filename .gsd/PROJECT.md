@@ -6,7 +6,7 @@
 
 ## Overview
 
-The goal is to build authority as a developer by open-sourcing the core application while maintaining a path for future premium features. The immediate priorities are fixing critical bugs (fasting duration calculation across days and delayed local notifications) and swapping the paid AI models for free alternatives via OpenRouter.
+The goal is to build authority as a developer by open-sourcing the core application while maintaining a path for future premium features. The immediate priorities are fixing critical bugs (fasting duration calculation across days is fixed, working on delayed local notifications next) and swapping the paid AI models for free alternatives via OpenRouter.
 
 ## Milestones
 
