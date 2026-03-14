@@ -8,6 +8,7 @@ import { useLang } from "@/lib/language-context"
 import { useNotifications } from "@/hooks/use-notifications"
 import { ENABLE_PREMIUM } from "@/lib/features"
 import { useUser, SignOutButton } from "@clerk/nextjs"
+import { useSubscription, startCheckout } from "@/lib/subscription"
 import Link from "next/link"
 
 interface SettingsSheetProps {
