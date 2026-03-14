@@ -1,52 +1,31 @@
-# Capability Contract
-
-**Project:** Atara (Open Source Transition)
-**Scope:** Tracker, notifications, AI analysis, premium feature gating.
-
-## Validated
-
-| ID | Title | Class | Status | Owner | Source |
-|---|---|---|---|---|---|
-| **R001** | Fix: Fasting Duration Calculation | Core | Validated | M001/S01 | User |
+# Requirements: Atara Open Source Maturity
 
 ## Active
+| ID | Title | Status | Owner | Source |
+|---|---|---|---|---|
+| **R007** | Democratize AI & Dashboard | Active | M002/S01 | User |
+| **R008** | Weight Tracking Integration | Active | M002/S02 | User |
+| **R009** | Weight Visualization | Active | M002/S03 | User |
 
-| ID | Title | Class | Status | Owner | Source |
-|---|---|---|---|---|---|
-| **R002** | Fix: Notification Logic | Core | Active | M001/S02 | User |
-| **R003** | Integration: Free AI Model | Value-Add | Active | M001/S03 | User |
-| **R004** | Architecture: Feature Flags (Stripe) | Platform | Active | M001/S03 | User |
-| **R005** | Security: Open Source Preparation | Platform | Active | M001/S03 | User |
+## Validated
+| ID | Title | Status | Owner | Source |
+|---|---|---|---|---|
+| **R001** | Fix: Fasting Duration | Validated | M001/S01 | User |
+| **R002** | Fix: Notification Logic | Validated | M001/S02 | User |
+| **R003** | Integration: Free AI Model | Validated | M001/S03 | User |
+| **R004** | Architecture: Feature Flags | Validated | M001/S03 | User |
+| **R005** | Security: Open Source Preparation | Validated | M001/S03 | User |
 
 ## Deferred
-
-| ID | Title | Class | Status | Owner | Source |
-|---|---|---|---|---|---|
-| **R006** | Server-side Push Notifications (FCM) | Value-Add | Deferred | N/A | Inferred |
+| ID | Title | Status | Owner | Source |
+|---|---|---|---|---|
+| **R006** | Server-side Push | Deferred | N/A | Inferred |
 
 ## Out of Scope
-
-- Native iOS/Android apps (currently PWA only)
-- Paid user management (hidden behind feature flags)
+- Native iOS/Android Apps
+- Cloud Sync (currently limited by privacy-first local storage model)
 
 ## Traceability
-
-### R001: Fix Fasting Duration Calculation
-- **Description:** Fasting times that cross midnight are currently split into two calendar days, causing incorrect average calculation and false "failed" markers.
-- **Validation:** Total fast duration is assigned to the day the fast ends. Average is correctly calculated over the last 7 completed fasts.
-
-### R002: Fix Notification Logic
-- **Description:** Delayed execution of local notifications when the PWA is inactive. Prevent old/stale notifications from firing upon app resume.
-- **Validation:** Notifications do not spam the user when the app is reopened hours after the fast ended.
-
-### R003: Integration Free AI Model
-- **Description:** Replace Gemini flash models with `nvidia/nemotron-3-super-120b-a12b:free` and backup `openrouter/free` to reduce operational costs.
-- **Validation:** AI analysis returns results without requiring paid credits.
-
-### R004: Architecture Feature Flags
-- **Description:** Implement a generic `NEXT_PUBLIC_ENABLE_PREMIUM` (or similar) flag to hide Stripe UI components and payment flows in the open-source version.
-- **Validation:** When `false`, Stripe buttons are hidden or disabled with a "Coming Soon" indicator.
-
-### R005: Security Open Source Preparation
-- **Description:** Ensure no secrets or API keys are hardcoded. Provide a `.env.example` file.
-- **Validation:** The repository is clean of secrets and can be safely cloned and run locally.
+- **R007:** Replaces PremiumGate logic with usage quotas (1/day) and entry requirements (5 fasts).
+- **R008:** Adds optional `weight` property to `FastingRecord` with +/- 1kg UI controls.
+- **R009:** Visualizes weight over time in the Info tab using Recharts.
