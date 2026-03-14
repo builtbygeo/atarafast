@@ -2,7 +2,7 @@
 
 **Name:** Atara (Open Source Transition)
 **Vision:** A minimalist, functional intermittent fasting tracker. Currently a PWA that tracks fasts, provides stats, and offers AI analysis.
-**Status:** In active development. Transitioning from a partially closed-source product to a fully open-source core with feature-flagged premium capabilities (Stripe, advanced AI).
+**Status:** Stabilization and open-source transition complete. Core application is now stable, free-tier AI integrated, and premium features gated. Ready for next phase of growth or community adoption.
 
 ## Overview
 
