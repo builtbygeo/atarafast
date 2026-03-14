@@ -3,13 +3,13 @@
 ## Active
 | ID | Title | Status | Owner | Source |
 |---|---|---|---|---|
-| **R007** | Democratize AI & Dashboard | Validated | M002/S01 | User |
-| **R008** | Weight Tracking Integration | Validated | M002/S02 | User |
-| **R009** | Weight Visualization | Active | M002/S03 | User |
 
 ## Validated
 | ID | Title | Status | Owner | Source |
 |---|---|---|---|---|
+| **R007** | Democratize AI & Dashboard | Validated | M002/S01 | User |
+| **R008** | Weight Tracking Integration | Validated | M002/S02 | User |
+| **R009** | Weight Visualization | Validated | M002/S03 | User |
 | **R001** | Fix: Fasting Duration | Validated | M001/S01 | User |
 | **R002** | Fix: Notification Logic | Validated | M001/S02 | User |
 | **R003** | Integration: Free AI Model | Validated | M001/S03 | User |
