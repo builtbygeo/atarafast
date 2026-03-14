@@ -340,79 +340,73 @@ export default async function LandingPage() {
         {/* Pricing Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
           {/* Free */}
-          <div className="rounded-[2rem] p-8 relative overflow-hidden flex flex-col group transition-all duration-300 hover:border-white/20" style={{ border: '1px solid rgba(255,255,255,0.08)', backgroundColor: 'rgba(255,255,255,0.02)' }}>
-            <h3 className="font-black text-lg mb-1 text-white/60 uppercase tracking-widest">Free</h3>
+          <div className="rounded-[2rem] p-8 relative overflow-hidden flex flex-col group transition-all duration-300 border border-primary/40 bg-primary/5">
+            <div className="absolute top-0 right-0 text-[10px] font-black px-5 py-2 rounded-bl-2xl uppercase tracking-widest bg-primary text-black">
+              Current Version
+            </div>
+            <h3 className="font-black text-lg mb-1 text-white/60 uppercase tracking-widest">Atara Core</h3>
             <div className="text-5xl font-black text-white mb-1 mt-2">€0</div>
             <p className="text-sm text-white/40 mb-8">Free forever</p>
 
             <ul className="space-y-3 mb-8 flex-1">
               {['Core fasting timer', '2 preset plans', 'Last 30 days history', 'Basic metabolic phases'].map(f => (
                 <li key={f} className="flex items-center gap-2 text-sm text-white/60">
-                  <span className="w-1 h-1 rounded-full bg-white/30" /> {f}
-                </li>
-              ))}
-            </ul>
-
-            <Link href={appUrl} className="w-full text-center rounded-xl font-bold py-3.5 transition-all border border-white/10 hover:border-white/30 hover:bg-white/5 text-white/80 hover:text-white">
-              Get Started
-            </Link>
-          </div>
-
-          {/* Atara Pro Monthly */}
-          <div className="rounded-[2rem] p-8 relative overflow-hidden flex flex-col group transition-all duration-300 hover:border-white/20" style={{ border: '1px solid rgba(255,255,255,0.08)', backgroundColor: 'rgba(255,255,255,0.02)' }}>
-            <h3 className="font-black text-lg mb-1 text-white/60 uppercase tracking-widest">Monthly</h3>
-            <div className="flex items-baseline gap-1 mt-2">
-              <span className="text-5xl font-black text-white">€4.99</span>
-              <span className="text-white/40 text-sm">/month</span>
-            </div>
-            <p className="text-sm text-white/40 mb-8 mt-1">Less than a coffee</p>
-
-            <ul className="space-y-3 mb-8 flex-1">
-              {['Everything in Free', 'All 6+ fasting plans', 'Unlimited history', 'AI Metabolic Coach', 'Share cards', 'Ketosis prediction'].map(f => (
-                <li key={f} className="flex items-center gap-2 text-sm text-white/60">
-                  <span className="w-1 h-1 rounded-full bg-white/30" /> {f}
-                </li>
-              ))}
-            </ul>
-
-            <CheckoutButton
-              priceId={process.env.NEXT_PUBLIC_STRIPE_PRICE_ID!}
-              label="Choose Monthly"
-              className="w-full text-center rounded-xl font-bold py-3.5 transition-all border border-white/15 hover:border-white/40 hover:bg-white/5 text-white"
-            />
-          </div>
-
-          {/* Atara Pro Yearly */}
-          <div className="rounded-[2rem] p-8 relative overflow-hidden flex flex-col group transition-all duration-300" style={{ border: '1px solid rgba(34,197,94,0.4)', background: 'linear-gradient(145deg, rgba(34,197,94,0.12) 0%, rgba(34,197,94,0.02) 100%)' }}>
-            <div className="absolute top-0 right-0 text-[10px] font-black px-5 py-2 rounded-bl-2xl uppercase tracking-widest bg-primary text-black">
-              Best Value
-            </div>
-            <h3 className="font-black text-lg mb-1 text-primary uppercase tracking-widest">Yearly</h3>
-            <div className="flex items-baseline gap-1 mt-2">
-              <span className="text-5xl font-black text-white">€29</span>
-              <span className="text-white/40 text-sm">/year</span>
-            </div>
-            <p className="text-sm text-primary mb-8 mt-1 font-bold">Only €2.42/mo (Save 51%)</p>
-
-            <ul className="space-y-3 mb-8 flex-1">
-              {['Everything in Monthly', 'Priority support', 'Early access features', 'Lifetime offer eligible'].map(f => (
-                <li key={f} className="flex items-center gap-2 text-sm text-white/70">
                   <span className="w-1 h-1 rounded-full bg-primary" /> {f}
                 </li>
               ))}
             </ul>
 
-            <CheckoutButton
-              priceId={process.env.NEXT_PUBLIC_STRIPE_YEARLY_PRICE_ID!}
-              label="Choose Yearly"
-              className="w-full text-center rounded-xl font-bold py-3.5 transition-all hover:scale-[1.02] active:scale-[0.98] bg-primary text-black"
-              style={{ boxShadow: '0 4px 24px rgba(34,197,94,0.3)' }}
-            />
-            <div className="mt-4 text-center">
-              <p className="text-[10px] text-white/40 uppercase tracking-widest">
-                Want it forever? <LifetimeOfferLink />
-              </p>
+            <Link href={appUrl} className="w-full text-center rounded-xl font-bold py-3.5 transition-all bg-primary text-black hover:opacity-90">
+              Use Free Version
+            </Link>
+          </div>
+
+          {/* Atara Pro Monthly - Locked */}
+          <div className="rounded-[2rem] p-8 relative overflow-hidden flex flex-col group transition-all duration-300 opacity-60 grayscale" style={{ border: '1px solid rgba(255,255,255,0.08)', backgroundColor: 'rgba(255,255,255,0.02)' }}>
+            <div className="absolute inset-0 flex items-center justify-center z-10">
+              <span className="bg-black/80 text-white font-bold px-4 py-2 rounded-full border border-white/20">Coming Soon</span>
             </div>
+            <h3 className="font-black text-lg mb-1 text-white/60 uppercase tracking-widest">Monthly</h3>
+            <div className="flex items-baseline gap-1 mt-2">
+              <span className="text-5xl font-black text-white/50">€4.99</span>
+              <span className="text-white/20 text-sm">/month</span>
+            </div>
+            <p className="text-sm text-white/20 mb-8 mt-1">Not available yet</p>
+
+            <ul className="space-y-3 mb-8 flex-1">
+              {['AI Metabolic Coach', 'All fasting plans', 'Unlimited stats'].map(f => (
+                <li key={f} className="flex items-center gap-2 text-sm text-white/20">
+                  <span className="w-1 h-1 rounded-full bg-white/10" /> {f}
+                </li>
+              ))}
+            </ul>
+            <button disabled className="w-full text-center rounded-xl font-bold py-3.5 border border-white/5 text-white/20 cursor-not-allowed">
+              Locked
+            </button>
+          </div>
+
+          {/* Atara Pro Yearly - Locked */}
+          <div className="rounded-[2rem] p-8 relative overflow-hidden flex flex-col group transition-all duration-300 opacity-60 grayscale" style={{ border: '1px solid rgba(255,255,255,0.08)', backgroundColor: 'rgba(255,255,255,0.02)' }}>
+            <div className="absolute inset-0 flex items-center justify-center z-10">
+              <span className="bg-black/80 text-white font-bold px-4 py-2 rounded-full border border-white/20">Coming Soon</span>
+            </div>
+            <h3 className="font-black text-lg mb-1 text-white/60 uppercase tracking-widest">Yearly</h3>
+            <div className="flex items-baseline gap-1 mt-2">
+              <span className="text-5xl font-black text-white/50">€29</span>
+              <span className="text-white/20 text-sm">/year</span>
+            </div>
+            <p className="text-sm text-white/20 mb-8 mt-1">Not available yet</p>
+
+            <ul className="space-y-3 mb-8 flex-1">
+              {['Everything in Monthly', 'Priority support'].map(f => (
+                <li key={f} className="flex items-center gap-2 text-sm text-white/20">
+                  <span className="w-1 h-1 rounded-full bg-white/10" /> {f}
+                </li>
+              ))}
+            </ul>
+            <button disabled className="w-full text-center rounded-xl font-bold py-3.5 border border-white/5 text-white/20 cursor-not-allowed">
+              Locked
+            </button>
           </div>
         </div>
 

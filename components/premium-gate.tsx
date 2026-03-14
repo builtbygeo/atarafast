@@ -1,7 +1,9 @@
 'use client'
 
 import { ReactNode } from 'react'
-import { useSubscription } from '@/lib/subscription'
+import { motion } from 'framer-motion'
+import { Lock, Sparkles } from 'lucide-react'
+import { useSubscription, startCheckout } from '@/lib/subscription'
 import { ENABLE_PREMIUM } from '@/lib/features'
 
 interface PremiumGateProps {
