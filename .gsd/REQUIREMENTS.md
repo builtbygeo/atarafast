@@ -14,9 +14,9 @@
 | ID | Title | Class | Status | Owner | Source |
 |---|---|---|---|---|---|
 | **R002** | Fix: Notification Logic | Core | Active | M001/S02 | User |
-| **R003** | Integration: Free AI Model | Value-Add | Active | M001/S02 | User |
-| **R004** | Architecture: Feature Flags (Stripe) | Platform | Active | M001/S02 | User |
-| **R005** | Security: Open Source Preparation | Platform | Active | M001/S02 | User |
+| **R003** | Integration: Free AI Model | Value-Add | Active | M001/S03 | User |
+| **R004** | Architecture: Feature Flags (Stripe) | Platform | Active | M001/S03 | User |
+| **R005** | Security: Open Source Preparation | Platform | Active | M001/S03 | User |
 
 ## Deferred
 
