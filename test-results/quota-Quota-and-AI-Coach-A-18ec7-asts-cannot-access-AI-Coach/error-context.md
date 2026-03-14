@@ -1,0 +1,64 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e7]:
+    - generic [ref=e8]:
+      - img "Atara Logo" [ref=e10]
+      - heading "ATARA" [level=1] [ref=e11]
+    - generic [ref=e16]:
+      - generic [ref=e18]:
+        - generic [ref=e20]:
+          - button "Sign in with Apple" [ref=e21] [cursor=pointer]:
+            - generic "Sign in with Apple" [ref=e22]
+          - button "Sign in with Facebook" [ref=e23] [cursor=pointer]:
+            - generic "Sign in with Facebook" [ref=e24]
+          - button "Sign in with Google" [ref=e25] [cursor=pointer]:
+            - generic "Sign in with Google" [ref=e26]
+        - paragraph [ref=e29]: or
+        - generic [ref=e31]:
+          - generic [ref=e32]:
+            - generic [ref=e35]:
+              - generic [ref=e37]: Email address
+              - textbox "Email address" [ref=e38]:
+                - /placeholder: Enter your email address
+            - generic:
+              - generic:
+                - generic:
+                  - generic:
+                    - generic: Password
+                  - generic:
+                    - textbox "Password":
+                      - /placeholder: Enter your password
+                    - button "Show password":
+                      - img
+          - button "Continue" [ref=e41] [cursor=pointer]:
+            - generic [ref=e42]:
+              - text: Continue
+              - img [ref=e43]
+      - generic [ref=e45]:
+        - generic [ref=e46]:
+          - generic [ref=e47]: Don’t have an account?
+          - link "Sign up" [ref=e48] [cursor=pointer]:
+            - /url: http://localhost:3000/sign-up#/?redirect_url=http%3A%2F%2Flocalhost%3A3000%2Fapp
+        - generic [ref=e50]:
+          - generic [ref=e52]:
+            - paragraph [ref=e53]: Secured by
+            - link "Clerk logo" [ref=e54] [cursor=pointer]:
+              - /url: https://go.clerk.com/components
+              - img [ref=e55]
+          - paragraph [ref=e60]: Development mode
+    - generic [ref=e61]:
+      - link "← Back to Website" [ref=e62] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e63]: ←
+        - generic [ref=e64]: Back to Website
+      - generic [ref=e65]:
+        - link "Privacy" [ref=e66] [cursor=pointer]:
+          - /url: //privacy
+        - link "Terms" [ref=e68] [cursor=pointer]:
+          - /url: //terms
+  - button "Open Next.js Dev Tools" [ref=e74] [cursor=pointer]:
+    - img [ref=e75]
+  - alert [ref=e78]
+```

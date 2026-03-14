@@ -15,6 +15,7 @@ import {
 } from "date-fns"
 import { AreaChart, Area, CartesianGrid, XAxis, YAxis, ResponsiveContainer, Tooltip } from "recharts"
 import { ChevronRight, Lock, Sparkles, Settings, Flame, Trophy, Zap } from "lucide-react"
+import { PremiumGate } from "./premium-gate"
 import type { FastingRecord } from "@/lib/storage"
 import { useLang } from "@/lib/language-context"
 import { useSubscription, startCheckout } from "@/lib/subscription"
@@ -433,6 +434,7 @@ export function StatsView({ history, settings, onOpenSettings, onOpenUpgrade }: 
 
             <div className="relative z-10 min-h-[60px]">
               {stats.totalFasts < 5 ? (
+              <PremiumGate requirements={{ minFasts: 5 }} reason="5 fasts needed to unlock AI Coach">
                 <div className="flex flex-col items-center justify-center py-4 text-center">
                   <div className="h-10 w-10 rounded-full bg-white/5 flex items-center justify-center mb-3">
                     <Lock className="h-4 w-4 text-primary/40" />
@@ -442,7 +444,8 @@ export function StatsView({ history, settings, onOpenSettings, onOpenUpgrade }: 
                     {t?.aiCoachRequired}
                   </p>
                 </div>
-              ) : aiAnalysis ? (
+              </PremiumGate>
+            ) : aiAnalysis ? (
                 <div className="flex flex-col gap-6">
                   <div className="text-[13px] text-foreground/80 leading-relaxed font-medium">
                     {formatAiText(aiAnalysis)}

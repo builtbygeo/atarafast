@@ -3,7 +3,7 @@
 ## Active
 | ID | Title | Status | Owner | Source |
 |---|---|---|---|---|
-| **R007** | Democratize AI & Dashboard | Active | M002/S01 | User |
+| **R007** | Democratize AI & Dashboard | Validated | M002/S01 | User |
 | **R008** | Weight Tracking Integration | Active | M002/S02 | User |
 | **R009** | Weight Visualization | Active | M002/S03 | User |
 

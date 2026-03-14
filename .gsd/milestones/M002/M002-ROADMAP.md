@@ -46,7 +46,7 @@ completed_at:
 
 ## Slices
 
-- [ ] **S01: AI Quota & Feature Democratization** `risk:medium` `depends:[]`
+- [x] **S01: AI Quota & Feature Democratization** `risk:medium` `depends:[]`
   > After this: AI and Dashboard features are unlocked. AI usage is limited to 1/day, requiring 5 prior fasts.
 
 - [ ] **S02: Weight Tracking Integration** `risk:low` `depends:[S01]`
