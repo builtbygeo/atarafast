@@ -19,7 +19,7 @@
 - [x] **S02: Notification UX (Anti-Spam)** `risk:high` `depends:[]`
   > After this: The PWA will no longer send a delayed system push notification when reopened hours after a fast ends. Instead, users will receive a graceful in-app greeting acknowledging their success.
 
-- [ ] **S03: Free AI & Feature Gating** `risk:low` `depends:[]`
+- [x] **S03: Free AI & Feature Gating** `risk:low` `depends:[]`
   > After this: The AI analysis will use free OpenRouter models, and all Stripe/Premium UI elements will be hidden by default (or marked "Coming Soon" if visible), making the repository safe for open-source sharing.
 
 ---

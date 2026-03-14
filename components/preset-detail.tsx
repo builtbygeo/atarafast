@@ -6,6 +6,7 @@ import { CircularProgress } from "@/components/circular-progress"
 import type { FastingPreset } from "@/lib/presets"
 import { useLang } from "@/lib/language-context"
 import { useSubscription, startCheckout } from "@/lib/subscription"
+import { ENABLE_PREMIUM } from "@/lib/features"
 import { Lock } from "lucide-react"
 
 interface PresetDetailProps {
@@ -120,7 +121,7 @@ export function PresetDetail({ preset, isActive, isCurrentActivePreset, onBack, 
         )}
 
         <div className="w-full max-w-xs px-4 mt-1">
-          {isLocked ? (
+          {ENABLE_PREMIUM && isLocked ? (
             <button
               onClick={() => startCheckout()}
               className="w-full flex items-center justify-center gap-2 py-3.5 rounded-2xl text-xs font-black uppercase tracking-widest transition-all active:scale-[0.98] shadow-xl bg-secondary text-primary border border-primary/20"
