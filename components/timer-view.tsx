@@ -83,6 +83,7 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
   const [confirmEnd, setConfirmEnd] = useState(false)
   const [showShare, setShowShare] = useState(false)
   const [justCompleted, setJustCompleted] = useState(false)
+  const [showLateGreeting, setShowLateGreeting] = useState(false)
   const hasCelebratedRef = useRef(false)
 
   const navigateTo = useCallback(
@@ -106,12 +107,23 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
       const targetMs = fast.targetHours * 3600000
       const elapsedMs = new Date().getTime() - start.getTime()
       if (elapsedMs >= targetMs) {
-        hasCelebratedRef.current = true
+        if (!hasCelebratedRef.current) {
+          hasCelebratedRef.current = true
+          const isLateReturn = (elapsedMs - targetMs) > 60000
+          if (isLateReturn) {
+            setShowLateGreeting(true)
+          } else {
+            sendNotification(t.targetReached, {
+              body: `${fast.presetId} fast complete!`,
+            })
+          }
+        }
       } else {
         hasCelebratedRef.current = false
       }
     }
     setMounted(true)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
@@ -126,9 +138,14 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
 
       if (elapsedMs >= targetMs && !hasCelebratedRef.current) {
         hasCelebratedRef.current = true
-        sendNotification(t.targetReached, {
-          body: `${activeFast.presetId} fast complete!`,
-        })
+        const isLateReturn = (elapsedMs - targetMs) > 60000
+        if (isLateReturn) {
+          setShowLateGreeting(true)
+        } else {
+          sendNotification(t.targetReached, {
+            body: `${activeFast.presetId} fast complete!`,
+          })
+        }
       }
     }, 1000)
     return () => clearInterval(interval)
@@ -153,16 +170,8 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
     }
   }
 
-  const handleEndFast = useCallback(() => {
+  const performEndFast = useCallback(() => {
     if (!activeFast) return
-
-    if (!confirmEnd) {
-      setConfirmEnd(true)
-      haptic([30])
-      // Reset after 2 seconds if not confirmed
-      setTimeout(() => setConfirmEnd(false), 2000)
-      return
-    }
 
     const start = new Date(activeFast.startTime)
     const targetMs = activeFast.targetHours * 3600000
@@ -193,7 +202,21 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
         onFastEnd?.(record)
       }
     }
-  }, [onFastEnd, navigateTo, confirmEnd, activeFast])
+  }, [onFastEnd, navigateTo, activeFast])
+
+  const handleEndFast = useCallback(() => {
+    if (!activeFast) return
+
+    if (!confirmEnd) {
+      setConfirmEnd(true)
+      haptic([30])
+      // Reset after 2 seconds if not confirmed
+      setTimeout(() => setConfirmEnd(false), 2000)
+      return
+    }
+
+    performEndFast()
+  }, [confirmEnd, activeFast, performEndFast])
 
   const handleDiscardFast = useCallback(() => {
     deleteFast()
@@ -396,6 +419,25 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
             onCancel={() => setShowEditStartTime(false)}
           />
         )}
+
+        <AlertDialog open={showLateGreeting} onOpenChange={setShowLateGreeting}>
+          <AlertDialogContent className="max-w-[320px] rounded-[2.5rem] border-border bg-card">
+            <AlertDialogHeader>
+              <AlertDialogTitle className="text-center font-black text-xl">{t.fastComplete}</AlertDialogTitle>
+              <AlertDialogDescription className="text-center mt-3 text-sm font-medium leading-relaxed">
+                {t.lateGreetingDesc}
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter className="flex-row mt-6 w-full gap-0">
+              <AlertDialogAction onClick={() => {
+                setShowLateGreeting(false)
+                performEndFast()
+              }} className="w-full h-12 rounded-2xl bg-primary text-primary-foreground font-bold hover:bg-primary/90 transition-all uppercase tracking-widest text-[13px]">
+                {t.completeFast || "COMPLETE FAST"}
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </div>
     )
   }

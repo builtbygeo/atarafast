@@ -1,1 +1,14 @@
-[]
+[
+  {
+    "id": "5226a70f",
+    "label": "next-server",
+    "command": "npm run dev",
+    "cwd": "/Users/sheshe/dev/Atara",
+    "startedAt": 1773505351199,
+    "processType": "server",
+    "group": "my-stack",
+    "readyPattern": "Ready in",
+    "readyPort": 3000,
+    "pid": 7595
+  }
+]

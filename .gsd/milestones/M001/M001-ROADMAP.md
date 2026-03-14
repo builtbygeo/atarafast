@@ -16,7 +16,7 @@
 - [x] **S01: Fast Attribution Fixes** `risk:medium` `depends:[]`
   > After this: Fasts spanning midnight (e.g., 20:00 to 12:00) will accurately show 16 hours for the end day instead of splitting the time, fixing the "failed" markers.
 
-- [ ] **S02: Notification UX (Anti-Spam)** `risk:high` `depends:[]`
+- [x] **S02: Notification UX (Anti-Spam)** `risk:high` `depends:[]`
   > After this: The PWA will no longer send a delayed system push notification when reopened hours after a fast ends. Instead, users will receive a graceful in-app greeting acknowledging their success.
 
 - [ ] **S03: Free AI & Feature Gating** `risk:low` `depends:[]`
