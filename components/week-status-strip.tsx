@@ -1,6 +1,6 @@
 "use client"
 
-import { useMemo } from "react"
+import { useMemo, memo } from "react"
 import { format, subDays, isSameDay } from "date-fns"
 import { type FastingRecord } from "@/lib/storage"
 
@@ -9,7 +9,7 @@ interface WeekStatusStripProps {
     activeFast?: FastingRecord | null
 }
 
-export function WeekStatusStrip({ history, activeFast }: WeekStatusStripProps) {
+export const WeekStatusStrip = memo(function WeekStatusStrip({ history, activeFast }: WeekStatusStripProps) {
     const weekData = useMemo(() => {
         const days = []
         const now = new Date()
@@ -17,10 +17,10 @@ export function WeekStatusStrip({ history, activeFast }: WeekStatusStripProps) {
         // Last 30 days including today (like Zero)
         for (let i = 6; i >= 0; i--) {
             const date = subDays(now, i)
-            const dayFasts = history.filter(f => isSameDay(new Date(f.startTime), date))
+            const dayFasts = history.filter(f => f.endTime && isSameDay(new Date(f.endTime), date))
 
             const isToday = i === 0
-            const isActive = activeFast && isSameDay(new Date(activeFast.startTime), date)
+            const isActive = activeFast && isToday
 
             let totalHours = 0
             let hasCompleted = false
@@ -78,4 +78,4 @@ export function WeekStatusStrip({ history, activeFast }: WeekStatusStripProps) {
             ))}
         </div>
     )
-}
+})

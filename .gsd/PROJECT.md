@@ -1,0 +1,14 @@
+# Project GSD
+
+**Name:** Atara (Open Source Transition)
+**Vision:** A minimalist, functional intermittent fasting tracker. Currently a PWA that tracks fasts, provides stats, and offers AI analysis.
+**Status:** Stabilization and open-source transition complete. Core application is now stable, free-tier AI integrated, and premium features gated. Ready for next phase of growth or community adoption.
+
+## Overview
+
+The goal is to build authority as a developer by open-sourcing the core application while maintaining a path for future premium features. The immediate priorities are fixing critical bugs (fasting duration calculation across days is fixed, working on delayed local notifications next) and swapping the paid AI models for free alternatives via OpenRouter.
+
+## Milestones
+
+- **M001:** Stabilization & Open Source Preparation
+  Fix critical bugs in the fasting tracker (average calculation, notification spam) and transition the project to an open-source friendly state (feature flags for Stripe, free AI models via OpenRouter).

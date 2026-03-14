@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { Sparkles, Trophy, Star, X } from "lucide-react"
-import { startCheckout } from "@/lib/subscription"
+import { ENABLE_PREMIUM } from "@/lib/features"
 
 interface UpgradeDialogProps {
     open: boolean
@@ -60,7 +60,7 @@ export function UpgradeDialog({ open, onClose }: UpgradeDialogProps) {
                             <p className="text-xs font-medium text-muted-foreground/60">Standard fasting tracker, limited stats.</p>
                         </button>
 
-                        {monthlyId && (
+                        {ENABLE_PREMIUM && monthlyId && (
                             <button
                                 onClick={() => handleSelect(monthlyId)}
                                 disabled={!!loading}
@@ -75,7 +75,7 @@ export function UpgradeDialog({ open, onClose }: UpgradeDialogProps) {
                             </button>
                         )}
 
-                        {yearlyId && (
+                        {ENABLE_PREMIUM && yearlyId && (
                             <button
                                 onClick={() => handleSelect(yearlyId)}
                                 disabled={!!loading}
@@ -93,7 +93,7 @@ export function UpgradeDialog({ open, onClose }: UpgradeDialogProps) {
                             </button>
                         )}
 
-                        {lifetimeId && (
+                        {ENABLE_PREMIUM && lifetimeId && (
                             <button
                                 onClick={() => handleSelect(lifetimeId)}
                                 disabled={!!loading}

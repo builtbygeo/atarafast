@@ -1,41 +1,19 @@
 'use client'
 
-import { motion } from 'framer-motion'
-import { Lock, Sparkles } from 'lucide-react'
-import { startCheckout } from '@/lib/subscription'
+import { ReactNode } from 'react'
+import { useSubscription } from '@/lib/subscription'
+import { ENABLE_PREMIUM } from '@/lib/features'
 
 interface PremiumGateProps {
-    children: React.ReactNode
-    /** If true, show a blurred + locked overlay instead of hiding content */
-    blur?: boolean
-    featureName?: string
+    children: ReactNode
+    fallback?: ReactNode
 }
 
-/**
- * Wrap any premium-only UI with this.
- * Renders children as-is for premium users,
- * shows an upgrade prompt for free users.
- */
-export function PremiumGate({ children, blur = false, featureName }: PremiumGateProps) {
-    // This is imported inside the component to avoid SSR issues
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const { useSubscription } = require('@/lib/subscription')
-    const { isPremium, isLoaded } = useSubscription()
+export function PremiumGate({ children, fallback = null }: PremiumGateProps) {
+    const { isPremium } = useSubscription()
 
-    if (!isLoaded) return null
-    if (isPremium) return <>{children}</>
-
-    if (blur) {
-        return (
-            <div className="relative">
-                <div className="pointer-events-none select-none" style={{ filter: 'blur(6px)', opacity: 0.4 }}>
-                    {children}
-                </div>
-                <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 p-4">
-                    <UpgradeCard featureName={featureName} />
-                </div>
-            </div>
-        )
+    if (!ENABLE_PREMIUM) {
+        return <>{children}</>
     }
 
     return <UpgradeCard featureName={featureName} />

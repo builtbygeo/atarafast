@@ -1,6 +1,7 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
+import { ENABLE_PREMIUM } from '@/lib/features'
 
 interface CheckoutButtonProps {
     priceId: string
@@ -19,6 +20,7 @@ export function CheckoutButton({ priceId, label, style, className }: CheckoutBut
     const router = useRouter()
 
     async function handleClick() {
+        if (!ENABLE_PREMIUM) return
         // Check auth state via a lightweight API call
         const res = await fetch('/api/stripe/checkout', {
             method: 'POST',
@@ -39,7 +41,11 @@ export function CheckoutButton({ priceId, label, style, className }: CheckoutBut
     }
 
     return (
-        <button onClick={handleClick} style={style} className={className}>
+        <button 
+            onClick={ENABLE_PREMIUM ? handleClick : undefined} 
+            style={style} 
+            className={`${className} ${!ENABLE_PREMIUM ? 'opacity-50 cursor-not-allowed' : ''}`}
+        >
             {label}
         </button>
     )

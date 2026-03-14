@@ -12,7 +12,7 @@ interface PresetGridProps {
 }
 
 export function PresetGrid({ onSelect, showHeader = true }: PresetGridProps) {
-  const { t } = useLang()
+  const { t, lang } = useLang()
   const { isPremium } = useSubscription()
   const allPresets = [...FASTING_PRESETS, CUSTOM_PRESET]
 
@@ -40,7 +40,6 @@ export function PresetGrid({ onSelect, showHeader = true }: PresetGridProps) {
       {showHeader && (
         <header className="px-1">
           <h2 className="text-xl font-black tracking-tight text-foreground uppercase tracking-[0.1em]">{t.selectPreset}</h2>
-          <p className="text-[11px] font-bold text-muted-foreground mt-1 uppercase tracking-widest opacity-60">{t.selectSubtitle}</p>
         </header>
       )}
 
@@ -59,11 +58,20 @@ export function PresetGrid({ onSelect, showHeader = true }: PresetGridProps) {
             <motion.div key={preset.id} variants={item}>
               <button
                 onClick={() => { if (!isLocked) onSelect(preset) }}
-                className={`w-full relative flex flex-col rounded-[1.5rem] p-5 pt-4 text-left transition-all active:scale-[0.96] border border-border bg-secondary/20 hover:bg-secondary/30 group overflow-hidden ${isLocked ? 'opacity-70 grayscale-[0.5]' : ''}`}
+                className={`w-full relative flex flex-col items-center justify-center rounded-[2rem] p-8 text-center transition-all duration-500 ease-out active:scale-[0.96] border group overflow-hidden ${isLocked ? 'opacity-70 grayscale-[0.5]' : ''}`}
+                style={{ 
+                  background: `radial-gradient(circle at top left, color-mix(in oklch, ${preset.color}, transparent 80%), transparent), color-mix(in oklch, ${preset.color}, transparent 90%)`,
+                  borderColor: `color-mix(in oklch, ${preset.color}, transparent 40%)`
+                }}
               >
-                {/* Visual Indicator Line */}
-                <div
-                  className="absolute left-0 top-4 bottom-4 w-1 rounded-r-full opacity-70 group-hover:opacity-100 transition-opacity"
+                {/* Premium Hover Glow */}
+                <div 
+                  className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-500"
+                  style={{ backgroundColor: preset.color }}
+                />
+                
+                <div 
+                  className="absolute -inset-4 opacity-0 group-hover:opacity-20 transition-opacity duration-700 blur-3xl -z-10"
                   style={{ backgroundColor: preset.color }}
                 />
 
@@ -73,21 +81,18 @@ export function PresetGrid({ onSelect, showHeader = true }: PresetGridProps) {
                   </div>
                 )}
 
-                <div className="flex flex-col gap-0.5 pl-2">
-                  <span className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] opacity-60 mb-1">
-                    {isCustom ? t.customFast : (t.fastLabel || "FAST")}
-                  </span>
-                  <span className="text-3xl font-black text-foreground tracking-tighter leading-none mb-2 tabular-nums">
+                <div className="flex flex-col items-center justify-center gap-1 w-full relative z-10">
+                  <span className="text-4xl font-black text-foreground tracking-tighter leading-none mb-1 tabular-nums group-hover:scale-105 transition-transform duration-500">
                     {isCustom ? "?" : preset.name.replace(":", " : ")}
                   </span>
-                  <span className="text-[10px] font-black text-foreground/80 uppercase tracking-widest leading-tight">
+                  <span className="text-[11px] font-black text-foreground/60 uppercase tracking-[0.2em] leading-tight text-center group-hover:text-foreground transition-colors duration-500">
                     {planName}
                   </span>
                 </div>
 
-                {/* Subtle Glow */}
+                {/* Subtle Radial Glow */}
                 <div
-                  className="absolute -right-4 -bottom-4 w-16 h-16 rounded-full blur-[30px] opacity-10 group-hover:opacity-20 transition-opacity"
+                  className="absolute -right-4 -bottom-4 w-24 h-24 rounded-full blur-[40px] opacity-10 group-hover:opacity-30 transition-opacity duration-700"
                   style={{ backgroundColor: preset.color }}
                 />
               </button>

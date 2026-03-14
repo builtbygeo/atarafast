@@ -20,6 +20,7 @@ export function useNotifications() {
     }, [])
 
     const sendNotification = useCallback(async (title: string, options?: NotificationOptions) => {
+        if (typeof document !== "undefined" && document.visibilityState === "visible") return
         if (typeof window === "undefined" || !("Notification" in window) || Notification.permission !== "granted") return
         if (!getSettings().notificationsEnabled) return
 

@@ -29,6 +29,7 @@ export const bg = {
   editStartTime: "Редакция начало",
   viewDetails: "Детайли",
   targetReached: "Успешно завършен фаст!",
+  lateGreetingDesc: "Вашият пост приключи успешно, докато ви нямаше. Страхотна работа!",
   overTarget: "Невероятно! {{hours}}ч над целта!",
   keepPushing: "Продължавайте или спрете когато сте готови",
   fast: "пост",
@@ -77,8 +78,8 @@ export const bg = {
   noHistory: "Все още няма история",
   startFirstFast: "Започнете вашия първи пост",
   average: "Средно",
-  goalMet: "Целта е постигната",
-  goalNotMet: "Целта не е постигната",
+  goalMet: "Успешно",
+  goalNotMet: "Неуспешно",
   seeMore: "Виж още",
   showingLast30Days: "Показване на последните 30 дни",
   unlockFullHistory: "Отключи пълната история",
@@ -153,7 +154,18 @@ export const bg = {
   off: "Изкл.",
   aiCoachLocked: "AI ТРЕНЬОРЪТ Е ЗАКЛЮЧЕН",
   aiCoachRequired: "Нужни са поне 5 завършени поста, за да започне анализът.",
-  aiCoachJournalNote: "AI вече анализира и вашия дневник за по-прецизни съвети.",
+  aiCoachJournalNote: "AI анализира и дневника ви за по-прецизни съвети.",
+  limitReached: "Лимитът е достигнат",
+  tryAgainTomorrow: "Опитайте пак утре",
+  dailyCreditAvailable: "Дневен кредит: 1",
+  monthlyCreditRemaining: "Оставащ месечен кредит: {{count}}",
+  activeTime: "Активно време",
+  dailyAvg: "ср. на ден",
+  share: "Сподели",
+  todayLowercase: "днес",
+  yesterdayLowercase: "вчера",
+  h: "ч",
+  min: "м",
 
   // Plan View
   planTitle: "План",
@@ -207,7 +219,7 @@ export const bg = {
   skipForNow: "Пропусни за сега",
   postFastJournal: "Дневник след пост",
   logReflection: "Запиши рефлексия след поста",
-  
+
   // Settings - Account
   createFreeAccount: "Създай безплатен профил",
   alreadyHaveAccount: "Вече имате профил? Вход",
@@ -221,7 +233,7 @@ export const bg = {
   viewUpgradePlans: "Виж планове за ъпгрейд",
   manageSubscription: "Управление на абонамент",
   signOut: "Изход",
-  
+
   // Settings - Other
   retakeOnboarding: "Повтори onboarding",
   clearAllData: "Изтрий всички данни",
@@ -251,13 +263,13 @@ export const bg = {
   date: "Дата",
   time: "Час",
   // Week Strip
-  mon: "П",
-  tue: "В",
-  wed: "С",
-  thu: "Ч",
-  fri: "П",
-  sat: "С",
-  sun: "Н",
+  mon: "Пн",
+  tue: "Вт",
+  wed: "Ср",
+  thu: "Чт",
+  fri: "Пт",
+  sat: "Сб",
+  sun: "Нд",
   planContent: {
     "12:12": {
       name: "Циркаден",
@@ -364,6 +376,7 @@ export const en: typeof bg = {
   editStartTime: "Edit start time",
   viewDetails: "View details",
   targetReached: "Target reached! You can keep going or end your fast.",
+  lateGreetingDesc: "Your fast was completed successfully while you were away. Great job!",
   overTarget: "Amazing! {{hours}}h over your target!",
   keepPushing: "Keep pushing or end when you're ready",
   fast: "fast",
@@ -485,6 +498,17 @@ export const en: typeof bg = {
   aiCoachLocked: "AI COACH LOCKED",
   aiCoachRequired: "At least 5 completed fasts required to start analysis.",
   aiCoachJournalNote: "AI now analyzes your journal entries for deeper metabolic insights.",
+  limitReached: "Limit reached",
+  tryAgainTomorrow: "Try again tomorrow",
+  dailyCreditAvailable: "Daily Credit Available",
+  monthlyCreditRemaining: "{{count}} Monthly Credit Remaining",
+  activeTime: "Active Time",
+  dailyAvg: "daily avg",
+  share: "Share",
+  todayLowercase: "today",
+  yesterdayLowercase: "yesterday",
+  h: "h",
+  min: "m",
 
   // Plan View
   planTitle: "Plan",
@@ -553,7 +577,7 @@ export const en: typeof bg = {
   viewUpgradePlans: "View or Upgrade Plan",
   manageSubscription: "Manage Subscription",
   signOut: "Sign Out",
-  
+
   // Settings - Other
   retakeOnboarding: "Retake Onboarding Quiz",
   clearAllData: "Clear all data",
@@ -581,13 +605,13 @@ export const en: typeof bg = {
   date: "Date",
   time: "Time",
 
-  mon: "M",
-  tue: "T",
-  wed: "W",
-  thu: "T",
-  fri: "F",
-  sat: "S",
-  sun: "S",
+  mon: "Пн",
+  tue: "Вт",
+  wed: "Ср",
+  thu: "Чт",
+  fri: "Пт",
+  sat: "Сб",
+  sun: "Нд",
   planContent: {
     "12:12": {
       name: "Circadian",

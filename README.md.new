@@ -1,0 +1,40 @@
+# Atara
+
+Atara is a minimalist, functional intermittent fasting tracker designed to help you build consistency and reach your goals.
+
+## Status: Open Source
+We are currently in an open-source transition phase. The core tracking application is free to use—simply sign up with your email to get started.
+
+## Key Features
+- **Fast Tracking:** Log your fasting windows with an intuitive interface.
+- **Insights & Stats:** Visualize your fasting history and maintain streaks.
+- **AI-Powered Analysis:** Gain personalized insights into your fasting habits.
+- **Privacy-First:** Your data is yours.
+
+## Getting Started
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/your-org/atara.git
+   cd atara
+   ```
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+3. **Configure environment:**
+   Copy the example environment file:
+   ```bash
+   cp .env.example .env
+   ```
+   *Note: Ensure `NEXT_PUBLIC_ENABLE_PREMIUM=false` is set for the open-source version.*
+
+4. **Start the development server:**
+   ```bash
+   npm run dev
+   ```
+
+## Roadmap & Premium Features
+While Atara is currently free, we have premium features planned for the future. These are currently gated behind feature flags and disabled by default. If you are interested in contributing to the open-source development, please check our [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## License
+[Insert License Here - e.g., MIT]
