@@ -18,6 +18,7 @@ export interface FastingRecord {
   apathTime?: string // Апатия - moment of freedom from hunger cravings
   notes?: string
   journalData?: JournalData
+  weight?: number
 }
 
 export interface AiUsage {

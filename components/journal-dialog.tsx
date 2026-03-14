@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from 'react'
-import { X } from 'lucide-react'
+import { X, Plus, Minus } from 'lucide-react'
 import { JournalData } from '@/lib/storage'
 import { useLang } from '@/lib/language-context'
 
@@ -26,6 +26,7 @@ export function JournalDialog({ onSave, onSkip, initialData }: JournalDialogProp
     const [hydration, setHydration] = useState<'1L' | '2L' | '3L' | '4L+'>(initialData?.hydration ?? '2L')
     const [difficult, setDifficult] = useState<0 | 1 | 2 | 3>(initialData?.difficult ?? 0)
     const [hungry, setHungry] = useState<0 | 1 | 2 | 3>(initialData?.hungry ?? 0)
+    const [weight, setWeight] = useState<number | undefined>(initialData?.weight)
     const [selectedTags, setSelectedTags] = useState<string[]>(initialData?.tags ?? [])
 
     // ==================== HELPERS ====================
@@ -43,6 +44,7 @@ export function JournalDialog({ onSave, onSkip, initialData }: JournalDialogProp
             hydration,
             difficult,
             hungry,
+            weight,
             tags: selectedTags
         })
     }
@@ -70,6 +72,38 @@ export function JournalDialog({ onSave, onSkip, initialData }: JournalDialogProp
                 </div>
 
                 <div className="flex-1 overflow-y-auto px-6 py-4 space-y-8 no-scrollbar text-foreground">
+                    {/* WEIGHT - COMPACT */}
+                    <div>
+                        <p className="text-sm font-bold uppercase tracking-widest text-muted-foreground mb-3">Weight (kg)</p>
+                        <div className="flex items-center gap-4 bg-secondary/30 p-2 rounded-xl border border-border">
+                            <button
+                                onClick={() => setWeight(prev => Math.max(30, (prev ?? 70) - 1))}
+                                className="p-3 bg-card rounded-lg border border-border hover:bg-secondary transition-colors"
+                            >
+                                <Minus className="h-4 w-4" />
+                            </button>
+                            <div className="flex-1 text-center">
+                                <input
+                                    type="number"
+                                    value={weight ?? ''}
+                                    onChange={(e) => {
+                                        const v = parseInt(e.target.value)
+                                        if (isNaN(v)) setWeight(undefined)
+                                        else if (v >= 30 && v <= 200) setWeight(v)
+                                    }}
+                                    placeholder="--"
+                                    className="w-full bg-transparent text-center text-xl font-mono font-bold focus:outline-none"
+                                />
+                            </div>
+                            <button
+                                onClick={() => setWeight(prev => Math.min(200, (prev ?? 70) + 1))}
+                                className="p-3 bg-card rounded-lg border border-border hover:bg-secondary transition-colors"
+                            >
+                                <Plus className="h-4 w-4" />
+                            </button>
+                        </div>
+                    </div>
+
                     {/* HOW DID YOU FEEL? */}
                     <div>
                         <p className="text-sm font-bold uppercase tracking-widest text-muted-foreground mb-5">{t.howDidYouFeel}</p>
