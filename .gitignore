@@ -55,3 +55,27 @@ next-env.d.ts
 
 # Stripe keys (DO NOT COMMIT)
 # These will be injected at build time via Vercel environment variables
+
+# ── GSD baseline (auto-generated) ──
+.gsd/activity/
+.gsd/runtime/
+.gsd/worktrees/
+.gsd/auto.lock
+.gsd/metrics.json
+.gsd/completed-units.json
+.gsd/STATE.md
+Thumbs.db
+*~
+*.code-workspace
+.env.*
+!.env.example
+dist/
+__pycache__/
+*.pyc
+.venv/
+venv/
+target/
+vendor/
+*.log
+.cache/
+tmp/
