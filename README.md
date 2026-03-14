@@ -1,46 +1,46 @@
-# Atara — Elite Fasting Protocol
+# Atara - Minimalist Fasting Tracker
 
-**Master Your Metabolism**  
-AI-powered fasting timer, progress tracker, and biological insights.
+Atara is a minimalist, open-source intermittent fasting tracker. We believe in simplicity, privacy, and full control over your health data.
 
-This is the private codebase for the Atara application.
+## Features
+- **Fast Tracking:** Log your fasting windows with an intuitive interface.
+- **Progress Stats:** Visualize your fasting history.
+- **AI-Powered Insights:** Personalized analysis for your fasting journey.
+- **Privacy-First:** Your data stays yours.
 
-The full Pro version with advanced AI features lives at → [https://app.atarafast.com](https://app.atarafast.com)
+## License
+This project is licensed under the [GNU Affero General Public License v3.0 (AGPL-3.0)](LICENSE).
 
-## ✨ What's included
+## Getting Started
 
-- Fasting timer with streak counter
-- Calendar of past & future fasts
-- Weekly activity graphs & stats
-- Basic electrolyte & minerals tracker
-- Journal & notes
-- Onboarding flow
-- Fully responsive PWA (works offline)
-- Modern UI with Shadcn components
+### Prerequisites
+- Node.js (v20+)
+- npm / pnpm / yarn
 
-## 🚀 Pro features (hosted version only)
+### Installation
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/builtbygeo/atarafast.git
+   cd atarafast
+   ```
 
-- Advanced AI metabolism insights
-- Custom protocol builder
-- Premium electrolyte recommendations
-- Stripe subscriptions & user accounts
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
 
-## Setup
+3. **Configure environment:**
+   Copy the example file and set your variables:
+   ```bash
+   cp .env.example .env
+   ```
+   Ensure `NEXT_PUBLIC_ENABLE_PREMIUM=false` is set. This disables paid features, as the core application is free for everyone.
 
-```bash
-git clone https://github.com/builtbygeo/Atara.git
-cd Atara
-npm install
-cp .env.example .env.local   # add your own keys
-npm run dev
+4. **Start the development server:**
+   ```bash
+   npm run dev
+   ```
+   The app will be available at `http://localhost:3000`.
 
-Open http://localhost:3000
-
-**Contributing**
-
-Feedback, bug reports and pull requests are very welcome!
-
-Feel free to open an issue or PR.
-
-**License**
-Proprietary — All rights reserved.
+## Contributing
+We welcome community contributions! Please check our [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on how to open Pull Requests or report issues.
