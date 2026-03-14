@@ -14,6 +14,8 @@ import {
   startOfDay,
 } from "date-fns"
 import { AreaChart, Area, CartesianGrid, XAxis, YAxis, ResponsiveContainer, Tooltip } from "recharts"
+import { WeightTrendsChart } from "./weight-trends-chart"
+import { transformWeightData } from "@/lib/stats"
 import { ChevronRight, Lock, Sparkles, Settings, Flame, Trophy, Zap } from "lucide-react"
 import { PremiumGate } from "./premium-gate"
 import type { FastingRecord } from "@/lib/storage"
@@ -327,6 +329,10 @@ export function StatsView({ history, settings, onOpenSettings, onOpenUpgrade }: 
 
       <div className="relative">
         {/* 2. Weekly Activity Chart (Glowing Area) */}
+        <div className="mb-4">
+          <WeightTrendsChart data={transformWeightData(history)} />
+        </div>
+
         {!isPremium && (
           <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-background/60 backdrop-blur-sm rounded-[2rem] border border-white/5 mt-[-10px] pb-4">
             <div className="bg-card/90 backdrop-blur-2xl border border-border/50 p-6 rounded-[2.5rem] shadow-2xl flex flex-col items-center text-center max-w-[280px]">

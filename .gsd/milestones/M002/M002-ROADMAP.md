@@ -52,7 +52,7 @@ completed_at:
 - [x] **S02: Weight Tracking Integration** `risk:low` `depends:[S01]`
   > After this: Journaling supports weight logging (+/- 1kg controls) and saves to local storage.
 
-- [ ] **S03: Weight Trends Visualization** `risk:low` `depends:[S02]`
+- [x] **S03: Weight Trends Visualization** `risk:low` `depends:[S02]`
   > After this: Info Tab displays a compact weight trend line chart.
 
 ---

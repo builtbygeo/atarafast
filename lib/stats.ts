@@ -6,6 +6,37 @@ export interface StreakStats {
   longestStreak: number
 }
 
+export interface WeightPoint {
+  date: string
+  weight: number
+}
+
+/**
+ * Transforms fasting records into weight trend points.
+ * Filters out records without weight data and ensures unique dates (latest entry per day).
+ */
+export function transformWeightData(history: FastingRecord[]): WeightPoint[] {
+  const points = history
+    .filter((r) => r.weight !== undefined && r.weight !== null)
+    .map((r) => ({
+      date: new Date(r.startTime).toISOString().split('T')[0],
+      weight: r.weight as number,
+    }))
+    // Keep only the latest entry if multiple records exist for the same day
+    .reduce((acc, curr) => {
+      const existing = acc.find((p) => p.date === curr.date)
+      if (!existing) {
+        acc.push(curr)
+      } else {
+        existing.weight = curr.weight // Assume newer data has higher index in history
+      }
+      return acc
+    }, [] as WeightPoint[])
+    .sort((a, b) => a.date.localeCompare(b.date))
+
+  return points
+}
+
 /**
  * Calculates current and longest streaks based on completed fasts.
  * A streak is defined as consecutive calendar days with at least one completed fast.
