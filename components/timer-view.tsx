@@ -419,25 +419,6 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
             onCancel={() => setShowEditStartTime(false)}
           />
         )}
-
-        <AlertDialog open={showLateGreeting} onOpenChange={setShowLateGreeting}>
-          <AlertDialogContent className="max-w-[320px] rounded-[2.5rem] border-border bg-card">
-            <AlertDialogHeader>
-              <AlertDialogTitle className="text-center font-black text-xl">{t.fastComplete}</AlertDialogTitle>
-              <AlertDialogDescription className="text-center mt-3 text-sm font-medium leading-relaxed">
-                {t.lateGreetingDesc}
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter className="flex-row mt-6 w-full gap-0">
-              <AlertDialogAction onClick={() => {
-                setShowLateGreeting(false)
-                performEndFast()
-              }} className="w-full h-12 rounded-2xl bg-primary text-primary-foreground font-bold hover:bg-primary/90 transition-all uppercase tracking-widest text-[13px]">
-                {t.completeFast || "COMPLETE FAST"}
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
       </div>
     )
   }

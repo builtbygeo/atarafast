@@ -79,3 +79,6 @@ vendor/
 *.log
 .cache/
 tmp/
+test_*.ts
+*.test.js
+.DS_Store
