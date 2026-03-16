@@ -40,7 +40,7 @@ export default function TermsPage() {
 
                     <section>
                         <h2 className="text-lg font-bold text-white mb-3">3. Free Trial and Subscription</h2>
-                        <p>Atara offers a <strong className="text-white">14-day free trial</strong> for the Atara Pro subscription plan. During the trial period, you will have full access to all premium features.</p>
+                        <p>Atara offers a <strong className="text-white">14-day free trial</strong> for the Atara subscription plan. During the trial period, you will have full access to all premium features.</p>
                         <ul className="list-disc list-inside mt-3 space-y-1.5">
                             <li>Your payment method will be charged at the end of the free trial unless you cancel before the trial period ends.</li>
                             <li>Subscriptions automatically renew monthly unless cancelled.</li>
@@ -56,7 +56,7 @@ export default function TermsPage() {
 
                     <section>
                         <h2 className="text-lg font-bold text-white mb-3">5. User Accounts</h2>
-                        <p>To access Atara Pro features, you must create an account. You are responsible for maintaining the confidentiality of your account credentials and for all activities that occur under your account.</p>
+                        <p>To access Atara features, you must create an account. You are responsible for maintaining the confidentiality of your account credentials and for all activities that occur under your account.</p>
                     </section>
 
                     <section>

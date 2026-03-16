@@ -14,7 +14,7 @@ export function LifetimeOfferLink() {
         <Dialog>
             <DialogTrigger asChild>
                 <button className="text-primary font-bold hover:underline transition-all cursor-pointer">
-                    Get Atara Pro Lifetime for just €49 (one-time payment)
+                    Get Atara Lifetime for just €49 (one-time payment)
                 </button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-md bg-zinc-950 border border-zinc-800 text-white">

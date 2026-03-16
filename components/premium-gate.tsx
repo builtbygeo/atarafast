@@ -4,24 +4,36 @@ import { ReactNode } from 'react'
 import { motion } from 'framer-motion'
 import { Lock, Sparkles } from 'lucide-react'
 import { useSubscription, startCheckout } from '@/lib/subscription'
+import { getCompletedFastCount } from '@/lib/quota'
 import { ENABLE_PREMIUM } from '@/lib/features'
 
 interface PremiumGateProps {
     children: ReactNode
     fallback?: ReactNode
+    requirements?: { minFasts?: number; maxDaily?: number }
+    reason?: string
 }
 
-export function PremiumGate({ children, fallback = null }: PremiumGateProps) {
+export function PremiumGate({ children, fallback = null, requirements, reason }: PremiumGateProps) {
     const { isPremium } = useSubscription()
+    const fastCount = getCompletedFastCount()
 
     if (!ENABLE_PREMIUM) {
         return <>{children}</>
     }
 
-    return <UpgradeCard featureName={featureName} />
+    if (isPremium) {
+        return <>{children}</>
+    }
+
+    if (requirements?.minFasts && fastCount >= requirements.minFasts) {
+        return <>{children}</>
+    }
+
+    return <UpgradeCard reason={reason} />
 }
 
-function UpgradeCard({ featureName }: { featureName?: string }) {
+function UpgradeCard({ reason }: { reason?: string }) {
     return (
         <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
@@ -33,10 +45,10 @@ function UpgradeCard({ featureName }: { featureName?: string }) {
                 <Lock className="w-5 h-5" style={{ color: '#22c55e' }} />
             </div>
             <h3 className="font-bold text-white text-sm mb-1">
-                {featureName ? `${featureName} requires Atara Pro` : 'Atara Pro Feature'}
+                {reason || 'Feature Unavailable'}
             </h3>
             <p className="text-xs mb-4" style={{ color: 'rgba(255,255,255,0.5)' }}>
-                Start your 14-day free trial to unlock this and all premium features.
+                {reason ? 'Complete requirements to unlock.' : 'Start your 14-day free trial to unlock this and all premium features.'}
             </p>
             <button
                 onClick={() => startCheckout()}
@@ -44,7 +56,7 @@ function UpgradeCard({ featureName }: { featureName?: string }) {
                 style={{ backgroundColor: '#22c55e', color: '#0f0f0f' }}
             >
                 <Sparkles className="w-4 h-4" />
-                Start Free Trial
+                {reason ? 'Upgrade to Unlock' : 'Start Free Trial'}
             </button>
         </motion.div>
     )

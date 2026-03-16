@@ -46,13 +46,16 @@ completed_at:
 
 ## Slices
 
-- [ ] **S01: AI Quota & Feature Democratization** `risk:medium` `depends:[]`
+- [x] **S01: AI Quota & Feature Democratization** `risk:medium` `depends:[]`
   > After this: AI and Dashboard features are unlocked. AI usage is limited to 1/day, requiring 5 prior fasts.
 
-- [ ] **S02: Weight Tracking Integration** `risk:low` `depends:[S01]`
+- [x] **S02: Weight Tracking Integration** `risk:low` `depends:[S01]`
   > After this: Journaling supports weight logging (+/- 1kg controls) and saves to local storage.
 
-- [ ] **S03: Weight Trends Visualization** `risk:low` `depends:[S02]`
+- [x] **S03: Weight Trends Visualization** `risk:low` `depends:[S02]`
   > After this: Info Tab displays a compact weight trend line chart.
+- [ ] **S04: Debug and Restore Stats and Analytics** `risk:high` `depends:[S03]`
+  > After this: Info tab stats, weight trends, and streak visualizations are operational.
+
 
 ---

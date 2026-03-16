@@ -58,7 +58,7 @@ export default function Home() {
 
   const handleSaveJournal = useCallback((data: JournalData) => {
     if (journalRecord) {
-      updateHistoryRecord(journalRecord.id, { journalData: data })
+      updateHistoryRecord(journalRecord.id, { journalData: data, weight: data.weight })
       refreshHistory()
     }
     setJournalRecord(null)

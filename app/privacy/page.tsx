@@ -40,7 +40,7 @@ export default function PrivacyPage() {
                         <p>When using Atara without an account, <strong className="text-white">all your fasting data is stored exclusively on your device</strong> using the browser&apos;s local storage. This data never leaves your device and is not accessible to us.</p>
                         <p className="mt-2">This includes: fasting start/end times, completion status, target hours, and history.</p>
 
-                        <h3 className="font-semibold text-white/90 mb-2 mt-4">2b. Account Data (Atara Pro Subscribers)</h3>
+                        <h3 className="font-semibold text-white/90 mb-2 mt-4">2b. Account Data (Atara Subscribers)</h3>
                         <p>When you create an account, we collect via <strong className="text-white">Clerk</strong> (our authentication provider):</p>
                         <ul className="list-disc list-inside mt-2 space-y-1">
                             <li>Email address</li>
@@ -53,7 +53,7 @@ export default function PrivacyPage() {
                         <p>Payments are processed by <strong className="text-white">Stripe</strong>. We do not store your card details. Stripe collects and processes payment information in accordance with their own privacy policy. We receive only a subscription status identifier.</p>
 
                         <h3 className="font-semibold text-white/90 mb-2 mt-4">2d. Future: Cloud Sync</h3>
-                        <p>When cloud sync is enabled (a future Atara Pro feature), your fasting history will be stored securely in our database. You will be explicitly notified before this feature is activated.</p>
+                        <p>When cloud sync is enabled (a future Atara feature), your fasting history will be stored securely in our database. You will be explicitly notified before this feature is activated.</p>
                     </section>
 
                     <section>

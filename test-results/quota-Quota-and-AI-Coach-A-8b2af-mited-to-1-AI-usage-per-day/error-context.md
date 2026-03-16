@@ -1,0 +1,49 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e1]:
+  - generic [ref=e7]:
+    - generic [ref=e8]:
+      - img "Atara Logo" [ref=e10]
+      - heading "ATARA" [level=1] [ref=e11]
+    - generic [ref=e16]:
+      - generic [ref=e17]:
+        - generic [ref=e20]:
+          - paragraph [ref=e21]: gag1000x@icloud.com
+          - button "Edit" [ref=e22] [cursor=pointer]:
+            - img [ref=e23]
+        - generic [ref=e25]:
+          - generic [ref=e26]:
+            - generic [ref=e28]:
+              - generic:
+                - group
+                - textbox "Enter verification code" [active] [ref=e29]
+            - button "Didn't receive a code? Resend (23)" [disabled]
+          - generic [ref=e31]:
+            - button "Continue" [ref=e32] [cursor=pointer]:
+              - generic [ref=e33]:
+                - text: Continue
+                - img [ref=e34]
+            - link "Use another method" [ref=e37] [cursor=pointer]:
+              - /url: http://localhost:3000/sign-in/factor-one
+      - generic [ref=e40]:
+        - generic [ref=e42]:
+          - paragraph [ref=e43]: Secured by
+          - link "Clerk logo" [ref=e44] [cursor=pointer]:
+            - /url: https://go.clerk.com/components
+            - img [ref=e45]
+        - paragraph [ref=e50]: Development mode
+    - generic [ref=e51]:
+      - link "← Back to Website" [ref=e52] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e53]: ←
+        - generic [ref=e54]: Back to Website
+      - generic [ref=e55]:
+        - link "Privacy" [ref=e56] [cursor=pointer]:
+          - /url: //privacy
+        - link "Terms" [ref=e58] [cursor=pointer]:
+          - /url: //terms
+  - button "Open Next.js Dev Tools" [ref=e64] [cursor=pointer]:
+    - img [ref=e65]
+  - alert [ref=e68]
+```

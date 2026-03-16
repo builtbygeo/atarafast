@@ -127,7 +127,7 @@ export function PresetDetail({ preset, isActive, isCurrentActivePreset, onBack, 
               className="w-full flex items-center justify-center gap-2 py-3.5 rounded-2xl text-xs font-black uppercase tracking-widest transition-all active:scale-[0.98] shadow-xl bg-secondary text-primary border border-primary/20"
             >
               <Lock className="w-3.5 h-3.5" />
-              Upgrade to Atara Pro
+              Upgrade to Atara
             </button>
           ) : isActive ? (
             isCurrentActivePreset ? (

@@ -83,7 +83,7 @@ export const bg = {
   seeMore: "Виж още",
   showingLast30Days: "Показване на последните 30 дни",
   unlockFullHistory: "Отключи пълната история",
-  historyLimitNote: "Безплатният план пази история до 30 дни. Апгрейднете до Atara Pro за достъп до всички ваши записи.",
+  historyLimitNote: "Безплатният план пази история до 30 дни. Апгрейднете до Atara за достъп до всички ваши записи.",
 
   // Info
   statsTitle: "Инфо",
@@ -124,9 +124,9 @@ export const bg = {
   duration: "ПРОДЪЛЖИТЕЛНОСТ",
 
   upgradeTitle: "Отключете пълния си потенциал",
-  upgradeDesc: "Вземете повече от вашите данни с Atara Pro",
+  upgradeDesc: "Вземете повече от вашите данни с Atara",
   upgradeNow: "Абонирай се",
-  upgradeSuccess: "Абонаментът е успешен! Добре дошли в Atara Pro",
+  upgradeSuccess: "Абонаментът е успешен! Добре дошли в Atara",
   upgradeError: "Възникна грешка",
 
   // Share Cards
@@ -224,11 +224,11 @@ export const bg = {
   createFreeAccount: "Създай безплатен профил",
   alreadyHaveAccount: "Вече имате профил? Вход",
   planType: "План",
-  ataraPro: "Atara Pro",
-  ataraPlus: "Atara Pro",
+  ataraPro: "Atara",
+  ataraPlus: "Atara",
   freePlan: "Безплатен план",
   fullAccessToFeatures: "Имате пълен достъп до всички функции за проследяване на метаболизма.",
-  upgradeToAtaraPlus: "Обновете до Atara Pro за пълен достъп.",
+  upgradeToAtaraPlus: "Обновете до Atara за пълен достъп.",
   trialEnded: "Вашият безплатен пробен период изтече.",
   viewUpgradePlans: "Виж планове за ъпгрейд",
   manageSubscription: "Управление на абонамент",
@@ -427,7 +427,7 @@ export const en: typeof bg = {
   seeMore: "See more",
   showingLast30Days: "Showing last 30 days",
   unlockFullHistory: "Unlock Full History",
-  historyLimitNote: "Free plan stores history for 30 days. Upgrade to Atara Pro for 1 per day (5 per week) access to your records.",
+  historyLimitNote: "Free plan stores history for 30 days. Upgrade to Atara for 1 per day (5 per week) access to your records.",
 
   statsTitle: "Info",
   statsSubtitle: "Your fasting overview",
@@ -467,9 +467,9 @@ export const en: typeof bg = {
   duration: "DURATION",
 
   upgradeTitle: "Unlock your full potential",
-  upgradeDesc: "Get more out of your data with Atara Pro",
+  upgradeDesc: "Get more out of your data with Atara",
   upgradeNow: "Upgrade Now",
-  upgradeSuccess: "Upgrade successful! Welcome to Atara Pro",
+  upgradeSuccess: "Upgrade successful! Welcome to Atara",
   upgradeError: "There was an error upgrading your account",
 
   // Share Cards
@@ -568,11 +568,11 @@ export const en: typeof bg = {
   createFreeAccount: "Create Free Account",
   alreadyHaveAccount: "Already have an account? Sign In",
   planType: "Plan",
-  ataraPro: "Atara Pro",
-  ataraPlus: "Atara Pro",
+  ataraPro: "Atara",
+  ataraPlus: "Atara",
   freePlan: "Free Plan",
   fullAccessToFeatures: "You have full access to all metabolic tracking features.",
-  upgradeToAtaraPlus: "Upgrade to Atara Pro for full access.",
+  upgradeToAtaraPlus: "Upgrade to Atara for full access.",
   trialEnded: "Your free trial has expired.",
   viewUpgradePlans: "View or Upgrade Plan",
   manageSubscription: "Manage Subscription",
