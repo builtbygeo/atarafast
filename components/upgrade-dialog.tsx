@@ -41,7 +41,7 @@ export function UpgradeDialog({ open, onClose }: UpgradeDialogProps) {
                         <Sparkles className="h-8 w-8" />
                         <div className="absolute inset-0 bg-primary/20 blur-xl rounded-full" />
                     </div>
-                    <h2 className="text-2xl font-black text-foreground tracking-tight mb-2">Upgrade to Atara Pro</h2>
+                    <h2 className="text-2xl font-black text-foreground tracking-tight mb-2">Upgrade to Atara</h2>
                     <p className="text-sm text-muted-foreground max-w-[280px] leading-relaxed">
                         Unlock advanced statistics, AI coaching, all fasting protocols, and 1 per day (5 per week) features.
                     </p>
@@ -105,7 +105,7 @@ export function UpgradeDialog({ open, onClose }: UpgradeDialogProps) {
                                     </span>
                                     <span className="font-black text-lg text-foreground">€49<span className="text-xs font-normal text-muted-foreground"> one-time</span></span>
                                 </div>
-                                <p className="text-xs font-medium text-muted-foreground">Pay once, use Atara Pro forever.</p>
+                                <p className="text-xs font-medium text-muted-foreground">Pay once, use Atara forever.</p>
                                 {loading === lifetimeId && <span className="absolute inset-y-0 right-4 flex items-center"><div className="animate-spin h-4 w-4 border-2 border-primary border-t-transparent rounded-full" /></span>}
                             </button>
                         )}
@@ -115,7 +115,7 @@ export function UpgradeDialog({ open, onClose }: UpgradeDialogProps) {
                                 onClick={() => handleSelect("")}
                                 className="w-full py-3 text-xs font-bold text-muted-foreground hover:text-foreground transition-colors uppercase tracking-[0.2em]"
                             >
-                                Already have Atara Pro? Manage Subscription
+                                Already have Atara? Manage Subscription
                             </button>
                         </div>
                     </div>

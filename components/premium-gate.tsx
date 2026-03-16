@@ -4,6 +4,7 @@ import { ReactNode } from 'react'
 import { motion } from 'framer-motion'
 import { Lock, Sparkles } from 'lucide-react'
 import { useSubscription, startCheckout } from '@/lib/subscription'
+import { getCompletedFastCount } from '@/lib/quota'
 import { ENABLE_PREMIUM } from '@/lib/features'
 
 interface PremiumGateProps {
@@ -15,12 +16,17 @@ interface PremiumGateProps {
 
 export function PremiumGate({ children, fallback = null, requirements, reason }: PremiumGateProps) {
     const { isPremium } = useSubscription()
+    const fastCount = getCompletedFastCount()
 
     if (!ENABLE_PREMIUM) {
         return <>{children}</>
     }
 
     if (isPremium) {
+        return <>{children}</>
+    }
+
+    if (requirements?.minFasts && fastCount >= requirements.minFasts) {
         return <>{children}</>
     }
 

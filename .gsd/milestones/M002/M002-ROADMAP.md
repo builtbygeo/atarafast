@@ -54,5 +54,8 @@ completed_at:
 
 - [x] **S03: Weight Trends Visualization** `risk:low` `depends:[S02]`
   > After this: Info Tab displays a compact weight trend line chart.
+- [ ] **S04: Debug and Restore Stats and Analytics** `risk:high` `depends:[S03]`
+  > After this: Info tab stats, weight trends, and streak visualizations are operational.
+
 
 ---

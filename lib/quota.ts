@@ -1,32 +1,44 @@
-import { getHistory, getAiUsage } from './storage.ts';
+import { getHistory, getAiUsage, type AiUsage, type FastingRecord } from './storage';
 
 export function getFastCount(): number {
   return getHistory().filter(record => record.completed).length;
 }
 
+export function getCompletedFastCount(): number {
+    return getHistory().filter(record => record.completed).length;
+}
+
 export interface QuotaResult {
   canUse: boolean;
   reason?: string;
+  remaining?: number;
 }
 
-/**
- * Checks if AI usage is permitted.
- * Rules:
- * - AI usage requires 5 completed fasts.
- * - Free users: limited to 1 AI usage per day (total limit).
- * - Premium users: unlimited daily usage (placeholder rule, need to adjust if daily limit applies).
- *   Actually the task says: "limited to 1 AI usage per day (unless user is premium)".
- *   Wait, "1/day" is for everyone? Or "1/day" is the limit for free, and premium is more?
- *   Task plan says: "checkAiQuota accurately returns false if usageToday >= 1 (unless user is premium)."
- */
-export function checkAiQuota(isPremium: boolean, fastCount: number, usageToday: number): QuotaResult {
-  if (fastCount < 5) {
-    return { canUse: false, reason: "You need 5 completed fasts to unlock AI features." };
-  }
+export function checkAiQuota(isPremium: boolean): QuotaResult {
+  const usage = getAiUsage();
+  const now = new Date();
 
-  if (!isPremium && usageToday >= 1) {
-    return { canUse: false, reason: "Daily limit reached. Upgrade to Premium for more." };
-  }
+  if (!isPremium) {
+    if (usage.monthlyCount >= 1) {
+      return { canUse: false, reason: "Monthly limit reached (1/mo for Free plan)", remaining: 0 };
+    }
+    return { canUse: true, remaining: 1 - usage.monthlyCount };
+  } else {
+    // Premium: 1 per day
+    // FIX: Using Date().toISOString() format check or just comparing full dates
+    if (usage.lastUsedDate) {
+      const last = new Date(usage.lastUsedDate);
+      const now = new Date();
+      
+      const isToday =
+        last.getDate() === now.getDate() &&
+        last.getMonth() === now.getMonth() &&
+        last.getFullYear() === now.getFullYear();
 
-  return { canUse: true };
+      if (isToday) {
+        return { canUse: false, reason: "Daily limit reached (Atara)", remaining: 0 };
+      }
+    }
+    return { canUse: true, remaining: 1 };
+  }
 }

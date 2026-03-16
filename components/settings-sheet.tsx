@@ -55,10 +55,6 @@ export function SettingsSheet({ open, onClose, onDataCleared, onOpenUpgrade }: S
   }
 
   function handleImport() {
-    if (!isPremium) {
-      onOpenUpgrade?.()
-      return
-    }
     const input = document.createElement("input")
     input.type = "file"
     input.accept = ".json"
@@ -82,10 +78,6 @@ export function SettingsSheet({ open, onClose, onDataCleared, onOpenUpgrade }: S
   }
 
   function handleExport() {
-    if (!isPremium) {
-      onOpenUpgrade?.()
-      return
-    }
     const data = exportData()
     const blob = new Blob([data], { type: "application/json" })
     const url = URL.createObjectURL(blob)
@@ -421,20 +413,18 @@ export function SettingsSheet({ open, onClose, onDataCleared, onOpenUpgrade }: S
             <h3 className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-1 ml-1">{t.data}</h3>
             <div className="grid grid-cols-2 gap-3">
               <button
-                onClick={ENABLE_PREMIUM && !isPremium ? onOpenUpgrade : handleExport}
+                onClick={handleExport}
                 className="relative flex flex-col items-center justify-center gap-2 rounded-2xl bg-secondary/50 p-4 transition-all hover:bg-secondary active:scale-95 border border-border/50"
               >
-                {!isPremium && ENABLE_PREMIUM && <div className="absolute top-2 right-2"><Lock className="w-3 h-3 text-primary/50" /></div>}
-                <Download className={`h-5 w-5 ${!ENABLE_PREMIUM || isPremium ? 'text-primary' : 'text-muted-foreground'}`} />
-                <span className={`text-[10px] font-black uppercase tracking-widest ${!ENABLE_PREMIUM || isPremium ? 'text-foreground/80' : 'text-muted-foreground'}`}>{t.exportData}</span>
+                <Download className={'text-primary'} />
+                <span className={'text-foreground/80'}>{t.exportData}</span>
               </button>
               <button
-                onClick={ENABLE_PREMIUM && !isPremium ? onOpenUpgrade : handleImport}
+                onClick={handleImport}
                 className="relative flex flex-col items-center justify-center gap-2 rounded-2xl bg-secondary/50 p-4 transition-all hover:bg-secondary active:scale-95 border border-border/50"
               >
-                {!isPremium && ENABLE_PREMIUM && <div className="absolute top-2 right-2"><Lock className="w-3 h-3 text-primary/50" /></div>}
-                <Upload className={`h-5 w-5 ${!ENABLE_PREMIUM || isPremium ? 'text-primary' : 'text-muted-foreground'}`} />
-                <span className={`text-[10px] font-black uppercase tracking-widest ${!ENABLE_PREMIUM || isPremium ? 'text-foreground/80' : 'text-muted-foreground'}`}>{t.importData}</span>
+                <Upload className={'text-primary'} />
+                <span className={'text-foreground/80'}>{t.importData}</span>
               </button>
             </div>
           </div>

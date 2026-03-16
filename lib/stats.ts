@@ -17,10 +17,10 @@ export interface WeightPoint {
  */
 export function transformWeightData(history: FastingRecord[]): WeightPoint[] {
   const points = history
-    .filter((r) => r.weight !== undefined && r.weight !== null)
+    .filter((r) => r.weight !== undefined || r.journalData?.weight !== undefined)
     .map((r) => ({
       date: new Date(r.startTime).toISOString().split('T')[0],
-      weight: r.weight as number,
+      weight: (r.weight ?? r.journalData?.weight) as number,
     }))
     // Keep only the latest entry if multiple records exist for the same day
     .reduce((acc, curr) => {
@@ -42,18 +42,23 @@ export function transformWeightData(history: FastingRecord[]): WeightPoint[] {
  * A streak is defined as consecutive calendar days with at least one completed fast.
  */
 export function calculateStreaks(history: FastingRecord[]): StreakStats {
+  console.log("calculateStreaks: history length:", history.length);
   if (history.length === 0) {
     return { currentStreak: 0, longestStreak: 0 }
   }
 
   // Filter for completed fasts and get unique calendar days (start of day)
+  const completedFasts = history.filter((r) => r.completed && r.endTime);
+  console.log("calculateStreaks: completedFasts:", completedFasts);
+
   const completedDays = Array.from(
     new Set(
-      history
-        .filter((r) => r.completed && r.endTime)
-        .map((r) => startOfDay(new Date(r.startTime)).getTime())
+      completedFasts
+        .map((r) => startOfDay(new Date(r.endTime as string)).getTime())
     )
   ).sort((a, b) => b - a) // Sort descending (most recent first)
+
+  console.log("calculateStreaks: completedDays:", completedDays);
 
   if (completedDays.length === 0) {
     return { currentStreak: 0, longestStreak: 0 }

@@ -244,7 +244,7 @@ export function HistoryView({ history, hasHiddenRecords, onHistoryChange }: Hist
                 onClick={() => startCheckout()}
                 className="w-full py-3 rounded-xl bg-primary text-primary-foreground text-xs font-black uppercase tracking-widest shadow-lg shadow-primary/20 active:scale-95 transition-all mt-1"
               >
-                Upgrade to Atara Pro
+                Upgrade to Atara
               </button>
             </div>
           )}

@@ -6,6 +6,7 @@ export interface JournalData {
   difficult: 0 | 1 | 2 | 3
   hungry: 0 | 1 | 2 | 3
   tags: string[]
+  weight?: number
 }
 
 export interface FastingRecord {
@@ -15,7 +16,7 @@ export interface FastingRecord {
   endTime: string | null
   targetHours: number
   completed: boolean
-  apathTime?: string // Апатия - moment of freedom from hunger cravings
+  apathTime?: string 
   notes?: string
   journalData?: JournalData
   weight?: number
@@ -80,7 +81,6 @@ function loadData(): StoredData {
     const raw = localStorage.getItem(STORAGE_KEY)
     if (!raw) return DEFAULT_DATA
     const parsed = JSON.parse(raw)
-    // Deep-ish merge to ensure nested objects like aiUsage and settings exist
     return {
       ...DEFAULT_DATA,
       ...parsed,
@@ -184,7 +184,6 @@ export function getSettings(): AppSettings {
 export function updateSettings(updates: Partial<AppSettings>): AppSettings {
   const data = loadData()
   data.settings = { ...data.settings, ...updates }
-  // Ensure default added for older saves
   if (data.settings.notificationsEnabled === undefined) {
     data.settings.notificationsEnabled = true
   }
@@ -202,7 +201,6 @@ export function exportData(): string {
 export function importData(jsonString: string): boolean {
   try {
     const data = JSON.parse(jsonString) as StoredData
-    // Basic validation
     if (typeof data !== "object" || data === null) return false
     if (!Array.isArray(data.history)) return false
 
@@ -264,7 +262,7 @@ export function markApath(): void {
 }
 
 export function getAiUsage(): AiUsage {
-  const data = loadData() // Load data to get the latest state including potential resets
+  const data = loadData()
   const now = new Date()
   const currentMonth = now.getMonth()
   const currentWeek = Math.floor(now.getDate() / 7)
@@ -300,29 +298,9 @@ export function incrementAiUsage(): void {
   saveData(data)
 }
 
-export function checkAiQuota(isPremium: boolean): { canUse: boolean; reason?: string; remaining?: number } {
-  const usage = getAiUsage()
-  const now = new Date()
-
-  if (!isPremium) {
-    if (usage.monthlyCount >= 1) {
-      return { canUse: false, reason: "Monthly limit reached (1/mo for Free plan)", remaining: 0 }
-    }
-    return { canUse: true, remaining: 1 - usage.monthlyCount }
-  } else {
-    // Premium: 1 per day
-    if (usage.lastUsedDate) {
-      const last = new Date(usage.lastUsedDate)
-      const isToday =
-        last.getDate() === now.getDate() &&
-        last.getMonth() === now.getMonth() &&
-        last.getFullYear() === now.getFullYear()
-
-      if (isToday) {
-        return { canUse: false, reason: "Daily limit reached (Atara Pro)", remaining: 0 }
-      }
-    }
-
-    return { canUse: true, remaining: 1 }
-  }
+export function getLatestWeight(): number | undefined {
+  const history = getHistory();
+  const sorted = [...history].sort((a, b) => new Date(b.startTime).getTime() - new Date(a.startTime).getTime());
+  const record = sorted.find(r => r.weight !== undefined || r.journalData?.weight !== undefined);
+  return record ? (record.weight ?? record.journalData?.weight) : undefined;
 }

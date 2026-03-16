@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { X, Plus, Minus } from 'lucide-react'
-import { JournalData } from '@/lib/storage'
+import { JournalData, getLatestWeight } from '@/lib/storage'
 import { useLang } from '@/lib/language-context'
 
 interface JournalDialogProps {
@@ -26,7 +26,7 @@ export function JournalDialog({ onSave, onSkip, initialData }: JournalDialogProp
     const [hydration, setHydration] = useState<'1L' | '2L' | '3L' | '4L+'>(initialData?.hydration ?? '2L')
     const [difficult, setDifficult] = useState<0 | 1 | 2 | 3>(initialData?.difficult ?? 0)
     const [hungry, setHungry] = useState<0 | 1 | 2 | 3>(initialData?.hungry ?? 0)
-    const [weight, setWeight] = useState<number | undefined>(initialData?.weight)
+    const [weight, setWeight] = useState<number | undefined>(initialData?.weight ?? getLatestWeight())
     const [selectedTags, setSelectedTags] = useState<string[]>(initialData?.tags ?? [])
 
     // ==================== HELPERS ====================

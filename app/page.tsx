@@ -361,7 +361,7 @@ export default async function LandingPage() {
             </Link>
           </div>
 
-          {/* Atara Pro Monthly - Locked */}
+          {/* Atara Monthly - Locked */}
           <div className="rounded-[2rem] p-8 relative overflow-hidden flex flex-col group transition-all duration-300 opacity-60 grayscale" style={{ border: '1px solid rgba(255,255,255,0.08)', backgroundColor: 'rgba(255,255,255,0.02)' }}>
             <div className="absolute inset-0 flex items-center justify-center z-10">
               <span className="bg-black/80 text-white font-bold px-4 py-2 rounded-full border border-white/20">Coming Soon</span>
@@ -385,7 +385,7 @@ export default async function LandingPage() {
             </button>
           </div>
 
-          {/* Atara Pro Yearly - Locked */}
+          {/* Atara Yearly - Locked */}
           <div className="rounded-[2rem] p-8 relative overflow-hidden flex flex-col group transition-all duration-300 opacity-60 grayscale" style={{ border: '1px solid rgba(255,255,255,0.08)', backgroundColor: 'rgba(255,255,255,0.02)' }}>
             <div className="absolute inset-0 flex items-center justify-center z-10">
               <span className="bg-black/80 text-white font-bold px-4 py-2 rounded-full border border-white/20">Coming Soon</span>
