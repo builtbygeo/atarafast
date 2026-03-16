@@ -33,7 +33,6 @@ export default function Home() {
   useEffect(() => {
     setMounted(true)
     const settings = getSettings()
-    alert("Onboarding Check: " + JSON.stringify(settings));
     if (!settings.hasCompletedOnboarding) {
       setShowOnboarding(true)
     }
