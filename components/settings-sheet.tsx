@@ -68,6 +68,7 @@ export function SettingsSheet({ open, onClose, onDataCleared, onOpenUpgrade }: S
           alert(t.importSuccess)
           onDataCleared() // Refresh UI
           onClose()
+          window.location.reload()
         } else {
           alert(t.importError)
         }
