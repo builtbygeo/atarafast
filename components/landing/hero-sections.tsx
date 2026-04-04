@@ -9,7 +9,7 @@ const ACCENT = "#22c55e" // Using Atara's green instead of amber
 
 export function LandingHero() {
   return (
-    <section id="hero" className="relative pt-24 pb-12 px-6 min-h-screen flex items-center">
+    <section id="hero" className="relative pt-28 pb-12 px-6 min-h-screen flex items-center">
       <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center w-full">
         {/* Left: Text content */}
         <div className="flex flex-col items-center lg:items-start text-center lg:text-left">
