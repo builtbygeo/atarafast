@@ -9,8 +9,8 @@ const ACCENT = "#22c55e" // Using Atara's green instead of amber
 
 export function LandingHero() {
   return (
-    <section id="hero" className="relative pt-28 pb-16 px-6">
-      <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+    <section id="hero" className="relative pt-24 pb-12 px-6 min-h-screen flex items-center">
+      <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center w-full">
         {/* Left: Text content */}
         <div className="flex flex-col items-center lg:items-start text-center lg:text-left">
           {/* Label pill */}
@@ -74,9 +74,9 @@ export function LandingHero() {
 
         {/* Right: Phone image - BIGGER */}
         <div className="relative flex justify-center lg:justify-end">
-          <div className="relative">
-            {/* Phone frame glow */}
-            <div className="absolute inset-0 bg-primary/30 blur-[80px] rounded-[3rem] scale-90" />
+          <div className="relative overflow-hidden rounded-[3rem]">
+            {/* Phone frame glow - reduced blur for Safari */}
+            <div className="absolute inset-0 bg-primary/20 blur-xl rounded-[3rem]" style={{ margin: '-20px' }} />
             <div className="relative w-[320px] sm:w-[400px] lg:w-[550px] rounded-[3rem] overflow-hidden border-4 border-white/10 shadow-2xl">
               <Image
                 src="/atarahero.webp"
