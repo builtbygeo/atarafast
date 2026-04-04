@@ -91,7 +91,7 @@ export default async function LandingPage() {
   return (
     <div className="min-h-screen bg-[#0f0f0f] text-white dark" style={{ fontFamily: 'var(--font-inter), Inter, system-ui, sans-serif' }}>
       {/* Nav */}
-      <nav className="fixed top-0 inset-x-0 z-50 flex items-center justify-between px-6 pt-4 pb-4 border-b" style={{ backgroundColor: '#0f0f0f', borderColor: 'rgba(255,255,255,0.05)' }}>
+      <nav className="fixed top-0 inset-x-0 z-50 flex items-center justify-between px-6 pt-4 pb-4 border-b backdrop-blur-md" style={{ backgroundColor: 'rgba(15,15,15,0.95)', borderColor: 'rgba(255,255,255,0.05)' }}>
         <div className="flex items-center">
           <Logo className="w-24 text-white" />
         </div>
