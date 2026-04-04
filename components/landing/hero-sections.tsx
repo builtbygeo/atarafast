@@ -24,32 +24,23 @@ export function LandingHero() {
 
           {/* H1 */}
           <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tighter mb-6 leading-[0.95]">
-            Your body<br />
-            already knows<br />
-            how to<br />
-            <span style={{ color: ACCENT }}>fix itself.</span>
+            You&apos;ve tried cutting carbs.<br />
+            You haven&apos;t tried <span style={{ color: ACCENT }}>this.</span>
           </h1>
 
           {/* Subheadline */}
           <p className="text-lg sm:text-xl text-white/50 max-w-xl mx-auto lg:mx-0 mb-10 leading-relaxed">
-            Give it a 16-hour window. No diet changes. No willpower. Just timing — and watch what happens inside.
+            Intermittent fasting works — but only when you track it. Atara shows you exactly which metabolic phase your body is in, in real time. No diet. No supplements. Just a window.
           </p>
 
           {/* CTAs */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-8">
-            <Link
-              href="/app"
-              prefetch={false}
+            <a
+              href="https://app.atarafast.com"
               className="inline-flex items-center gap-2 px-8 py-4 rounded-xl font-bold text-base transition-all hover:opacity-90"
               style={{ backgroundColor: ACCENT, color: "#000" }}
             >
-              Try Atara Free
-            </Link>
-            <a
-              href="#science"
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-xl font-medium text-white/70 border border-white/10 hover:border-white/30 hover:bg-white/5 transition-all"
-            >
-              See How It Works
+              Start Fasting Free
             </a>
           </div>
 
@@ -98,6 +89,25 @@ export function LandingHero() {
             </div>
           </div>
         </div>
+      </div>
+    </section>
+  )
+}
+
+// ============================================
+// NEW: Why Diets Fail Section
+// ============================================
+
+export function LandingWhyDietsFail() {
+  return (
+    <section id="why-diets-fail" className="py-24 px-6 overflow-hidden">
+      <div className="max-w-4xl mx-auto text-center">
+        <h2 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tighter mb-6 leading-tight text-white">
+          Most diets fail before week two. Here&apos;s why.
+        </h2>
+        <p className="text-lg md:text-xl text-white/50 max-w-2xl mx-auto leading-relaxed">
+          It&apos;s not your discipline. It&apos;s not your genes. It&apos;s that every diet asks you to fight your biology — count calories, resist cravings, change everything you eat. Your brain is not wired to sustain that. Intermittent fasting works with your biology instead of against it. You don&apos;t change what you eat. You change when. And that changes everything.
+        </p>
       </div>
     </section>
   )
@@ -307,6 +317,9 @@ export function LandingWhyTrack() {
           </div>
 
           <div className="flex flex-col gap-3">
+            <p className="italic text-white/50 mb-1 text-sm md:text-base">
+              Intention without data is just hope — and hope is why most fasting streaks end at day 3.
+            </p>
             {trackReasons.map((r, i) => (
               <div
                 key={i}

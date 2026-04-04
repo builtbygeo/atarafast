@@ -8,6 +8,7 @@ import MetabolicJourneyChart from '@/components/MetabolicJourneyChart'
 import { PhilosophyDrawer } from '@/components/landing/PhilosophyDrawer'
 import {
   LandingHero,
+  LandingWhyDietsFail,
   LandingScience,
   LandingAudience,
   LandingWhyTrack,
@@ -32,23 +33,23 @@ export const dynamic = 'force-dynamic'
 const features = [
   {
     icon: <Timer className="w-8 h-8 text-primary" />,
-    title: 'Metabolic Phase Timer',
-    desc: 'Watch your body shift from sugar burning to ketosis in real time. Color-coded phases make complex biology instantly readable.',
+    title: 'Know exactly where your body is — right now',
+    desc: 'Watch your body shift from sugar-burning to fat-burning to autophagy in real time. No guessing. No biology degree required.',
   },
   {
     icon: <BarChart3 className="w-8 h-8 text-primary" />,
-    title: 'Deep Analytics',
-    desc: 'Weekly charts, completion rates, streaks — everything you need to understand and improve your fasting practice.',
+    title: 'See what\'s working before you feel it',
+    desc: 'Streaks, completion rates, weekly trends — your data tells you what\'s improving before your body does.',
   },
   {
     icon: <Moon className="w-8 h-8 text-primary" />,
-    title: 'Science-Backed Plans',
-    desc: 'From Circadian 12h to Warrior 20:4 — every plan is grounded in metabolic science and optimized for real results.',
+    title: 'A plan matched to where you are — not where you wish you were',
+    desc: 'From 12-hour Circadian to 20-hour Warrior. Start where you are. Progress when you\'re ready.',
   },
   {
     icon: <Smartphone className="w-8 h-8 text-primary" />,
-    title: 'Install as an App',
-    desc: 'Tap "Share" then "Add to Home Screen" on iOS, or "Install App" from your browser menu on Android. Feels like a native app.',
+    title: 'On your home screen in 3 seconds. No App Store.',
+    desc: 'Tap Share → Add to Home Screen on iOS. Tap Install on Android. Done. No account. No tracking by Apple or Google.',
   },
   {
     icon: <Globe2 className="w-8 h-8 text-primary" />,
@@ -110,6 +111,9 @@ export default async function LandingPage() {
 
       {/* NEW: Hero Section */}
       <LandingHero />
+
+      {/* NEW: Why Diets Fail Section */}
+      <LandingWhyDietsFail />
 
       {/* NEW: Science Section */}
       <LandingScience />
@@ -361,11 +365,8 @@ export default async function LandingPage() {
             </Link>
           </div>
 
-          {/* Atara Monthly - Locked */}
-          <div className="rounded-[2rem] p-8 relative overflow-hidden flex flex-col group transition-all duration-300 opacity-60 grayscale" style={{ border: '1px solid rgba(255,255,255,0.08)', backgroundColor: 'rgba(255,255,255,0.02)' }}>
-            <div className="absolute inset-0 flex items-center justify-center z-10">
-              <span className="bg-black/80 text-white font-bold px-4 py-2 rounded-full border border-white/20">Coming Soon</span>
-            </div>
+          {/* Atara Monthly - Waitlist */}
+          <div className="rounded-[2rem] p-8 relative overflow-hidden flex flex-col group transition-all duration-300" style={{ border: '1px solid rgba(255,255,255,0.08)', backgroundColor: 'rgba(255,255,255,0.02)' }}>
             <h3 className="font-black text-lg mb-1 text-white/60 uppercase tracking-widest">Monthly</h3>
             <div className="flex items-baseline gap-1 mt-2">
               <span className="text-5xl font-black text-white/50">€4.99</span>
@@ -380,16 +381,13 @@ export default async function LandingPage() {
                 </li>
               ))}
             </ul>
-            <button disabled className="w-full text-center rounded-xl font-bold py-3.5 border border-white/5 text-white/20 cursor-not-allowed">
-              Locked
-            </button>
+            <a href="mailto:support@atarafast.com?subject=Atara Pro Waitlist" className="w-full inline-block text-center rounded-xl font-bold py-3.5 transition-all text-primary border border-primary hover:bg-primary/10">
+              Join Waitlist
+            </a>
           </div>
 
-          {/* Atara Yearly - Locked */}
-          <div className="rounded-[2rem] p-8 relative overflow-hidden flex flex-col group transition-all duration-300 opacity-60 grayscale" style={{ border: '1px solid rgba(255,255,255,0.08)', backgroundColor: 'rgba(255,255,255,0.02)' }}>
-            <div className="absolute inset-0 flex items-center justify-center z-10">
-              <span className="bg-black/80 text-white font-bold px-4 py-2 rounded-full border border-white/20">Coming Soon</span>
-            </div>
+          {/* Atara Yearly - Waitlist */}
+          <div className="rounded-[2rem] p-8 relative overflow-hidden flex flex-col group transition-all duration-300" style={{ border: '1px solid rgba(255,255,255,0.08)', backgroundColor: 'rgba(255,255,255,0.02)' }}>
             <h3 className="font-black text-lg mb-1 text-white/60 uppercase tracking-widest">Yearly</h3>
             <div className="flex items-baseline gap-1 mt-2">
               <span className="text-5xl font-black text-white/50">€29</span>
@@ -404,11 +402,15 @@ export default async function LandingPage() {
                 </li>
               ))}
             </ul>
-            <button disabled className="w-full text-center rounded-xl font-bold py-3.5 border border-white/5 text-white/20 cursor-not-allowed">
-              Locked
-            </button>
+            <a href="mailto:support@atarafast.com?subject=Atara Pro Waitlist" className="w-full inline-block text-center rounded-xl font-bold py-3.5 transition-all text-primary border border-primary hover:bg-primary/10">
+              Join Waitlist
+            </a>
           </div>
         </div>
+
+        <p className="text-center text-sm mb-12 text-white/60">
+          Launching soon — join the waitlist to get 3 months free at launch.
+        </p>
 
         <div className="text-center text-xs text-white/30 flex items-center justify-center gap-2">
           <svg className="w-4 h-4 opacity-50" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /><path d="m9 12 2 2 4-4" /></svg>
@@ -469,8 +471,8 @@ export default async function LandingPage() {
         <div className="space-y-6">
           {[
             {
-              q: "Atara vs Zero vs Simple: Why choose Atara?",
-              a: "Atara is built by fasters, for fasters. Unlike Zero or Simple, we prioritize aesthetics and privacy above all else. Atara is a PWA that stores data locally, avoiding the cloud-sync tracking inherent in native apps. Plus, our 'Triangle' metabolic progress bar is objectively cooler."
+              q: "I've tried fasting before and quit. Why would this be different?",
+              a: "Most people quit because they track mentally — checking the clock, estimating, guessing. Atara removes all of that. You start a timer. You get a notification when you hit each phase. You see your streak. The app does the cognitive work so you don't have to. Tracking doesn't make fasting harder — it makes quitting feel worse than continuing."
             },
             {
               q: "What is a PWA and why do you use it?",
