@@ -84,7 +84,7 @@ export function SettingsSheet({ open, onClose, onDataCleared, onOpenUpgrade }: S
     const url = URL.createObjectURL(blob)
     const a = document.createElement("a")
     a.href = url
-    a.download = `fasttrack-data-${new Date().toISOString().split("T")[0]}.json`
+    a.download = `atara-fast-data-${new Date().toISOString().split("T")[0]}.json`
     a.click()
     URL.revokeObjectURL(url)
   }

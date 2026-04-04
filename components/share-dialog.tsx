@@ -56,11 +56,21 @@ function ActiveShareCard({ elapsedMs, targetHours, presetId, percentage }: Omit<
 
             {/* Header - ABSURDLY MASSIVE Logo (520px) - God-Tier Branding */}
             <div style={{ position: "relative", zIndex: 5, marginTop: -95, marginBottom: -130 }}>
-                <img 
-                    src="/atara_c2.png" 
-                    alt="Atara" 
-                    style={{ height: 520, width: 520, objectFit: "contain", maxWidth: "none" }} 
-                />
+                <div style={{ 
+                    height: 520, 
+                    width: 520, 
+                    borderRadius: 40,
+                    overflow: 'hidden',
+                    background: 'linear-gradient(160deg, #0a0a0a 0%, #0c180c 50%, #0a0a0a 100%)'
+                }}>
+                    <img 
+                        src="/atara_c2.png"
+                        alt="Atara" 
+                        crossOrigin="anonymous"
+                        loading="eager"
+                        style={{ height: '100%', width: '100%', objectFit: 'contain' }} 
+                    />
+                </div>
             </div>
 
             {/* Content Spacing - Airy & High End */}
@@ -155,11 +165,21 @@ function StatsShareCard({ history }: Omit<StatsShareCardProps, "type">) {
 
             {/* Header - ABSURDLY MASSIVE Logo (520px) */}
             <div style={{ position: "relative", zIndex: 5, marginTop: -95, marginBottom: -130 }}>
-                <img 
-                    src="/atara_c2.png" 
-                    alt="Atara" 
-                    style={{ height: 520, width: 520, objectFit: "contain", maxWidth: "none" }} 
-                />
+                <div style={{ 
+                    height: 520, 
+                    width: 520, 
+                    borderRadius: 40,
+                    overflow: 'hidden',
+                    background: 'linear-gradient(160deg, #0a0a0a 0%, #0c180c 50%, #0a0a0a 100%)'
+                }}>
+                    <img 
+                        src="/atara_c2.png"
+                        alt="Atara" 
+                        crossOrigin="anonymous"
+                        loading="eager"
+                        style={{ height: '100%', width: '100%', objectFit: 'contain' }} 
+                    />
+                </div>
             </div>
 
             <div style={{ textAlign: "center", position: "relative", zIndex: 10, width: "100%", marginTop: 5 }}>
@@ -218,7 +238,9 @@ export function ShareDialog(props: ShareDialogProps) {
         if (!cardRef.current) return
         setLoading(true)
         try {
-            const dataUrl = await toPng(cardRef.current, { cacheBust: true, pixelRatio: 3 })
+            // iOS Safari blank image workaround: call toPng multiple times to warm up canvas cache
+            await toPng(cardRef.current, { cacheBust: false, pixelRatio: 1 })
+            const dataUrl = await toPng(cardRef.current, { cacheBust: true, pixelRatio: 3, preferredFontFormat: 'woff2' })
             if (download || !navigator.share) {
                 const a = document.createElement("a")
                 a.href = dataUrl

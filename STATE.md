@@ -11,6 +11,10 @@
 - **Feature Accessibility**: Ungated the Post-Fast Journal feature for all users.
 - **Safety First**: Added optional chaining and safety checks to translation and history data.
 - **Final Blog & Landing Polish**: Complete "God-Tier" formatting, full Bulgarian translations, fixed 404 links, and restored brand logo across the blog.
+- **Gamification Features**: 
+  - Added a 'Days since last fast' nudge on the inactive timer view. 
+  - Built a robust local-storage Challenges and Milestones engine (tracking streaks, durations, and totals).
+  - Introduced **Opt-In Stackable Programs** (e.g. "The 7-Day Reset") with dynamic progress tracking integrated into the Timer view.
 - **Streak Logic & UI Refresh**: Consolidated robust streak calculations into a shared `lib/stats.ts` utility and overhauled the Info tab UI with premium `lucide-react` icons and a refined aesthetic.
 - **Weekly Activity Chart Fix**: Reverted to a rolling 7-day window for the Info tab chart to ensure constant feedback and accurate "Active Time" averages.
 - **Log Tab Localization & UI**: Fully localized the Log tab, including "Average," "today," "Share," and time units (ч, м). Refined bar chart labels to prevent "Today, Today" duplication.

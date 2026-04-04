@@ -22,17 +22,18 @@ import { ShareDialog } from "@/components/share-dialog"
 import { CompletionAnimation } from "@/components/completion-animation"
 import { Logo } from "@/components/logo"
 import {
+  getActiveFast,
   startFast,
   endFast,
-  getActiveFast,
+  deleteFast,
   getSettings,
   updateActiveFast,
-  deleteFast,
-  getLastFastInfo,
-  addManualFast,
   updateActiveFastStartTime,
+  getLastFastInfo,
+  getActiveProgram,
   type FastingRecord,
 } from "@/lib/storage"
+import { getProgramById, type ActiveProgramState } from "@/lib/programs"
 import { getPresetById, type FastingPreset } from "@/lib/presets"
 import { EditTimeDialog } from "@/components/edit-time-dialog"
 import {
@@ -47,7 +48,7 @@ import {
 } from "@/components/ui/alert-dialog"
 import { useLang } from "@/lib/language-context"
 import { useNotifications } from "@/hooks/use-notifications"
-import { format, addHours } from "date-fns"
+import { format, addHours, differenceInCalendarDays } from "date-fns"
 
 type ViewState = "timer" | "presets" | "detail"
 
@@ -83,8 +84,11 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
   const [confirmEnd, setConfirmEnd] = useState(false)
   const [showShare, setShowShare] = useState(false)
   const [justCompleted, setJustCompleted] = useState(false)
+  const [activeProg, setActiveProg] = useState<ActiveProgramState | null>(null)
   const [showLateGreeting, setShowLateGreeting] = useState(false)
   const hasCelebratedRef = useRef(false)
+
+  const activeDef = activeProg ? getProgramById(activeProg.id) : null
 
   const navigateTo = useCallback(
     (newState: ViewState) => {
@@ -101,6 +105,7 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
     const sett = getSettings()
     setActiveFast(fast)
     setSettings(sett)
+    setActiveProg(getActiveProgram())
     if (fast) {
       setViewState("timer")
       const start = new Date(fast.startTime)
@@ -427,10 +432,24 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
     const lastFastInfo = getLastFastInfo()
     const lastCompleted = history.filter(h => h.completed).sort((a, b) => new Date(b.endTime!).getTime() - new Date(a.endTime!).getTime())[0]
     const isNewUser = history.length === 0
+    let daysSinceLastFast = 0
+    if (lastCompleted && lastCompleted.endTime) {
+      daysSinceLastFast = differenceInCalendarDays(now, new Date(lastCompleted.endTime))
+    }
 
     return (
       <div className="flex flex-col h-full overflow-y-auto px-4 py-4 pb-44 no-scrollbar [touch-action:pan-y]">
         <WeekStatusStrip history={history} activeFast={null} />
+
+        {/* Active Program Card During Fasting */}
+        {activeProg && activeDef && (
+          <div className="w-full max-w-[280px] bg-primary/10 border border-primary/20 rounded-2xl p-3 mb-4 flex items-center justify-between shadow-sm mt-4">
+            <div className="flex flex-col">
+              <span className="text-[9px] font-black uppercase tracking-widest text-primary/80">Active Program</span>
+              <span className="text-sm font-black text-foreground">{String(t?.[activeDef.titleKey as keyof typeof t] || activeDef.titleKey)}</span>
+            </div>
+          </div>
+        )}
 
         {/* New user onboarding nudge */}
         {isNewUser && (
@@ -442,6 +461,22 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
               <p className="text-[10px] font-black text-primary uppercase tracking-[0.2em] mb-1">{t.welcomeTitle || "Добре дошли!"}</p>
               <p className="text-xs text-foreground/80 font-semibold leading-relaxed">
                 {t.welcomeHint || "Изберете план по-долу и прочетете за различните протоколи за гладуване."}
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* Days since last fast nudge */}
+        {!isNewUser && daysSinceLastFast > 0 && (
+          <div className="mt-4 mb-2 bg-secondary/20 border border-border/50 rounded-2xl p-4 flex items-start gap-4 shadow-sm animate-in fade-in slide-in-from-top-2 duration-500">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-orange-500/10 border border-orange-500/20">
+              <Clock className="h-5 w-5 text-orange-400" />
+            </div>
+            <div className="flex flex-col justify-center pt-0.5">
+              <p className="text-sm font-bold text-foreground/90 leading-snug">
+                {daysSinceLastFast === 1 
+                  ? t.timeSinceLastFastSingular 
+                  : (t.timeSinceLastFast || "").replace("{{days}}", String(daysSinceLastFast))}
               </p>
             </div>
           </div>

@@ -1,3 +1,5 @@
+import { ActiveProgramState, FastingProgram, getProgramById, evaluateProgram } from "./programs"
+
 export interface JournalData {
   energy: number     // 1-5
   mental: number     // 1-5
@@ -47,6 +49,8 @@ interface StoredData {
   settings: AppSettings
   lastFastInfo: { presetId: string; targetHours: number } | null
   aiUsage: AiUsage
+  activeProgram: ActiveProgramState | null
+  programBadges: Record<string, number>
 }
 
 const STORAGE_KEY = "fasting-tracker-data"
@@ -72,7 +76,9 @@ const DEFAULT_DATA: StoredData = {
     weeklyCount: 0,
     lastUsedDate: null,
     lastAiReport: null,
-  }
+  },
+  activeProgram: null,
+  programBadges: {}
 }
 
 function loadData(): StoredData {
@@ -147,6 +153,23 @@ export function endFast(): FastingRecord | null {
     completed,
   }
   data.history.push(record)
+
+  if (data.activeProgram) {
+    const programDef = getProgramById(data.activeProgram.id)
+    if (programDef) {
+      const { status, newState } = evaluateProgram(programDef, data.activeProgram, record)
+      if (status === "win") {
+        if (!data.programBadges) data.programBadges = {}
+        data.programBadges[programDef.id] = (data.programBadges[programDef.id] || 0) + 1
+        data.activeProgram = null
+      } else if (status === "continue" || status === "fail") {
+        if (newState) data.activeProgram = newState
+      }
+    } else {
+      data.activeProgram = null
+    }
+  }
+
   data.activeFast = null
   saveData(data)
   return record
@@ -250,6 +273,23 @@ export function addManualFast(
     completed,
   }
   data.history.push(record)
+
+  if (data.activeProgram) {
+    const programDef = getProgramById(data.activeProgram.id)
+    if (programDef) {
+      const { status, newState } = evaluateProgram(programDef, data.activeProgram, record)
+      if (status === "win") {
+        if (!data.programBadges) data.programBadges = {}
+        data.programBadges[programDef.id] = (data.programBadges[programDef.id] || 0) + 1
+        data.activeProgram = null
+      } else if (status === "continue" || status === "fail") {
+        if (newState) data.activeProgram = newState
+      }
+    } else {
+      data.activeProgram = null
+    }
+  }
+
   saveData(data)
   return record
 }
@@ -303,4 +343,33 @@ export function getLatestWeight(): number | undefined {
   const sorted = [...history].sort((a, b) => new Date(b.startTime).getTime() - new Date(a.startTime).getTime());
   const record = sorted.find(r => r.weight !== undefined || r.journalData?.weight !== undefined);
   return record ? (record.weight ?? record.journalData?.weight) : undefined;
+}
+
+export function getActiveProgram(): ActiveProgramState | null {
+  return loadData().activeProgram || null
+}
+
+export function getProgramBadges(): Record<string, number> {
+  return loadData().programBadges || {}
+}
+
+export function joinProgram(id: string): ActiveProgramState | null {
+  const data = loadData()
+  const programDef = getProgramById(id)
+  if (!programDef) return null
+  
+  data.activeProgram = {
+    id,
+    startDate: new Date().toISOString(),
+    progressDays: 0,
+    lastSuccessDate: null
+  }
+  saveData(data)
+  return data.activeProgram
+}
+
+export function quitProgram(): void {
+  const data = loadData()
+  data.activeProgram = null
+  saveData(data)
 }

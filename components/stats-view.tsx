@@ -16,7 +16,7 @@ import {
 import { AreaChart, Area, CartesianGrid, XAxis, YAxis, ResponsiveContainer, Tooltip } from "recharts"
 import { WeightTrendsChart } from "./weight-trends-chart"
 import { transformWeightData } from "@/lib/stats"
-import { ChevronRight, Lock, Sparkles, Settings, Flame, Trophy, Zap } from "lucide-react"
+import { ChevronRight, Lock, Sparkles, Settings, Flame, Trophy, Zap, Clock } from "lucide-react"
 import { PremiumGate } from "./premium-gate"
 import type { FastingRecord } from "@/lib/storage"
 import { useLang } from "@/lib/language-context"
@@ -25,6 +25,8 @@ import { getAiUsage, incrementAiUsage, saveAiReport } from "@/lib/storage"
 import { checkAiQuota } from "@/lib/quota"
 import type { AppSettings } from "@/lib/storage"
 import { calculateStreaks } from "@/lib/stats"
+import { calculateChallenges } from "@/lib/challenges"
+import { ProgramsGrid } from "./programs-grid"
 
 const safeFormat = (date: Date | number | string, formatStr: string, fallback: string = "") => {
   try {
@@ -267,6 +269,8 @@ export function StatsView({ history, settings, onOpenSettings, onOpenUpgrade }: 
     return { daysData, weeklyAvg }
   }, [history, t])
 
+  const challenges = useMemo(() => calculateChallenges(displayHistory), [displayHistory])
+
   const circumference = 2 * Math.PI * 110
   const streakPct = Math.min(100, (stats.currentStreak / Math.max(1, stats.longestStreak)) * 100) || 50
   const strokeDashoffset = circumference - (streakPct / 100) * circumference
@@ -494,6 +498,48 @@ export function StatsView({ history, settings, onOpenSettings, onOpenUpgrade }: 
             </p>
           )}
         </div>
+        {/* 5. Challenges & Badges */}
+        <div className="mb-8">
+          <div className="flex items-center gap-2 mb-4 px-1">
+            <Trophy className="h-5 w-5 text-primary" />
+            <h3 className="text-[17px] font-bold text-foreground tracking-tight">{t?.challengesTitle || "Challenges"}</h3>
+          </div>
+          
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+            {challenges.map((challenge) => {
+              const bgClass = challenge.isUnlocked 
+                ? "bg-primary/5 border-primary/30 shadow-[0_0_15px_rgba(34,197,94,0.1)]" 
+                : "bg-secondary/20 border-border/40 opacity-70 grayscale"
+              
+              const iconClass = challenge.isUnlocked ? "text-primary drop-shadow-md" : "text-muted-foreground"
+              
+              return (
+                <div key={challenge.id} className={`flex flex-col items-center justify-center p-4 rounded-3xl border ${bgClass} transition-all`}>
+                  <div className={`h-10 w-10 flex items-center justify-center rounded-2xl mb-2 border ${challenge.isUnlocked ? 'bg-primary/20 border-primary/40' : 'bg-background/50 border-border'}`}>
+                    {challenge.category === 'streak' && <Flame className={`h-5 w-5 ${iconClass}`} />}
+                    {challenge.category === 'duration' && <Clock className={`h-5 w-5 ${iconClass}`} />}
+                    {challenge.category === 'milestone' && <Trophy className={`h-5 w-5 ${iconClass}`} />}
+                  </div>
+                  <h4 className="text-[10px] font-black justify-center items-center text-center text-foreground tracking-wide line-clamp-2 h-7 leading-tight mt-1 px-1">
+                    {String(t?.[challenge.titleKey as keyof typeof t] || challenge.titleKey)}
+                  </h4>
+                  <div className="w-full bg-background/50 rounded-full h-1.5 mt-2 overflow-hidden border border-border/50">
+                    <div 
+                      className={`h-full ${challenge.isUnlocked ? 'bg-primary' : 'bg-muted-foreground/30'} transition-all duration-1000`}
+                      style={{ width: `${Math.min(100, (challenge.currentProgress / challenge.target) * 100)}%` }}
+                    />
+                  </div>
+                  <span className="text-[9px] font-bold mt-1.5 text-muted-foreground tracking-wider uppercase">
+                    {challenge.currentProgress} / {challenge.target}
+                  </span>
+                </div>
+              )
+            })}
+          </div>
+        </div>
+
+        {/* 6. Active Fasting Programs (Opt-in) */}
+        <ProgramsGrid />
       </div>
     </div>
   )
