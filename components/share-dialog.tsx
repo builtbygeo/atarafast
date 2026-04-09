@@ -61,15 +61,25 @@ function ActiveShareCard({ elapsedMs, targetHours, presetId, percentage }: Omit<
                     width: 520, 
                     borderRadius: 40,
                     overflow: 'hidden',
-                    background: 'linear-gradient(160deg, #0a0a0a 0%, #0c180c 50%, #0a0a0a 100%)'
+                    background: 'linear-gradient(160deg, #0a0a0a 0%, #0c180c 50%, #0a0a0a 100%)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
                 }}>
-                    <img 
-                        src="/atara_c2.png"
-                        alt="Atara" 
-                        crossOrigin="anonymous"
-                        loading="eager"
-                        style={{ height: '100%', width: '100%', objectFit: 'contain' }} 
-                    />
+                    <svg
+                        viewBox="0 0 160 40"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                        style={{ width: 400, height: 'auto' }}
+                    >
+                        <path
+                            d="M 22 30 L 12 10 L 2 30 M 52 10 L 52 30 M 42 10 L 62 10 M 92 30 L 82 10 L 72 30 M 112 30 L 112 10 C 130 10 130 20 112 20 M 112 20 L 125 30 M 158 30 L 148 10 L 138 30"
+                            stroke="white"
+                            strokeWidth="4"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                        />
+                    </svg>
                 </div>
             </div>
 
@@ -170,15 +180,25 @@ function StatsShareCard({ history }: Omit<StatsShareCardProps, "type">) {
                     width: 520, 
                     borderRadius: 40,
                     overflow: 'hidden',
-                    background: 'linear-gradient(160deg, #0a0a0a 0%, #0c180c 50%, #0a0a0a 100%)'
+                    background: 'linear-gradient(160deg, #0a0a0a 0%, #0c180c 50%, #0a0a0a 100%)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
                 }}>
-                    <img 
-                        src="/atara_c2.png"
-                        alt="Atara" 
-                        crossOrigin="anonymous"
-                        loading="eager"
-                        style={{ height: '100%', width: '100%', objectFit: 'contain' }} 
-                    />
+                    <svg
+                        viewBox="0 0 160 40"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                        style={{ width: 400, height: 'auto' }}
+                    >
+                        <path
+                            d="M 22 30 L 12 10 L 2 30 M 52 10 L 52 30 M 42 10 L 62 10 M 92 30 L 82 10 L 72 30 M 112 30 L 112 10 C 130 10 130 20 112 20 M 112 20 L 125 30 M 158 30 L 148 10 L 138 30"
+                            stroke="white"
+                            strokeWidth="4"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                        />
+                    </svg>
                 </div>
             </div>
 
