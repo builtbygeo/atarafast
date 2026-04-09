@@ -67,18 +67,16 @@ function ActiveShareCard({ elapsedMs, targetHours, presetId, percentage }: Omit<
                     justifyContent: 'center'
                 }}>
                     <svg
-                        viewBox="0 0 160 40"
+                        viewBox="0 0 200 200"
                         fill="none"
                         xmlns="http://www.w3.org/2000/svg"
-                        style={{ width: 400, height: 'auto' }}
+                        style={{ width: 350, height: 350 }}
                     >
-                        <path
-                            d="M 22 30 L 12 10 L 2 30 M 52 10 L 52 30 M 42 10 L 62 10 M 92 30 L 82 10 L 72 30 M 112 30 L 112 10 C 130 10 130 20 112 20 M 112 20 L 125 30 M 158 30 L 148 10 L 138 30"
-                            stroke="white"
-                            strokeWidth="4"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                        />
+                        {/* Triangle A */}
+                        <path d="M100 30 L150 150 L50 150 Z" stroke="#22c55e" strokeWidth="8" fill="none" strokeLinejoin="round"/>
+                        <path d="M100 60 L130 130 L70 130 Z" stroke="#22c55e" strokeWidth="4" fill="none" strokeLinejoin="round"/>
+                        {/* Inner triangle */}
+                        <path d="M100 85 L115 110 L85 110 Z" fill="#22c55e"/>
                     </svg>
                 </div>
             </div>
@@ -186,18 +184,16 @@ function StatsShareCard({ history }: Omit<StatsShareCardProps, "type">) {
                     justifyContent: 'center'
                 }}>
                     <svg
-                        viewBox="0 0 160 40"
+                        viewBox="0 0 200 200"
                         fill="none"
                         xmlns="http://www.w3.org/2000/svg"
-                        style={{ width: 400, height: 'auto' }}
+                        style={{ width: 350, height: 350 }}
                     >
-                        <path
-                            d="M 22 30 L 12 10 L 2 30 M 52 10 L 52 30 M 42 10 L 62 10 M 92 30 L 82 10 L 72 30 M 112 30 L 112 10 C 130 10 130 20 112 20 M 112 20 L 125 30 M 158 30 L 148 10 L 138 30"
-                            stroke="white"
-                            strokeWidth="4"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                        />
+                        {/* Triangle A */}
+                        <path d="M100 30 L150 150 L50 150 Z" stroke="#22c55e" strokeWidth="8" fill="none" strokeLinejoin="round"/>
+                        <path d="M100 60 L130 130 L70 130 Z" stroke="#22c55e" strokeWidth="4" fill="none" strokeLinejoin="round"/>
+                        {/* Inner triangle */}
+                        <path d="M100 85 L115 110 L85 110 Z" fill="#22c55e"/>
                     </svg>
                 </div>
             </div>
