@@ -222,6 +222,22 @@ export function ShareDialog(props: ShareDialogProps) {
         if (!cardRef.current) return
         setLoading(true)
         try {
+            // Wait for all images to load first
+            const images = cardRef.current.querySelectorAll('img')
+            await Promise.all(
+                Array.from(images).map(
+                    (img) =>
+                        new Promise((resolve) => {
+                            if (img.complete && img.naturalWidth > 0) {
+                                resolve(true)
+                            } else {
+                                img.onload = () => resolve(true)
+                                img.onerror = () => resolve(true)
+                            }
+                        })
+                )
+            )
+
             // iOS Safari blank image workaround: call toPng multiple times to warm up canvas cache
             await toPng(cardRef.current, { cacheBust: false, pixelRatio: 1 })
             const dataUrl = await toPng(cardRef.current, { cacheBust: true, pixelRatio: 3, preferredFontFormat: 'woff2' })
