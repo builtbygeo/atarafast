@@ -57,10 +57,10 @@ function ActiveShareCard({ elapsedMs, targetHours, presetId, percentage }: Omit<
             {/* Header - ABSURDLY MASSIVE Logo (520px) - God-Tier Branding */}
             <div style={{ position: "relative", zIndex: 5, marginTop: -95, marginBottom: -130 }}>
                 <img 
-                    src="/atara_c2.png"
+                    src="/atara_share.png"
                     alt="Atara"
-                    width={520}
-                    height={520}
+                    width={300}
+                    height={300}
                     style={{ height: 520, width: 'auto', objectFit: 'contain' }}
                 />
             </div>
@@ -158,10 +158,10 @@ function StatsShareCard({ history }: Omit<StatsShareCardProps, "type">) {
             {/* Header - ABSURDLY MASSIVE Logo (520px) */}
             <div style={{ position: "relative", zIndex: 5, marginTop: -95, marginBottom: -130 }}>
                 <img 
-                    src="/atara_c2.png"
+                    src="/atara_share.png"
                     alt="Atara"
-                    width={520}
-                    height={520}
+                    width={300}
+                    height={300}
                     style={{ height: 520, width: 'auto', objectFit: 'contain' }}
                 />
             </div>
