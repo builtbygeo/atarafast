@@ -59,9 +59,9 @@ function ActiveShareCard({ elapsedMs, targetHours, presetId, percentage }: Omit<
                 <img 
                     src="/atara_share.png"
                     alt="Atara"
-                    width={300}
-                    height={300}
-                    style={{ height: 520, width: 'auto', objectFit: 'contain' }}
+                    width={520}
+                    height={520}
+                    style={{ objectFit: 'contain' }}
                 />
             </div>
 
@@ -160,9 +160,9 @@ function StatsShareCard({ history }: Omit<StatsShareCardProps, "type">) {
                 <img 
                     src="/atara_share.png"
                     alt="Atara"
-                    width={300}
-                    height={300}
-                    style={{ height: 520, width: 'auto', objectFit: 'contain' }}
+                    width={520}
+                    height={520}
+                    style={{ objectFit: 'contain' }}
                 />
             </div>
 
