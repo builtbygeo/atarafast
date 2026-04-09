@@ -56,29 +56,13 @@ function ActiveShareCard({ elapsedMs, targetHours, presetId, percentage }: Omit<
 
             {/* Header - ABSURDLY MASSIVE Logo (520px) - God-Tier Branding */}
             <div style={{ position: "relative", zIndex: 5, marginTop: -95, marginBottom: -130 }}>
-                <div style={{ 
-                    height: 520, 
-                    width: 520, 
-                    borderRadius: 40,
-                    overflow: 'hidden',
-                    background: 'linear-gradient(160deg, #0a0a0a 0%, #0c180c 50%, #0a0a0a 100%)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center'
-                }}>
-                    <svg
-                        viewBox="0 0 200 200"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                        style={{ width: 350, height: 350 }}
-                    >
-                        {/* Triangle A */}
-                        <path d="M100 30 L150 150 L50 150 Z" stroke="#22c55e" strokeWidth="8" fill="none" strokeLinejoin="round"/>
-                        <path d="M100 60 L130 130 L70 130 Z" stroke="#22c55e" strokeWidth="4" fill="none" strokeLinejoin="round"/>
-                        {/* Inner triangle */}
-                        <path d="M100 85 L115 110 L85 110 Z" fill="#22c55e"/>
-                    </svg>
-                </div>
+                <img 
+                    src="/atara_c2.png"
+                    alt="Atara"
+                    width={520}
+                    height={520}
+                    style={{ height: 520, width: 'auto', objectFit: 'contain' }}
+                />
             </div>
 
             {/* Content Spacing - Airy & High End */}
@@ -173,29 +157,13 @@ function StatsShareCard({ history }: Omit<StatsShareCardProps, "type">) {
 
             {/* Header - ABSURDLY MASSIVE Logo (520px) */}
             <div style={{ position: "relative", zIndex: 5, marginTop: -95, marginBottom: -130 }}>
-                <div style={{ 
-                    height: 520, 
-                    width: 520, 
-                    borderRadius: 40,
-                    overflow: 'hidden',
-                    background: 'linear-gradient(160deg, #0a0a0a 0%, #0c180c 50%, #0a0a0a 100%)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center'
-                }}>
-                    <svg
-                        viewBox="0 0 200 200"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                        style={{ width: 350, height: 350 }}
-                    >
-                        {/* Triangle A */}
-                        <path d="M100 30 L150 150 L50 150 Z" stroke="#22c55e" strokeWidth="8" fill="none" strokeLinejoin="round"/>
-                        <path d="M100 60 L130 130 L70 130 Z" stroke="#22c55e" strokeWidth="4" fill="none" strokeLinejoin="round"/>
-                        {/* Inner triangle */}
-                        <path d="M100 85 L115 110 L85 110 Z" fill="#22c55e"/>
-                    </svg>
-                </div>
+                <img 
+                    src="/atara_c2.png"
+                    alt="Atara"
+                    width={520}
+                    height={520}
+                    style={{ height: 520, width: 'auto', objectFit: 'contain' }}
+                />
             </div>
 
             <div style={{ textAlign: "center", position: "relative", zIndex: 10, width: "100%", marginTop: 5 }}>
