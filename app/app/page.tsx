@@ -1,12 +1,12 @@
 "use client"
 
 import { useState, useEffect, useCallback, useMemo } from "react"
-import { Timer, History, BarChart3, Settings, BookOpen, Info } from "lucide-react"
+import { motion } from "framer-motion"
+import { Timer, History, BarChart3, Settings } from "lucide-react"
 import { Logo } from "@/components/logo"
 import { TimerView } from "@/components/timer-view"
 import { HistoryView } from "@/components/history-view"
 import { StatsView } from "@/components/stats-view"
-import { PlanView } from "@/components/plan-view"
 import { PremiumGate } from "@/components/premium-gate"
 import { SettingsSheet } from "@/components/settings-sheet"
 import { UpgradeDialog } from "@/components/upgrade-dialog"
@@ -16,13 +16,20 @@ import { getHistory, getSettings, updateHistoryRecord, updateSettings, startFast
 import { getPresetById } from "@/lib/presets"
 import { useLang } from "@/lib/language-context"
 import { useSubscription } from "@/lib/subscription"
+import { ENABLE_PREMIUM } from "@/lib/features"
+import { cn } from "@/lib/utils"
 
-type Tab = "timer" | "history" | "stats" | "plan"
+type Tab = "today" | "log" | "progress"
 
 export default function Home() {
   const { t, lang, setLang } = useLang()
   const { isPremium } = useSubscription()
-  const [activeTab, setActiveTab] = useState<Tab>("timer")
+  const [activeTab, setActiveTab] = useState<Tab>(() => {
+    if (typeof window === "undefined") return "today"
+    const stored = localStorage.getItem("atara-active-tab")
+    if (stored === "today" || stored === "log" || stored === "progress") return stored
+    return "today"
+  })
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [upgradeOpen, setUpgradeOpen] = useState(false)
   const [history, setHistory] = useState<FastingRecord[]>([])
@@ -43,6 +50,21 @@ export default function Home() {
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker.register("/sw.js").catch(console.error)
     }
+  }, [])
+
+  useEffect(() => {
+    localStorage.setItem("atara-active-tab", activeTab)
+  }, [activeTab])
+
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
+
+  useEffect(() => {
+    if (typeof window === "undefined") return
+    const mql = window.matchMedia("(prefers-reduced-motion: reduce)")
+    setPrefersReducedMotion(mql.matches)
+    const handler = (e: MediaQueryListEvent) => setPrefersReducedMotion(e.matches)
+    mql.addEventListener("change", handler)
+    return () => mql.removeEventListener("change", handler)
   }, [])
 
   const refreshHistory = useCallback(() => {
@@ -84,6 +106,7 @@ export default function Home() {
   }, [refreshHistory])
 
   const displayHistory = useMemo(() => {
+    if (!ENABLE_PREMIUM) return history
     if (isPremium) return history
     const thirtyDaysAgo = new Date()
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
@@ -91,15 +114,15 @@ export default function Home() {
   }, [history, isPremium])
 
   const hasHiddenRecords = useMemo(() => {
+    if (!ENABLE_PREMIUM) return false
     if (isPremium) return false
     return displayHistory.length < history.length
   }, [history, displayHistory, isPremium])
 
   const tabs = [
-    { id: "history" as Tab, label: t.history, icon: History },
-    { id: "stats" as Tab, label: t.stats, icon: Info },
-    { id: "timer" as Tab, label: t.timer, icon: Timer },
-    { id: "plan" as Tab, label: t.plan, icon: BookOpen },
+    { id: "today" as Tab, label: t.today, icon: Timer },
+    { id: "log" as Tab, label: t.history, icon: History },
+    { id: "progress" as Tab, label: t.progress, icon: BarChart3 },
   ]
 
   if (!mounted) {
@@ -116,50 +139,65 @@ export default function Home() {
         <Logo className="h-6 w-auto text-foreground" />
       </header>
 
-      {/* Content */}
-      <div className="flex-1 relative w-full">
-        {activeTab === "timer" && (
+      {/* Content area — all three views mounted simultaneously, CSS-toggled */}
+      <div className="flex-1 relative w-full overflow-hidden">
+        <div className={cn(
+          "absolute inset-0 transition-opacity duration-150",
+          activeTab === "today" ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
+        )}>
           <TimerView
             onFastEnd={handleFastEnd}
             history={displayHistory}
-            onNavigateToHistory={() => setActiveTab("history")}
+            onNavigateToHistory={() => setActiveTab("log")}
           />
-        )}
-        {activeTab === "history" && (
+        </div>
+        <div className={cn(
+          "absolute inset-0 transition-opacity duration-150",
+          activeTab === "log" ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
+        )}>
           <HistoryView
             history={displayHistory}
             hasHiddenRecords={hasHiddenRecords}
             onHistoryChange={refreshHistory}
           />
-        )}
-        {activeTab === "stats" && (
+        </div>
+        <div className={cn(
+          "absolute inset-0 transition-opacity duration-150",
+          activeTab === "progress" ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
+        )}>
           <StatsView
             history={displayHistory}
             settings={getSettings()}
             onOpenSettings={() => setSettingsOpen(true)}
             onOpenUpgrade={() => setUpgradeOpen(true)}
           />
-        )}
-        {activeTab === "plan" && <PlanView />}
+        </div>
       </div>
 
       {/* Bottom Tab Bar */}
-      <nav className="fixed bottom-0 inset-x-0 mx-auto max-w-md flex items-center justify-around border-t border-border bg-background/95 backdrop-blur-xl px-2 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3 z-50 shadow-[0_-15px_40px_rgba(0,0,0,0.5)]">
+      <nav className="fixed bottom-0 inset-x-0 mx-auto max-w-md flex items-center justify-around border-t border-border bg-background/95 backdrop-blur-xl px-2 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-2.5 z-50 shadow-[0_-15px_40px_rgba(0,0,0,0.5)]">
         {tabs.map(({ id, label, icon: Icon }) => (
           <button
             key={id}
             onClick={() => {
               setActiveTab(id)
-              if (id === "history" || id === "stats") refreshHistory()
             }}
-            className={`flex flex-col items-center gap-1.5 px-3 py-3 text-[9px] sm:text-[10px] font-black uppercase tracking-widest transition-all duration-200 active:scale-90 ${activeTab === id
+            className={`relative flex flex-col items-center gap-1 py-1.5 min-w-[64px] min-h-[48px] text-[11px] font-semibold tracking-wide transition-all duration-200 active:scale-95 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${activeTab === id
               ? "text-primary"
-              : "text-muted-foreground/60 hover:text-foreground hover:bg-white/[0.03] rounded-2xl"
+              : "text-muted-foreground/50 hover:text-foreground hover:bg-white/[0.03] rounded-2xl"
               }`}
             aria-label={label}
+            aria-current={activeTab === id ? "page" : undefined}
           >
+            {activeTab === id && (
+              <motion.div
+                layoutId={prefersReducedMotion ? undefined : "tab-indicator"}
+                className="absolute -top-1 left-1/2 -translate-x-1/2 h-1 w-1 rounded-full bg-primary"
+                transition={prefersReducedMotion ? { duration: 0 } : { type: "spring", stiffness: 500, damping: 30 }}
+              />
+            )}
             <Icon className="h-6 w-6" />
-            <span className="mt-0.5">{label}</span>
+            <span>{label}</span>
           </button>
         ))}
       </nav>
@@ -171,7 +209,7 @@ export default function Home() {
         onOpenUpgrade={() => setUpgradeOpen(true)}
         onDataCleared={() => {
           setHistory([])
-          setActiveTab("timer")
+          setActiveTab("today")
         }}
       />
 
