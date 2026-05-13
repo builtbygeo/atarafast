@@ -21,7 +21,14 @@ Atara's v1 redesign consolidates the 4-tab bottom navigation (Log | Info | Today
   3. User can view their complete fasting history in the Log tab without a 30-day limit or premium upgrade banner when premium is disabled
   4. User's fasting timer continues running uninterrupted when switching between tabs and returning to Today
   5. Tab bar has polished visual styling: animated active indicator, consistent spacing, dark theme backdrop blur, and clear typography in both English and Bulgarian
-**Plans**: TBD
+**Plans**: 5 plans
+
+Plans:
+- [ ] 01-01 — Dashboard Shell Restructure: Tab type, CSS visibility toggling, localStorage persistence, ENABLE_PREMIUM data guards
+- [ ] 01-02 — ProgramsGrid Relocation: Move from StatsView to TimerView, add ENABLE_PREMIUM guard to stats-view
+- [ ] 01-03 — Premium UI Guard: Hide "Unlock full history" banner behind ENABLE_PREMIUM flag
+- [ ] 01-04 — Tab Bar Visual Polish: Typography, spacing, animated indicator dot, focus rings, reduced motion
+- [ ] 01-05 — Translation Verification & Cleanup: Bilingual label audit, dead code removal, TypeScript check
 **UI hint**: yes
 
 ## Progress
@@ -31,4 +38,4 @@ Phases execute in numeric order: 1
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. 3-Tab Navigation Restructure | 0/TBD | Not started | - |
+| 1. 3-Tab Navigation Restructure | 0/5 | Not started | - |
