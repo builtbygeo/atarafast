@@ -6,6 +6,7 @@ import { CircularProgress } from "@/components/circular-progress"
 import { TriangularProgress } from "@/components/triangular-progress"
 import { PresetGrid } from "@/components/preset-grid"
 import { PresetDetail } from "@/components/preset-detail"
+import { ProgramsGrid } from "@/components/programs-grid"
 import { WeekStatusStrip } from "@/components/week-status-strip"
 import {
   Trash2,
@@ -424,6 +425,11 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
             onCancel={() => setShowEditStartTime(false)}
           />
         )}
+
+        {/* Active Programs — visible alongside timer, contextually relevant */}
+        <div className="mt-6 w-full max-w-[320px]">
+          <ProgramsGrid />
+        </div>
       </div>
     )
   }
@@ -511,6 +517,11 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
               {t.backToTimer}
             </button>
           )}
+        </div>
+
+        {/* Active Programs — below presets, full grid always visible */}
+        <div className="mt-8 w-full">
+          <ProgramsGrid />
         </div>
       </div>
     )
