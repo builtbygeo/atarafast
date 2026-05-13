@@ -175,17 +175,22 @@ export default function Home() {
       </div>
 
       {/* Bottom Tab Bar */}
-      <nav className="fixed bottom-0 inset-x-0 mx-auto max-w-md flex items-center justify-around border-t border-border bg-background/95 backdrop-blur-xl px-2 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-2.5 z-50 shadow-[0_-15px_40px_rgba(0,0,0,0.5)]">
+      <nav className="fixed bottom-0 inset-x-0 mx-auto max-w-md flex items-center justify-around border-t border-border bg-background/95 backdrop-blur-xl px-2 sm:px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-2.5 z-50 shadow-[0_-15px_40px_rgba(0,0,0,0.5)]">
         {tabs.map(({ id, label, icon: Icon }) => (
           <button
             key={id}
             onClick={() => {
               setActiveTab(id)
             }}
-            className={`relative flex flex-col items-center gap-1 py-1.5 min-w-[64px] min-h-[48px] text-[11px] font-semibold tracking-wide transition-all duration-200 active:scale-95 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${activeTab === id
+          className={cn(
+            "relative flex flex-col items-center gap-1 py-1.5 min-w-[64px] min-h-[48px]",
+            "text-[11px] font-semibold tracking-wide transition-all duration-200",
+            "active:scale-95",
+            "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none rounded-2xl",
+            activeTab === id
               ? "text-primary"
-              : "text-muted-foreground/50 hover:text-foreground hover:bg-white/[0.03] rounded-2xl"
-              }`}
+              : "text-muted-foreground/50 hover:text-foreground hover:bg-white/[0.03]"
+          )}
             aria-label={label}
             aria-current={activeTab === id ? "page" : undefined}
           >
