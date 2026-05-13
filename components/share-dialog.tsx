@@ -55,12 +55,14 @@ function ActiveShareCard({ elapsedMs, targetHours, presetId, percentage }: Omit<
             <div style={{ position: "absolute", top: -100, right: -100, width: 400, height: 400, borderRadius: "50%", background: "radial-gradient(circle, #22c55e20 0%, transparent 70%)", pointerEvents: "none" }} />
             <div style={{ position: "absolute", bottom: -120, left: -60, width: 380, height: 380, borderRadius: "50%", background: "radial-gradient(circle, #f59e0b10 0%, transparent 70%)", pointerEvents: "none" }} />
 
-            {/* Logo - Properly sized */}
-            <div style={{ position: "relative", zIndex: 5, width: 200, height: 200, marginBottom: 24 }}>
+            {/* Logo - Fixed square size, no objectFit tricks */}
+            <div style={{ position: "relative", zIndex: 5, marginBottom: 24 }}>
                 <img 
                     src="/atara_share.png"
                     alt="Atara"
-                    style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                    width={180}
+                    height={180}
+                    style={{ display: 'block' }}
                 />
             </div>
 
@@ -157,12 +159,14 @@ function StatsShareCard({ history }: Omit<StatsShareCardProps, "type">) {
             {/* Background glow */}
             <div style={{ position: "absolute", top: -140, left: "50%", transform: "translateX(-50%)", width: 440, height: 440, borderRadius: "50%", background: "radial-gradient(circle, #22c55e15 0%, transparent 70%)", pointerEvents: "none" }} />
 
-            {/* Logo */}
-            <div style={{ position: "relative", zIndex: 5, width: 200, height: 200, marginBottom: 24 }}>
+            {/* Logo - Fixed square size, no objectFit tricks */}
+            <div style={{ position: "relative", zIndex: 5, marginBottom: 24 }}>
                 <img 
                     src="/atara_share.png"
                     alt="Atara"
-                    style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                    width={180}
+                    height={180}
+                    style={{ display: 'block' }}
                 />
             </div>
 
