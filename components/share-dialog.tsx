@@ -55,18 +55,17 @@ function ActiveShareCard({ elapsedMs, targetHours, presetId, percentage }: Omit<
             <div style={{ position: "absolute", bottom: -120, left: -60, width: 380, height: 380, borderRadius: "50%", background: "radial-gradient(circle, #f59e0b15 0%, transparent 70%)", pointerEvents: "none" }} />
 
             {/* Header - ABSURDLY MASSIVE Logo (520px) - God-Tier Branding */}
-            <div style={{ position: "relative", zIndex: 5, marginTop: -95, marginBottom: -130 }}>
+            <div style={{ position: "relative", zIndex: 5, marginTop: -70, marginBottom: -95 }}>
                 <img 
                     src="/atara_share.png"
                     alt="Atara"
                     width={520}
-                    height={520}
-                    style={{ objectFit: 'contain' }}
+                    style={{ height: 'auto', aspectRatio: 'auto', maxHeight: 520, objectFit: 'contain' }}
                 />
             </div>
 
             {/* Content Spacing - Airy & High End */}
-            <div style={{ textAlign: "center", position: "relative", zIndex: 10, width: "100%", marginTop: 0 }}>
+            <div style={{ textAlign: "center", position: "relative", zIndex: 10, width: "100%", marginTop: -10 }}>
                 <p style={{ color: "#ffffff40", fontSize: 10, fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.4em", marginBottom: 15 }}>
                     {isComplete ? t.shareAchieved : t.shareCurrent}
                 </p>
@@ -156,17 +155,16 @@ function StatsShareCard({ history }: Omit<StatsShareCardProps, "type">) {
             <div style={{ position: "absolute", top: -140, left: "50%", transform: "translateX(-50%)", width: 440, height: 440, borderRadius: "50%", background: "radial-gradient(circle, #22c55e15 0%, transparent 70%)", pointerEvents: "none" }} />
 
             {/* Header - ABSURDLY MASSIVE Logo (520px) */}
-            <div style={{ position: "relative", zIndex: 5, marginTop: -95, marginBottom: -130 }}>
+            <div style={{ position: "relative", zIndex: 5, marginTop: -70, marginBottom: -95 }}>
                 <img 
                     src="/atara_share.png"
                     alt="Atara"
                     width={520}
-                    height={520}
-                    style={{ objectFit: 'contain' }}
+                    style={{ height: 'auto', aspectRatio: 'auto', maxHeight: 520, objectFit: 'contain' }}
                 />
             </div>
 
-            <div style={{ textAlign: "center", position: "relative", zIndex: 10, width: "100%", marginTop: 5 }}>
+            <div style={{ textAlign: "center", position: "relative", zIndex: 10, width: "100%", marginTop: -5 }}>
                 <p style={{ color: "#ffffff40", fontSize: 10, fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.4em", marginBottom: 15 }}>
                     {t.shareAchievements}
                 </p>
@@ -222,21 +220,25 @@ export function ShareDialog(props: ShareDialogProps) {
         if (!cardRef.current) return
         setLoading(true)
         try {
-            // Wait for all images to load first
+            // Wait for all images to load AND decode first
             const images = cardRef.current.querySelectorAll('img')
             await Promise.all(
                 Array.from(images).map(
                     (img) =>
-                        new Promise((resolve) => {
+                        new Promise<void>((resolve) => {
                             if (img.complete && img.naturalWidth > 0) {
-                                resolve(true)
+                                img.decode().then(() => resolve()).catch(() => resolve())
                             } else {
-                                img.onload = () => resolve(true)
-                                img.onerror = () => resolve(true)
+                                img.onload = () => { img.decode().then(() => resolve()).catch(() => resolve()) }
+                                img.onerror = () => resolve()
                             }
                         })
                 )
             )
+
+            // Small delay for layout to settle after image decode
+            await new Promise(r => requestAnimationFrame(r))
+            await new Promise(r => requestAnimationFrame(r))
 
             // iOS Safari blank image workaround: call toPng multiple times to warm up canvas cache
             await toPng(cardRef.current, { cacheBust: false, pixelRatio: 1 })
