@@ -6,7 +6,7 @@ Atara's v1 redesign consolidates the 4-tab bottom navigation (Log | Info | Today
 
 ## Phases
 
-- [ ] **Phase 1: 3-Tab Navigation Restructure** — Reorganize 4-tab nav to 3-tab, move content, fix premium gate bug, and apply visual polish
+- [x] **Phase 1: 3-Tab Navigation Restructure** — Reorganize 4-tab nav to 3-tab, move content, fix premium gate bug, and apply visual polish
 
 ## Phase Details
 
@@ -25,10 +25,10 @@ Atara's v1 redesign consolidates the 4-tab bottom navigation (Log | Info | Today
 
 Plans:
 - [x] 01-01 — Dashboard Shell Restructure: Tab type, CSS visibility toggling, localStorage persistence, ENABLE_PREMIUM data guards
-- [ ] 01-02 — ProgramsGrid Relocation: Move from StatsView to TimerView, add ENABLE_PREMIUM guard to stats-view
-- [ ] 01-03 — Premium UI Guard: Hide "Unlock full history" banner behind ENABLE_PREMIUM flag
-- [ ] 01-04 — Tab Bar Visual Polish: Typography, spacing, animated indicator dot, focus rings, reduced motion
-- [ ] 01-05 — Translation Verification & Cleanup: Bilingual label audit, dead code removal, TypeScript check
+- [x] 01-02 — ProgramsGrid Relocation: Move from StatsView to TimerView, add ENABLE_PREMIUM guard to stats-view
+- [x] 01-03 — Premium UI Guard: Hide "Unlock full history" banner behind ENABLE_PREMIUM flag
+- [x] 01-04 — Tab Bar Visual Polish: Typography, spacing, animated indicator dot, focus rings, reduced motion
+- [x] 01-05 — Translation Verification & Cleanup: Bilingual label audit, dead code removal, TypeScript check
 **UI hint**: yes
 
 ## Progress
@@ -38,4 +38,4 @@ Phases execute in numeric order: 1
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. 3-Tab Navigation Restructure | 1/5 | In Progress|  |
+| 1. 3-Tab Navigation Restructure | 5/5 | Complete | 2026-05-13 |
