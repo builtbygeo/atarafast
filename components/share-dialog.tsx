@@ -42,52 +42,54 @@ function ActiveShareCard({ elapsedMs, targetHours, presetId, percentage }: Omit<
 
     return (
         <div
-            className="relative flex flex-col items-center overflow-hidden"
+            className="relative flex flex-col items-center"
             style={{
                 width: 390,
                 height: 750,
                 background: "linear-gradient(160deg, #0a0a0a 0%, #0c180c 50%, #0a0a0a 100%)",
                 fontFamily: "'Inter', sans-serif",
-                padding: "0px 36px 20px",
+                padding: "40px 32px 32px",
             }}
         >
-            <div style={{ position: "absolute", top: -100, right: -100, width: 400, height: 400, borderRadius: "50%", background: "radial-gradient(circle, #22c55e25 0%, transparent 70%)", pointerEvents: "none" }} />
-            <div style={{ position: "absolute", bottom: -120, left: -60, width: 380, height: 380, borderRadius: "50%", background: "radial-gradient(circle, #f59e0b15 0%, transparent 70%)", pointerEvents: "none" }} />
+            {/* Background glow */}
+            <div style={{ position: "absolute", top: -100, right: -100, width: 400, height: 400, borderRadius: "50%", background: "radial-gradient(circle, #22c55e20 0%, transparent 70%)", pointerEvents: "none" }} />
+            <div style={{ position: "absolute", bottom: -120, left: -60, width: 380, height: 380, borderRadius: "50%", background: "radial-gradient(circle, #f59e0b10 0%, transparent 70%)", pointerEvents: "none" }} />
 
-            {/* Header - ABSURDLY MASSIVE Logo (520px) - God-Tier Branding */}
-            <div style={{ position: "relative", zIndex: 5, marginTop: -70, marginBottom: -95 }}>
+            {/* Logo - Properly sized */}
+            <div style={{ position: "relative", zIndex: 5, width: 200, height: 200, marginBottom: 24 }}>
                 <img 
                     src="/atara_share.png"
                     alt="Atara"
-                    width={520}
-                    style={{ height: 'auto', aspectRatio: 'auto', maxHeight: 520, objectFit: 'contain' }}
+                    style={{ width: '100%', height: '100%', objectFit: 'contain' }}
                 />
             </div>
 
-            {/* Content Spacing - Airy & High End */}
-            <div style={{ textAlign: "center", position: "relative", zIndex: 10, width: "100%", marginTop: -10 }}>
-                <p style={{ color: "#ffffff40", fontSize: 10, fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.4em", marginBottom: 15 }}>
-                    {isComplete ? t.shareAchieved : t.shareCurrent}
-                </p>
-                <h1 style={{ color: "#ffffff", fontSize: 58, fontWeight: 900, lineHeight: 1, letterSpacing: "-0.04em", margin: 0 }}>
-                    {formatHms(elapsedMs, t)}
-                </h1>
-                <p style={{ color: "#22c55e", fontSize: 13, fontWeight: 800, marginTop: 18, letterSpacing: "0.2em", textTransform: "uppercase" }}>
-                    {preset?.name || presetId} · {targetHours} {t.hGoal || "h goal"}
-                </p>
-            </div>
+            {/* Status Label */}
+            <p style={{ color: "#ffffff50", fontSize: 11, fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.3em", marginBottom: 16, position: "relative", zIndex: 10 }}>
+                {isComplete ? t.shareAchieved : t.shareCurrent}
+            </p>
 
-            {/* Progress - More Space */}
-            <div style={{ width: "100%", marginTop: 35, position: "relative", zIndex: 10 }}>
-                <div style={{ width: "100%", height: 4, borderRadius: 2, background: "#ffffff10", marginBottom: 12, overflow: "hidden" }}>
-                    <div style={{ height: "100%", borderRadius: 2, width: `${Math.min(percentage, 100)}%`, background: isComplete ? "linear-gradient(90deg, #22c55e, #4ade80)" : "linear-gradient(90deg, #f59e0b, #fbbf24)" }} />
+            {/* Main Time Display */}
+            <h1 style={{ color: "#ffffff", fontSize: 56, fontWeight: 900, lineHeight: 1, letterSpacing: "-0.03em", margin: "0 0 12px", position: "relative", zIndex: 10 }}>
+                {formatHms(elapsedMs, t)}
+            </h1>
+
+            {/* Preset Info */}
+            <p style={{ color: "#22c55e", fontSize: 14, fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 32, position: "relative", zIndex: 10 }}>
+                {preset?.name || presetId} · {targetHours} {t.hGoal || "h goal"}
+            </p>
+
+            {/* Progress Bar */}
+            <div style={{ width: "100%", marginBottom: 8, position: "relative", zIndex: 10 }}>
+                <div style={{ width: "100%", height: 4, borderRadius: 2, background: "#ffffff10", overflow: "hidden" }}>
+                    <div style={{ height: "100%", borderRadius: 2, width: `${Math.min(percentage, 100)}%`, background: isComplete ? "linear-gradient(90deg, #22c55e, #4ade80)" : "linear-gradient(90deg, #f59e0b, #fbbf24)", transition: "width 0.5s ease" }} />
                 </div>
-                <p style={{ textAlign: "center", color: "#ffffff40", fontSize: 11, fontWeight: 800, letterSpacing: "0.2em", textTransform: "uppercase" }}>
-                    {Math.min(percentage, 100)}% {isComplete ? t.shareCompleted : t.shareProgress}
-                </p>
             </div>
+            <p style={{ color: "#ffffff50", fontSize: 12, fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 32, position: "relative", zIndex: 10 }}>
+                {Math.min(percentage, 100)}% {isComplete ? t.shareCompleted : t.shareProgress}
+            </p>
 
-            {/* Phases - Symmetric & Clean - Centered in remaining space */}
+            {/* Phase Cards */}
             <div style={{ flex: 1, display: "flex", alignItems: "center", width: "100%", position: "relative", zIndex: 10 }}>
                 <div style={{ display: "flex", gap: 10, width: "100%" }}>
                     {[
@@ -95,25 +97,25 @@ function ActiveShareCard({ elapsedMs, targetHours, presetId, percentage }: Omit<
                         { label: t.shareTransition, color: "#fbbf24", pct: elapsedMs / 3600000 > 8 ? Math.min(100, ((Math.min(elapsedMs / 3600000, 12) - 8) / 4) * 100) : 0 },
                         { label: t.shareKetosis, color: "#22c55e", pct: elapsedMs / 3600000 > 12 ? Math.min(100, ((elapsedMs / 3600000 - 12) / Math.max(targetHours - 12, 1)) * 100) : 0 },
                     ].map(({ label, color, pct }) => pct > 0 && (
-                        <div key={label} style={{ flex: 1, padding: "14px 10px", borderRadius: 16, background: "#ffffff04", border: `1px solid ${color}20`, textAlign: "center" }}>
-                            <div style={{ width: 4, height: 4, borderRadius: "50%", background: color, margin: "0 auto 8px" }} />
-                            <p style={{ color: "#ffffff30", fontSize: 8, fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.15em", margin: 0 }}>{label}</p>
-                            <p style={{ color, fontSize: 15, fontWeight: 900, margin: "4px 0 0", letterSpacing: "-0.02em" }}>{Math.round(pct)}%</p>
+                        <div key={label} style={{ flex: 1, padding: "16px 8px", borderRadius: 16, background: "#ffffff05", border: `1px solid ${color}25`, textAlign: "center" }}>
+                            <div style={{ width: 6, height: 6, borderRadius: "50%", background: color, margin: "0 auto 10px" }} />
+                            <p style={{ color: "#ffffff40", fontSize: 9, fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.12em", margin: "0 0 6px" }}>{label}</p>
+                            <p style={{ color, fontSize: 18, fontWeight: 900, margin: 0, letterSpacing: "-0.02em" }}>{Math.round(pct)}%</p>
                         </div>
                     ))}
                 </div>
             </div>
 
-            {/* Footer Group - Anchored & Professional */}
-            <div style={{ marginTop: "auto", display: "flex", flexDirection: "column", alignItems: "center", gap: 16, position: "relative", zIndex: 10 }}>
-                <div style={{ background: "#ffffff", padding: 6, borderRadius: 12, boxShadow: "0 10px 40px rgba(0,0,0,0.9)" }}>
-                    <QRCodeSVG value={APP_URL} size={78} level="H" bgColor="#ffffff" fgColor="#000000" />
+            {/* Footer */}
+            <div style={{ marginTop: "auto", display: "flex", flexDirection: "column", alignItems: "center", gap: 16, position: "relative", zIndex: 10, paddingTop: 24 }}>
+                <div style={{ background: "#ffffff", padding: 8, borderRadius: 12, boxShadow: "0 8px 32px rgba(0,0,0,0.5)" }}>
+                    <QRCodeSVG value={APP_URL} size={72} level="H" bgColor="#ffffff" fgColor="#000000" />
                 </div>
                 <div style={{ textAlign: "center" }}>
-                    <p style={{ color: "#ffffff", fontSize: 10, fontWeight: 900, letterSpacing: "0.3em", textTransform: "uppercase", marginBottom: 4 }}>
+                    <p style={{ color: "#ffffff", fontSize: 11, fontWeight: 800, letterSpacing: "0.25em", textTransform: "uppercase", margin: "0 0 4px" }}>
                         Atara - Fasting App
                     </p>
-                    <p style={{ color: "#ffffff30", fontSize: 9, fontWeight: 700, letterSpacing: "0.15em", margin: 0 }}>
+                    <p style={{ color: "#ffffff40", fontSize: 10, fontWeight: 600, letterSpacing: "0.1em", margin: 0 }}>
                         {APP_DOMAIN}
                     </p>
                 </div>
@@ -143,65 +145,68 @@ function StatsShareCard({ history }: Omit<StatsShareCardProps, "type">) {
 
     return (
         <div
-            className="relative flex flex-col items-center overflow-hidden"
+            className="relative flex flex-col items-center"
             style={{
                 width: 390,
                 height: 750,
                 background: "linear-gradient(160deg, #0a0a0a 0%, #0c180c 50%, #0a0a0a 100%)",
                 fontFamily: "'Inter', sans-serif",
-                padding: "0px 36px 20px",
+                padding: "40px 32px 32px",
             }}
         >
+            {/* Background glow */}
             <div style={{ position: "absolute", top: -140, left: "50%", transform: "translateX(-50%)", width: 440, height: 440, borderRadius: "50%", background: "radial-gradient(circle, #22c55e15 0%, transparent 70%)", pointerEvents: "none" }} />
 
-            {/* Header - ABSURDLY MASSIVE Logo (520px) */}
-            <div style={{ position: "relative", zIndex: 5, marginTop: -70, marginBottom: -95 }}>
+            {/* Logo */}
+            <div style={{ position: "relative", zIndex: 5, width: 200, height: 200, marginBottom: 24 }}>
                 <img 
                     src="/atara_share.png"
                     alt="Atara"
-                    width={520}
-                    style={{ height: 'auto', aspectRatio: 'auto', maxHeight: 520, objectFit: 'contain' }}
+                    style={{ width: '100%', height: '100%', objectFit: 'contain' }}
                 />
             </div>
 
-            <div style={{ textAlign: "center", position: "relative", zIndex: 10, width: "100%", marginTop: -5 }}>
-                <p style={{ color: "#ffffff40", fontSize: 10, fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.4em", marginBottom: 15 }}>
-                    {t.shareAchievements}
-                </p>
-                <h1 style={{ color: "#ffffff", fontSize: 52, fontWeight: 900, lineHeight: 1, letterSpacing: "-0.04em", margin: 0 }}>
-                    {totalFasts} {t.shareFastsNum}
-                </h1>
-                <p style={{ color: "#22c55e", fontSize: 12, fontWeight: 800, marginTop: 18, letterSpacing: "0.2em", textTransform: "uppercase" }}>
-                    {formatHms(totalMs, t)} {t.shareTotal}
-                </p>
-            </div>
+            {/* Status Label */}
+            <p style={{ color: "#ffffff50", fontSize: 11, fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.3em", marginBottom: 16, position: "relative", zIndex: 10 }}>
+                {t.shareAchievements}
+            </p>
 
-            {/* Stats Grid - Centered in remaining space */}
+            {/* Main Number */}
+            <h1 style={{ color: "#ffffff", fontSize: 52, fontWeight: 900, lineHeight: 1, letterSpacing: "-0.03em", margin: "0 0 12px", position: "relative", zIndex: 10 }}>
+                {totalFasts} {t.shareFastsNum}
+            </h1>
+
+            {/* Total Time */}
+            <p style={{ color: "#22c55e", fontSize: 14, fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 40, position: "relative", zIndex: 10 }}>
+                {formatHms(totalMs, t)} {t.shareTotal}
+            </p>
+
+            {/* Stats Grid */}
             <div style={{ flex: 1, display: "flex", alignItems: "center", width: "100%", position: "relative", zIndex: 10 }}>
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, width: "100%" }}>
                     {[
                         { icon: "🔥", label: t.shareStreak, value: `${streak} ${t.days || "дни"}` },
                         { icon: "⚡", label: t.shareAvgDuration, value: `${avgHours}${t.h || "h"}` },
                     ].map(({ icon, label, value }) => (
-                        <div key={label} style={{ padding: "18px 12px", borderRadius: 20, background: "#ffffff04", border: "1px solid #ffffff08", textAlign: "center" }}>
-                            <p style={{ fontSize: 24, margin: "0 0 10px" }}>{icon}</p>
-                            <p style={{ color: "#ffffff30", fontSize: 8, fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.15em", margin: 0 }}>{label}</p>
-                            <p style={{ color: "#ffffff", fontSize: 20, fontWeight: 900, margin: "4px 0 0", letterSpacing: "-0.02em" }}>{value}</p>
+                        <div key={label} style={{ padding: "20px 12px", borderRadius: 20, background: "#ffffff05", border: "1px solid #ffffff10", textAlign: "center" }}>
+                            <p style={{ fontSize: 28, margin: "0 0 12px" }}>{icon}</p>
+                            <p style={{ color: "#ffffff40", fontSize: 9, fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.12em", margin: "0 0 6px" }}>{label}</p>
+                            <p style={{ color: "#ffffff", fontSize: 22, fontWeight: 900, margin: 0, letterSpacing: "-0.02em" }}>{value}</p>
                         </div>
                     ))}
                 </div>
             </div>
 
-            {/* Footer Group */}
-            <div style={{ marginTop: "auto", display: "flex", flexDirection: "column", alignItems: "center", gap: 16, position: "relative", zIndex: 10 }}>
-                <div style={{ background: "#ffffff", padding: 6, borderRadius: 12, boxShadow: "0 10px 40px rgba(0,0,0,0.9)" }}>
-                    <QRCodeSVG value={APP_URL} size={78} level="H" bgColor="#ffffff" fgColor="#000000" />
+            {/* Footer */}
+            <div style={{ marginTop: "auto", display: "flex", flexDirection: "column", alignItems: "center", gap: 16, position: "relative", zIndex: 10, paddingTop: 24 }}>
+                <div style={{ background: "#ffffff", padding: 8, borderRadius: 12, boxShadow: "0 8px 32px rgba(0,0,0,0.5)" }}>
+                    <QRCodeSVG value={APP_URL} size={72} level="H" bgColor="#ffffff" fgColor="#000000" />
                 </div>
                 <div style={{ textAlign: "center" }}>
-                    <p style={{ color: "#ffffff", fontSize: 10, fontWeight: 900, letterSpacing: "0.3em", textTransform: "uppercase", marginBottom: 4 }}>
+                    <p style={{ color: "#ffffff", fontSize: 11, fontWeight: 800, letterSpacing: "0.25em", textTransform: "uppercase", margin: "0 0 4px" }}>
                         Atara - Fasting App
                     </p>
-                    <p style={{ color: "#ffffff30", fontSize: 9, fontWeight: 700, letterSpacing: "0.15em", margin: 0 }}>
+                    <p style={{ color: "#ffffff40", fontSize: 10, fontWeight: 600, letterSpacing: "0.1em", margin: 0 }}>
                         {APP_DOMAIN}
                     </p>
                 </div>

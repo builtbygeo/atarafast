@@ -602,7 +602,7 @@ export function StatsView({ history, settings, onOpenSettings, onOpenUpgrade }: 
               
               <div className="prose prose-invert prose-sm max-w-none">
                 <p className="text-sm font-medium text-foreground leading-relaxed whitespace-pre-line">
-                  {selectedCard.content}
+                  {selectedCard.full}
                 </p>
               </div>
               
