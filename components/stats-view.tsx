@@ -26,7 +26,7 @@ import { checkAiQuota } from "@/lib/quota"
 import type { AppSettings } from "@/lib/storage"
 import { calculateStreaks } from "@/lib/stats"
 import { calculateChallenges } from "@/lib/challenges"
-import { ProgramsGrid } from "./programs-grid"
+import { ENABLE_PREMIUM } from "@/lib/features"
 
 const safeFormat = (date: Date | number | string, formatStr: string, fallback: string = "") => {
   try {
@@ -73,6 +73,7 @@ export function StatsView({ history, settings, onOpenSettings, onOpenUpgrade }: 
   const { user, isLoaded: isUserLoaded } = useUser()
 
   const displayHistory = useMemo(() => {
+    if (!ENABLE_PREMIUM) return history
     if (isPremium) return history
     const thirtyDaysAgo = new Date()
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
@@ -538,8 +539,6 @@ export function StatsView({ history, settings, onOpenSettings, onOpenUpgrade }: 
           </div>
         </div>
 
-        {/* 6. Active Fasting Programs (Opt-in) */}
-        <ProgramsGrid />
       </div>
     </div>
   )
