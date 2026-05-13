@@ -7,16 +7,16 @@
 
 ### Navigation
 
-- [ ] **NAV-01**: Bottom nav restructured from 4 tabs (Log | Info | Today | Plan) to 3 tabs (Today | Log | Progress)
-- [ ] **NAV-02**: Tab bar visual polish — active indicator styling, consistent spacing, dark theme glass effect, typography refinement
+- [x] **NAV-01**: Bottom nav restructured from 4 tabs (Log | Info | Today | Plan) to 3 tabs (Today | Log | Progress)
+- [x] **NAV-02**: Tab bar visual polish — active indicator styling, consistent spacing, dark theme glass effect, typography refinement
 
 ### Content Reorganization
 
-- [ ] **CONT-01**: Active Programs grid moved from Info/Stats tab to Today tab (alongside timer)
+- [x] **CONT-01**: Active Programs grid moved from Info/Stats tab to Today tab (alongside timer)
 
 ### Bug Fixes
 
-- [ ] **FIX-01**: 30-day history filter and "Unlock full history" banner hidden behind `ENABLE_PREMIUM` flag check — no limit or banner when premium is disabled
+- [x] **FIX-01**: 30-day history filter and "Unlock full history" banner hidden behind `ENABLE_PREMIUM` flag check — no limit or banner when premium is disabled
 
 ## v2 Requirements
 
@@ -54,10 +54,10 @@ Deferred to future release.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| NAV-01 | Phase 1 | Pending |
-| NAV-02 | Phase 1 | Pending |
-| CONT-01 | Phase 1 | Pending |
-| FIX-01 | Phase 1 | Pending |
+| NAV-01 | Phase 1 | Complete |
+| NAV-02 | Phase 1 | Complete |
+| CONT-01 | Phase 1 | Complete |
+| FIX-01 | Phase 1 | Complete |
 
 **Coverage:**
 - v1 requirements: 4 total

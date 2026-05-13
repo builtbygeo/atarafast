@@ -24,7 +24,7 @@ Atara's v1 redesign consolidates the 4-tab bottom navigation (Log | Info | Today
 **Plans**: 5 plans
 
 Plans:
-- [ ] 01-01 — Dashboard Shell Restructure: Tab type, CSS visibility toggling, localStorage persistence, ENABLE_PREMIUM data guards
+- [x] 01-01 — Dashboard Shell Restructure: Tab type, CSS visibility toggling, localStorage persistence, ENABLE_PREMIUM data guards
 - [ ] 01-02 — ProgramsGrid Relocation: Move from StatsView to TimerView, add ENABLE_PREMIUM guard to stats-view
 - [ ] 01-03 — Premium UI Guard: Hide "Unlock full history" banner behind ENABLE_PREMIUM flag
 - [ ] 01-04 — Tab Bar Visual Polish: Typography, spacing, animated indicator dot, focus rings, reduced motion
@@ -38,4 +38,4 @@ Phases execute in numeric order: 1
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. 3-Tab Navigation Restructure | 0/5 | Not started | - |
+| 1. 3-Tab Navigation Restructure | 1/5 | In Progress|  |
