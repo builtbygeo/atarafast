@@ -22,6 +22,7 @@ import { JournalDialog } from "@/components/journal-dialog"
 import { useLang } from "@/lib/language-context"
 import { ShareDialog } from "@/components/share-dialog"
 import { useSubscription, startCheckout } from "@/lib/subscription"
+import { ENABLE_PREMIUM } from "@/lib/features"
 import { Sparkles } from "lucide-react"
 import {
   AlertDialog,
@@ -229,7 +230,7 @@ export function HistoryView({ history, hasHiddenRecords, onHistoryChange }: Hist
             )
           })}
 
-          {hasHiddenRecords && (
+          {ENABLE_PREMIUM && hasHiddenRecords && (
             <div className="mt-4 p-5 rounded-[2rem] bg-primary/5 border border-primary/20 flex flex-col items-center text-center gap-3 shadow-xl shadow-primary/5">
               <div className="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
                 <Sparkles className="h-5 w-5" />
