@@ -1,6 +1,7 @@
 "use client"
 
 import { useMemo, useState, useEffect } from "react"
+import { motion, AnimatePresence } from "framer-motion"
 import { useUser } from "@clerk/nextjs"
 import {
   format,
@@ -16,7 +17,7 @@ import {
 import { AreaChart, Area, CartesianGrid, XAxis, YAxis, ResponsiveContainer, Tooltip } from "recharts"
 import { WeightTrendsChart } from "./weight-trends-chart"
 import { transformWeightData } from "@/lib/stats"
-import { ChevronRight, Lock, Sparkles, Settings, Flame, Trophy, Zap, Clock } from "lucide-react"
+import { ChevronRight, Lock, Sparkles, Settings, Flame, Trophy, Zap, Clock, Info, ChevronLeft } from "lucide-react"
 import { PremiumGate } from "./premium-gate"
 import type { FastingRecord } from "@/lib/storage"
 import { useLang } from "@/lib/language-context"
@@ -65,7 +66,8 @@ export function StatsView({ history, settings, onOpenSettings, onOpenUpgrade }: 
   const { isPremium } = useSubscription()
   const [aiAnalysis, setAiAnalysis] = useState<string | null>(null)
   const [isAnalyzing, setIsAnalyzing] = useState(false)
-  
+  const [selectedCard, setSelectedCard] = useState<any | null>(null)
+
   useEffect(() => {
     console.log("HISTORY DEBUG:", history);
   }, [history]);
@@ -539,7 +541,81 @@ export function StatsView({ history, settings, onOpenSettings, onOpenUpgrade }: 
           </div>
         </div>
 
+        {/* 6. Educational Cards — Learn More */}
+        <div className="mb-8">
+          <div className="flex items-center gap-2 mb-4 px-1">
+            <Info className="h-5 w-5 text-primary" />
+            <h3 className="text-[17px] font-bold text-foreground tracking-tight">{t?.learnMore || "Learn More"}</h3>
+          </div>
+          
+          <div className="space-y-3">
+            {(t?.educationalCards as any[])?.map((card) => (
+              <button
+                key={card.id}
+                onClick={() => setSelectedCard(card)}
+                className="w-full group relative flex flex-col items-start gap-3 rounded-[1.5rem] border border-white/5 bg-secondary/20 p-5 text-left transition-all hover:bg-secondary/30 active:scale-[0.99] overflow-hidden"
+              >
+                <div className="absolute -right-4 -bottom-4 w-12 h-12 rounded-full bg-primary/10 blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
+                <div className="flex w-full items-start justify-between gap-4 relative z-10">
+                  <h4 className="text-sm font-black text-foreground tracking-tight leading-snug flex-1">
+                    {card.title}
+                  </h4>
+                  <div className="h-8 w-8 rounded-xl bg-background/50 border border-white/5 flex items-center justify-center shrink-0">
+                    <Info className="h-4 w-4 text-primary/60" />
+                  </div>
+                </div>
+                <p className="text-xs font-medium text-muted-foreground leading-relaxed opacity-70 relative z-10">
+                  {card.short}
+                </p>
+              </button>
+            ))}
+          </div>
+        </div>
+
       </div>
+
+      {/* Card Detail View */}
+      <AnimatePresence>
+        {selectedCard && (
+          <motion.div
+            initial={{ opacity: 0, x: 300 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 300 }}
+            transition={{ type: "spring", damping: 25, stiffness: 300 }}
+            className="absolute inset-0 z-50 bg-background overflow-y-auto"
+          >
+            <div className="px-5 pt-12 pb-32">
+              <button
+                onClick={() => setSelectedCard(null)}
+                className="flex items-center gap-2 text-sm font-bold text-muted-foreground mb-6 hover:text-foreground transition-colors"
+              >
+                <ChevronLeft className="h-5 w-5" />
+                {t?.back || "Back"}
+              </button>
+              
+              <h2 className="text-2xl font-black text-foreground tracking-tight mb-2">
+                {selectedCard.title}
+              </h2>
+              <p className="text-sm font-medium text-muted-foreground leading-relaxed opacity-80 mb-8">
+                {selectedCard.short}
+              </p>
+              
+              <div className="prose prose-invert prose-sm max-w-none">
+                <p className="text-sm font-medium text-foreground leading-relaxed whitespace-pre-line">
+                  {selectedCard.content}
+                </p>
+              </div>
+              
+              <button
+                onClick={() => setSelectedCard(null)}
+                className="mt-8 w-full h-12 rounded-[1.25rem] bg-primary text-primary-foreground font-black text-[11px] tracking-[0.2em] uppercase active:scale-95 transition-all"
+              >
+                {t?.gotIt || "Got it"}
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }
