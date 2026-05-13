@@ -55,22 +55,18 @@ function ActiveShareCard({ elapsedMs, targetHours, presetId, percentage }: Omit<
             <div style={{ position: "absolute", top: -100, right: -100, width: 400, height: 400, borderRadius: "50%", background: "radial-gradient(circle, #22c55e20 0%, transparent 70%)", pointerEvents: "none" }} />
             <div style={{ position: "absolute", bottom: -120, left: -60, width: 380, height: 380, borderRadius: "50%", background: "radial-gradient(circle, #f59e0b10 0%, transparent 70%)", pointerEvents: "none" }} />
 
-            {/* Logo - Force 1:1 square, prevent any stretching */}
-            <div style={{ position: "relative", zIndex: 5, marginBottom: 24, width: 180, height: 180 }}>
-                <img 
-                    src="/atara_share.png"
-                    alt="Atara"
-                    width={180}
-                    height={180}
-                    style={{ 
-                        display: 'block',
-                        width: '180px',
-                        height: '180px',
-                        aspectRatio: '1 / 1',
-                        objectFit: 'contain'
-                    }}
-                />
-            </div>
+            {/* Logo - Background image approach, no img tag stretching */}
+            <div style={{ 
+                position: "relative", 
+                zIndex: 5, 
+                marginBottom: 24, 
+                width: 180, 
+                height: 180,
+                backgroundImage: 'url(/atara_share.png)',
+                backgroundSize: 'contain',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat'
+            }} />
 
             {/* Status Label */}
             <p style={{ color: "#ffffff50", fontSize: 11, fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.3em", marginBottom: 16, position: "relative", zIndex: 10 }}>
@@ -165,22 +161,18 @@ function StatsShareCard({ history }: Omit<StatsShareCardProps, "type">) {
             {/* Background glow */}
             <div style={{ position: "absolute", top: -140, left: "50%", transform: "translateX(-50%)", width: 440, height: 440, borderRadius: "50%", background: "radial-gradient(circle, #22c55e15 0%, transparent 70%)", pointerEvents: "none" }} />
 
-            {/* Logo - Force 1:1 square, prevent any stretching */}
-            <div style={{ position: "relative", zIndex: 5, marginBottom: 24, width: 180, height: 180 }}>
-                <img 
-                    src="/atara_share.png"
-                    alt="Atara"
-                    width={180}
-                    height={180}
-                    style={{ 
-                        display: 'block',
-                        width: '180px',
-                        height: '180px',
-                        aspectRatio: '1 / 1',
-                        objectFit: 'contain'
-                    }}
-                />
-            </div>
+            {/* Logo - Background image approach, no img tag stretching */}
+            <div style={{ 
+                position: "relative", 
+                zIndex: 5, 
+                marginBottom: 24, 
+                width: 180, 
+                height: 180,
+                backgroundImage: 'url(/atara_share.png)',
+                backgroundSize: 'contain',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat'
+            }} />
 
             {/* Status Label */}
             <p style={{ color: "#ffffff50", fontSize: 11, fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.3em", marginBottom: 16, position: "relative", zIndex: 10 }}>

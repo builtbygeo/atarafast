@@ -582,7 +582,7 @@ export function StatsView({ history, settings, onOpenSettings, onOpenUpgrade }: 
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: 300 }}
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
-            className="absolute inset-0 z-50 bg-background overflow-y-auto"
+            className="fixed inset-0 z-50 bg-background overflow-y-auto"
           >
             <div className="px-5 pt-12 pb-32">
               <button
