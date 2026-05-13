@@ -122,21 +122,21 @@ export function TriangularProgress({
             <div className="flex flex-row items-start justify-center gap-4 mt-3 w-full">
                 <div className="flex flex-col items-center gap-0.5">
                     <span className="w-3 h-1 rounded-full bg-orange-500 block" />
-                    <span className="text-[9px] sm:text-[10px] font-bold text-orange-500 uppercase tracking-wider">{t?.phase1 || "ЗАХАР"}</span>
-                    <span className="text-[9px] text-muted-foreground font-mono">{data.sugarPct}%</span>
+                    <span className="text-[9px] sm:text-[10px] font-bold text-white uppercase tracking-wider">{t?.phase1 || "ЗАХАР"}</span>
+                    <span className="text-[9px] text-orange-400/70 font-mono">{data.sugarPct}%</span>
                 </div>
                 {data.transitionHours > 0 && (
                     <div className="flex flex-col items-center gap-0.5">
                         <span className="w-3 h-1 rounded-full bg-amber-400 block" />
-                        <span className="text-[9px] sm:text-[10px] font-bold text-amber-400 uppercase tracking-wider">{t?.phase2 || "ПРЕХОД"}</span>
-                        <span className="text-[9px] text-muted-foreground font-mono">{data.transitionPct}%</span>
+                        <span className="text-[9px] sm:text-[10px] font-bold text-white uppercase tracking-wider">{t?.phase2 || "ПРЕХОД"}</span>
+                        <span className="text-[9px] text-amber-400/70 font-mono">{data.transitionPct}%</span>
                     </div>
                 )}
                 {data.ketosisHours > 0 && (
                     <div className="flex flex-col items-center gap-0.5">
                         <span className="w-3 h-1 rounded-full bg-green-500 block" />
-                        <span className="text-[9px] sm:text-[10px] font-bold text-green-500 uppercase tracking-wider">{t?.phase3 || "КЕТОЗА"}</span>
-                        <span className="text-[9px] text-muted-foreground font-mono">{data.ketosisPct}%</span>
+                        <span className="text-[9px] sm:text-[10px] font-bold text-white uppercase tracking-wider">{t?.phase3 || "КЕТОЗА"}</span>
+                        <span className="text-[9px] text-green-400/70 font-mono">{data.ketosisPct}%</span>
                     </div>
                 )}
             </div>

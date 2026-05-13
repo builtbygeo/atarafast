@@ -222,9 +222,10 @@ export function CircularProgress({
         {arcs.map(arc => (
           <text
             key={`txt-${arc.id}`}
-            className="font-bold text-[10px] tracking-[0.15em] uppercase pointer-events-none mix-blend-overlay transition-all duration-1000"
-            fill="rgba(0,0,0,0.65)"
+            className="font-bold text-[10px] tracking-[0.15em] uppercase pointer-events-none transition-all duration-1000"
+            fill="rgba(255,255,255,0.9)"
             dy="0.32em"
+            style={{ textShadow: '0 1px 3px rgba(0,0,0,0.5)' }}
           >
             <textPath href={`#text-path-${arc.id}`} startOffset="50%" textAnchor="middle">
               {arc.label}
