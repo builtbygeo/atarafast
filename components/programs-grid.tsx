@@ -47,7 +47,7 @@ export function ProgramsGrid() {
           const hasCompletedBefore = timesCompleted > 0
 
           let statusTheme = "bg-secondary/20 backdrop-blur-sm border-border/40"
-          if (isActive) statusTheme = "bg-primary/5 backdrop-blur-md border-primary/30"
+          if (isActive) statusTheme = "bg-primary/[0.08] backdrop-blur-md border-primary/40"
           else if (hasCompletedBefore) statusTheme = "bg-[#FFF8E7]/5 backdrop-blur-sm border-orange-400/20"
 
           return (
@@ -57,12 +57,12 @@ export function ProgramsGrid() {
                   className="absolute inset-0 rounded-[2rem] pointer-events-none"
                   animate={{
                     boxShadow: [
-                      "0 0 0 0 rgba(34,197,94,0)",
-                      "0 0 20px 2px rgba(34,197,94,0.15)",
-                      "0 0 0 0 rgba(34,197,94,0)"
+                      "inset 0 0 0 0 rgba(34,197,94,0)",
+                      "inset 0 0 30px 0 rgba(34,197,94,0.2)",
+                      "inset 0 0 0 0 rgba(34,197,94,0)"
                     ]
                   }}
-                  transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
                 />
               )}
               {/* x3 Badge */}

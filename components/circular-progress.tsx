@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { useLang } from "@/lib/language-context"
 import { getPhaseData } from "@/lib/fasting-phases"
 
@@ -70,20 +70,27 @@ export function CircularProgress({
   children,
 }: CircularProgressProps) {
   const { t } = useLang()
-  const [drawProgress, setDrawProgress] = useState(0)
+  const [drawProgress, setDrawProgress] = useState(1)
   const [flashGlow, setFlashGlow] = useState(false)
+  const prevProgressRef = useRef(progress)
 
   useEffect(() => {
-    // Animate stroke draw on mount or when progress jumps significantly (new fast started)
-    setDrawProgress(0)
-    setFlashGlow(false)
-    const timer = setTimeout(() => setDrawProgress(1), 50)
-    const flashTimer = setTimeout(() => setFlashGlow(true), 1550)
-    const flashOffTimer = setTimeout(() => setFlashGlow(false), 2500)
-    return () => {
-      clearTimeout(timer)
-      clearTimeout(flashTimer)
-      clearTimeout(flashOffTimer)
+    // Only animate stroke draw when a NEW fast starts (progress was 0, now > 0)
+    const wasZero = prevProgressRef.current === 0 || prevProgressRef.current < 0.01
+    const isNowActive = progress > 0.01
+    prevProgressRef.current = progress
+
+    if (wasZero && isNowActive) {
+      setDrawProgress(0)
+      setFlashGlow(false)
+      const timer = setTimeout(() => setDrawProgress(1), 100)
+      const flashTimer = setTimeout(() => setFlashGlow(true), 1600)
+      const flashOffTimer = setTimeout(() => setFlashGlow(false), 2600)
+      return () => {
+        clearTimeout(timer)
+        clearTimeout(flashTimer)
+        clearTimeout(flashOffTimer)
+      }
     }
   }, [progress])
 

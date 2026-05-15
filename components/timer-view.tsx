@@ -324,7 +324,7 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
             {/* STARTS CARD */}
             <button
               onClick={() => setShowEditStartTime(true)}
-              className="flex-1 rounded-[1.25rem] p-4 pb-3.5 border border-primary/30 bg-primary/5 backdrop-blur-sm flex flex-col pt-3 shadow-[0_4px_20px_-10px_rgba(34,197,94,0.2)] cursor-pointer hover:bg-primary/10 transition-colors text-left"
+              className="flex-1 rounded-[1.25rem] p-4 pb-3.5 border border-primary/40 bg-primary/[0.07] backdrop-blur-md flex flex-col pt-3 shadow-[0_4px_24px_-8px_rgba(34,197,94,0.25)] cursor-pointer hover:bg-primary/[0.12] transition-colors text-left"
             >
               <div className="flex justify-between items-center mb-1 w-full">
                 <span className="block text-[10px] font-black text-primary uppercase tracking-widest">{t.startTime || "STARTS"}</span>
@@ -339,7 +339,7 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
             {/* GOAL CARD */}
             <button
               onClick={() => navigateTo("presets")}
-              className="flex-1 rounded-[1.25rem] p-4 pb-3.5 border border-border/50 bg-secondary/20 backdrop-blur-sm flex flex-col pt-3 cursor-pointer hover:bg-secondary/30 transition-colors text-left shadow-sm"
+              className="flex-1 rounded-[1.25rem] p-4 pb-3.5 border border-white/[0.08] bg-secondary/30 backdrop-blur-md flex flex-col pt-3 cursor-pointer hover:bg-secondary/40 transition-colors text-left shadow-sm"
             >
               <div className="flex justify-between items-center mb-1 w-full">
                 <span className="block text-[10px] font-black text-muted-foreground uppercase tracking-widest">{t.goal || "GOAL"}</span>

@@ -369,7 +369,7 @@ export function StatsView({ history, settings, onOpenSettings, onOpenUpgrade }: 
           <WeightTrendsChart data={transformWeightData(history)} />
         </div>
 
-        <div className={`rounded-3xl border border-white/5 bg-secondary/30 backdrop-blur-sm p-5 shadow-sm mb-4`}>
+        <div className={`rounded-3xl border border-white/[0.06] bg-secondary/40 backdrop-blur-md p-5 shadow-sm mb-4`}>
           <div className="flex items-center justify-between mb-6">
             <div>
               <h3 className="text-[17px] font-bold text-foreground tracking-tight mb-1">{t?.weeklyActivity || "Weekly Activity"}</h3>
@@ -409,7 +409,7 @@ export function StatsView({ history, settings, onOpenSettings, onOpenUpgrade }: 
         </div>
 
         {/* 3. Weekly Stats Counters */}
-        <div className={`rounded-[2rem] border border-border/80 bg-secondary/20 p-5 shadow-sm backdrop-blur-sm mb-6`}>
+        <div className={`rounded-[2rem] border border-white/[0.06] bg-secondary/30 backdrop-blur-md p-5 shadow-sm mb-6`}>
           <div className="flex items-center justify-between mb-5 px-1">
             <h3 className="text-sm font-black text-foreground tracking-tight">{t?.weeklyStats || "Weekly Stats"}</h3>
           </div>
@@ -578,12 +578,10 @@ export function StatsView({ history, settings, onOpenSettings, onOpenUpgrade }: 
             {(t?.educationalCards as any[])?.map((card) => {
               const isExpanded = expandedCardId === card.id
               return (
-                <motion.div
+                <div
                   key={card.id}
-                  layout
-                  transition={{ type: "spring", damping: 25, stiffness: 300 }}
                   className={cn(
-                    "w-full rounded-[1.5rem] border border-white/5 bg-secondary/20 overflow-hidden transition-colors",
+                    "w-full rounded-[1.5rem] border border-white/5 bg-secondary/20 overflow-hidden transition-colors duration-300",
                     isExpanded && "bg-secondary/40 border-white/10"
                   )}
                 >
@@ -620,7 +618,7 @@ export function StatsView({ history, settings, onOpenSettings, onOpenUpgrade }: 
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: "auto", opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
-                        transition={{ type: "spring", damping: 25, stiffness: 300 }}
+                        transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
                         className="overflow-hidden"
                       >
                         <div className="px-5 pb-5 pt-0">
@@ -632,7 +630,7 @@ export function StatsView({ history, settings, onOpenSettings, onOpenUpgrade }: 
                       </motion.div>
                     )}
                   </AnimatePresence>
-                </motion.div>
+                </div>
               )
             })}
           </div>

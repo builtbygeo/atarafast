@@ -37,10 +37,10 @@ export function PhilosophyDrawer() {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", damping: 30, stiffness: 300 }}
-              className="fixed top-0 right-0 h-full w-full max-w-lg z-[101] bg-[#0f0f0f] border-l border-white/10 overflow-y-auto"
+              className="fixed top-0 right-0 h-[100dvh] w-full max-w-lg z-[101] bg-[#0a0a0a] border-l border-white/10 flex flex-col overscroll-none"
             >
               {/* Header */}
-              <div className="flex items-center justify-between p-6 border-b border-white/10 sticky top-0 bg-[#0f0f0f]/95 backdrop-blur-md z-10">
+              <div className="flex items-center justify-between p-6 border-b border-white/10 bg-[#0a0a0a] shrink-0">
                 <div className="flex items-center gap-3">
                   <div 
                     className="w-10 h-10 rounded-full flex items-center justify-center"
@@ -59,7 +59,7 @@ export function PhilosophyDrawer() {
               </div>
 
               {/* Content */}
-              <div className="p-8 pb-20">
+              <div className="flex-1 overflow-y-auto p-8 pb-20">
                 <div className="mb-10">
                   <div 
                     className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-black uppercase tracking-[0.2em] mb-6" 
