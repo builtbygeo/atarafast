@@ -49,6 +49,7 @@ import {
 } from "@/components/ui/alert-dialog"
 import { useLang } from "@/lib/language-context"
 import { useNotifications } from "@/hooks/use-notifications"
+import { toast } from "sonner"
 import { format, addHours, differenceInCalendarDays } from "date-fns"
 
 type ViewState = "timer" | "presets" | "detail"
@@ -67,7 +68,7 @@ const haptic = (vibration = [50]) => {
 
 export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerViewProps) {
   const { t, lang } = useLang()
-  const { sendNotification } = useNotifications()
+  const { sendNotification, scheduleNotification, requestPermission } = useNotifications()
   const [activeFast, setActiveFast] = useState<FastingRecord | null>(null)
   const [viewState, setViewState] = useState<ViewState>("presets")
   const [direction, setDirection] = useState(0)
@@ -119,6 +120,13 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
           if (isLateReturn) {
             setShowLateGreeting(true)
           } else {
+            // Show in-app toast when app is visible on mount
+            if (typeof document !== "undefined" && document.visibilityState === "visible") {
+              toast.success(t.targetReached, {
+                description: `${fast.presetId} fast complete!`,
+              })
+            }
+            // Also trigger notification (best-effort for background)
             sendNotification(t.targetReached, {
               body: `${fast.presetId} fast complete!`,
             })
@@ -148,6 +156,13 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
         if (isLateReturn) {
           setShowLateGreeting(true)
         } else {
+          // Show in-app toast when app is visible
+          if (typeof document !== "undefined" && document.visibilityState === "visible") {
+            toast.success(t.targetReached, {
+              description: `${activeFast.presetId} fast complete!`,
+            })
+          }
+          // Also trigger scheduled notification (best-effort for background)
           sendNotification(t.targetReached, {
             body: `${activeFast.presetId} fast complete!`,
           })
@@ -162,7 +177,7 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
     navigateTo("detail")
   }, [navigateTo])
 
-  const handleStartFast = (hours: number) => {
+  const handleStartFast = async (hours: number) => {
     if (!selectedPreset) return
     const record = activeFast
       ? updateActiveFast(selectedPreset.id, hours)
@@ -173,6 +188,23 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
       navigateTo("timer")
       setNow(new Date())
       haptic([100, 50])
+
+      // Schedule completion notification
+      const completionTime = new Date(record.startTime).getTime() + hours * 3600000
+      scheduleNotification(
+        `fast-complete-${record.id}`,
+        completionTime,
+        t.targetReached,
+        { body: `${selectedPreset.name} fast complete!` }
+      )
+
+      // Request notification permission if not granted
+      if (typeof window !== "undefined" && "Notification" in window && Notification.permission === "default") {
+        const result = await requestPermission()
+        if (result === "granted") {
+          toast.success("Notifications enabled! We'll alert you when your fast is complete.")
+        }
+      }
     }
   }
 
@@ -320,6 +352,9 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
             )}
           </motion.div>
 
+          {/* Subtle background glow for glassmorphism */}
+          <div className="absolute left-1/2 -translate-x-1/2 w-[380px] h-[200px] rounded-full bg-primary/[0.03] blur-[60px] pointer-events-none -z-10" />
+
           <div className="flex gap-4 mt-8 w-full max-w-[320px] px-2 relative z-20">
             {/* STARTS CARD */}
             <button
@@ -376,7 +411,7 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
               }`}
           >
             <motion.div
-              className="absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent"
+              className="absolute inset-0 bg-gradient-to-r from-transparent via-white/25 to-transparent"
               initial={{ x: "-100%" }}
               whileTap={{ x: "200%" }}
               transition={{ duration: 0.5, ease: "easeInOut" }}
@@ -392,7 +427,7 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
             className="relative overflow-hidden mt-6 flex items-center justify-center gap-2 rounded-2xl bg-secondary/80 px-8 py-3.5 text-sm font-black text-foreground shadow-sm backdrop-blur-md transition-all hover:bg-secondary border border-border/50 uppercase tracking-widest"
           >
             <motion.div
-              className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"
+              className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
               initial={{ x: "-100%" }}
               whileTap={{ x: "200%" }}
               transition={{ duration: 0.5, ease: "easeInOut" }}

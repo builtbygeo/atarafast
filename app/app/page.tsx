@@ -18,6 +18,7 @@ import { useLang } from "@/lib/language-context"
 import { useSubscription } from "@/lib/subscription"
 import { ENABLE_PREMIUM } from "@/lib/features"
 import { cn } from "@/lib/utils"
+import { Toaster } from "@/components/ui/sonner"
 
 type Tab = "today" | "log" | "progress"
 
@@ -236,6 +237,8 @@ export default function Home() {
       {showOnboarding && (
         <OnboardingFlow onComplete={handleOnboardingComplete} />
       )}
+
+      <Toaster position="top-center" />
     </main>
   )
 }

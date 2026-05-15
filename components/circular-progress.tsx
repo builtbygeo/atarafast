@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect } from "react"
 import { useLang } from "@/lib/language-context"
 import { getPhaseData } from "@/lib/fasting-phases"
 
@@ -70,29 +70,22 @@ export function CircularProgress({
   children,
 }: CircularProgressProps) {
   const { t } = useLang()
-  const [drawProgress, setDrawProgress] = useState(1)
+  const [drawProgress, setDrawProgress] = useState(0)
   const [flashGlow, setFlashGlow] = useState(false)
-  const prevProgressRef = useRef(progress)
 
   useEffect(() => {
-    // Only animate stroke draw when a NEW fast starts (progress was 0, now > 0)
-    const wasZero = prevProgressRef.current === 0 || prevProgressRef.current < 0.01
-    const isNowActive = progress > 0.01
-    prevProgressRef.current = progress
-
-    if (wasZero && isNowActive) {
-      setDrawProgress(0)
-      setFlashGlow(false)
-      const timer = setTimeout(() => setDrawProgress(1), 100)
-      const flashTimer = setTimeout(() => setFlashGlow(true), 1600)
-      const flashOffTimer = setTimeout(() => setFlashGlow(false), 2600)
-      return () => {
-        clearTimeout(timer)
-        clearTimeout(flashTimer)
-        clearTimeout(flashOffTimer)
-      }
+    // Animate stroke draw on mount
+    setDrawProgress(0)
+    setFlashGlow(false)
+    const timer = setTimeout(() => setDrawProgress(1), 100)
+    const flashTimer = setTimeout(() => setFlashGlow(true), 1600)
+    const flashOffTimer = setTimeout(() => setFlashGlow(false), 2600)
+    return () => {
+      clearTimeout(timer)
+      clearTimeout(flashTimer)
+      clearTimeout(flashOffTimer)
     }
-  }, [progress])
+  }, [])
 
   const outerRadius = size / 2
   const padding = strokeWidth / 2 + 10 
@@ -227,15 +220,28 @@ export function CircularProgress({
           d={describeArc(center, center, trackRadius + padding - 4, 0, progressDeg)}
           fill="none"
           stroke="var(--foreground)"
-          strokeWidth={flashGlow ? 3 : 1.5}
+          strokeWidth={flashGlow ? 4 : 1.5}
           className="transition-all duration-1000 ease-out"
           style={{
             strokeDasharray: 1000,
             strokeDashoffset: 1000 * (1 - drawProgress),
             transition: "stroke-dashoffset 1.5s cubic-bezier(0.4, 0, 0.2, 1), stroke-width 0.4s ease-out",
-            filter: flashGlow ? "drop-shadow(0 0 6px rgba(255,255,255,0.5))" : "none"
+            filter: flashGlow ? "drop-shadow(0 0 12px rgba(255,255,255,0.8))" : "none"
           }}
         />
+        {/* Flash glow burst layer */}
+        {flashGlow && (
+          <path
+            d={describeArc(center, center, trackRadius + padding - 4, 0, progressDeg)}
+            fill="none"
+            stroke="rgba(255,255,255,0.3)"
+            strokeWidth={8}
+            style={{
+              filter: "blur(4px)",
+              opacity: 0.6,
+            }}
+          />
+        )}
 
         {/* Target indicator (Dot with line) */}
         <circle cx={dotPos.x} cy={dotPos.y} r="3" fill="var(--foreground)" className="transition-all duration-1000" />

@@ -24,8 +24,8 @@ Be direct, authoritative, and helpful.`
     And my current stats: ${JSON.stringify(stats)}
     Latest journal reflections: ${JSON.stringify(journals)}`
 
-        const primaryModel = "nvidia/nemotron-3-super-120b-a12b:free"
-        const fallbackModel = "openrouter/free"
+        const primaryModel = "deepseek/deepseek-v4-flash:free"
+        const fallbackModel = "nvidia/nemotron-3-super-120b-a12b:free"
 
         let res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
             method: "POST",
