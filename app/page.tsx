@@ -89,7 +89,7 @@ export default async function LandingPage() {
   const appUrl = isDev ? '/app' : 'https://app.atarafast.com'
 
   return (
-    <div className="min-h-screen bg-[#0f0f0f] text-white dark" style={{ fontFamily: 'var(--font-inter), Inter, system-ui, sans-serif' }}>
+    <div className="min-h-screen bg-[#0f0f0f] text-white dark app-noise-overlay" style={{ fontFamily: 'var(--font-inter), Inter, system-ui, sans-serif' }}>
       {/* Nav */}
       <nav className="fixed top-0 inset-x-0 z-50 flex items-center justify-between px-6 pt-4 pb-4 border-b backdrop-blur-md" style={{ backgroundColor: 'rgba(15,15,15,0.95)', borderColor: 'rgba(255,255,255,0.05)' }}>
         <div className="flex items-center">
@@ -162,10 +162,10 @@ export default async function LandingPage() {
               ].map((p) => (
                 <div 
                   key={p.name}
-                  className="p-4 rounded-xl transition-all hover:-translate-y-1 cursor-pointer border group"
+                  className="p-4 rounded-xl transition-all hover:-translate-y-1 cursor-pointer border backdrop-blur-sm group"
                   style={{ 
-                    backgroundColor: `color-mix(in oklch, ${p.color}, transparent 92%)`,
-                    borderColor: `color-mix(in oklch, ${p.color}, transparent 70%)`
+                    backgroundColor: `color-mix(in oklch, ${p.color}, transparent 90%)`,
+                    borderColor: `color-mix(in oklch, ${p.color}, transparent 60%)`
                   }}
                 >
                   <div className="flex items-center justify-between mb-2">
@@ -190,11 +190,11 @@ export default async function LandingPage() {
               Atara doesn&apos;t just track time. It analyzes your habits. Our AI Coach provides personalized metabolic insights based on your unique fasting history.
             </p>
             <div className="grid grid-cols-2 gap-4">
-              <div className="p-4 rounded-2xl bg-white/5 border border-white/5">
+              <div className="p-4 rounded-2xl bg-white/[0.04] backdrop-blur-sm border border-white/[0.08]">
                 <p className="text-primary font-black text-2xl mb-1">78</p>
                 <p className="text-[10px] uppercase tracking-widest text-white/40 font-bold">Day Streak</p>
               </div>
-              <div className="p-4 rounded-2xl bg-white/5 border border-white/5">
+              <div className="p-4 rounded-2xl bg-white/[0.04] backdrop-blur-sm border border-white/[0.08]">
                 <p className="text-primary font-black text-2xl mb-1">91%</p>
                 <p className="text-[10px] uppercase tracking-widest text-white/40 font-bold">Goal Success</p>
               </div>
@@ -316,8 +316,7 @@ export default async function LandingPage() {
           {features.map((f) => (
             <div
               key={f.title}
-              className="rounded-2xl p-6 transition-all hover:border-primary/30 group cursor-default"
-              style={{ border: '1px solid rgba(255,255,255,0.07)', backgroundColor: 'rgba(255,255,255,0.03)' }}
+              className="rounded-2xl p-6 transition-all hover:border-primary/30 hover:-translate-y-0.5 group cursor-default backdrop-blur-sm border border-white/[0.06] bg-white/[0.03] hover:bg-white/[0.05]"
             >
               <div className="flex items-start gap-4">
                 <div className="text-2xl shrink-0 transition-transform duration-300 group-hover:scale-110">{f.icon}</div>
@@ -344,7 +343,7 @@ export default async function LandingPage() {
         {/* Pricing Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
           {/* Free */}
-          <div className="rounded-[2rem] p-8 relative overflow-hidden flex flex-col group transition-all duration-300 border border-primary/40 bg-primary/5">
+          <div className="rounded-[2rem] p-8 relative overflow-hidden flex flex-col group transition-all duration-300 border border-primary/40 bg-primary/[0.06] backdrop-blur-sm shadow-[0_8px_40px_-12px_rgba(34,197,94,0.15)] hover:shadow-[0_12px_50px_-12px_rgba(34,197,94,0.25)]">
             <div className="absolute top-0 right-0 text-[10px] font-black px-5 py-2 rounded-bl-2xl uppercase tracking-widest bg-primary text-black">
               Current Version
             </div>
@@ -366,7 +365,7 @@ export default async function LandingPage() {
           </div>
 
           {/* Atara Monthly - Waitlist */}
-          <div className="rounded-[2rem] p-8 relative overflow-hidden flex flex-col group transition-all duration-300" style={{ border: '1px solid rgba(255,255,255,0.08)', backgroundColor: 'rgba(255,255,255,0.02)' }}>
+          <div className="rounded-[2rem] p-8 relative overflow-hidden flex flex-col group transition-all duration-300 border border-white/[0.08] bg-white/[0.03] backdrop-blur-sm hover:border-white/[0.12] hover:bg-white/[0.04]">
             <h3 className="font-black text-lg mb-1 text-white/60 uppercase tracking-widest">Monthly</h3>
             <div className="flex items-baseline gap-1 mt-2">
               <span className="text-5xl font-black text-white/50">€4.99</span>
@@ -387,7 +386,7 @@ export default async function LandingPage() {
           </div>
 
           {/* Atara Yearly - Waitlist */}
-          <div className="rounded-[2rem] p-8 relative overflow-hidden flex flex-col group transition-all duration-300" style={{ border: '1px solid rgba(255,255,255,0.08)', backgroundColor: 'rgba(255,255,255,0.02)' }}>
+          <div className="rounded-[2rem] p-8 relative overflow-hidden flex flex-col group transition-all duration-300 border border-white/[0.08] bg-white/[0.03] backdrop-blur-sm hover:border-white/[0.12] hover:bg-white/[0.04]">
             <h3 className="font-black text-lg mb-1 text-white/60 uppercase tracking-widest">Yearly</h3>
             <div className="flex items-baseline gap-1 mt-2">
               <span className="text-5xl font-black text-white/50">€29</span>
@@ -421,8 +420,8 @@ export default async function LandingPage() {
       {/* CTA Banner & PWA Teaser */}
       <section id="how" className="py-24 px-6 text-center max-w-4xl mx-auto flex flex-col gap-12">
         {/* PWA Banner */}
-        <div className="rounded-[3rem] p-10 md:p-16 relative flex flex-col md:flex-row items-center gap-10 text-left overflow-hidden bg-white/[0.02] border border-white/10 hover:border-white/20 transition-colors">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 pointer-events-none" />
+        <div className="rounded-[3rem] p-10 md:p-16 relative flex flex-col md:flex-row items-center gap-10 text-left overflow-hidden bg-white/[0.02] backdrop-blur-sm border border-white/[0.08] hover:border-white/[0.15] transition-all shadow-[0_8px_40px_-12px_rgba(34,197,94,0.1)] hover:shadow-[0_12px_50px_-12px_rgba(34,197,94,0.2)]">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 pointer-events-none blur-[60px]" />
           <div className="flex-1 relative z-10">
             <h2 className="text-3xl sm:text-4xl font-black tracking-tight mb-4">Install Atara in 3 seconds <br /><span className="text-white/40 text-2xl font-bold">(no App Store required)</span></h2>
             <p className="mb-8 text-white/60 text-lg">Atara is a Progressive Web App. That means zero App Store fees, total privacy, and instant installation directly to your home screen.</p>
@@ -444,7 +443,7 @@ export default async function LandingPage() {
         </div>
 
         {/* Standard CTA */}
-        <div className="rounded-[3xl] p-12" style={{ border: '1px solid rgba(34,197,94,0.2)', background: 'linear-gradient(180deg, rgba(34,197,94,0.08) 0%, transparent 100%)' }}>
+        <div className="rounded-[3xl] p-12 backdrop-blur-sm border border-primary/20 bg-gradient-to-b from-primary/[0.08] to-transparent shadow-[0_8px_40px_-12px_rgba(34,197,94,0.15)]">
           <h2 className="text-4xl font-black tracking-tight mb-4">Ready to start fasting smarter?</h2>
           <p className="mb-8" style={{ color: 'rgba(255,255,255,0.45)' }}>Join Atara. Your body has been waiting for this.</p>
           <Link
@@ -483,7 +482,7 @@ export default async function LandingPage() {
               a: "Yes! Atara is in active development. You can reach out directly to the creator on X (Twitter) @builtbygeo or via email. We love hearing from our metabolic practitioners."
             }
           ].map((item, idx) => (
-            <div key={idx} className="p-8 rounded-[2rem] bg-white/[0.02] border border-white/[0.05] hover:border-white/10 transition-colors">
+            <div key={idx} className="p-8 rounded-[2rem] bg-white/[0.03] backdrop-blur-sm border border-white/[0.06] hover:border-white/[0.12] hover:bg-white/[0.04] transition-all">
               <h3 className="text-xl font-bold mb-4 text-white">{item.q}</h3>
               <p className="text-zinc-400 leading-relaxed">{item.a}</p>
             </div>
