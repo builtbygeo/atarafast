@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { motion } from "framer-motion"
 import { PROGRAMS, type FastingProgram, type ActiveProgramState } from "@/lib/programs"
 import { getActiveProgram, getProgramBadges, joinProgram, quitProgram } from "@/lib/storage"
 import { useLang } from "@/lib/language-context"
@@ -45,12 +46,25 @@ export function ProgramsGrid() {
           const timesCompleted = badges[program.id] || 0
           const hasCompletedBefore = timesCompleted > 0
 
-          let statusTheme = "bg-secondary/20 border-border/40"
-          if (isActive) statusTheme = "bg-primary/10 border-primary/40 shadow-[0_4px_20px_-10px_rgba(34,197,94,0.3)]"
-          else if (hasCompletedBefore) statusTheme = "bg-[#FFF8E7]/5 border-orange-400/20"
+          let statusTheme = "bg-secondary/20 backdrop-blur-sm border-border/40"
+          if (isActive) statusTheme = "bg-primary/5 backdrop-blur-md border-primary/30"
+          else if (hasCompletedBefore) statusTheme = "bg-[#FFF8E7]/5 backdrop-blur-sm border-orange-400/20"
 
           return (
             <div key={program.id} className={`flex flex-col p-5 rounded-[2rem] border ${statusTheme} transition-all relative overflow-hidden group`}>
+              {isActive && (
+                <motion.div
+                  className="absolute inset-0 rounded-[2rem] pointer-events-none"
+                  animate={{
+                    boxShadow: [
+                      "0 0 0 0 rgba(34,197,94,0)",
+                      "0 0 20px 2px rgba(34,197,94,0.15)",
+                      "0 0 0 0 rgba(34,197,94,0)"
+                    ]
+                  }}
+                  transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+                />
+              )}
               {/* x3 Badge */}
               {hasCompletedBefore && (
                 <div className="absolute top-4 right-4 flex items-center justify-center bg-orange-500/20 text-orange-500 border border-orange-500/30 font-black text-[10px] px-2 py-1 rounded-full tracking-wider z-10 shadow-sm backdrop-blur-md">
@@ -96,26 +110,30 @@ export function ProgramsGrid() {
                       style={{ width: `${Math.max(5, (activeProg.progressDays / program.targetDays) * 100)}%` }}
                     />
                   </div>
-                  <button 
+                  <motion.button 
                     onClick={handleQuit}
-                    className="flex items-center justify-center gap-2 w-full py-3.5 rounded-2xl bg-destructive/10 text-destructive font-bold text-xs uppercase tracking-widest hover:bg-destructive/20 active:scale-95 transition-all"
+                    whileTap={{ scale: 0.97 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                    className="flex items-center justify-center gap-2 w-full py-3.5 rounded-2xl bg-destructive/10 backdrop-blur-sm text-destructive font-bold text-xs uppercase tracking-widest hover:bg-destructive/20 transition-all"
                   >
                     <Trash2 className="h-4 w-4" />
                     {t?.quitChallenge || "Abandon"}
-                  </button>
+                  </motion.button>
                 </div>
               ) : (
-                <button
+                <motion.button
                   onClick={() => handleJoin(program.id)}
                   disabled={activeProg !== null}
+                  whileTap={activeProg !== null ? undefined : { scale: 0.97 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 17 }}
                   className={`mt-auto flex items-center justify-center gap-2 w-full py-4 rounded-2xl font-black text-sm tracking-widest transition-all ${
                     activeProg !== null 
                       ? "bg-secondary/50 text-muted-foreground opacity-50 cursor-not-allowed" 
-                      : "bg-primary text-primary-foreground shadow-lg shadow-primary/20 hover:shadow-primary/30 active:scale-95 uppercase"
+                      : "bg-primary text-primary-foreground shadow-lg shadow-primary/20 hover:shadow-primary/30 uppercase"
                   }`}
                 >
                   {activeProg !== null ? (t?.finishActiveFirst || "Finish Active First") : (t?.startChallenge || "Start Challenge")}
-                </button>
+                </motion.button>
               )}
             </div>
           )

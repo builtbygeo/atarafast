@@ -1,7 +1,7 @@
 "use client"
 
-import { useMemo, useState, useEffect } from "react"
-import { motion, AnimatePresence } from "framer-motion"
+import React, { useMemo, useState, useEffect } from "react"
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion"
 import { useUser } from "@clerk/nextjs"
 import {
   format,
@@ -279,8 +279,16 @@ export function StatsView({ history, settings, onOpenSettings, onOpenUpgrade }: 
   const streakPct = Math.min(100, (stats.currentStreak / Math.max(1, stats.longestStreak)) * 100) || 50
   const strokeDashoffset = circumference - (streakPct / 100) * circumference
 
+  const scrollRef = React.useRef<HTMLDivElement>(null)
+  const { scrollYProgress } = useScroll({ container: scrollRef })
+  const streakY = useTransform(scrollYProgress, [0, 0.3], [0, -20])
+  const streakScale = useTransform(scrollYProgress, [0, 0.2], [1, 0.98])
+  const cardY = useTransform(scrollYProgress, [0.1, 0.5], [15, 0])
+  const cardOpacity = useTransform(scrollYProgress, [0.1, 0.3], [0.6, 1])
+  const eduY = useTransform(scrollYProgress, [0.3, 0.8], [10, -10])
+
   return (
-    <div className="absolute inset-0 overflow-y-auto px-4 sm:px-5 py-6 no-scrollbar pb-44 [touch-action:pan-y]">
+    <div ref={scrollRef} className="absolute inset-0 overflow-y-auto px-4 sm:px-5 py-6 no-scrollbar pb-44 [touch-action:pan-y]">
       <header className="flex items-start justify-between mb-8 mt-2 px-1 relative z-10">
         <div>
           <h2 className="text-3xl font-black text-foreground tracking-tighter leading-none mb-1">{t?.statsTitle || "Dashboard"}</h2>
@@ -288,30 +296,39 @@ export function StatsView({ history, settings, onOpenSettings, onOpenUpgrade }: 
         </div>
         <div className="flex gap-2">
           <div className="flex rounded-full bg-secondary/40 p-1 border border-border/50 text-[10px] font-black tracking-widest shadow-sm backdrop-blur-md">
-            <button
+            <motion.button
               onClick={() => setLang("bg")}
+              whileTap={{ scale: 0.93 }}
+              transition={{ type: "spring", stiffness: 400, damping: 17 }}
               className={`px-3 py-1.5 rounded-full transition-all ${lang === "bg" ? "bg-primary text-primary-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
             >
               БГ
-            </button>
-            <button
+            </motion.button>
+            <motion.button
               onClick={() => setLang("en")}
+              whileTap={{ scale: 0.93 }}
+              transition={{ type: "spring", stiffness: 400, damping: 17 }}
               className={`px-3 py-1.5 rounded-full transition-all ${lang === "en" ? "bg-primary text-primary-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
             >
               EN
-            </button>
+            </motion.button>
           </div>
-          <button
+          <motion.button
             onClick={onOpenSettings}
+            whileTap={{ scale: 0.9 }}
+            transition={{ type: "spring", stiffness: 400, damping: 17 }}
             className="flex h-[32px] w-[32px] items-center justify-center rounded-full bg-secondary/40 text-muted-foreground transition-all hover:text-foreground hover:bg-secondary/60 border border-border/50 mt-0.5 shadow-sm backdrop-blur-md"
           >
             <Settings className="h-4 w-4" />
-          </button>
+          </motion.button>
         </div>
       </header>
 
       {/* 1. Glowing Streak Circle - ALWAYS VISIBLE */}
-      <div className="relative flex justify-center py-4 mb-4">
+      <motion.div 
+        className="relative flex justify-center py-4 mb-4"
+        style={{ y: streakY, scale: streakScale }}
+      >
         <div className="relative flex items-center justify-center w-64 h-64">
           <svg width="256" height="256" viewBox="0 0 256 256" className="transform -rotate-90 overflow-visible">
             {/* Background ring */}
@@ -344,7 +361,7 @@ export function StatsView({ history, settings, onOpenSettings, onOpenUpgrade }: 
             <div className="text-[11px] font-bold text-foreground/80 lowercase mt-1 tracking-wide">{t?.currentStreak || "Current Streak"}</div>
           </div>
         </div>
-      </div>
+      </motion.div>
 
       <div className="relative">
         {/* 2. Weekly Activity Chart (Glowing Area) */}
@@ -352,7 +369,7 @@ export function StatsView({ history, settings, onOpenSettings, onOpenUpgrade }: 
           <WeightTrendsChart data={transformWeightData(history)} />
         </div>
 
-        <div className={`rounded-3xl border border-white/5 bg-secondary/30 p-5 shadow-sm mb-4`}>
+        <div className={`rounded-3xl border border-white/5 bg-secondary/30 backdrop-blur-sm p-5 shadow-sm mb-4`}>
           <div className="flex items-center justify-between mb-6">
             <div>
               <h3 className="text-[17px] font-bold text-foreground tracking-tight mb-1">{t?.weeklyActivity || "Weekly Activity"}</h3>
@@ -417,7 +434,7 @@ export function StatsView({ history, settings, onOpenSettings, onOpenUpgrade }: 
         </div>
 
         {/* 4. AI Coach Dashboard Card */}
-        <div className="rounded-[2.5rem] border border-primary/20 bg-card p-6 mb-8 relative overflow-hidden group shadow-[0_8px_40px_-12px_rgba(34,197,94,0.15)] transition-all">
+        <div className="rounded-[2.5rem] border border-primary/20 bg-card/60 backdrop-blur-md p-6 mb-8 relative overflow-hidden group shadow-[0_8px_40px_-12px_rgba(34,197,94,0.15)] transition-all">
           <div className="absolute top-0 right-0 p-4 opacity-30 blur-[40px] group-hover:opacity-50 transition-opacity duration-1000">
             <Sparkles className="w-40 h-40 text-primary" />
           </div>
@@ -477,13 +494,15 @@ export function StatsView({ history, settings, onOpenSettings, onOpenUpgrade }: 
                   Ready to optimize further? Generate your daily performance insights.
                 </div>
               )}
-              <button
+              <motion.button
                 onClick={handleAnalyze}
                 disabled={isAnalyzing}
-                className="w-full py-3.5 rounded-2xl bg-primary text-primary-foreground font-black text-xs tracking-wide shadow-lg shadow-primary/20 hover:shadow-primary/30 active:scale-95 transition-all outline-none disabled:opacity-50 whitespace-nowrap"
+                whileTap={{ scale: 0.97 }}
+                transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                className="w-full py-3.5 rounded-2xl bg-primary text-primary-foreground font-black text-xs tracking-wide shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all outline-none disabled:opacity-50 whitespace-nowrap"
               >
                 {isAnalyzing ? "Analyzing..." : "Generate Insights"}
-              </button>
+              </motion.button>
             </div>
           )}
 
@@ -509,7 +528,10 @@ export function StatsView({ history, settings, onOpenSettings, onOpenUpgrade }: 
             <h3 className="text-[17px] font-bold text-foreground tracking-tight">{t?.challengesTitle || "Challenges"}</h3>
           </div>
           
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+          <motion.div 
+            className="grid grid-cols-2 sm:grid-cols-3 gap-3"
+            style={{ y: cardY, opacity: cardOpacity }}
+          >
             {challenges.map((challenge) => {
               const bgClass = challenge.isUnlocked 
                 ? "bg-primary/5 border-primary/30 shadow-[0_0_15px_rgba(34,197,94,0.1)]" 
@@ -539,11 +561,14 @@ export function StatsView({ history, settings, onOpenSettings, onOpenUpgrade }: 
                 </div>
               )
             })}
-          </div>
+          </motion.div>
         </div>
 
         {/* 6. Educational Cards — Learn More (Accordion) */}
-        <div className="mb-8">
+        <motion.div 
+          className="mb-8"
+          style={{ y: eduY }}
+        >
           <div className="flex items-center gap-2 mb-4 px-1">
             <Info className="h-5 w-5 text-primary" />
             <h3 className="text-[17px] font-bold text-foreground tracking-tight">{t?.learnMore || "Learn More"}</h3>
@@ -563,8 +588,10 @@ export function StatsView({ history, settings, onOpenSettings, onOpenUpgrade }: 
                   )}
                 >
                   {/* Header — always visible */}
-                  <button
+                  <motion.button
                     onClick={() => setExpandedCardId(isExpanded ? null : card.id)}
+                    whileTap={{ scale: 0.98 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 17 }}
                     className="w-full flex items-start justify-between gap-4 p-5 text-left"
                   >
                     <div className="flex-1 min-w-0">
@@ -584,7 +611,7 @@ export function StatsView({ history, settings, onOpenSettings, onOpenUpgrade }: 
                     >
                       <ChevronLeft className="h-4 w-4 text-primary/60 -rotate-90" />
                     </motion.div>
-                  </button>
+                  </motion.button>
 
                   {/* Expanded content */}
                   <AnimatePresence>
@@ -609,7 +636,7 @@ export function StatsView({ history, settings, onOpenSettings, onOpenUpgrade }: 
               )
             })}
           </div>
-        </div>
+        </motion.div>
 
       </div>
     </div>

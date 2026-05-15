@@ -324,7 +324,7 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
             {/* STARTS CARD */}
             <button
               onClick={() => setShowEditStartTime(true)}
-              className="flex-1 rounded-[1.25rem] p-4 pb-3.5 border border-primary/40 bg-primary/5 dark:bg-primary/10 flex flex-col pt-3 shadow-[0_4px_20px_-10px_rgba(34,197,94,0.2)] cursor-pointer hover:bg-primary/10 transition-colors text-left"
+              className="flex-1 rounded-[1.25rem] p-4 pb-3.5 border border-primary/30 bg-primary/5 backdrop-blur-sm flex flex-col pt-3 shadow-[0_4px_20px_-10px_rgba(34,197,94,0.2)] cursor-pointer hover:bg-primary/10 transition-colors text-left"
             >
               <div className="flex justify-between items-center mb-1 w-full">
                 <span className="block text-[10px] font-black text-primary uppercase tracking-widest">{t.startTime || "STARTS"}</span>
@@ -339,7 +339,7 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
             {/* GOAL CARD */}
             <button
               onClick={() => navigateTo("presets")}
-              className="flex-1 rounded-[1.25rem] p-4 pb-3.5 border border-border bg-secondary/20 dark:bg-secondary/30 flex flex-col pt-3 cursor-pointer hover:bg-secondary/40 transition-colors text-left shadow-sm"
+              className="flex-1 rounded-[1.25rem] p-4 pb-3.5 border border-border/50 bg-secondary/20 backdrop-blur-sm flex flex-col pt-3 cursor-pointer hover:bg-secondary/30 transition-colors text-left shadow-sm"
             >
               <div className="flex justify-between items-center mb-1 w-full">
                 <span className="block text-[10px] font-black text-muted-foreground uppercase tracking-widest">{t.goal || "GOAL"}</span>
@@ -366,24 +366,40 @@ export function TimerView({ history, onFastEnd, onNavigateToHistory }: TimerView
         </div>
 
         <div className="flex flex-col w-full gap-4 max-w-[320px] mt-auto pb-8 relative z-20">
-          <button
+          <motion.button
             onClick={handleEndFast}
-            className={`w-full py-4 rounded-[2rem] font-black text-[15px] tracking-widest transition-all active:scale-95 border ${confirmEnd
+            whileTap={{ scale: 0.97 }}
+            transition={{ type: "spring", stiffness: 400, damping: 17 }}
+            className={`relative overflow-hidden w-full py-4 rounded-[2rem] font-black text-[15px] tracking-widest transition-all border ${confirmEnd
               ? "bg-destructive border-destructive text-white shadow-[0_0_30px_-5px_var(--destructive)]"
               : "bg-primary/20 border-primary/50 text-primary uppercase shadow-[0_0_30px_-5px_rgba(34,197,94,0.4)] hover:bg-primary/30"
               }`}
           >
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent"
+              initial={{ x: "-100%" }}
+              whileTap={{ x: "200%" }}
+              transition={{ duration: 0.5, ease: "easeInOut" }}
+            />
             {confirmEnd ? t.confirmEndFast : (t.completeFast || "COMPLETE FAST")}
             {confirmEnd && <span className="block text-[10px] mt-1 opacity-70 normal-case tracking-normal font-medium">{t.tapToConfirm}</span>}
-          </button>
+          </motion.button>
           {/* Share */}
-          <button
+          <motion.button
             onClick={() => setShowShare(true)}
-            className="mt-6 flex items-center justify-center gap-2 rounded-2xl bg-secondary/80 px-8 py-3.5 text-sm font-black text-foreground shadow-sm backdrop-blur-md transition-all hover:bg-secondary active:scale-95 border border-border/50 uppercase tracking-widest"
+            whileTap={{ scale: 0.97 }}
+            transition={{ type: "spring", stiffness: 400, damping: 17 }}
+            className="relative overflow-hidden mt-6 flex items-center justify-center gap-2 rounded-2xl bg-secondary/80 px-8 py-3.5 text-sm font-black text-foreground shadow-sm backdrop-blur-md transition-all hover:bg-secondary border border-border/50 uppercase tracking-widest"
           >
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"
+              initial={{ x: "-100%" }}
+              whileTap={{ x: "200%" }}
+              transition={{ duration: 0.5, ease: "easeInOut" }}
+            />
             <Share2 className="h-4 w-4" />
             {t.shareStories || "Сподели в Stories"}
-          </button>
+          </motion.button>
         </div>
 
         {showShare && (

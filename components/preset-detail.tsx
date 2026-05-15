@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { motion } from "framer-motion"
 import { ArrowLeft, Droplets, Salad, Leaf } from "lucide-react"
 import { CircularProgress } from "@/components/circular-progress"
 import type { FastingPreset } from "@/lib/presets"
@@ -36,13 +37,15 @@ export function PresetDetail({ preset, isActive, isCurrentActivePreset, onBack, 
   return (
     <div className="flex flex-col gap-4 px-1">
       <div className="flex items-center gap-3">
-        <button
+        <motion.button
           onClick={onBack}
-          className="flex h-9 w-9 items-center justify-center rounded-xl bg-secondary/50 text-foreground transition-all hover:bg-secondary active:scale-90 border border-border"
+          whileTap={{ scale: 0.9 }}
+          transition={{ type: "spring", stiffness: 400, damping: 17 }}
+          className="flex h-9 w-9 items-center justify-center rounded-xl bg-secondary/50 text-foreground transition-all hover:bg-secondary border border-border"
           aria-label="Go back"
         >
           <ArrowLeft className="h-4 w-4" />
-        </button>
+        </motion.button>
         <div className="flex flex-col">
           <span className="text-[9px] font-black uppercase tracking-[0.2em] text-muted-foreground opacity-60">
             {t.planTitle || "PLAN"}
@@ -122,25 +125,31 @@ export function PresetDetail({ preset, isActive, isCurrentActivePreset, onBack, 
 
         <div className="w-full max-w-xs px-4 mt-1">
           {ENABLE_PREMIUM && isLocked ? (
-            <button
+            <motion.button
               onClick={() => startCheckout()}
-              className="w-full flex items-center justify-center gap-2 py-3.5 rounded-2xl text-xs font-black uppercase tracking-widest transition-all active:scale-[0.98] shadow-xl bg-secondary text-primary border border-primary/20"
+              whileTap={{ scale: 0.97 }}
+              transition={{ type: "spring", stiffness: 400, damping: 17 }}
+              className="w-full flex items-center justify-center gap-2 py-3.5 rounded-2xl text-xs font-black uppercase tracking-widest transition-all shadow-xl bg-secondary text-primary border border-primary/20"
             >
               <Lock className="w-3.5 h-3.5" />
               Upgrade to Atara
-            </button>
+            </motion.button>
           ) : isActive ? (
             isCurrentActivePreset ? (
-              <button
+              <motion.button
                 onClick={onChangePreset}
-                className="w-full py-3.5 rounded-2xl bg-secondary/50 border border-border text-xs font-black uppercase tracking-widest text-foreground transition-all hover:bg-secondary active:scale-95 shadow-md"
+                whileTap={{ scale: 0.97 }}
+                transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                className="w-full py-3.5 rounded-2xl bg-secondary/50 border border-border text-xs font-black uppercase tracking-widest text-foreground transition-all hover:bg-secondary shadow-md"
               >
                 {t.changePreset}
-              </button>
+              </motion.button>
             ) : (
-              <button
+              <motion.button
                 onClick={() => onUpdateFast?.(displayHours)}
-                className="w-full py-3.5 rounded-2xl text-xs font-black uppercase tracking-widest transition-all active:scale-[0.98] shadow-xl"
+                whileTap={{ scale: 0.97 }}
+                transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                className="w-full py-3.5 rounded-2xl text-xs font-black uppercase tracking-widest transition-all shadow-xl"
                 style={{
                   backgroundColor: preset.color,
                   color: "#0f0f0f",
@@ -148,20 +157,28 @@ export function PresetDetail({ preset, isActive, isCurrentActivePreset, onBack, 
                 }}
               >
                 {t.changePreset}
-              </button>
+              </motion.button>
             )
           ) : (
-            <button
+            <motion.button
               onClick={() => onStart(displayHours)}
-              className="w-full py-3.5 rounded-2xl text-xs font-black uppercase tracking-widest transition-all active:scale-[0.98] shadow-xl"
+              whileTap={{ scale: 0.97 }}
+              transition={{ type: "spring", stiffness: 400, damping: 17 }}
+              className="relative overflow-hidden w-full py-3.5 rounded-2xl text-xs font-black uppercase tracking-widest transition-all shadow-xl"
               style={{
                 backgroundColor: preset.color,
                 color: "#0f0f0f",
                 boxShadow: `0 8px 20px -8px ${preset.color}80`
               }}
             >
+              <motion.div
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/25 to-transparent"
+                initial={{ x: "-100%" }}
+                whileTap={{ x: "200%" }}
+                transition={{ duration: 0.5, ease: "easeInOut" }}
+              />
               {t.startFast}
-            </button>
+            </motion.button>
           )}
         </div>
       </div>

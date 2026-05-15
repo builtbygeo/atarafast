@@ -1,5 +1,6 @@
 "use client"
 
+import { useState, useEffect } from "react"
 import { useLang } from "@/lib/language-context"
 import { getPhaseData } from "@/lib/fasting-phases"
 
@@ -69,6 +70,22 @@ export function CircularProgress({
   children,
 }: CircularProgressProps) {
   const { t } = useLang()
+  const [drawProgress, setDrawProgress] = useState(0)
+  const [flashGlow, setFlashGlow] = useState(false)
+
+  useEffect(() => {
+    // Animate stroke draw on mount or when progress jumps significantly (new fast started)
+    setDrawProgress(0)
+    setFlashGlow(false)
+    const timer = setTimeout(() => setDrawProgress(1), 50)
+    const flashTimer = setTimeout(() => setFlashGlow(true), 1550)
+    const flashOffTimer = setTimeout(() => setFlashGlow(false), 2500)
+    return () => {
+      clearTimeout(timer)
+      clearTimeout(flashTimer)
+      clearTimeout(flashOffTimer)
+    }
+  }, [progress])
 
   const outerRadius = size / 2
   const padding = strokeWidth / 2 + 10 
@@ -203,8 +220,14 @@ export function CircularProgress({
           d={describeArc(center, center, trackRadius + padding - 4, 0, progressDeg)}
           fill="none"
           stroke="var(--foreground)"
-          strokeWidth="1.5"
+          strokeWidth={flashGlow ? 3 : 1.5}
           className="transition-all duration-1000 ease-out"
+          style={{
+            strokeDasharray: 1000,
+            strokeDashoffset: 1000 * (1 - drawProgress),
+            transition: "stroke-dashoffset 1.5s cubic-bezier(0.4, 0, 0.2, 1), stroke-width 0.4s ease-out",
+            filter: flashGlow ? "drop-shadow(0 0 6px rgba(255,255,255,0.5))" : "none"
+          }}
         />
 
         {/* Target indicator (Dot with line) */}

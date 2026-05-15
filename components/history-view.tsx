@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useMemo } from "react"
+import { motion } from "framer-motion"
 import {
   format,
   startOfYear,
@@ -114,13 +115,15 @@ export function HistoryView({ history, hasHiddenRecords, onHistoryChange }: Hist
       <div className="flex items-center justify-between mb-1">
         <h2 className="text-lg font-semibold text-foreground">{t.historyTitle}</h2>
         <div className="flex items-center gap-2">
-          <button
+          <motion.button
             onClick={() => setShowShare(true)}
-            className="flex items-center gap-1.5 rounded-lg bg-secondary/50 border border-border/50 px-3 py-1.5 text-xs font-black text-muted-foreground transition-colors hover:text-foreground active:scale-95"
+            whileTap={{ scale: 0.93 }}
+            transition={{ type: "spring", stiffness: 400, damping: 17 }}
+            className="flex items-center gap-1.5 rounded-lg bg-secondary/50 border border-border/50 px-3 py-1.5 text-xs font-black text-muted-foreground transition-colors hover:text-foreground"
           >
             <Share2 className="h-3.5 w-3.5" />
             {t.share || t.shareButton || "Share"}
-          </button>
+          </motion.button>
         </div>
       </div>
       <p className="text-sm text-muted-foreground mb-6">{t.yearCalendar.replace("{{year}}", String(selectedYear))}</p>
@@ -203,28 +206,34 @@ export function HistoryView({ history, hasHiddenRecords, onHistoryChange }: Hist
                 </div>
                 <div className="flex items-center gap-1">
                   {record.journalData && (
-                    <button
+                    <motion.button
                       onClick={() => setRecordToJournal(record)}
+                      whileTap={{ scale: 0.85 }}
+                      transition={{ type: "spring", stiffness: 400, damping: 17 }}
                       className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-[#22c55e] transition-colors hover:bg-secondary hover:text-[#22c55e]/80"
                       aria-label="View Journal"
                     >
                       <BookOpen className="h-4 w-4" />
-                    </button>
+                    </motion.button>
                   )}
-                  <button
+                  <motion.button
                     onClick={() => setRecordToEdit(record)}
+                    whileTap={{ scale: 0.85 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 17 }}
                     className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
                     aria-label="Edit fast record"
                   >
                     <Edit2 className="h-4 w-4" />
-                  </button>
-                  <button
+                  </motion.button>
+                  <motion.button
                     onClick={() => setRecordToDelete(record.id)}
+                    whileTap={{ scale: 0.85 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 17 }}
                     className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive"
                     aria-label="Delete fast record"
                   >
                     <Trash2 className="h-4 w-4" />
-                  </button>
+                  </motion.button>
                 </div>
               </div>
             )
@@ -241,12 +250,14 @@ export function HistoryView({ history, hasHiddenRecords, onHistoryChange }: Hist
                   {t.historyLimitNote}
                 </p>
               </div>
-              <button
+              <motion.button
                 onClick={() => startCheckout()}
-                className="w-full py-3 rounded-xl bg-primary text-primary-foreground text-xs font-black uppercase tracking-widest shadow-lg shadow-primary/20 active:scale-95 transition-all mt-1"
+                whileTap={{ scale: 0.97 }}
+                transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                className="w-full py-3 rounded-xl bg-primary text-primary-foreground text-xs font-black uppercase tracking-widest shadow-lg shadow-primary/20 transition-all mt-1"
               >
                 Upgrade to Atara
-              </button>
+              </motion.button>
             </div>
           )}
         </div>
